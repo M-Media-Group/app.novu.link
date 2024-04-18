@@ -44,10 +44,15 @@ getAllRules();
  * @returns
  */
 const testRule = async (
-  ruleName: keyof Rules,
-  operator: string,
-  value: string
+  ruleName?: keyof Rules,
+  operator?: string,
+  value?: string
 ) => {
+  // If not all data is set, return an error
+  if (!ruleName || !operator || !value) {
+    throw new Error("Missing data to test rule");
+  }
+
   // Set a header for Accept to application/json
   const headers = new Headers();
   headers.append("Accept", "application/json");
@@ -113,6 +118,7 @@ export function useRules(modelData?: Ref<RuleModel>) {
 
   const debounceTestRule = debounce(() => {
     if (
+      !modelData?.value?.selectedRuleKey ||
       !modelData?.value?.selectedOperator ||
       !modelData?.value?.selectedValue
     ) {
