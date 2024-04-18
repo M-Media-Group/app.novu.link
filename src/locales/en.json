@@ -51,5 +51,103 @@
     "Create a new API token": "Create a new API token",
     "New token name": "New token name",
     "Cancel": "Cancel",
-    "Confirm": "Confirm"
+    "Confirm": "Confirm",
+    "Your value is": "Your value is: {0}",
+    "Country": "Country",
+    "=": "Equal to",
+    "!=": "Not equal to",
+    ">": "Greater than",
+    "<": "Less than",
+    "starts_with": "Starts with",
+    "ends_with": "Ends with",
+    "multiple_of": "Multiple of",
+    "contains": "Contains",
+    "not_contains": "Does not contain",
+    "DayOfWeekValue": {
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday",
+        "7": "Sunday"
+    },
+    "DayOfWeek": "Day of the week",
+    "Rule": "Rule",
+    "Operator": "Operator",
+    "Value": "Value",
+    "Rules": {
+        "BrowserLanguage": {
+            "Name": "Browser Language",
+            "Description": "The language of the users browser. It will come from the accept-language header or the navigator.language if the former is null."
+        },
+        "Cookie": {
+            "Name": "Cookie",
+            "Description": "The users Cookies"
+        },
+        "Country": {
+            "Name": "Country",
+            "Description": "The users country from their IP."
+        },
+        "Date": {
+            "Name": "Date",
+            "Description": "The date. It accepts any valid date format, but the suggested format is YYYY-MM-DD."
+        },
+        "DayOfWeek": {
+            "Name": "Day of Week",
+            "Description": "The day of the week, Monday to Sunday. 1 is Monday, 7 is Sunday."
+        },
+        "HostNameByAddress": {
+            "Name": "Host Name By Address",
+            "Description": "The users host name (DNS lookup of the users IP address)."
+        },
+        "IP": {
+            "Name": "IP",
+            "Description": "The users IP address."
+        },
+        "QueryParameter": {
+            "Name": "Query Parameter",
+            "Description": "The query parameter after the ? in the URL."
+        },
+        "Referer": {
+            "Name": "Referer",
+            "Description": "The website that the user just came from."
+        },
+        "ScannedQr": {
+            "Name": "Scanned QR",
+            "Description": "Whether the QR code was scanned or not. Novu.link appends a utm_medium parameter to the URL when the app-povided QR code is scanned."
+        },
+        "Time": {
+            "Name": "Time",
+            "Description": "The time of day. This time is relative to UTC, meaning that its perfect for fixed times that are not subject to timezone changes."
+        },
+        "TotalTimesScanned": {
+            "Name": "Total Times Scanned",
+            "Description": "The total amount of times the QR code has been scanned or the link has been visited."
+        },
+        "TotalTimesScannedPerIP": {
+            "Name": "Total Times Scanned Per IP",
+            "Description": "The total amount of times the QR code has been scanned or the link has been visited, per unique IP."
+        },
+        "UserAgent": {
+            "Name": "User Agent",
+            "Description": "The user agent from HTTP_USER_AGENT."
+        },
+        "DeviceOrientation": {
+            "Name": "Device Orientation",
+            "Description": "The users device orientation. Either landscape-primary, landscape-secondary (upside-down), portrait-primary, or portrait-secondary (upside-down)."
+        },
+        "SupportsGeolocation": {
+            "Name": "Supports Geolocation",
+            "Description": "The users support of geolocation. This returns true if the users browser supports getting the users location."
+        },
+        "UserTime": {
+            "Name": "User Time",
+            "Description": "The time of day relative to the users current timezone."
+        },
+        "IsBot": {
+            "Name": "Is Bot",
+            "Description": "Whether the user is a bot or not."
+        }
+    }
 }
