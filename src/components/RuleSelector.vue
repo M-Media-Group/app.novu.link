@@ -17,6 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   "update:modelValue": [RuleModel];
+  valueSelected: [string];
 }>();
 
 const {
@@ -143,6 +144,7 @@ onMounted(() => {
           @click="updateModelValue"
           :disabled="isLoading"
           :value="option.id"
+          tabindex="0"
         />
         {{ option.render }}
         <small class="helptext">{{ option.raw.description }}</small>
@@ -188,12 +190,13 @@ onMounted(() => {
         handleValueChange($event[0] as RuleModel['selectedValue']);
         isOpenValueSelector = false;
         valueSelectorSearchTerm = '';
+        $emit('valueSelected', $event[0] as string);
       "
       :placeholder="$t('Value')"
       :aria-busy="isLoading"
       :required="true"
       v-model:is-open="isOpenValueSelector"
-      searchable
+      :searchable="formattedAllowedValues.length > 5"
       v-model:search="valueSelectorSearchTerm"
       ref="valueInput"
       :showSelectedFirst="true"
