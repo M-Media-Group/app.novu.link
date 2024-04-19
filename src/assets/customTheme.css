@@ -1,0 +1,22 @@
+article {
+    padding-top: calc(var(--pico-block-spacing-vertical) * 1.6);
+    padding-bottom: calc(var(--pico-block-spacing-vertical) * 1.6);
+}
+
+article>header {
+    border-bottom: unset;
+    background: var(--pico-card-background-color);
+}
+
+.main-grid-display {
+    display: grid;
+    gap: calc(var(--pico-block-spacing-vertical) * 1.6);
+
+    >* {
+        margin-bottom: 0;
+    }
+}
+
+.smaller-gap {
+    gap: calc(var(--pico-block-spacing-vertical) * 0.8);
+}
