@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "name": "lkjasd's Team",
+        "personal_team": true,
+        "created_at": "2022-07-20T16:31:08.000000Z",
+        "updated_at": "2024-04-19T13:41:51.000000Z",
+        "is_billing_exempt": true,
+        "stripe_id": "cus_M5tea4NuYCixmg",
+        "pm_type": "visa",
+        "pm_last_four": "4242",
+        "trial_ends_at": null,
+        "is_active": true
+    }
+]
