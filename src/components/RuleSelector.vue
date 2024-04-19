@@ -82,7 +82,7 @@ const handleOperatorChange = async (operator: string) => {
 
   //   Focus on the value input
   if (valueInput.value && !props.modelValue.selectedValue) {
-    valueInput.value.focus();
+    focusOnInput();
   }
 };
 
