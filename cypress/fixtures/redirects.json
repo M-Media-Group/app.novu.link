@@ -1,0 +1,25 @@
+[
+    {
+        "uuid": "FxL2sgL",
+        "team_id": 67,
+        "name": "eight",
+        "enable_analytics": 1,
+        "created_at": "2024-04-18T20:51:16.000000Z",
+        "updated_at": "2024-04-18T20:51:16.000000Z",
+        "deleted_at": null,
+        "todays_clicks_count": 0,
+        "endpoints": [
+            {
+                "id": 143,
+                "endpoint": "https://google.com",
+                "is_default": true,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "FxL2sgL",
+                "order": 1,
+                "created_at": "2024-04-18T20:51:16.000000Z",
+                "updated_at": "2024-04-18T20:51:16.000000Z",
+                "rule_groups": []
+            }
+        ]
+    }
+]
