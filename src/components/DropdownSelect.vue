@@ -6,7 +6,7 @@ import {
 } from "@/helpers/normaliseOptions";
 import { useMultiselect } from "@/stories/Composables/useMultiselect";
 import type { selectOption } from "@/types/listItem";
-import { type PropType, computed, onMounted, ref, watch } from "vue";
+import { type PropType, computed, nextTick, onMounted, ref, watch } from "vue";
 
 const props = defineProps({
   /** The model value is an array of selected options. This element will always use an array of strings as the values, even if originally they are typed as numbers. This is to stay consistent with native HTML elements "value" behaviour. This may be changed in the future. */
@@ -281,8 +281,9 @@ const canBeFocusedOn = computed(
 
 watch(
   () => props.isOpen,
-  () => {
+  async () => {
     if (!canBeFocusedOn.value) return;
+    await nextTick();
     searchInput.value?.focus();
     // Scroll the dropdown to the top - this is needed because the CSS height animation seems to leave us a little bit scrolled down
     if (dropdownList.value) {
@@ -300,6 +301,17 @@ watch(
     }
   }
 );
+
+// Define a focus function that can be called when we use the ref on this component
+const focus = () => {
+  // If the dropdown is not open, open it
+  if (!props.isOpen) {
+    emit("update:isOpen", true);
+  }
+};
+
+// Expose the focus function to the parent component
+defineExpose({ focus });
 </script>
 <template>
   <details class="dropdown" :open="props.isOpen" @toggle="openResults">
@@ -307,6 +319,7 @@ watch(
       :role="props.role"
       :aria-invalid="props.ariaInvalid"
       :aria-busy="props.ariaBusy"
+      :data-has-value="props.modelValue.length > 0"
     >
       {{ props.modelValue.length > 0 ? getSummaryText() : props.placeholder }}
     </summary>
@@ -352,7 +365,7 @@ watch(
         >
           <label>
             <input
-              type="checkbox"
+              :type="multiple ? 'checkbox' : 'radio'"
               :disabled="option.disabled || props.disabled"
               :value="option[modelKey]"
               :checked="isOptionSelected(option)"
