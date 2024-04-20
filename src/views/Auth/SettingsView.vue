@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
 import AccountSettings from "@/forms/AccountSettings.vue";
-import AddPaymentMethod from "@/forms/AddPaymentMethod.vue";
 import PersonalAccessTokens from "@/forms/PersonalAccessTokens.vue";
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
@@ -16,8 +15,6 @@ const handleUpdate = (event: { email: string | undefined }) => {
     router.push({ name: "confirm-email" });
   }
 };
-
-const addingNewPaymentMethod = ref(false);
 
 const accessTokens = ref<PersonalAccessToken[]>([]);
 
@@ -42,33 +39,7 @@ const handleDeleteToken = (id: string) => {
   <card-element :titleHeadingLevel="2" :title="$t('Settings')">
     <account-settings @updated="handleUpdate"></account-settings>
   </card-element>
-  <card-element :titleHeadingLevel="2" :title="$t('Payment methods')">
-    <div v-if="userStore.user?.pm_type">
-      <p>
-        {{ $t("Default payment method") }}:
-        {{ userStore.user.pm_type.toUpperCase() }} ****
-        {{ userStore.user.pm_last_four }}
-      </p>
-    </div>
-    <div v-else>
-      <p>{{ $t("You do not have a default payment method set") }}</p>
-    </div>
-    <add-payment-method
-      v-if="addingNewPaymentMethod"
-      @success="
-        addingNewPaymentMethod = false;
-        userStore.getUser();
-      "
-    />
-    <button
-      data-cy="add-payment-button"
-      v-else
-      @click="addingNewPaymentMethod = true"
-      type="button"
-    >
-      {{ $t("Add a payment method") }}
-    </button>
-  </card-element>
+
   <card-element :titleHeadingLevel="2" title="API">
     <template v-if="accessTokens.length > 0">
       <ul>

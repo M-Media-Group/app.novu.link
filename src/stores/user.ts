@@ -159,6 +159,7 @@ export const useUserStore = defineStore("user", () => {
         password_confirmation: password,
         name: name,
         surname: surname,
+        terms: true,
       });
       await getUser();
       $bus.$emit(eventTypes.registered);
@@ -329,54 +330,6 @@ export const useUserStore = defineStore("user", () => {
   }
 
   /**
-   * Get a payment intent
-   *
-   * @return {*}
-   */
-  async function getPaymentIntent() {
-    try {
-      const response = await axios.get("user/payment-intent");
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  /**
-   * Add a payment method for a user
-   *
-   * @param {string} paymentMethodId
-   * @return {*}
-   */
-  async function addPaymentMethod(paymentMethodId: string) {
-    try {
-      await axios.post("/user/payment-methods", {
-        payment_method: paymentMethodId,
-      });
-      $bus.$emit(eventTypes.added_payment_method);
-      await getUser();
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
-  /**
-   * Get the payment methods of the user
-   *
-   * @return {*}
-   */
-  async function getPaymentMethods() {
-    try {
-      const response = await axios.get("/user/payment-methods");
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  /**
    * Update a user's profile
    *
    * @param {string} name
@@ -491,9 +444,6 @@ export const useUserStore = defineStore("user", () => {
     update,
     confirmPassword,
     shouldConfirmPassword,
-    getPaymentIntent,
-    addPaymentMethod,
-    getPaymentMethods,
     isReady,
     getPersonalAccessTokens,
     createPersonalAccessToken,
