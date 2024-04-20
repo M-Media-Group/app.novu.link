@@ -6,6 +6,7 @@ import { StripeElement, StripeElements } from "vue-stripe-js";
 import { getCssVarForStripe } from "@/helpers/cssVariables";
 import { useI18n } from "vue-i18n";
 import BaseForm from "@/forms/BaseForm.vue";
+import { useTeamStore } from "@/stores/team";
 
 defineProps({
   showLabel: {
@@ -26,6 +27,7 @@ const paymentInfoComplete = ref(false);
 const baseFormRef = ref();
 
 const userStore = useUserStore();
+const teamStore = useTeamStore();
 
 const form = reactive({
   paymentMethod: "",
@@ -67,7 +69,7 @@ onMounted(() => {
 });
 
 const getClientSecret = async () => {
-  const response = await userStore.getPaymentIntent();
+  const response = await teamStore.getPaymentIntent();
   if (response) {
     clientSecret.value = response.client_secret;
   }
@@ -80,7 +82,7 @@ const addPaymentMethod = async () => {
 
   if (!clientSecret.value) {
     form.error = t(
-      "There was an error with the payment intent. Please try again"
+      "There was an error with the payment intent. Please try again."
     );
     form.processing = false;
     alert(form.error);
@@ -113,7 +115,7 @@ const addPaymentMethod = async () => {
           if (!userStore.isAuthenticated) {
             return;
           }
-          userStore
+          teamStore
             .addPaymentMethod(result.setupIntent.payment_method)
             .then((response) => {
               // If the response is false, pass to the next catch

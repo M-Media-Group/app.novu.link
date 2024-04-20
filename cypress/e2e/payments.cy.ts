@@ -32,7 +32,7 @@ describe("Payments", () => {
 
     cy.intercept(
       "POST", // Route all GET requests
-      "/user/payment-methods", // that have a URL that matches '/users/*'
+      "/api/v1/payment-methods", // that have a URL that matches '/users/*'
       { fixture: "paymentMethod" }
     ).as("paymentMethod");
     // Fill out the form

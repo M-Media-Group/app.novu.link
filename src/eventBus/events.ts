@@ -19,6 +19,11 @@ export enum eventTypes {
   added_payment_method = "added_payment_method",
   changed_locale = "changed_locale",
   changed_theme = "changed_theme",
+  changed_team = "changed_team",
+  confirmed_willingness_to_start_subscription = "confirmed_willingness_to_start_subscription",
+  started_subscription = "started_subscription",
+  created_redirect = "created_redirect",
+  created_endpoint = "created_endpoint",
 }
 
 type EventsObject = { [P in eventTypes]?: any };
