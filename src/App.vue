@@ -5,14 +5,18 @@ import { useUserStore } from "./stores/user";
 import { RouterView, useRouter } from "vue-router";
 import { ref } from "vue";
 import { navIsLoading } from "./router";
+import { useTeamStore } from "./stores/team";
 
 // Using the store, attempt to get the current user
 const user = useUserStore();
+const team = useTeamStore();
 
 const isReady = ref(false);
 
 if (!user.attemptedToFetchUser) {
   user.getUser();
+
+  team.getUserTeams();
 }
 
 const router = useRouter();
