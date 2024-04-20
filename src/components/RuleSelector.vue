@@ -13,6 +13,11 @@ const props = defineProps({
     type: Object as PropType<RuleModel>,
     required: true,
   },
+  /** The redirect ID */
+  redirectId: {
+    type: String,
+    required: false,
+  },
 });
 
 const emit = defineEmits<{
@@ -30,7 +35,10 @@ const {
   isValidValue,
   formattedAllowedValues,
   userWouldPass,
-} = useRules(toRef(() => props.modelValue));
+} = useRules(
+  toRef(() => props.modelValue),
+  toRef(() => props.redirectId)
+);
 
 const { t } = useI18n();
 

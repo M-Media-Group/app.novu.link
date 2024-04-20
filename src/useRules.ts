@@ -1,40 +1,25 @@
 import { type Ref, computed, ref, watchEffect } from "vue";
 import type { CommonRuleProperties, RuleModel, Rules } from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
+import axios from "axios";
 
 const rules = ref({} as Rules);
 
 const isLoading = ref(false);
 
-const baseUrl = import.meta.env.VITE_API_URL;
-
-const getAllRules = async () => {
+const getAllRules = async (redirectId?: string) => {
   isLoading.value = true;
-  // Set a header for Accept to application/json
-  const headers = new Headers();
-  headers.append("Accept", "application/json");
 
-  const response = await fetch(baseUrl + "api/v1/rules", {
-    headers,
-  })
-    .catch((error) => {
-      console.error("Error fetching rules", error);
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
+  const endpoint = redirectId
+    ? `api/v1/rules?redirectId=${redirectId}`
+    : "api/v1/rules";
 
-  if (!response) {
-    return;
-  }
+  const response = await axios.get(endpoint);
 
-  const data = await response.json();
-  rules.value = data as Rules;
   isLoading.value = false;
-};
 
-// Get all rules on load
-getAllRules();
+  rules.value = response.data as Rules;
+};
 
 /**
  * Call /rules/{name}/test to test a rule and get the users value
@@ -57,15 +42,12 @@ const testRule = async (
   const headers = new Headers();
   headers.append("Accept", "application/json");
 
-  const response = await fetch(
-    `http://localhost/api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`,
-    {
-      method: "POST",
-      headers,
-    }
+  const response = await axios.post(
+    `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`
   );
 
-  const data = await response.json();
+  const data = response.data as { passes: boolean };
+
   return data?.passes ?? false;
 };
 
@@ -99,7 +81,13 @@ const getAllowedOperatorForRule = (ruleName: keyof Rules) => {
   return rules.value[ruleName].allowedOperators;
 };
 
-export function useRules(modelData?: Ref<RuleModel>) {
+export function useRules(
+  modelData?: Ref<RuleModel>,
+  redirectId?: Ref<string | undefined>
+) {
+  // Get all rules on load
+  getAllRules(redirectId?.value);
+
   const selectedRule = computed(() => {
     if (!modelData?.value?.selectedRuleKey) {
       return null;
@@ -173,7 +161,6 @@ export function useRules(modelData?: Ref<RuleModel>) {
   });
 
   watchEffect(() => {
-    console.log("Selected rule changed", modelData);
     if (
       selectedRule.value &&
       modelData?.value?.selectedOperator &&
