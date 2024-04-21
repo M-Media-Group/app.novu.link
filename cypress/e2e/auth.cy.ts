@@ -411,7 +411,7 @@ describe("Register", () => {
 
     // Check that there is an input with the name of "name"
     cy.get("input[name=name]").should("exist");
-    cy.get("input[name=surname]").should("exist");
+    // cy.get("input[name=surname]").should("exist");
 
     // The password input should be focused
     cy.focused().should("have.attr", "name", "name");
@@ -422,7 +422,7 @@ describe("Register", () => {
     // Check that the name field is invalid
     cy.get("input[name=name]").invalidFor(["valueMissing"]);
 
-    cy.get("input[name=surname]").invalidFor(["valueMissing"]);
+    // cy.get("input[name=surname]").invalidFor(["valueMissing"]);
 
     // Check that the submit button is disabled
     cy.get("button[type=submit]").should("be.disabled");
@@ -437,21 +437,21 @@ describe("Register", () => {
 
     // Confirm that the name and surname inputs exist
     cy.get("input[name=name]").should("exist");
-    cy.get("input[name=surname]").should("exist");
+    // cy.get("input[name=surname]").should("exist");
 
     // Check that the accept TOC exists
     cy.get("input[type=checkbox]").should("exist");
 
     // Confirm that both require 2 characters or more
     cy.get("input[name=name]").type("a");
-    cy.get("input[name=surname]").type("a");
+    // cy.get("input[name=surname]").type("a");
 
     // Check that the name field is invalid
     // Cant use tooShort here - needed to trigger validity on non-dirty (script added) inputs, see https://stackoverflow.com/a/53261163/7410951
     cy.get("input[name=name]").invalidFor(["patternMismatch"]);
 
     // Check that the surname field is invalid
-    cy.get("input[name=surname]").invalidFor(["patternMismatch"]);
+    // cy.get("input[name=surname]").invalidFor(["patternMismatch"]);
 
     // Submit the form by pressing enter on the name field
     cy.get("input[name=name]").type("{enter}");
@@ -484,7 +484,7 @@ describe("Register", () => {
 
     // Input the name, surname, and password
     cy.get("input[name=name]").type("John");
-    cy.get("input[name=surname]").type("Doe");
+    // cy.get("input[name=surname]").type("Doe");
     cy.get("input[type=password]").type("password123");
     // Check the checkbox
     cy.get("input[type=checkbox]").check();
@@ -494,7 +494,7 @@ describe("Register", () => {
 
     cy.get("input[name=name]").invalidFor(["customError"]);
 
-    cy.get("input[name=surname]").invalidFor(["customError"]);
+    // cy.get("input[name=surname]").invalidFor(["customError"]);
 
     cy.get("input[type=password]").invalidFor(["customError"]);
   });
@@ -508,7 +508,7 @@ describe("Register", () => {
 
     // Confirm that both require 2 characters or more
     cy.get("input[name=name]").type("Alex");
-    cy.get("input[name=surname]").type("Dissen");
+    // cy.get("input[name=surname]").type("Dissen");
     cy.get("input[type=password]").type("mySecurePassword");
     // Check the checkbox
     cy.get("input[type=checkbox]").check();
@@ -544,7 +544,7 @@ describe("Register", () => {
 
     // Add a name, surname, and password, and check the checkbox
     cy.get("input[name=name]").type("John");
-    cy.get("input[name=surname]").type("Doe");
+    // cy.get("input[name=surname]").type("Doe");
     cy.get("input[type=password]").type("password123");
     cy.get("input[type=checkbox]").check();
 
@@ -581,7 +581,7 @@ describe("Register", () => {
 
     // Add a name, surname, and password, and check the checkbox
     cy.get("input[name=name]").type("John");
-    cy.get("input[name=surname]").type("Doe");
+    // cy.get("input[name=surname]").type("Doe");
     cy.get("input[type=password]").type("password123");
     cy.get("input[type=checkbox]").check();
 
@@ -954,7 +954,7 @@ describe("Edit user settings", () => {
   it("Shows settings page", () => {
     // There should be a name, surname and email input
     cy.get("input[name=name]").should("be.visible");
-    cy.get("input[name=surname]").should("be.visible");
+    // cy.get("input[name=surname]").should("be.visible");
     cy.get("input[type=email]").should("be.visible");
 
     // There should be a submit button
@@ -969,7 +969,7 @@ describe("Edit user settings", () => {
   });
   it("It cannot be submitted if the surname is empty", () => {
     // Clear the name input
-    cy.get("input[name=surname]").clear();
+    // cy.get("input[name=surname]").clear();
 
     // The submit button should be disabled
     cy.get("button[type=submit]").should("be.disabled");
@@ -990,7 +990,7 @@ describe("Edit user settings", () => {
     cy.get("input[name=name]")
       .first()
       .should("have.attr", "aria-invalid", "false");
-    cy.get("input[name=surname]").should("have.attr", "aria-invalid", "false");
+    // cy.get("input[name=surname]").should("have.attr", "aria-invalid", "false");
     cy.get("input[type=email]").should("have.attr", "aria-invalid", "false");
   });
 

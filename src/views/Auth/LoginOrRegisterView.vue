@@ -5,7 +5,9 @@ import router from "@/router";
 
 const redirect = () => {
   // Redirect to the home page
-  router.push((router.currentRoute.value.query.redirect as string) ?? "/");
+  router.push(
+    (router.currentRoute.value.query.redirect as string) ?? "/dashboard"
+  );
 };
 </script>
 

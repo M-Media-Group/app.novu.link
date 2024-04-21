@@ -15,7 +15,6 @@ const { t } = useI18n();
  */
 const authForm = reactive({
   name: "",
-  surname: "",
   password: "",
 });
 
@@ -82,8 +81,7 @@ const register = async () => {
   const response = await userStore.register(
     userStore.userEmail,
     authForm.password,
-    authForm.name,
-    authForm.surname
+    authForm.name
   );
 
   // const data = await response.json();
@@ -176,18 +174,7 @@ const goBack = async () => {
         autofocus
         required
       />
-      <label for="surname">{{ $t("Surname") }}</label>
-      <input
-        type="text"
-        id="surname"
-        name="surname"
-        :placeholder="$t('Surname')"
-        v-model="authForm.surname"
-        minlength="2"
-        pattern=".{2,}"
-        autocomplete="family-name"
-        required
-      />
+
       <label for="password">{{ $t("Password") }}</label>
       <input
         type="password"
@@ -203,7 +190,7 @@ const goBack = async () => {
 
       <!-- An accept TOC checkbox -->
       <label>
-        <input type="checkbox" id="acceptToc" name="acceptToc" required />
+        <input type="checkbox" id="terms" name="terms" required />
         {{ $t("I accept the") }}
         <a href="/terms-of-service" target="_blank">
           {{ $t("Terms of Service") }}
@@ -236,7 +223,12 @@ const goBack = async () => {
     </fieldset>
     <template v-if="checkedEmail">
       <!-- Show a back button -->
-      <base-button class="secondary" data-cy="back" @click="goBack()">
+      <base-button
+        class="secondary"
+        data-cy="back"
+        @click="goBack()"
+        type="button"
+      >
         {{ $t("Go back") }}
       </base-button>
     </template>

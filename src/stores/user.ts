@@ -120,15 +120,9 @@ export const useUserStore = defineStore("user", () => {
    * @param {string} email
    * @param {string} password
    * @param {string} name
-   * @param {string} surname
    * @return {*}
    */
-  async function register(
-    email: string,
-    password: string,
-    name: string,
-    surname: string
-  ) {
+  async function register(email: string, password: string, name: string) {
     // Check if the email is valid
     if (!email) {
       return;
@@ -144,11 +138,6 @@ export const useUserStore = defineStore("user", () => {
       return;
     }
 
-    // Check if the surname is valid
-    if (!surname) {
-      return;
-    }
-
     isLoading.value = true;
 
     try {
@@ -158,7 +147,6 @@ export const useUserStore = defineStore("user", () => {
         password: password,
         password_confirmation: password,
         name: name,
-        surname: surname,
         terms: true,
       });
       await getUser();
@@ -333,16 +321,14 @@ export const useUserStore = defineStore("user", () => {
    * Update a user's profile
    *
    * @param {string} name
-   * @param {string} surname
    * @param {string} email
    * @return {*}
    */
-  async function update(name: string, surname: string, email: string) {
+  async function update(name: string, email: string) {
     isLoading.value = true;
     try {
       await axios.put("user/profile-information", {
         name: name ?? user.value?.name,
-        surname: surname ?? user.value?.surname,
         email: email ?? user.value?.email,
       });
       await getUser();
