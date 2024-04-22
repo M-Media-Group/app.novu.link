@@ -264,5 +264,8 @@ defineExpose({
         {{ $t(submitText) }}
       </base-button>
     </slot>
+
+    <!-- @slot This is the slot for after the submit. This is useful for back buttons or other actions. -->
+    <slot name="after-submit"></slot>
   </form>
 </template>
