@@ -100,3 +100,28 @@ export interface RuleModel {
   selectedOperator: string | null;
   selectedValue: string | null;
 }
+
+export interface RuleGroups {
+  rule_groups: RuleGroup[];
+}
+
+export interface RuleGroup {
+  id: number;
+  name: null;
+  match_all: number;
+  endpoint_id: number;
+  created_at: Date;
+  updated_at: Date;
+  rules: Rule[];
+}
+
+export interface Rule {
+  id: number;
+  rule_group_id: number;
+  // The rule can be any of the keys in the Rules interface
+  rule: keyof Rules;
+  operator: string;
+  value: string;
+  created_at: Date;
+  updated_at: Date;
+}

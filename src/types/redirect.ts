@@ -20,4 +20,29 @@ export interface Endpoint {
   created_at: Date;
   updated_at: Date;
   rule_groups: any[];
+  clicks?: Click[];
+}
+
+export interface Click {
+  id: number;
+  redirect_uuid: string;
+  matched_endpoint_id: number;
+  referer: null;
+  ip: string;
+  user_agent: string;
+  language: string;
+  final_url: string;
+  data: Data;
+  is_bot: number;
+  created_at: Date;
+}
+
+export interface Data {
+  ruleData: RuleData;
+}
+
+export interface RuleData {
+  country: null;
+  scanned_qr_code: boolean;
+  source_query_string: string;
 }
