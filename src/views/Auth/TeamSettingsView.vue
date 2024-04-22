@@ -22,7 +22,7 @@ userStore
 </script>
 <template>
   <h1>{{ $t("My Team") }}</h1>
-  <card-element :titleHeadingLevel="2" title="Team settings">
+  <card-element :titleHeadingLevel="2" :title="$t('Settings')">
     <team-settings></team-settings>
   </card-element>
   <card-element :titleHeadingLevel="2" :title="$t('Payment methods')">
