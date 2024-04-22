@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 
 defineProps({
   /**
    * Where to navigate to. If not set, this component will render a link with the role button. The slot content will be responsible for the actual linking.
    */
   to: {
-    type: String,
+    type: [String, Object] as PropType<RouteLocationRaw>,
     required: false,
   },
   /**
@@ -49,7 +50,12 @@ defineProps({
     </button>
   </router-link>
 
-  <button v-else :disabled="disabled ? disabled : undefined" :type="type">
+  <button
+    v-else
+    :disabled="disabled ? disabled : undefined"
+    :type="type"
+    tabindex="0"
+  >
     <slot />
   </button>
 </template>
