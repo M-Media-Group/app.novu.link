@@ -3,7 +3,9 @@ export interface User {
   username: string;
   name: string | null;
   email: string;
+  phone_number: string | null;
   email_verified_at: string | null;
+  phone_number_verified_at: string | null;
   avatar: string | null;
   seen_at: Date;
   created_at: Date;

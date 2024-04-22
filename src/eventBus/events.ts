@@ -24,6 +24,10 @@ export enum eventTypes {
   started_subscription = "started_subscription",
   created_redirect = "created_redirect",
   created_endpoint = "created_endpoint",
+  copied_redirect = "copied_redirect",
+  downloaded_redirect_qr_code = "downloaded_redirect_qr_code",
+  sent_otp = "sent_otp",
+  confirmed_otp = "confirmed_otp",
 }
 
 type EventsObject = { [P in eventTypes]?: any };

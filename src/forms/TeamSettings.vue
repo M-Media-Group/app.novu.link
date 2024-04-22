@@ -59,7 +59,7 @@ const submitForm = async () => {
       type="text"
       id="name"
       name="name"
-      :placeholder="$t('Name')"
+      :placeholder="$t('Team Name')"
       v-model="name"
       minlength="2"
       pattern=".{2,}"

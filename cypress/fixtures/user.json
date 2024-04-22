@@ -5,6 +5,8 @@
     "surname": "Doe",
     "email": "hello@test.com",
     "email_verified_at": "2020-04-27 20:23:57",
+    "phone_number": "+98123456789",
+    "phone_number_verified_at": "2020-04-27 20:23:57",
     "avatar": null,
     "seen_at": "2022-10-27 20:10:14",
     "created_at": "2019-05-18T12:52:32.000000Z",

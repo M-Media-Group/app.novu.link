@@ -27,6 +27,8 @@ export const useUserStore = defineStore("user", () => {
   // The userEmail is meant for keeping email state across auth pages, for example when going from login to forgot-password page
   const userEmail = ref(null) as Ref<string | null>;
 
+  const userPhone = ref(null) as Ref<string | null>;
+
   /**
    * Get the user
    *
@@ -151,6 +153,64 @@ export const useUserStore = defineStore("user", () => {
       });
       await getUser();
       $bus.$emit(eventTypes.registered);
+      return true;
+    } catch (error: any) {
+      return error.response;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /**
+   * Request an OTP to be sent to the provided email
+   *
+   * @param {string} notifiable
+   * @return {*}
+   */
+  async function requestOtp(
+    notifiable: string,
+    method = "email" as "email" | "phone_number"
+  ) {
+    if (!notifiable) {
+      return false;
+    }
+
+    isLoading.value = true;
+
+    // Submit a reset password
+    try {
+      await axios.post("user/otp", {
+        [method]: notifiable,
+      });
+      $bus.$emit(eventTypes.sent_otp);
+      return true;
+    } catch (error: any) {
+      return error.response;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /**
+   * Confirm the OTP
+   *
+   * @param {string} otp
+   */
+  async function confirmOtp(otp: string) {
+    if (!otp) {
+      return false;
+    }
+
+    isLoading.value = true;
+
+    // Submit a reset password
+    try {
+      await axios.post("user/otp/confirm", {
+        otp: otp,
+      });
+      $bus.$emit(eventTypes.confirmed_otp);
+      // Fetch the user
+      await getUser();
       return true;
     } catch (error: any) {
       return error.response;
@@ -419,6 +479,7 @@ export const useUserStore = defineStore("user", () => {
     getUser,
     user,
     userEmail,
+    userPhone,
     attemptedToFetchUser,
     isLoading,
     login,
@@ -434,5 +495,7 @@ export const useUserStore = defineStore("user", () => {
     getPersonalAccessTokens,
     createPersonalAccessToken,
     deletePersonalAccessToken,
+    requestOtp,
+    confirmOtp,
   };
 });

@@ -96,7 +96,7 @@ const addPaymentMethod = async () => {
       payment_method: {
         card: cardElement,
         billing_details: {
-          name: userStore.user?.name + " " + userStore.user?.surname,
+          name: userStore.user?.name,
           email: userStore.user?.email,
         },
       },
