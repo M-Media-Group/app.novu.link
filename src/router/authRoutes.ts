@@ -3,6 +3,14 @@ import type { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 
 export default [
   {
+    path: "/login/otp",
+    name: "login-otp",
+    component: () => import("../views/Auth/OtpLoginOrRegisterView.vue"),
+    meta: {
+      gates: ["guest"],
+    },
+  },
+  {
     path: "/login",
     name: "login",
     component: () => import("../views/Auth/LoginOrRegisterView.vue"),
@@ -10,6 +18,7 @@ export default [
       gates: ["guest"],
     },
   },
+
   // A logout route that just calls the logout on userStore, then redirects to login
   {
     path: "/logout",
