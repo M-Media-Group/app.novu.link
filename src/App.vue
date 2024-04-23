@@ -2,8 +2,7 @@
 import PageFooter from "./components/PageFooter.vue";
 import NavBar from "./components/NavBar.vue";
 import { useUserStore } from "./stores/user";
-import { RouterView, useRouter } from "vue-router";
-import { ref } from "vue";
+import { RouterView } from "vue-router";
 import { navIsLoading } from "./router";
 import { useTeamStore } from "./stores/team";
 
@@ -11,33 +10,20 @@ import { useTeamStore } from "./stores/team";
 const user = useUserStore();
 const team = useTeamStore();
 
-const isReady = ref(false);
-
 if (!user.attemptedToFetchUser) {
   user.getUser();
 
   team.getUserTeams();
 }
-
-const router = useRouter();
-
-router.isReady().then(() => {
-  isReady.value = true;
-});
 </script>
 
 <template>
   <Transition>
-    <progress
-      v-if="!isReady || navIsLoading"
-      class="page-progress"
-      :indeterminate="true"
-    />
+    <progress v-if="navIsLoading" class="page-progress" :indeterminate="true" />
   </Transition>
   <NavBar />
   <main>
-    <RouterView v-if="isReady" />
-    <article v-else :aria-busy="true"></article>
+    <RouterView />
   </main>
   <PageFooter />
 </template>
