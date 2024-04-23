@@ -8,17 +8,18 @@ export interface Redirect {
   deleted_at: null;
   todays_clicks_count: number;
   endpoints: Endpoint[];
+  subscribed_at: Date | null;
 }
 
 export interface Endpoint {
-  id: number;
+  id?: number;
   endpoint: string;
-  is_default: boolean;
-  preserve_query_parameters: boolean;
-  redirect_uuid: string;
-  order: number;
-  created_at: Date;
-  updated_at: Date;
+  is_default?: boolean;
+  preserve_query_parameters?: boolean;
+  redirect_uuid?: string;
+  order?: number;
+  created_at?: Date;
+  updated_at?: Date;
   rule_groups: any[];
   clicks?: Click[];
 }

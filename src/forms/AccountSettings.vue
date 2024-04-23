@@ -80,7 +80,7 @@ const submitForm = async () => {
       required
     />
 
-    <label for="phone_number">{{ $t("Phone number") }}</label>
+    <label for="phone_number">{{ $t("Phone number (starting with +)") }}</label>
     <input
       type="tel"
       id="phone_number"
@@ -90,6 +90,7 @@ const submitForm = async () => {
       pattern="^\+[0-9]{1,15}$"
       minlength="7"
       maxlength="16"
+      :placeholder="$t('+339123456789')"
     />
 
     <label for="email">{{ $t("Email") }}</label>

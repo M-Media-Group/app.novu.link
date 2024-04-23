@@ -9,7 +9,7 @@ import {
   filterOptions,
   orderOptionsBySelectedFirst,
 } from "@/helpers/normaliseOptions";
-import { useMultiselect } from "@/stories/Composables/useMultiselect";
+import { useMultiselect } from "@/composables/useMultiselect";
 import type { selectOption } from "@/types/listItem";
 import { type PropType, computed, nextTick, onMounted, ref, watch } from "vue";
 
@@ -171,11 +171,14 @@ const {
   updateModelValue,
 } = useMultiselect(props, emit);
 
-const setModelValue = (event: Event) => {
+const setModelValue = (
+  event: Event,
+  existingValue = false as number | false
+) => {
   const target = event.target as HTMLInputElement;
   const value = target.value;
 
-  updateModelValue(value, target.checked);
+  updateModelValue(value, target.checked, existingValue);
 };
 
 const filteredOptions = computed(() => {
@@ -287,8 +290,8 @@ const canBeFocusedOn = computed(
 watch(
   () => props.isOpen,
   async () => {
-    if (!canBeFocusedOn.value) return;
     await nextTick();
+    if (!canBeFocusedOn.value) return;
     searchInput.value?.focus();
     // Scroll the dropdown to the top - this is needed because the CSS height animation seems to leave us a little bit scrolled down
     if (dropdownList.value) {
@@ -339,7 +342,7 @@ defineExpose({ focus });
           :aria-busy="props.ariaBusy"
           :placeholder="props.searchPlaceholder"
           :aria-label="props.searchPlaceholder"
-          :autofocus="canBeFocusedOn"
+          :autofocus="props.autofocus"
           ref="searchInput"
         />
       </li>
@@ -358,7 +361,7 @@ defineExpose({ focus });
       </li>
 
       <li
-        v-for="option in orderedOptions?.slice(0, props.visibleLimit)"
+        v-for="(option, index) in orderedOptions?.slice(0, props.visibleLimit)"
         :key="option[modelKey]"
       >
         <slot
@@ -367,6 +370,8 @@ defineExpose({ focus });
           :checked="isOptionSelected(option)"
           :updateModelValue="setModelValue"
           :modelValue="props.modelValue"
+          :index="index"
+          :value="option[modelKey]"
         >
           <label>
             <input

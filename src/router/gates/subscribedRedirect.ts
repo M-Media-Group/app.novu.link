@@ -1,5 +1,5 @@
+import { getRedirect } from "@/useRedirects";
 import { baseGate } from "@m-media/vue3-gate-keeper";
-import axios from "axios";
 
 export default class extends baseGate {
   async handle() {
@@ -10,9 +10,9 @@ export default class extends baseGate {
     }
 
     // Get the redirect to determine if we need to redirect
-    const redirect = await axios.get(`/api/v1/redirects/${redirectId}`);
+    const redirect = await getRedirect(redirectId);
 
-    if (redirect.data?.endpoints?.length > 1) {
+    if (redirect.data?.subscribed_at !== null) {
       return;
     }
     return this.fail();
