@@ -384,12 +384,13 @@ export const useUserStore = defineStore("user", () => {
    * @param {string} email
    * @return {*}
    */
-  async function update(name: string, email: string) {
+  async function update(name: string, email: string, phone?: string | null) {
     isLoading.value = true;
     try {
       await axios.put("user/profile-information", {
         name: name ?? user.value?.name,
         email: email ?? user.value?.email,
+        phone_number: phone ?? user.value?.phone_number,
       });
       await getUser();
       $bus.$emit(eventTypes.updated_user);

@@ -7,6 +7,7 @@ const userStore = useUserStore();
 
 // Email, password, and remember me
 const email = ref(userStore.user?.email);
+const phone = ref(userStore.user?.phone_number);
 
 // Name, Surname
 const name = ref(userStore.user?.name);
@@ -29,6 +30,9 @@ const submitForm = async () => {
   if (userStore.user?.email !== email.value) {
     changedValues.email = email.value;
   }
+  if (phone.value && userStore.user?.phone_number !== phone.value) {
+    changedValues.phone = phone.value;
+  }
 
   // If there are no changed values, return
   if (Object.keys(changedValues).length === 0) {
@@ -36,7 +40,7 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await userStore.update(name.value, email.value);
+  const response = await userStore.update(name.value, email.value, phone.value);
 
   if (response === true) {
     // Emit the updated event with the changed fields
@@ -74,6 +78,18 @@ const submitForm = async () => {
       pattern=".{2,}"
       autofocus
       required
+    />
+
+    <label for="phone_number">{{ $t("Phone number") }}</label>
+    <input
+      type="tel"
+      id="phone_number"
+      inputmode="tel"
+      v-model="phone"
+      autocomplete="tel"
+      pattern="^\+[0-9]{1,15}$"
+      minlength="7"
+      maxlength="16"
     />
 
     <label for="email">{{ $t("Email") }}</label>
