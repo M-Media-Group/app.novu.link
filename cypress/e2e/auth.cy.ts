@@ -1011,3 +1011,32 @@ describe("Edit user settings", () => {
     cy.url().should("include", "/confirm-email");
   });
 });
+
+describe("Login via OTP", () => {
+  beforeEach(() => {
+    cy.handleCsrf();
+    cy.handleUnauthenticatedUser();
+
+    cy.intercept(
+      {
+        method: "POST",
+        pathname: "user/otp",
+      },
+      {
+        statusCode: 200,
+      }
+    ).as("otp");
+
+    cy.intercept(
+      {
+        method: "POST",
+        pathname: "user/otp/confirm",
+      },
+      {
+        statusCode: 200,
+      }
+    ).as("otpConfirm");
+
+    cy.visit("/login/otp");
+  });
+});
