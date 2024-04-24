@@ -318,11 +318,36 @@ const focus = () => {
   }
 };
 
+const dropdown = ref<HTMLDetailsElement | null>(null);
+
+const setCustomValidity = (message: string) => {
+  const element = dropdown.value;
+  if (!element) return;
+  let errorElement = element.nextElementSibling as HTMLElement;
+  if (!errorElement || !errorElement.classList.contains("error")) {
+    errorElement = document.createElement("small");
+    element.after(errorElement);
+  }
+  errorElement.innerText = message;
+  errorElement.classList.add("error");
+  element.insertAdjacentElement("afterend", errorElement);
+};
+
+const setAttribute = (attribute: string, value: string) => {
+  if (!dropdown.value) return;
+  dropdown.value.querySelector("summary")?.setAttribute(attribute, value);
+};
+
 // Expose the focus function to the parent component
-defineExpose({ focus });
+defineExpose({ focus, setCustomValidity, setAttribute });
 </script>
 <template>
-  <details class="dropdown" :open="props.isOpen" @toggle="openResults">
+  <details
+    class="dropdown"
+    :open="props.isOpen"
+    @toggle="openResults"
+    ref="dropdown"
+  >
     <summary
       :role="props.role"
       :aria-invalid="props.ariaInvalid"
