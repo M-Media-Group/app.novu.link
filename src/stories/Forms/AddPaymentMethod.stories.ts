@@ -16,6 +16,12 @@ const meta: Meta<typeof AddPaymentMethod> = {
     imageSnapshot: {
       failureThreshold: 0.05, // 5 percent is high but this test is flakey because it doesnt wait for the stripe iframe to fully load
     },
+    // Disable aria-hidden-focus for this story - the error comes from deep within the Stripe element, not much we can do about it
+    a11y: {
+      config: {
+        rules: [{ id: "aria-hidden-focus", enabled: false }],
+      },
+    },
   },
 };
 
