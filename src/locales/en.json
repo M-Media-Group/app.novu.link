@@ -256,5 +256,10 @@
     "Destinations": "Destinations",
     "Add your email address": "Add your email address",
     "Please wait x seconds before trying again.": "Please wait {0} seconds before trying again.",
-    "Please enter a valid value": "Please enter a valid value"
+    "Please enter a valid value": "Please enter a valid value",
+    "Magic link copied to clipboard.": "Magic link copied to clipboard.",
+    "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now.": "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now.",
+    "Enter the code you received.": "Enter the code you received.",
+    "Check your email inbox or spam.": "Check your email inbox or spam.",
+    "Check your phone.": "Check your phone."
 }

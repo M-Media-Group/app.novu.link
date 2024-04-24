@@ -49,8 +49,11 @@ const convertSecondsToMinutes = (seconds: number) => {
     <progress :value="timer" :max="timerLength" />
 
     <p>
-      To change where your magic link goes to, add more endpoints, and customise
-      the design, confirm your email now.
+      {{
+        $t(
+          "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now."
+        )
+      }}
     </p>
     <card-element :titleHeadingLevel="2">
       <otp-login-or-register @success="redirect" />

@@ -256,5 +256,10 @@
     "Destinations": "Destinations",
     "Add your email address": "Ajoutez votre adresse e-mail",
     "Please wait x seconds before trying again.": "Veuillez patienter {0} secondes avant de réessayer.",
-    "Please enter a valid value": "Veuillez entrer une valeur valide"
+    "Please enter a valid value": "Veuillez entrer une valeur valide",
+    "Magic link copied to clipboard.": "Lien magique copié dans le presse-papiers.",
+    "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now.": "Pour changer la destination de votre lien magique, ajouter plus de points de terminaison et personnaliser le design, confirmez votre contact maintenant.",
+    "Enter the code you received.": "Entrez le code que vous avez reçu.",
+    "Check your email inbox or spam.": "Vérifiez votre boîte de réception ou votre spam.",
+    "Check your phone.": "Vérifiez votre téléphone."
 }

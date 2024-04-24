@@ -79,7 +79,12 @@ const validateOtp = async () => {
     :isLoading="isLoading"
     :disabled="isLoading"
     ><p>
-      Enter the code you got in your inbox. Check spam if you don’t see it.
+      {{ $t("Enter the code you received.") }}
+      {{
+        !usePhone
+          ? $t("Check your email inbox or spam.")
+          : $t("Check your phone.")
+      }}
     </p>
     <label for="otp">OTP</label>
     <input
