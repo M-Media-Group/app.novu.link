@@ -1,11 +1,19 @@
 import { type Ref, computed, ref, watchEffect } from "vue";
-import type { CommonRuleProperties, RuleModel, Rules } from "@/types/rule";
+import type {
+  CommonRuleProperties,
+  RuleGroup,
+  RuleModel,
+  Rules,
+} from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
 import axios from "axios";
+import i18n from "@/locales/i18n";
 
 const rules = ref({} as Rules);
 
 const isLoading = ref(false);
+
+const t = i18n.global.t;
 
 const getAllRules = async (redirectId?: string) => {
   isLoading.value = true;
@@ -14,7 +22,15 @@ const getAllRules = async (redirectId?: string) => {
     ? `api/v1/rules?redirectId=${redirectId}`
     : "api/v1/rules";
 
-  const response = await axios.get(endpoint);
+  // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly
+  const response = await axios.get(endpoint, {
+    transformRequest: [
+      (data, headers) => {
+        delete headers["Accept-Language"];
+        return data;
+      },
+    ],
+  });
 
   isLoading.value = false;
 
@@ -38,13 +54,28 @@ const testRule = async (
     throw new Error("Missing data to test rule");
   }
 
-  // Set a header for Accept to application/json
-  const headers = new Headers();
-  headers.append("Accept", "application/json");
+  // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly. Because its a post request to `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`, we need to set the headers in the data object
+  const response = await axios
+    .post(
+      `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`,
+      {},
+      {
+        transformRequest: [
+          (data, headers) => {
+            delete headers["Accept-Language"];
+            return data;
+          },
+        ],
+      }
+    )
+    // Catch and pass 422 errors
+    .catch((error) => {
+      if (error.response.status === 422) {
+        throw error.response.data;
+      }
 
-  const response = await axios.post(
-    `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`
-  );
+      throw error;
+    });
 
   const data = response.data as { passes: boolean };
 
@@ -81,6 +112,41 @@ const getAllowedOperatorForRule = (ruleName: keyof Rules) => {
   return rules.value[ruleName].allowedOperators;
 };
 
+/**
+ * Takes a JSON data rule and parses it into something human readable.
+ *
+ * Here is an example input:
+ * "rule_groups": [
+                {
+                    "id": 120,
+                    "name": null,
+                    "match_all": 0,
+                    "endpoint_id": 319,
+                    "created_at": "2024-04-21T10:40:12.000000Z",
+                    "updated_at": "2024-04-21T10:40:12.000000Z",
+                    "rules": [
+                        {
+                            "id": 120,
+                            "rule_group_id": 120,
+                            "rule": "browser_language",
+                            "operator": "contains",
+                            "value": "af",
+                            "created_at": "2024-04-21T10:40:12.000000Z",
+                            "updated_at": "2024-04-21T10:40:12.000000Z"
+                        }
+                    ]
+                }
+            ],
+ *
+ */
+export function parseRuleGroup(ruleGroup: RuleGroup) {
+  return ruleGroup.rules.map((rule) => {
+    const ruleName = t("Rules." + rule.rule + ".Name", rule.rule);
+    const operatorName = t(rule.operator).toLocaleLowerCase();
+    return `${ruleName} ${operatorName} ${rule.value}`;
+  });
+}
+
 export function useRules(
   modelData?: Ref<RuleModel>,
   redirectId?: Ref<string | undefined>
@@ -112,13 +178,19 @@ export function useRules(
     ) {
       return;
     }
+
     testRule(
       modelData?.value?.selectedRuleKey as keyof Rules,
       modelData?.value?.selectedOperator,
       modelData?.value?.selectedValue
-    ).then((passes) => {
-      userWouldPass.value = passes;
-    });
+    )
+      .then((passes) => {
+        userWouldPass.value = passes;
+      })
+      // Catch any errors and set the error message
+      .catch((error) => {
+        console.log(error);
+      });
   }, 500);
 
   // Compute the allowed keyboard input pattern. If the rule is a number, only allow numbers
@@ -164,8 +236,7 @@ export function useRules(
     if (
       selectedRule.value &&
       modelData?.value?.selectedOperator &&
-      modelData?.value?.selectedValue &&
-      isValidValue.value
+      modelData?.value?.selectedValue
     ) {
       debounceTestRule();
     } else {
@@ -182,5 +253,6 @@ export function useRules(
     allowedInputPattern,
     isValidValue,
     formattedAllowedValues,
+    parseRuleGroup,
   };
 }
