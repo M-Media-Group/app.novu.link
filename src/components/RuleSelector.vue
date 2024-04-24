@@ -136,6 +136,13 @@ watch(isValidValue, () => {
     valueInput.value?.setCustomValidity(t("Please enter a valid value"));
   }
 });
+
+const handleSelect = async (event: string[]) => {
+  handleValueChange(event[0] as RuleModel["selectedValue"]);
+  isOpenValueSelector.value = false;
+  valueSelectorSearchTerm.value = "";
+  emit("valueSelected", event[0] as string);
+};
 </script>
 <template>
   <dropdown-select
@@ -208,12 +215,7 @@ watch(isValidValue, () => {
       :modelValue="
         modelValue.selectedValue ? [modelValue.selectedValue] : undefined
       "
-      @update:modelValue="
-        handleValueChange($event[0] as RuleModel['selectedValue']);
-        isOpenValueSelector = false;
-        valueSelectorSearchTerm = '';
-        $emit('valueSelected', $event[0] as string);
-      "
+      @update:modelValue="handleSelect"
       :placeholder="$t('Value')"
       :aria-busy="isLoading"
       v-model:is-open="isOpenValueSelector"
