@@ -255,5 +255,6 @@
     "Remove advanced analytics, multiple destinations, and custom designs": "Supprimer les analyses avancées, les destinations multiples et les designs personnalisés",
     "Destinations": "Destinations",
     "Add your email address": "Ajoutez votre adresse e-mail",
-    "Please wait x seconds before trying again.": "Veuillez patienter {0} secondes avant de réessayer."
+    "Please wait x seconds before trying again.": "Veuillez patienter {0} secondes avant de réessayer.",
+    "Please enter a valid value": "Veuillez entrer une valeur valide"
 }

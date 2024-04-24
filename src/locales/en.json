@@ -254,5 +254,6 @@
     "Remove advanced analytics, multiple destinations, and custom designs": "Remove advanced analytics, multiple destinations, and custom designs",
     "Destinations": "Destinations",
     "Add your email address": "Add your email address",
-    "Please wait x seconds before trying again.": "Please wait {0} seconds before trying again."
+    "Please wait x seconds before trying again.": "Please wait {0} seconds before trying again.",
+    "Please enter a valid value": "Please enter a valid value"
 }
