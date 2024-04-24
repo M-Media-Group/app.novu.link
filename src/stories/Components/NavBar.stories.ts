@@ -48,7 +48,7 @@ export const DropdownOpen: Story = {
     expect(canvas.queryByText("Logout")).not.toBeVisible();
 
     // First we click on the text "my account"
-    const myAccount = canvas.getByText("My Account");
+    const myAccount = canvas.getByText("☰");
     // Click on the "My Account" text
     await userEvent.click(myAccount);
     // There should be a visible "Logout"
