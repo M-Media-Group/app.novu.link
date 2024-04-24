@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
 import BaseModal from "@/components/modals/BaseModal.vue";
-import { expect, within } from "@storybook/test";
+import { expect, waitFor, within } from "@storybook/test";
 
 import overflowFixture from "../../../cypress/fixtures/overflowingData.json";
 import { expectElementToBeCentered } from "../utils";
@@ -31,12 +31,17 @@ export const Default: Story = {};
 export const DefaultOpened: Story = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    expect(canvas.queryByText("Cancel")).not.toBeVisible();
+    await waitFor(
+      () => expect(canvas.queryByText("Cancel")).not.toBeVisible(),
+      { timeout: 500 }
+    );
 
     // Click the button
     const button = canvas.getByText("Hello World", { selector: "button" });
     await button.click();
-    expect(canvas.queryByText("Cancel")).toBeVisible();
+    await waitFor(() => expect(canvas.queryByText("Cancel")).toBeVisible(), {
+      timeout: 500,
+    });
 
     // The modal, which is in `article` tag, should be in the middle of the screen
     const modal = canvas.getByRole("article");

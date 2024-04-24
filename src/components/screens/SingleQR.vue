@@ -54,7 +54,7 @@ const props = defineProps({
 
   title: {
     type: String,
-    default: t("Ready to go"),
+    default: t("Magic link"),
   },
 
   description: {
@@ -475,6 +475,7 @@ const handleLogoUpload = async (event: Event) => {
             <div>
               <label for="darkColor">{{ $t("Color") }}</label>
               <input
+                id="darkColor"
                 type="color"
                 v-model="darkColor"
                 name="darkColor"
@@ -484,6 +485,7 @@ const handleLogoUpload = async (event: Event) => {
             <div>
               <label for="lightColor">{{ $t("Background color") }}</label>
               <input
+                id="lightColor"
                 type="color"
                 v-model="lightColor"
                 name="lightColor"

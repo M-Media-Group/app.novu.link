@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 import BaseButton from "@/components/BaseButton.vue";
 
 import overflowFixture from "../../../cypress/fixtures/overflowingData.json";
-import { expect, within } from "@storybook/test";
+import { expect, waitFor, within } from "@storybook/test";
 import {
   expectChildrenNotOverflowing,
   expectElementToBeCentered,
@@ -65,7 +65,10 @@ const meta: Meta<typeof BaseButton> = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
     const button = canvas.getAllByRole("button")[0];
-    expect(button).toBeVisible();
+
+    // Await for the button to be visible - we use await to wait for CSS animations
+    // The animations are 0.3s long so we wait for 0.5s to be sure
+    await waitFor(() => expect(button).toBeVisible(), { timeout: 500 });
   },
 };
 
@@ -244,7 +247,10 @@ export const InputAndButton: Story = {
     const button = canvas.getByRole("button");
     const inputRect = input.getBoundingClientRect();
     const buttonRect = button.getBoundingClientRect();
-    expect(inputRect.height).toBeCloseTo(buttonRect.height, 0);
+
+    await waitFor(() =>
+      expect(inputRect.height).toBeCloseTo(buttonRect.height, 0)
+    );
   },
 };
 
@@ -275,7 +281,7 @@ export const ButtonWithSVG: Story = {
 
     // Get the SVG in the button
     const svg = button.querySelector("svg");
-    expect(svg).toBeVisible();
+    await waitFor(() => expect(svg).toBeVisible(), { timeout: 500 });
 
     if (!svg) {
       return;

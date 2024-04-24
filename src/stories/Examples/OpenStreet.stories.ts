@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 
 import OpenStreetDropdown from "@/components/examples/OpenStreetDropdown.vue";
 
-import { expect, within } from "@storybook/test";
+import { expect, waitFor, within } from "@storybook/test";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof OpenStreetDropdown> = {
@@ -15,7 +15,7 @@ const meta: Meta<typeof OpenStreetDropdown> = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
     const button = canvas.getAllByRole("button")[0];
-    expect(button).toBeVisible();
+    await waitFor(() => expect(button).toBeVisible(), { timeout: 500 });
   },
 };
 

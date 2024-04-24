@@ -45,6 +45,16 @@ function getSquareColor(x: number, y: number) {
   const green = Math.round(255 * (percentage / 100));
   return `rgb(${red}, ${green}, 0)`;
 }
+
+/** This function chooses pure black or white based on an incoming RGB value and the minimum contrast ratio of 4.5 */
+function getContrastColor(rgb: string) {
+  const [r, g, b] = rgb
+    .slice(4, -1)
+    .split(", ")
+    .map((num) => parseInt(num));
+  const luminance = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+  return luminance > 0.5 ? "black" : "white";
+}
 </script>
 
 <template>
@@ -55,7 +65,10 @@ function getSquareColor(x: number, y: number) {
         v-for="(number, j) in row"
         :key="j"
         class="square"
-        :style="{ backgroundColor: getSquareColor(i, j) }"
+        :style="{
+          backgroundColor: getSquareColor(i, j),
+          color: getContrastColor(getSquareColor(i, j)),
+        }"
       >
         {{ getPercentage(number).toFixed(0) }}%
       </div>

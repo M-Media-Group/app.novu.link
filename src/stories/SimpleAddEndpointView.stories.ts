@@ -3,13 +3,18 @@ import SimpleAddEndpointView from "@/views/SimpleAddEndpointView.vue";
 import { useUserStore } from "@/stores/user";
 // Import the user fixture json data
 import userFixture from "../../cypress/fixtures/user.json";
+import axios from "axios";
 
 const meta: Meta<typeof SimpleAddEndpointView> = {
   title: "Page/SimpleAddEndpointView",
   component: SimpleAddEndpointView,
-  render: () => ({
+  render: (args) => ({
     components: { SimpleAddEndpointView },
     template: "<SimpleAddEndpointView />",
+    setup() {
+      axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+      return { args };
+    },
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
@@ -41,6 +46,7 @@ export const WithUserData: Story = {
         created_at: new Date(),
         updated_at: new Date(),
       };
+      axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
       return { args };
     },

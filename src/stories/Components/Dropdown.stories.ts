@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import overflowFixture from "../../../cypress/fixtures/overflowingData.json";
-import { expect, userEvent, within } from "@storybook/test";
+import { expect, userEvent, waitFor, within } from "@storybook/test";
 import { expectTextNotOverflowing } from "../utils";
 import type { HTMLDetailsElementCustom } from "./Accordion.stories";
 
@@ -86,7 +86,7 @@ export const OpenWithOverflow: Story = {
     const canvas = within(canvasElement);
     const summary = canvas.getByText(overflowFixture.text_without_spaces);
 
-    expect(summary).toBeVisible();
+    await waitFor(() => expect(summary).toBeVisible(), { timeout: 500 });
 
     expectTextNotOverflowing(summary);
   },
@@ -173,11 +173,14 @@ export const WithCheckboxes: Story = {
     // Clicking the first checkbox should check it and not hide the dropdown
     await userEvent.click(checkboxes[0]);
     expect(checkboxes[0]).toBeChecked();
-    expect(checkboxes[0]).toBeVisible();
+
+    await waitFor(() => expect(checkboxes[0]).toBeVisible(), { timeout: 500 });
 
     // Clickling on the summary should hide the dropdown
     const summary = canvas.getByText(args.title);
     await userEvent.click(summary);
-    expect(checkboxes[0]).not.toBeVisible();
+    await waitFor(() => expect(checkboxes[0]).not.toBeVisible(), {
+      timeout: 500,
+    });
   },
 };

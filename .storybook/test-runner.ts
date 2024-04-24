@@ -20,6 +20,9 @@ const config: TestRunnerConfig = {
     await page.waitForLoadState('domcontentloaded'); // Wait for the 'DOMContentLoaded' event.
     await page.waitForLoadState('networkidle'); // Wait for the idle network
 
+    // Wait 0.3s for the animations to finish
+    await page.waitForTimeout(300);
+
     const storyContext = await getStoryContext(page, context);
 
     await configureAxe(page, {
