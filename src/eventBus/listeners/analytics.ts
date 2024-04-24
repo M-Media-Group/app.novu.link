@@ -1,14 +1,9 @@
 import { event, optIn, optOut, pageview, set } from "vue-gtag";
 import type { eventTypes } from "../events";
-// Import the type fbq from facebook-pixel, but rename it to fbqType
-// import type { fbq as fbqType } from "facebook-pixel";
 
-// Define fbq for Facebook Pixel in the global scope
-// declare global {
-//   interface Window {
-//     fbq: fbqType;
-//   }
-// }
+// Define fbq for Facebook Pixel as a function (declare it)
+/** @todo add fbq types */
+declare function fbq(...args: any[]): void;
 
 export default {
   enabled_analytics: () => {
@@ -21,20 +16,20 @@ export default {
   },
   viewed_page: (to: any) => {
     pageview(to);
-    // fbq("track", "PageView");
+    // fbq("track", "PageView"); // To confirm, it is likely done automatically already by using the history listener
   },
   logged_in: () => {
     event("login");
   },
   registered: () => {
     event("sign_up");
-    // fbq("track", "CompleteRegistration");
+    fbq("track", "CompleteRegistration");
   },
   added_payment_method: () => {
     event("add_payment_info", {
       payment_type: "card",
     });
-    // fbq("track", "AddPaymentInfo");
+    fbq("track", "AddPaymentInfo");
   },
   changed_locale: (locale: string) => {
     set({ locale: locale });
@@ -53,16 +48,16 @@ export default {
   },
   started_subscription: () => {
     event("start_subscription");
-    // fbq("track", "Purchase", {
-    //   value: 36,
-    //   currency: "EUR",
-    // });
+    fbq("track", "Purchase", {
+      value: 36,
+      currency: "EUR",
+    });
   },
   created_redirect: () => {
     event("create_redirect");
   },
   created_endpoint: () => {
     event("create_endpoint");
-    // fbq("trackCustom", "CreateEndpoint");
+    fbq("trackCustom", "CreateEndpoint");
   },
 } as Record<eventTypes, any>;
