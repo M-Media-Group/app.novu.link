@@ -13,14 +13,13 @@ article>footer {
     background: var(--pico-card-background-color);
 }
 
-article>footer,
-article>:last-child:is(.images) {
-    margin-bottom: calc(var(--pico-block-spacing-vertical)* -2) !important;
+article:has(>:last-child:is(.images)) {
+    padding-bottom: var(--pico-block-spacing-vertical);
+
 }
 
-
-article>:first-child:is(.images) {
-    margin-top: calc(var(--pico-block-spacing-vertical)* -2) !important;
+article:has(>:first-child:is(.images)) {
+    padding-top: var(--pico-block-spacing-vertical);
 }
 
 .main-grid-display {
