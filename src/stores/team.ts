@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import axios from "axios";
 import type { Team } from "@/types/team";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useRouter } from "vue-router";
 
 export const useTeamStore = defineStore("team", () => {
   const activeTeamId = ref(null as Team["id"] | null);
@@ -10,12 +11,19 @@ export const useTeamStore = defineStore("team", () => {
 
   const $bus = useEventsBus();
 
+  /** @todo move the router logic out of here - it can emit a success event but another component (e.g. not the store) should actually route */
+  const router = useRouter();
+
   const getUserTeams = async () => {
     // Fetch teams from the API
     const response = await axios.get("/api/v1/teams");
 
     // Set the teams to the response data
     teams.value = response.data;
+
+    if (!teams.value.length) {
+      return;
+    }
 
     const activeTeam = teams.value.find((team) => team.is_active)?.id;
 
@@ -28,10 +36,14 @@ export const useTeamStore = defineStore("team", () => {
   };
 
   //   If we get an authenticated event on the event bus, we should fetch the user's teams.
-  $bus.$on(eventTypes.logged_in, getUserTeams);
-  $bus.$on(eventTypes.registered, getUserTeams);
+  $bus?.$on(eventTypes.logged_in, getUserTeams);
+  $bus?.$on(eventTypes.registered, getUserTeams);
+  $bus?.$on(eventTypes.confirmed_otp, getUserTeams);
 
   const activeTeam = computed(() => {
+    if (!activeTeamId.value) {
+      return null;
+    }
     return teams.value.find((team) => team.id === activeTeamId.value);
   });
 
@@ -77,15 +89,58 @@ export const useTeamStore = defineStore("team", () => {
   }
 
   const update = async (team: Team) => {
-    const response = await axios.put(`/teams/${team.id}`, team);
+    const response = await axios.put(`/teams/${team.id}`, {
+      name: team.name,
+    });
 
     if (response.status === 200) {
-      // Update the team in the store
+      // Update the team - only update the name for now
       const index = teams.value.findIndex((t) => t.id === team.id);
-      teams.value[index] = team;
+      teams.value[index].name = team.name;
+
       return true;
     } else {
       console.error("Failed to update team");
+    }
+  };
+
+  /** Switch the current team */
+  const switchTeam = async (teamId: Team["id"]) => {
+    //  Make a put to /current-team with the teamId
+    const response = await axios.put("/current-team", {
+      team_id: teamId,
+    });
+
+    if (response.data.success || response.data.message === "Team updated.") {
+      // Set the active team to the teamId
+      activeTeamId.value = teamId;
+      $bus.$emit(eventTypes.changed_team);
+      // Redirect to dashboard
+      router.push({ name: "dashboard" });
+    } else {
+      console.error("Failed to switch team", response.data.message);
+    }
+  };
+
+  const createTeam = async (team: { name: Team["name"] }) => {
+    const response = await axios
+      .post("/teams", {
+        name: team.name,
+      })
+      .catch((error) => {
+        console.error("Failed to create team", error);
+        return error.response;
+      });
+
+    if (response.status === 201) {
+      //  The response does not return anything, so we need to fetch the teams again and then set the active team to the newly created team
+      await getUserTeams();
+      const newTeam = teams.value.sort((a, b) => b.id - a.id)[0];
+      activeTeamId.value = newTeam.id;
+      return true;
+    } else {
+      console.error("Failed to create team");
+      return response;
     }
   };
 
@@ -97,5 +152,7 @@ export const useTeamStore = defineStore("team", () => {
     getPaymentIntent,
     addPaymentMethod,
     getPaymentMethods,
+    switchTeam,
+    createTeam,
   };
 });
