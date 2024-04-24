@@ -21,7 +21,7 @@ export const useTeamStore = defineStore("team", () => {
       return error.response;
     });
 
-    if (response.status !== 200) {
+    if (response?.status !== 200) {
       return;
     }
 
