@@ -324,6 +324,15 @@ const setCustomValidity = (message: string) => {
   const element = dropdown.value;
   if (!element) return;
   let errorElement = element.nextElementSibling as HTMLElement;
+
+  // If the message is "", remove the error message
+  if (message === "") {
+    if (errorElement) {
+      errorElement.remove();
+    }
+    return;
+  }
+
   if (!errorElement || !errorElement.classList.contains("error")) {
     errorElement = document.createElement("small");
     element.after(errorElement);

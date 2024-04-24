@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useRules } from "@/useRules";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import { computed, onMounted, toRef } from "vue";
+import { computed, onMounted, toRef, watch } from "vue";
 import type { RuleModel, Rules } from "@/types/rule";
 import { useI18n } from "vue-i18n";
 import { ref } from "vue";
@@ -17,6 +17,13 @@ const props = defineProps({
   redirectId: {
     type: String,
     required: false,
+  },
+
+  /** The required flag */
+  required: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
 
@@ -55,13 +62,10 @@ const ruleOptions = computed(() => {
     return {
       id: ruleKey,
       value: ruleKey,
-      render: t(
-        "Rules." + rules.value[ruleKey].name + ".Name",
-        rules.value[ruleKey].name
-      ),
+      render: t("Rules." + ruleKey + ".Name", rules.value[ruleKey].name),
       raw: {
         description: t(
-          "Rules." + rules.value[ruleKey].name + ".Description",
+          "Rules." + ruleKey + ".Description",
           rules.value[ruleKey].description
         ),
       },
@@ -72,7 +76,8 @@ const ruleOptions = computed(() => {
 const operatorInput = ref<HTMLInputElement>();
 const valueInput = ref<HTMLInputElement>();
 
-const focusOnInput = () => {
+const focusOnInput = async () => {
+  await nextTick();
   if (valueInput.value) {
     valueInput.value.focus();
   }
@@ -84,14 +89,6 @@ const handleOperatorChange = async (operator: string) => {
     selectedOperator: operator,
     selectedValue: props.modelValue.selectedValue,
   });
-
-  //   Wait for the next tick to focus on the operator input
-  await nextTick();
-
-  //   Focus on the value input
-  if (valueInput.value && !props.modelValue.selectedValue) {
-    focusOnInput();
-  }
 };
 
 const handleRuleChange = async (ruleKey: keyof Rules) => {
@@ -128,6 +125,17 @@ onMounted(() => {
     isOpenRuleSelector.value = true;
   }
 });
+
+// Watch the isValidValue and set the input validity
+watch(isValidValue, () => {
+  if (isValidValue.value && valueInput.value) {
+    valueInput.value?.setAttribute("aria-invalid", "false");
+    valueInput.value?.setCustomValidity("");
+  } else if (valueInput.value) {
+    valueInput.value?.setAttribute("aria-invalid", "true");
+    valueInput.value?.setCustomValidity(t("Please enter a valid value"));
+  }
+});
 </script>
 <template>
   <dropdown-select
@@ -140,9 +148,11 @@ onMounted(() => {
     "
     @update:modelValue="handleRuleChange($event[0] as keyof Rules)"
     :aria-busy="isLoading"
-    :required="true"
+    :required="required"
     :showSelectedFirst="true"
     searchable
+    :autofocus="true"
+    name="rule"
   >
     <template #optionSlot="{ option, updateModelValue }">
       <label>
@@ -159,6 +169,9 @@ onMounted(() => {
       </label>
     </template>
   </dropdown-select>
+  <!-- <small v-if="errors?.rule" class="error">
+    {{ errors.rule }}
+  </small> -->
 
   <select
     v-show="selectedRule"
@@ -166,6 +179,8 @@ onMounted(() => {
     @change="handleOperatorChange(($event.target as HTMLSelectElement).value)"
     :placeholder="$t('Operator')"
     ref="operatorInput"
+    name="operator"
+    :required="required"
   >
     <option
       v-for="operator in allowedOperators"
@@ -175,6 +190,7 @@ onMounted(() => {
       {{ $t(operator) }}
     </option>
   </select>
+
   <template
     v-if="
       selectedRule?.valueType === 'select' &&
@@ -202,14 +218,14 @@ onMounted(() => {
       "
       :placeholder="$t('Value')"
       :aria-busy="isLoading"
-      :required="true"
       v-model:is-open="isOpenValueSelector"
       :searchable="formattedAllowedValues.length > 5"
       v-model:search="valueSelectorSearchTerm"
       ref="valueInput"
       :showSelectedFirst="true"
-      :aria-invalid="!isValidValue"
       autofocus
+      name="value"
+      :required="required"
     >
     </dropdown-select>
   </template>
@@ -224,9 +240,14 @@ onMounted(() => {
           )
         "
         :disabled="isLoading"
+        name="value"
+        ref="valueInput"
       />
       {{ $t("Is true") }}
     </label>
+    <!-- <small v-if="errors?.value" class="error">
+      {{ errors.value }}
+    </small> -->
   </template>
   <template v-else-if="selectedRule && modelValue.selectedOperator">
     <input
@@ -236,39 +257,71 @@ onMounted(() => {
       :placeholder="$t('Value')"
       ref="valueInput"
       :pattern="allowedInputPattern"
-      :aria-invalid="!isValidValue"
       id="valueInputId"
       :list="selectedRule.value + '-datalist'"
+      autofocus
+      name="value"
+      :required="required"
     />
-    <!-- If we have allowedValues, show them as suggestions using a datalist -->
-    <datalist
-      v-if="formattedAllowedValues.length > 0"
-      :id="selectedRule.value + '-datalist'"
-    >
-      <option
-        v-for="allowedValue in formattedAllowedValues"
-        :key="allowedValue.key"
-        :value="allowedValue.key"
-      ></option>
-    </datalist>
   </template>
-  <small v-if="selectedRule?.value && modelValue.selectedOperator">
-    {{ $t("Your value is", [selectedRule?.value]) }}
-    <span v-if="userWouldPass !== null">
-      |
+
+  <!-- <small v-if="errors?.value" class="error">
+    {{ errors.value }}
+  </small> -->
+  <small
+    v-else-if="
+      selectedRule?.value &&
+      modelValue.selectedOperator &&
+      userWouldPass !== null
+    "
+  >
+    {{ $t("Your value is valid.") }}
+    <span :data-tooltip="$t('Your value is', [selectedRule?.value])">
       {{
         $t(
           userWouldPass
             ? "You would pass this rule"
             : "You would not pass this rule"
         )
-      }}</span
-    >
+      }}
+    </span>
   </small>
+  <small v-else-if="!modelValue.selectedRuleKey">
+    {{ $t("Please select a rule") }}
+  </small>
+  <small v-else-if="!modelValue.selectedOperator">
+    {{ $t("Please select an operator") }}
+  </small>
+  <!-- <small v-else-if="errors?.operator" class="error">
+    {{ errors.operator }}
+  </small>
+  <small v-else-if="errors?.rule" class="error">
+    {{ errors.rule }}
+  </small> -->
+  <small v-else-if="!isValidValue">
+    {{ $t("Please enter a valid value") }}
+  </small>
+  <small v-else>
+    {{ $t("The value to test against") }}
+  </small>
+  <!-- If we have allowedValues, show them as suggestions using a datalist - this needs to be placed after the <small> helptext for the formatting defined in the CSS to work -->
+  <datalist
+    v-if="selectedRule?.value && formattedAllowedValues.length > 0"
+    :id="selectedRule.value + '-datalist'"
+  >
+    <option
+      v-for="allowedValue in formattedAllowedValues"
+      :key="allowedValue.key"
+      :value="allowedValue.key"
+    ></option>
+  </datalist>
 </template>
 <style>
 .helptext {
   margin: unset;
   margin-left: calc(var(--pico-form-element-spacing-horizontal) * 2);
+}
+small {
+  width: fit-content;
 }
 </style>
