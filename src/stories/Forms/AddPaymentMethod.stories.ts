@@ -4,7 +4,9 @@ import AddPaymentMethod from "@/forms/AddPaymentMethod.vue";
 import { useUserStore } from "@/stores/user";
 
 import userFixture from "../../../cypress/fixtures/user.json";
+import teamsFixture from "../../../cypress/fixtures/teams.json";
 import { expect, waitFor, within } from "@storybook/test";
+import { useTeamStore } from "@/stores/team";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof AddPaymentMethod> = {
@@ -37,6 +39,7 @@ export const Default: Story = {
     components: { AddPaymentMethod },
     setup() {
       const user = useUserStore();
+      const team = useTeamStore();
       user.isAuthenticated = true;
       user.user = {
         ...userFixture,
@@ -44,6 +47,9 @@ export const Default: Story = {
         created_at: new Date(),
         updated_at: new Date(),
       };
+
+      team.teams = teamsFixture;
+
       return { args };
     },
     template: "<add-payment-method v-bind='args' />",
@@ -51,8 +57,15 @@ export const Default: Story = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
 
+    // Confirm the submit button is there
+    await waitFor(() => {
+      expect(canvas.getByRole("button")).toBeVisible();
+      // It should be disabled
+      expect(canvas.getByRole("button")).toBeDisabled();
+    });
+
     // We can assert that the iframe is visible "data-cy="add-payment-form""
-    waitFor(
+    await waitFor(
       () => {
         expect(canvas.getByRole("presentation")).toBeVisible();
       },
