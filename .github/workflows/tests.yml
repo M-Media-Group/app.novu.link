@@ -27,3 +27,11 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Storybook tests
         run: npm run test:visual:ci
+
+  # Deploy to Netlify by calling https://api.netlify.com/build_hooks/6628d4d283f0ae00a3223b33
+  netlify-deploy:
+    needs: cypress-run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: curl -X POST -d {} https://api.netlify.com/build_hooks/6628d4d283f0ae00a3223b33
