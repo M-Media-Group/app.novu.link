@@ -34,7 +34,7 @@ axios.interceptors.response.use(
   (error) => {
     const gates = router.currentRoute.value.meta?.gates as string[] | undefined;
     if (error.response?.status === 401 && gates?.includes("auth")) {
-      router.push({ name: "login" });
+      router.push({ name: "login-otp" });
     } else if (error.response?.status === 429) {
       router.push({ name: "429" });
     }
