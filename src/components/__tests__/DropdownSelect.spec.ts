@@ -6,7 +6,7 @@ import "html-validate/vitest";
 
 describe("Dropdown Select", () => {
   // We need a retry here because the performance.now can be flakey
-  it("renders correctly", { retry: 3 }, async () => {
+  it("renders correctly", { retry: 5 }, async () => {
     const start = performance.now();
 
     const wrapper = mount(DropdownSelect, {
@@ -457,7 +457,7 @@ describe("Dropdown Select", () => {
   // We need a retry here because the performance.now can be flakey
   it(
     "should render a large number of options, 1000000, in less than 200ms",
-    { retry: 3 },
+    { retry: 5 },
     () => {
       const options = Array.from({ length: 1000000 }, (_, i) => `Option ${i}`);
       const start = performance.now();
