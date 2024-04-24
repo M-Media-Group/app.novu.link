@@ -52,7 +52,20 @@
     "New token name": "New token name",
     "Cancel": "Cancel",
     "Confirm": "Confirm",
+    "An error occurred. Please try again later.": "An error occurred. Please try again later.",
+    "Add destination to QR code": "Add destination to QR code",
+    "Copy magic link": "Copy magic link",
+    "Copied!": "Copied!",
+    "Download QR code": "Download QR code",
+    "Add more destinations to same code": "Add more destinations to same code",
+    "There was an error with the payment intent. Please try again.": "There was an error with the payment intent. Please try again.",
+    "New magic link": "New magic link",
+    "Magic links": "Magic links",
+    "Magic link": "Magic link",
+    "If": "If",
+    "Go to": "Go to",
     "Your value is": "Your value is: {0}",
+    "Else fallback to": "Else fallback to {0}",
     "Country": "Country",
     "=": "Equal to",
     "!=": "Not equal to",
@@ -77,77 +90,169 @@
     "Operator": "Operator",
     "Value": "Value",
     "Rules": {
-        "BrowserLanguage": {
+        "browser_language": {
             "Name": "Browser Language",
             "Description": "The language of the users browser. It will come from the accept-language header or the navigator.language if the former is null."
         },
-        "Cookie": {
+        "cookie": {
             "Name": "Cookie",
             "Description": "The users Cookies"
         },
-        "Country": {
+        "country": {
             "Name": "Country",
             "Description": "The users country from their IP."
         },
-        "Date": {
+        "date": {
             "Name": "Date",
             "Description": "The date. It accepts any valid date format, but the suggested format is YYYY-MM-DD."
         },
-        "DayOfWeek": {
+        "day_of_week": {
             "Name": "Day of Week",
             "Description": "The day of the week, Monday to Sunday. 1 is Monday, 7 is Sunday."
         },
-        "HostNameByAddress": {
+        "host_name_by_address": {
             "Name": "Host Name By Address",
             "Description": "The users host name (DNS lookup of the users IP address)."
         },
-        "IP": {
+        "i_p": {
             "Name": "IP",
             "Description": "The users IP address."
         },
-        "QueryParameter": {
+        "query_parameter": {
             "Name": "Query Parameter",
             "Description": "The query parameter after the ? in the URL."
         },
-        "Referer": {
+        "referer": {
             "Name": "Referer",
             "Description": "The website that the user just came from."
         },
-        "ScannedQr": {
+        "scanned_qr": {
             "Name": "Scanned QR",
             "Description": "Whether the QR code was scanned or not. Novu.link appends a utm_medium parameter to the URL when the app-povided QR code is scanned."
         },
-        "Time": {
+        "time": {
             "Name": "Time",
             "Description": "The time of day. This time is relative to UTC, meaning that its perfect for fixed times that are not subject to timezone changes."
         },
-        "TotalTimesScanned": {
+        "total_times_scanned": {
             "Name": "Total Times Scanned",
             "Description": "The total amount of times the QR code has been scanned or the link has been visited."
         },
-        "TotalTimesScannedPerIP": {
+        "total_times_scanned_per_i_p": {
             "Name": "Total Times Scanned Per IP",
             "Description": "The total amount of times the QR code has been scanned or the link has been visited, per unique IP."
         },
-        "UserAgent": {
+        "user_agent": {
             "Name": "User Agent",
             "Description": "The user agent from HTTP_USER_AGENT."
         },
-        "DeviceOrientation": {
+        "device_orientation": {
             "Name": "Device Orientation",
             "Description": "The users device orientation. Either landscape-primary, landscape-secondary (upside-down), portrait-primary, or portrait-secondary (upside-down)."
         },
-        "SupportsGeolocation": {
+        "supports_geolocation": {
             "Name": "Supports Geolocation",
             "Description": "The users support of geolocation. This returns true if the users browser supports getting the users location."
         },
-        "UserTime": {
+        "user_time": {
             "Name": "User Time",
             "Description": "The time of day relative to the users current timezone."
         },
-        "IsBot": {
+        "is_bot": {
             "Name": "Is Bot",
             "Description": "Whether the user is a bot or not."
+        },
+        "moon_phase": {
+            "Name": "Moon Phase",
+            "Description": "The current phase of the moon."
         }
-    }
+    },
+    "Solve QR codes forever": "Solve QR codes forever",
+    "You would pass this rule": "You would pass this rule",
+    "You would not pass this rule": "You would not pass this rule",
+    "Add a new payment method": "Add a new payment method",
+    "Additional destinations and design changes are free after you subscribe.": "Additional destinations and design changes are free after you subscribe.",
+    "You’ll be billed anually at €3 / month, starting now. You can cancel anytime.": "You’ll be billed anually at €3 / month, starting now. You can cancel anytime.",
+    "Activate destination": "Activate destination",
+    "Subscribe and activate destination": "Subscribe and activate destination",
+    "Print, share, and distribute. Your magic link is ready and here to stay.": "Print, share, and distribute. Your magic link is ready and here to stay.",
+    "View": "View",
+    "Search for an option": "Search for an option",
+    "Select an option": "Select an option",
+    "Search to see more results": "Search to see more results",
+    "Select all": "Select all",
+    "Loading...": "Loading...",
+    "The hardest thing with QR codes and links is changing them after they're printed. We've fixed that.": "The hardest thing with QR codes and links is changing them after they're printed. We've fixed that.",
+    "Create a free permanent magic link": "Create a free permanent magic link",
+    "How it works": "How it works",
+    "Magic link name": "Magic link name",
+    "This is where your magic link will redirect to by default.": "This is where your magic link will redirect to by default.",
+    "Add destination": "Add destination",
+    "Specify what conditions you want met to redirect to the new destination.": "Specify what conditions you want met to redirect to the new destination.",
+    "Your subscription has not started and you have not been billed.": "Your subscription has not started and you have not been billed.",
+    "Magic link created successfully.": "Magic link created successfully.",
+    "We've sent you an email with a link to reset your password.": "We've sent you an email with a link to reset your password.",
+    "Destination added successfully.": "Destination added successfully.",
+    "Welcome to Novu.Link! Confirm your email to unlock all the features.": "Welcome to Novu.Link! Confirm your email to unlock all the features.",
+    "Your email address is not verified.": "Your email address is not verified.",
+    "QR code": "QR code",
+    "Scans today": "Scans today",
+    "Scans all time": "Scans all time",
+    "Scans": "Scans",
+    "Dashboard": "Dashboard",
+    "Stats": "Stats",
+    "Best magic link": "Best magic link",
+    "Go to advanced analytics": "Go to advanced analytics",
+    "View all magic links": "View all magic links",
+    "You need to create a billable redirect to access advanced analytics including the language, device, and location of your visitors.": "You need to create a billable redirect to access advanced analytics including the language, device, and location of your visitors.",
+    "Print": "Print",
+    "Best performing destination": "Best performing destination",
+    "Share": "Share",
+    "We've detected an unusual amount of traffic from your IP address. Please wait a few minutes before trying again.": "We've detected an unusual amount of traffic from your IP address. Please wait a few minutes before trying again.",
+    "Account progress": "Account progress",
+    "Create your account and team": "Create your account and team",
+    "Test your magic link": "Test your magic link",
+    "percent complete": "{0}% complete",
+    "Add more free destinations": "Add more free destinations",
+    "If no rules match": "If no rules match",
+    "Best performing magic links": "Best performing magic links",
+    "By scans": "By scans",
+    "From": "From",
+    "To": "To",
+    "Team Name": "Team Name",
+    "The value to test against": "The value to test against",
+    "Delete Magic Link": "Delete Magic Link",
+    "Delete this magic link and all its destinations": "Delete this magic link and all its destinations",
+    "Delete forever": "Delete forever",
+    "Analytics": "Analytics",
+    "Scans by time of day": "Scans by time of day",
+    "Code design": "Code design",
+    "Customise the look of your magic link": "Customise the look of your magic link",
+    "Unique referers": "Unique referers",
+    "Scans by language": "Scans by language",
+    "Link ready to use. time left to claim it.": "Link ready to use. {time} left to claim it.",
+    "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link.": "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link.",
+    "Enable advanced analytics": "Enable advanced analytics",
+    "Phone number (starting with +)": "Phone number (starting with +)",
+    "Use phone instead": "Use phone instead",
+    "Use email instead": "Use email instead",
+    "We've sent you a one-time login code.": "We've sent you a one-time login code.",
+    "Change email": "Change email",
+    "Resend code to": "Resend code to {0}",
+    "Email confirmed!": "Email confirmed!",
+    "Link settings": "Link settings",
+    "Color": "Color",
+    "Background color": "Background color",
+    "Shape": "Shape",
+    "Subscription started successfully.": "Subscription started successfully.",
+    "Enable custom designs": "Enable custom designs",
+    "Subscribe Magic Link": "Subscribe Magic Link",
+    "Unsubscribe Magic Link": "Unsubscribe Magic Link",
+    "Unsubscribe": "Unsubscribe",
+    "Subscribe": "Subscribe",
+    "Enable advanced analytics, multiple destinations, and custom designs": "Enable advanced analytics, multiple destinations, and custom designs",
+    "Remove advanced analytics, multiple destinations, and custom designs": "Remove advanced analytics, multiple destinations, and custom designs",
+    "Destinations": "Destinations",
+    "Add your email address": "Add your email address",
+    "Please wait x seconds before trying again.": "Please wait {0} seconds before trying again."
 }

@@ -51,5 +51,209 @@
     "Create a new API token": "Créer un nouveau jeton d'API",
     "New token name": "Nouveau nom de jeton",
     "Cancel": "Annuler",
-    "Confirm": "Confirmer"
+    "Confirm": "Confirmer",
+    "An error occurred. Please try again later.": "Une erreur s'est produite. Veuillez réessayer plus tard.",
+    "Add destination to QR code": "Ajouter une destination au code QR",
+    "Copy magic link": "Copier le lien magique",
+    "Copied!": "Copié !",
+    "Download QR code": "Télécharger le code QR",
+    "Add more destinations to same code": "Ajouter plus de destinations au même code",
+    "There was an error with the payment intent. Please try again.": "Une erreur s'est produite avec l'intention de paiement. Veuillez réessayer.",
+    "New magic link": "Nouveau lien magique",
+    "Magic links": "Liens magiques",
+    "Magic link": "Lien magique",
+    "If": "Si",
+    "Go to": "Aller à",
+    "Your value is": "Votre valeur est : {0}",
+    "Else fallback to": "Sinon retourner à {0}",
+    "Country": "Pays",
+    "=": "Égal à",
+    "!=": "Différent de",
+    ">": "Supérieur à",
+    "<": "Inférieur à",
+    "starts_with": "Commence par",
+    "ends_with": "Se termine par",
+    "multiple_of": "Multiple de",
+    "contains": "Contient",
+    "not_contains": "Ne contient pas",
+    "DayOfWeekValue": {
+        "1": "Lundi",
+        "2": "Mardi",
+        "3": "Mercredi",
+        "4": "Jeudi",
+        "5": "Vendredi",
+        "6": "Samedi",
+        "7": "Dimanche"
+    },
+    "DayOfWeek": "Jour de la semaine",
+    "Rule": "Règle",
+    "Operator": "Opérateur",
+    "Value": "Valeur",
+    "Rules": {
+        "browser_language": {
+            "Name": "Langue du navigateur",
+            "Description": "La langue du navigateur de l'utilisateur. Elle proviendra de l'en-tête accept-language ou de navigator.language si le premier est nul."
+        },
+        "cookie": {
+            "Name": "Cookie",
+            "Description": "Les cookies de l'utilisateur"
+        },
+        "country": {
+            "Name": "Pays",
+            "Description": "Le pays de l'utilisateur à partir de son adresse IP."
+        },
+        "date": {
+            "Name": "Date",
+            "Description": "La date. Elle accepte n'importe quel format de date valide, mais le format suggéré est AAAA-MM-JJ."
+        },
+        "day_of_week": {
+            "Name": "Jour de la semaine",
+            "Description": "Le jour de la semaine, du lundi au dimanche. 1 représente le lundi, 7 représente le dimanche."
+        },
+        "host_name_by_address": {
+            "Name": "Nom d'hôte par adresse",
+            "Description": "Le nom d'hôte de l'utilisateur (résolution DNS de l'adresse IP de l'utilisateur)."
+        },
+        "i_p": {
+            "Name": "IP",
+            "Description": "L'adresse IP de l'utilisateur."
+        },
+        "query_parameter": {
+            "Name": "Paramètre de requête",
+            "Description": "Le paramètre de requête après le ? dans l'URL."
+        },
+        "referer": {
+            "Name": "Référent",
+            "Description": "Le site web à partir duquel l'utilisateur vient d'arriver."
+        },
+        "scanned_qr": {
+            "Name": "QR scanné",
+            "Description": "Indique si le code QR a été scanné ou non. Novu.link ajoute un paramètre utm_medium à l'URL lorsque le code QR fourni par l'application est scanné."
+        },
+        "time": {
+            "Name": "Heure",
+            "Description": "L'heure de la journée. Cette heure est relative à l'UTC, ce qui la rend parfaite pour les heures fixes qui ne sont pas sujettes aux changements de fuseau horaire."
+        },
+        "total_times_scanned": {
+            "Name": "Nombre total de scans",
+            "Description": "Le nombre total de fois où le code QR a été scanné ou où le lien a été visité."
+        },
+        "total_times_scanned_per_i_p": {
+            "Name": "Nombre total de scans par IP",
+            "Description": "Le nombre total de fois où le code QR a été scanné ou où le lien a été visité, par adresse IP unique."
+        },
+        "user_agent": {
+            "Name": "Agent utilisateur",
+            "Description": "L'agent utilisateur provenant de HTTP_USER_AGENT."
+        },
+        "device_orientation": {
+            "Name": "Orientation de l'appareil",
+            "Description": "L'orientation de l'appareil de l'utilisateur. Soit paysage-primaire, paysage-secondaire (à l'envers), portrait-primaire ou portrait-secondaire (à l'envers)."
+        },
+        "supports_geolocation": {
+            "Name": "Prise en charge de la géolocalisation",
+            "Description": "La prise en charge de la géolocalisation par l'utilisateur. Renvoie true si le navigateur de l'utilisateur prend en charge la récupération de la position de l'utilisateur."
+        },
+        "user_time": {
+            "Name": "Heure utilisateur",
+            "Description": "L'heure de la journée par rapport au fuseau horaire actuel de l'utilisateur."
+        },
+        "is_bot": {
+            "Name": "Est un bot",
+            "Description": "Indique si l'utilisateur est un bot ou non."
+        },
+        "moon_phase": {
+            "Name": "Phase de la lune",
+            "Description": "La phase de la lune actuelle. Les phases de la lune sont Nouvelle lune, Premier croissant, Premier quartier, Gibbeuse croissante, Pleine lune, Gibbeuse décroissante, Dernier quartier et Dernier croissant."
+        }
+    },
+    "Solve QR codes forever": "Résoudre les codes QR pour toujours",
+    "You would pass this rule": "Vous passeriez cette règle",
+    "You would not pass this rule": "Vous ne passeriez pas cette règle",
+    "Add a new payment method": "Ajouter un nouveau moyen de paiement",
+    "Additional destinations and design changes are free after you subscribe.": "Les destinations supplémentaires et les modifications de design sont gratuits après votre abonnement.",
+    "You’ll be billed anually at €3 / month, starting now. You can cancel anytime.": "Vous serez facturé annuellement à 3 € / mois, à partir de maintenant. Vous pouvez annuler à tout moment.",
+    "Activate destination": "Activer la destination",
+    "Subscribe and activate destination": "S'abonner et activer la destination",
+    "Print, share, and distribute. Your magic link is ready and here to stay.": "Imprimez, partagez et distribuez. Votre lien magique est prêt et là pour rester.",
+    "View": "Voir",
+    "Search for an option": "Rechercher une option",
+    "Select an option": "Sélectionnez une option",
+    "Search to see more results": "Recherchez pour voir plus de résultats",
+    "Select all": "Tout sélectionner",
+    "Loading...": "Chargement...",
+    "The hardest thing with QR codes and links is changing them after they're printed. We've fixed that.": "Le plus difficile avec les codes QR et les liens est de les changer après les avoir imprimés. Nous avons résolu ce problème.",
+    "Create a free permanent magic link": "Créez un lien magique permanent gratuit",
+    "How it works": "Comment ça marche",
+    "Magic link name": "Nom du lien magique",
+    "This is where your magic link will redirect to by default.": "C'est ici que votre lien magique redirigera par défaut.",
+    "Add destination": "Ajouter une destination",
+    "Specify what conditions you want met to redirect to the new destination.": "Spécifiez les conditions que vous souhaitez remplir pour rediriger vers la nouvelle destination.",
+    "Your subscription has not started and you have not been billed.": "Votre abonnement n'a pas commencé et vous n'avez pas été facturé.",
+    "Magic link created successfully.": "Lien magique créé avec succès.",
+    "We've sent you an email with a link to reset your password.": "Nous vous avons envoyé un e-mail avec un lien pour réinitialiser votre mot de passe.",
+    "Destination added successfully.": "Destination ajoutée avec succès.",
+    "Welcome to Novu.Link! Confirm your email to unlock all the features.": "Bienvenue sur Novu.Link ! Confirmez votre e-mail pour débloquer toutes les fonctionnalités.",
+    "Your email address is not verified.": "Votre adresse e-mail n'est pas vérifiée.",
+    "QR code": "Code QR",
+    "Scans today": "Scans aujourd'hui",
+    "Scans all time": "Scans totaux",
+    "Scans": "Scans",
+    "Dashboard": "Tableau de bord",
+    "Stats": "Statistiques",
+    "Best magic link": "Meilleur lien magique",
+    "Go to advanced analytics": "Aller aux analyses avancées",
+    "View all magic links": "Voir tous les liens magiques",
+    "You need to create a billable redirect to access advanced analytics including the language, device, and location of your visitors.": "Vous devez créer une redirection facturable pour accéder aux analyses avancées, y compris la langue, l'appareil et l'emplacement de vos visiteurs.",
+    "Print": "Imprimer",
+    "Best performing destination": "Meilleure destination",
+    "Share": "Partager",
+    "We've detected an unusual amount of traffic from your IP address. Please wait a few minutes before trying again.": "Nous avons détecté un nombre inhabituel de connexions depuis votre adresse IP. Veuillez patienter quelques minutes avant de réessayer.",
+    "Account progress": "Progression du compte",
+    "Create your account and team": "Créez votre compte et votre équipe",
+    "Test your magic link": "Testez votre lien magique",
+    "percent complete": "{0}% complet",
+    "Add more free destinations": "Ajoutez plus de destinations gratuites",
+    "If no rules match": "Si aucune règle ne correspond",
+    "Best performing magic links": "Meilleurs liens magiques",
+    "By scans": "Par scans",
+    "From": "De",
+    "To": "À",
+    "Team Name": "Nom de l'équipe",
+    "The value to test against": "La valeur à tester",
+    "Delete Magic Link": "Supprimer le lien magique",
+    "Delete this magic link and all its destinations": "Supprimez ce lien magique et toutes ses destinations",
+    "Delete forever": "Supprimer définitivement",
+    "Analytics": "Analytiques",
+    "Scans by time of day": "Scans par heure de la journée",
+    "Code design": "Design du code",
+    "Customise the look of your magic link": "Personnalisez l'apparence de votre lien magique",
+    "Unique referers": "Référents uniques",
+    "Scans by country": "Scans par pays",
+    "Scans by language": "Scans par langue",
+    "Link ready to use. time left to claim it.": "Lien prêt à être utilisé. {time} restant pour le réclamer.",
+    "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link.": "Activez les analyses avancées pour voir ces données, ajouter des destinations gratuites et mettre à jour le design de votre lien magique.",
+    "Enable advanced analytics": "Activer les analyses avancées",
+    "Phone number (starting with +)": "Numéro de téléphone (commençant par +)",
+    "Use phone instead": "Utiliser le téléphone à la place",
+    "Use email instead": "Utiliser l'e-mail à la place",
+    "We've sent you a one-time login code.": "Nous vous avons envoyé un code de connexion unique.",
+    "Change email": "Changer l'e-mail",
+    "Resend code to": "Renvoyer le code à {0}",
+    "Email confirmed!": "E-mail confirmé !",
+    "Link settings": "Paramètres du lien",
+    "Color": "Couleur",
+    "Background color": "Couleur de fond",
+    "Shape": "Forme",
+    "Subscription started successfully.": "Abonnement démarré avec succès.",
+    "Enable custom designs": "Activer les designs personnalisés",
+    "Subscribe Magic Link": "S'abonner au lien magique",
+    "Unsubscribe Magic Link": "Se désabonner du lien magique",
+    "Unsubscribe": "Se désabonner",
+    "Subscribe": "S'abonner",
+    "Enable advanced analytics, multiple destinations, and custom designs": "Activer les analyses avancées, les destinations multiples et les designs personnalisés",
+    "Remove advanced analytics, multiple destinations, and custom designs": "Supprimer les analyses avancées, les destinations multiples et les designs personnalisés",
+    "Destinations": "Destinations",
+    "Add your email address": "Ajoutez votre adresse e-mail",
+    "Please wait x seconds before trying again.": "Veuillez patienter {0} secondes avant de réessayer."
 }
