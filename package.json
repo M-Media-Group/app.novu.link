@@ -24,7 +24,7 @@
     "test:visual:dev": "storybook dev -p 3001",
     "build-storybook": "storybook build",
     "test:visual": "test-storybook --url http://localhost:3001 --maxWorkers=2",
-    "test:visual:update": "test-storybook --url http://localhost:3001 --updateSnapshot"
+    "test:visual:update": "test-storybook --url http://localhost:3001 --updateSnapshot --maxWorkers=2"
   },
   "dependencies": {
     "@m-media/vue3-gate-keeper": "^0.1.5",
