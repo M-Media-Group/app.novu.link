@@ -32,15 +32,15 @@ export const deleteRedirect = async (redirectId: string) => {
 };
 
 export const getRedirectQrCodeUrl = (redirectId: string) => {
-  return `${baseUrl}api/v1/redirects/${redirectId}/qr`;
+  return `${baseUrl}/api/v1/redirects/${redirectId}/qr`;
 };
 
 export const getRedirectQrCodeDataUrl = (redirectId: string) => {
-  return `${baseUrl}l/${redirectId}?utm_medium=novu_link_qr_code`;
+  return `${baseUrl}/l/${redirectId}?utm_medium=novu_link_qr_code`;
 };
 
 export const getRedirectUrl = (redirectId: string) => {
-  return `${baseUrl}l/${redirectId}`;
+  return `${baseUrl}/l/${redirectId}`;
 };
 
 export const addRedirectEndpoint = async (
