@@ -21,6 +21,10 @@ export const useTeamStore = defineStore("team", () => {
       return error.response;
     });
 
+    if (response.status !== 200) {
+      return;
+    }
+
     // Set the teams to the response data
     teams.value = response.data;
 
@@ -44,7 +48,7 @@ export const useTeamStore = defineStore("team", () => {
   $bus?.$on(eventTypes.confirmed_otp, getUserTeams);
 
   const activeTeam = computed(() => {
-    if (!activeTeamId.value) {
+    if (!activeTeamId.value || !teams.value.length) {
       return null;
     }
     return teams.value.find((team) => team.id === activeTeamId.value);
@@ -97,10 +101,13 @@ export const useTeamStore = defineStore("team", () => {
     });
 
     if (response.status === 200) {
+      // If we have no teams, return false
+      if (!teams.value.length) {
+        return false;
+      }
       // Update the team - only update the name for now
       const index = teams.value.findIndex((t) => t.id === team.id);
       teams.value[index].name = team.name;
-
       return true;
     } else {
       console.error("Failed to update team");
