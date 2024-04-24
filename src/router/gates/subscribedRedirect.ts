@@ -5,6 +5,7 @@ import { baseGate } from "@m-media/vue3-gate-keeper";
 export default class extends baseGate {
   async handle() {
     const teamStore = useTeamStore();
+
     if (teamStore.activeTeam?.is_billing_exempt === true) {
       return;
     }
@@ -21,6 +22,7 @@ export default class extends baseGate {
     if (redirect.data?.subscribed_at !== null) {
       return;
     }
+
     return this.fail();
   }
 }
