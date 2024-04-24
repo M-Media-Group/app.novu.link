@@ -742,7 +742,7 @@ describe("Confirm email", () => {
 
   it("Redirects to login when unauthenticated", () => {
     cy.visit("/confirm-email");
-    cy.location("pathname").should("eq", "/login");
+    cy.location("pathname").should("eq", "/login/otp");
     // There should be a query param of redirect pointing to /confirm-email
     cy.location("search").should("eq", "?redirect=/confirm-email");
   });
