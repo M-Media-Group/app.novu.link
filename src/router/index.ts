@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import $bus, { eventTypes } from "@/eventBus/events";
 import authRoutes from "./authRoutes";
 import { ref } from "vue";
+import { getRedirect } from "@/useRedirects";
 
 export const navIsLoading = ref(true);
 
@@ -14,6 +15,7 @@ const router = createRouter({
       meta: {
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Home",
+        scrollPosition: { top: 0, left: 0 },
       },
       component: () => import("../views/HomeView.vue"),
     },
@@ -25,6 +27,23 @@ const router = createRouter({
         gates: ["auth"],
       },
     },
+    {
+      path: "/team/settings",
+      name: "team/settings",
+      component: () => import("../views/Auth/TeamSettingsView.vue"),
+      meta: {
+        gates: ["auth"],
+      },
+    },
+    {
+      path: "/teams/create",
+      name: "teams/create",
+      meta: {
+        gates: ["auth", "confirmedEmailOrPhone"],
+      },
+      component: () => import("../views/CreateTeamView.vue"),
+    },
+
     {
       path: "/add-payment-method",
       name: "add-payment-method",
@@ -41,16 +60,119 @@ const router = createRouter({
       },
       component: () => import("../views/AboutView.vue"),
     },
-    // Example routes
     {
-      path: "/examples/cartesio",
-      name: "CartesIo",
-      component: () => import("../views/Examples/CartesIoView.vue"),
+      path: "/dashboard",
+      name: "dashboard",
+      meta: {
+        gates: ["auth"],
+      },
+      component: () => import("../views/DashboardView.vue"),
     },
     {
-      path: "/examples/deals",
-      name: "Examples",
-      component: () => import("../views/Examples/DealsView.vue"),
+      path: "/redirects",
+      name: "redirects",
+      meta: {
+        gates: ["auth"],
+      },
+      component: () => import("../views/RedirectsView.vue"),
+    },
+    {
+      path: "/redirects/create",
+      name: "create-redirect",
+      component: () => import("../views/CreateRedirectView.vue"),
+    },
+    {
+      path: "/redirects/:redirectId",
+      name: "redirect",
+      meta: {
+        gates: ["auth"],
+      },
+      component: () => import("../views/SingleRedirectView.vue"),
+      // Pass the props to the component
+      props: true,
+
+      // Before we enter the route, we need to call the API to get info on the redirect and pass it to props
+      beforeEnter(to: any, from: any, next: any) {
+        getRedirect(to.params.redirectId)
+          .then((response) => {
+            // From the response, we need to pass as props the redirect name, the redirect URL, and the redirect ID
+            to.params.redirectName = response.data.name;
+            to.params.subscribedAt = response.data.subscribed_at;
+
+            const totalClicks = () => {
+              return response.data.endpoints.reduce(
+                (total: any, endpoint: any) => {
+                  return total + endpoint.clicks.length;
+                },
+                0
+              );
+            };
+
+            const bestPerformingEndpoint = () => {
+              return response.data.endpoints.reduce(
+                (best: any, endpoint: any) => {
+                  return best.clicks.length > endpoint.clicks.length
+                    ? best
+                    : endpoint;
+                }
+              );
+            };
+
+            // set clicksToday and clicksTodayUnique
+            to.params.clicksToday = response.data.endpoints.reduce(
+              (total: any, endpoint: any) => {
+                return (
+                  total +
+                  endpoint.clicks.filter((click: any) => {
+                    return (
+                      new Date(click.created_at).toDateString() ===
+                      new Date().toDateString()
+                    );
+                  }).length
+                );
+              },
+              0
+            );
+
+            to.params.clicksAllTime = totalClicks();
+
+            to.params.bestEndpoint =
+              // If there is more than 1 endpoint, return the best performing endpoint. If there is only 1 endpoint, return that endpoint.
+              response.data.endpoints.length > 1
+                ? bestPerformingEndpoint().endpoint
+                : undefined;
+
+            to.params.endpoints = response.data.endpoints;
+
+            next();
+          })
+          .catch(() => {
+            next({ name: "NotFound" });
+          });
+      },
+    },
+    {
+      path: "/redirects/:redirectId/endpoints/add",
+      name: "add-endpoint",
+      meta: {
+        gates: ["auth", "confirmedEmailOrPhone"],
+      },
+      component: () => import("../views/SimpleAddEndpointView.vue"),
+      // Pass the props to the component
+      props: true,
+    },
+    {
+      path: "/analytics",
+      name: "analytics",
+      meta: {
+        gates: ["auth", "confirmedEmailOrPhone"],
+      },
+      component: () => import("../views/AnalyticsView.vue"),
+    },
+    {
+      path: "/429",
+      name: "429",
+      component: () => import("../views/429View.vue"),
     },
     // Add a catch-all 404 page
     {
@@ -62,8 +184,10 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
+    } else if (to.meta.scrollPosition) {
+      return to.meta.scrollPosition as any;
     } else {
-      return { top: 0 };
+      return { top: 72 };
     }
   },
 });
