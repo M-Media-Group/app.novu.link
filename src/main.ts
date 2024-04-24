@@ -66,6 +66,9 @@ app.use(
       "https://hooks.stripe.com",
       "https://api.stripe.com",
       "https://www.googletagmanager.com",
+      "https://connect.facebook.net",
+      "https://script.hotjar.com",
+      "https://static.hotjar.com",
     ],
     textCallback: (text: string) => {
       return i18n.global.t(text);
