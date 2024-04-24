@@ -9,7 +9,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { type PropType, defineProps, ref } from "vue";
+import { type PropType, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
