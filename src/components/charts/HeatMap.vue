@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from "vue";
-import { type PropType, defineProps } from "vue";
+import type { PropType } from "vue";
 
 const props = defineProps({
   matrix: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArcElement, Chart as ChartJS, Title, Tooltip } from "chart.js";
-import { type PropType, defineProps } from "vue";
+import type { PropType } from "vue";
 import { Pie } from "vue-chartjs";
 import BaseChart from "./BaseChart.vue";
 

@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { type PropType, defineProps } from "vue";
+import type { PropType } from "vue";
 import { Bar } from "vue-chartjs";
 import BaseChart from "./BaseChart.vue";
 
