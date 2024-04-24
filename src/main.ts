@@ -87,7 +87,7 @@ app.use(
 );
 
 app.use(VueHotjar, {
-  id: import.meta.env.VITE_HOTJAR_MEASUREMENT_ID,
+  id: Number(import.meta.env.VITE_HOTJAR_MEASUREMENT_ID),
   isProduction: import.meta.env.PROD,
   snippetVersion: 6,
 });
