@@ -52,6 +52,14 @@ const randomName = () => {
 
 randomName();
 
+defineProps({
+  /** If the form should autofocus */
+  autofocus: {
+    type: Boolean,
+    default: true,
+  },
+});
+
 const debounceAddProtocolIfMissing = debounce(
   (data: string) =>
     defaultEndpoint.value
@@ -103,7 +111,7 @@ const submitForm = async () => {
 </script>
 <template>
   <base-form
-    :autofocus="false"
+    :autofocus="autofocus"
     :submitText="$t('Create a free permanent magic link')"
     @submit="submitForm"
     ref="baseFormRef"

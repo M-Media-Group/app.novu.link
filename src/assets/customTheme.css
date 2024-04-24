@@ -139,6 +139,18 @@ button,
     }
 }
 
+/* If the button or dropdown is disabled, just move-it */
+button:disabled,
+.dropdown:disabled {
+    animation: move-in 0.2s ease-in-out;
+}
+
+@keyframes move-in {
+    0% {
+        transform: translateY(10px);
+    }
+}
+
 /* All asides should smoothly appear from the right, fade in */
 aside {
     animation: slide-in-right 0.2s ease-in-out;

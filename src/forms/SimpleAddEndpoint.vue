@@ -8,7 +8,7 @@ import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionS
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";
-import { formatUrl } from "@/helpers/urlFormatter";
+import { formatUrl, removeProtocol } from "@/helpers/urlFormatter";
 import { addRedirectEndpoint } from "@/useRedirects";
 
 const $bus = useEventsBus();
@@ -180,7 +180,7 @@ const debounceAddProtocolIfMissing = debounce(
       "
     />
     <div v-if="fallbackUrl">
-      {{ $t("Else fallback to", [fallbackUrl]) }}
+      {{ $t("Else fallback to", [removeProtocol(fallbackUrl)]) }}
     </div>
     <br />
     <!-- </TransitionGroup> -->

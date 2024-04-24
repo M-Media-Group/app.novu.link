@@ -16,7 +16,7 @@ import CardElement from "@/components/CardElement.vue";
       </p>
     </hgroup>
     <card-element>
-      <create-redirect></create-redirect>
+      <create-redirect :autofocus="false"></create-redirect>
     </card-element>
   </section>
 </template>
