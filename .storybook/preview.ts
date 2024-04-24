@@ -10,6 +10,7 @@ import { EventsPlugin } from "../src/eventBus/events";
 import { createPinia } from "pinia";
 import { navIsLoading } from "../src/router";
 import { vueRouter } from "storybook-vue3-router";
+import axios from "axios";
 
 setup((app: App) => {
   app.use(createPinia());
@@ -18,6 +19,11 @@ setup((app: App) => {
 
   /** We need to set navIsLoading to false otherwise it never resolves becasuse the router guards don't seem to be called @todo check this */
   navIsLoading.value = false;
+
+  axios.defaults.withXSRFToken = true;
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
 });
 
 const preview: Preview = {

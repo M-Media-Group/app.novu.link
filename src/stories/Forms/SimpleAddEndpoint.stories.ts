@@ -39,8 +39,7 @@ export const Default: Story = {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      axios.defaults.withCredentials = true;
-      axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
       axios.defaults.baseURL = import.meta.env.VITE_API_URL;
       return { args };
     },

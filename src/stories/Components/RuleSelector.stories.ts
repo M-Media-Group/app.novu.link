@@ -58,3 +58,13 @@ export const NoValues: Story = {
     },
   },
 };
+
+export const AllErrors: Story = {
+  args: {
+    modelValue: {
+      selectedRuleKey: "Bad value" as any,
+      selectedOperator: "Bad value",
+      selectedValue: "Bad value",
+    },
+  },
+};
