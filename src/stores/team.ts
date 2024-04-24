@@ -16,7 +16,10 @@ export const useTeamStore = defineStore("team", () => {
 
   const getUserTeams = async () => {
     // Fetch teams from the API
-    const response = await axios.get("/api/v1/teams");
+    const response = await axios.get("/api/v1/teams").catch((error) => {
+      console.error("Failed to fetch teams", error);
+      return error.response;
+    });
 
     // Set the teams to the response data
     teams.value = response.data;

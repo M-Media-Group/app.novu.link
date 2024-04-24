@@ -1,14 +1,7 @@
 describe("Locales", () => {
   beforeEach(() => {
-    cy.intercept(
-      "GET", // Route all GET requests
-      "/api/user", // that have a URL that matches '/users/*'
-      {
-        statusCode: 401,
-      }
-    ).as("unableToGetUser");
-
     cy.handleCsrf();
+    cy.handleUnauthenticatedUser();
   });
   it("Shows a language switcher in the footer", () => {
     cy.visit("/");
