@@ -11,7 +11,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import subscribedRedirect from "@/router/gates/subscribedRedirect";
 import { startSubscription } from "@/useRedirects";
 
-const emits = defineEmits(["confirmed"]);
+const emits = defineEmits(["confirmed", "failed"]);
 
 const props = defineProps({
   redirectId: {
@@ -58,26 +58,31 @@ const startSubscriptionForRedirect = async () => {
       handleConfirmed();
     })
     .catch(() => {
-      isLoading.value = false;
+      handleFailed();
     });
 };
 
 const startConfirming = async () => {
   isConfirming.value = true;
   isLoading.value = true;
-  if (
-    (await new subscribedRedirect()
+  try {
+    const gateRun = await new subscribedRedirect()
       .setOptions({
         gateOptions: {
           redirectId: props.redirectId,
         },
       })
-      .handle()) !== false
-  ) {
-    return handleConfirmed();
+      .handle();
+
+    if (gateRun) {
+      return handleConfirmed();
+    }
+
+    modal.value.openModal();
+    isLoading.value = false;
+  } catch (error) {
+    handleFailed();
   }
-  modal.value.openModal();
-  isLoading.value = false;
 };
 
 const handleConfirmed = () => {
@@ -85,6 +90,14 @@ const handleConfirmed = () => {
   modal.value.closeModal();
   showAddForm.value = false;
   isLoading.value = false;
+  isConfirming.value = false;
+};
+
+const handleFailed = () => {
+  emits("failed");
+  isLoading.value = false;
+  modal.value.closeModal();
+  isConfirming.value = false;
 };
 
 const AddPaymentMethod = defineAsyncComponent(

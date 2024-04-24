@@ -323,11 +323,12 @@ const dropdown = ref<HTMLDetailsElement | null>(null);
 const setCustomValidity = (message: string) => {
   const element = dropdown.value;
   if (!element) return;
+
   let errorElement = element.nextElementSibling as HTMLElement;
 
   // If the message is "", remove the error message
   if (message === "") {
-    if (errorElement) {
+    if (errorElement && errorElement.classList.contains("error")) {
       errorElement.remove();
     }
     return;

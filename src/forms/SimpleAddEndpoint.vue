@@ -78,8 +78,10 @@ const submitForm = async () => {
       },
     ],
   }).catch((error) => {
+    isLoading.value = false;
     return error.response;
   });
+
   isLoading.value = false;
 
   // If the response is a 201, emit the updated event
@@ -117,6 +119,14 @@ const submitForm = async () => {
     // Show the fields with errors
     baseFormRef.value.setInputErrors(errors);
   }
+};
+
+const handleFailedConfirmation = () => {
+  isLoading.value = false;
+  baseFormRef.value.setSuccessOnInputs();
+  baseFormRef.value.setInputErrors({
+    endpoint: "Error",
+  });
 };
 
 const focusOnUrl = () => {
@@ -179,6 +189,7 @@ const debounceAddProtocolIfMissing = debounce(
       <confirms-subscription-start
         ref="subscriptionStartRef"
         @confirmed="submitForm"
+        @failed="handleFailedConfirmation"
         :redirectId="props.redirectId"
       >
         <template v-slot="{ isConfirming }">
