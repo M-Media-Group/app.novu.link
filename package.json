@@ -23,7 +23,7 @@
     "test:all": "run-p coverage test:e2e test:visual:ci",
     "test:visual:dev": "storybook dev -p 3001",
     "build-storybook": "storybook build",
-    "test:visual": "test-storybook --url http://localhost:3001 --verbose --maxWorkers=2",
+    "test:visual": "test-storybook --url http://localhost:3001 --maxWorkers=2",
     "test:visual:update": "test-storybook --url http://localhost:3001 --updateSnapshot"
   },
   "dependencies": {
