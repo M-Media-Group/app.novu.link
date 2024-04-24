@@ -220,7 +220,7 @@ export const GroupedWithOverflowingText: Story = {
     expect(buttonGroupRect.height).toBeLessThanOrEqual(canvasRect.height);
 
     expectChildrenNotOverflowing(buttonGroup.children, buttonGroup);
-    expectTextNotOverflowing(buttonGroup);
+    await expectTextNotOverflowing(buttonGroup);
   },
 };
 
