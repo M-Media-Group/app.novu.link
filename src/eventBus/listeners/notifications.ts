@@ -1,5 +1,8 @@
 import { SUPPORT_LOCALES } from "@/locales/i18n";
 import { eventTypes } from "../events";
+import i18n from "@/locales/i18n";
+
+const t = i18n.global.t;
 
 class CustomNotification {
   browserElement!: HTMLElement;
@@ -185,7 +188,63 @@ export default {
   [eventTypes.sent_reset_password_email]: () => {
     new CustomNotification(
       "success",
-      "We've sent you an email with a link to reset your password.",
+      t("We've sent you an email with a link to reset your password."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.created_redirect]: () => {
+    new CustomNotification(
+      "success",
+      t("Magic link created successfully."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.created_endpoint]: () => {
+    new CustomNotification(
+      "success",
+      t("Destination added successfully."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.registered]: () => {
+    new CustomNotification(
+      "success",
+      t("Welcome to Novu.Link! Confirm your email to unlock all the features."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.copied_redirect]: () => {
+    new CustomNotification(
+      "success",
+      t("Magic link copied to clipboard."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.sent_otp]: () => {
+    new CustomNotification(
+      "success",
+      t("We've sent you a one-time login code."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.confirmed_email]: () => {
+    new CustomNotification(
+      "success",
+      t("Email confirmed!"),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.started_subscription]: () => {
+    new CustomNotification(
+      "success",
+      t("Subscription started successfully."),
       ["browser"],
       5000
     ).show();
