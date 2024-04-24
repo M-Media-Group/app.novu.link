@@ -5,6 +5,8 @@ import { useUserStore } from "@/stores/user";
 
 import userFixture from "../../../cypress/fixtures/user.json";
 import teamsFixture from "../../../cypress/fixtures/teams.json";
+import paymentIntent from "../../../cypress/fixtures/paymentIntent.json";
+
 import { expect, waitFor, within } from "@storybook/test";
 import { useTeamStore } from "@/stores/team";
 
@@ -30,7 +32,7 @@ const meta: Meta<typeof AddPaymentMethod> = {
         url: "/user/payment-intent",
         method: "GET",
         status: 200,
-        response: null,
+        response: paymentIntent,
       },
     ],
   },
