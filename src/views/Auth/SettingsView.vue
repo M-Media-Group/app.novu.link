@@ -53,6 +53,6 @@ const handleDeleteToken = (id: string) => {
       </ul>
     </template>
     <p v-else>{{ $t("You have no API access tokens.") }}</p>
-    <personal-access-tokens @created="handleCreatedToken" />
+    <personal-access-tokens @created="handleCreatedToken" :autofocus="false" />
   </card-element>
 </template>

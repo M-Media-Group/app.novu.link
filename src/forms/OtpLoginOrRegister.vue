@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import BaseForm from "@/forms/BaseForm.vue";
 import { useUserStore } from "@/stores/user";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const userStore = useUserStore();
@@ -71,6 +71,17 @@ const validateOtp = async () => {
     alert("Invalid OTP");
   }
 };
+
+const phoneInput = ref<HTMLInputElement | null>(null);
+
+const toggleUsePhone = async () => {
+  usePhone.value = !usePhone.value;
+  await nextTick();
+  isOnOtpPage.value = false;
+  otpCode.value = "";
+  // Focus the input
+  phoneInput.value?.focus();
+};
 </script>
 <template>
   <base-form
@@ -126,6 +137,7 @@ const validateOtp = async () => {
         required
         autofocus
         v-model="userStore.userEmail"
+        ref="phoneInput"
       />
     </template>
     <template v-else>
@@ -143,13 +155,14 @@ const validateOtp = async () => {
         minlength="7"
         maxlength="16"
         :placeholder="$t('+339123456789')"
+        ref="phoneInput"
       />
     </template>
     <p>
-      <a v-if="!usePhone" href="#" @click.prevent="usePhone = true">{{
+      <a v-if="!usePhone" href="#" @click.prevent="toggleUsePhone">{{
         $t("Use phone instead")
       }}</a>
-      <a v-else href="#" @click.prevent="usePhone = false">{{
+      <a v-else href="#" @click.prevent="toggleUsePhone">{{
         $t("Use email instead")
       }}</a>
     </p>

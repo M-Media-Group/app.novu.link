@@ -15,6 +15,14 @@ const baseFormRef = ref();
 
 const emit = defineEmits(["created"]);
 
+defineProps({
+  /** If the form should autofocus */
+  autofocus: {
+    type: Boolean,
+    default: true,
+  },
+});
+
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
   if (!tokenName.value) {
@@ -44,6 +52,7 @@ const submitForm = async () => {
     @submit="submitForm"
     :isLoading="userStore.isLoading"
     submitText="Create a new API token"
+    :autofocus="autofocus"
   >
     <label for="name">{{ $t("New token name") }}</label>
     <input

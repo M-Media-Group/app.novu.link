@@ -213,7 +213,7 @@ onMounted(() => {
   checkValidity();
   // Focus on the first input if the document is not already focused on something
   if (!document.querySelector(":focus") && props.autofocus) {
-    focusOnFirstInput();
+    focusOnFirstEmptyInput();
   }
 });
 
@@ -221,6 +221,18 @@ const focusOnFirstInput = () => {
   const firstInput = formElement.value?.querySelector("input");
   if (firstInput) {
     firstInput.focus();
+  }
+};
+
+const focusOnFirstEmptyInput = () => {
+  const firstInput = formElement.value?.querySelectorAll("input");
+  if (firstInput) {
+    for (let i = 0; i < firstInput.length; i++) {
+      if (!firstInput[i].value) {
+        firstInput[i].focus();
+        return;
+      }
+    }
   }
 };
 
@@ -233,6 +245,7 @@ defineExpose({
   checkValidity,
   setInputErrors,
   focusOnFirstInput,
+  focusOnFirstEmptyInput,
   setSuccessOnInputs,
 });
 </script>
