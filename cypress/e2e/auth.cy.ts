@@ -7,17 +7,17 @@ describe("Guest auth pages redirect to home when logged in", () => {
   it("Redirects home from login if the user is already authenticated", () => {
     cy.visit("/login");
     // The path should be just "/"
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
   it("Redirects home from register if the user is already authenticated", () => {
     cy.visit("/sign-up");
     // The path should be just "/"
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
   it("Redirects home from password-reset if the user is already authenticated", () => {
     cy.visit("/forgot-password");
     // The path should be just "/"
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
 });
 
