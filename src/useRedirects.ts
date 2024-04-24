@@ -1,6 +1,8 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Endpoint, Redirect } from "./types/redirect";
+import $bus, { eventTypes } from "@/eventBus/events";
+import i18n from "@/locales/i18n";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -46,4 +48,26 @@ export const addRedirectEndpoint = async (
   data: Endpoint
 ) => {
   return await axios.post(`/api/v1/redirects/${redirectId}/endpoints`, data);
+};
+
+export const startSubscription = async (redirectId: string) => {
+  $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
+
+  const response = await axios.post(
+    `/api/v1/redirects/${redirectId}/subscribe`
+  );
+
+  if (response.status === 200) {
+    $bus.$emit(eventTypes.started_subscription);
+    return Promise.resolve();
+  } else {
+    const t = i18n.global.t;
+    console.error("Failed to start subscription", response);
+    alert(
+      t("An error occurred. Please try again.") +
+        " " +
+        t("Your subscription was not started and you have not been billed.")
+    );
+    return Promise.reject();
+  }
 };
