@@ -41,6 +41,12 @@ const meta: Meta<typeof RuleSelector> = {
         status: 200,
         response: rulesFixture,
       },
+      {
+        url: "/api/v1/rules/browser_language/test?operator=contains&value=af",
+        method: "POST",
+        status: 200,
+        response: { passes: true },
+      },
     ],
   },
 

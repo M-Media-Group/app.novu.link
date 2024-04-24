@@ -169,9 +169,6 @@ watch(isValidValue, () => {
       </label>
     </template>
   </dropdown-select>
-  <!-- <small v-if="errors?.rule" class="error">
-    {{ errors.rule }}
-  </small> -->
 
   <select
     v-show="selectedRule"
@@ -266,11 +263,8 @@ watch(isValidValue, () => {
     />
   </template>
 
-  <!-- <small v-if="errors?.value" class="error">
-    {{ errors.value }}
-  </small> -->
   <small
-    v-else-if="
+    v-if="
       selectedRule?.value &&
       modelValue.selectedOperator &&
       userWouldPass !== null
