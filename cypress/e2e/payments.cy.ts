@@ -3,7 +3,7 @@ describe("Payments", () => {
     cy.handleCsrf();
     cy.handleAuthenticatedUser();
 
-    cy.visit("/settings");
+    cy.visit("/team/settings");
   });
   it("Shows payments add page", () => {
     // There should be a button to add a payment method

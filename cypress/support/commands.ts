@@ -69,6 +69,14 @@ Cypress.Commands.add("handleAuthenticatedUser", () => {
     },
     { fixture: "user" }
   ).as("getAuthenticatedUser");
+
+  cy.intercept(
+    {
+      method: "GET",
+      pathname: "/api/v1/teams",
+    },
+    { fixture: "teams" }
+  ).as("getTeams");
 });
 
 Cypress.Commands.add("handleUnauthenticatedUser", () => {
@@ -79,6 +87,14 @@ Cypress.Commands.add("handleUnauthenticatedUser", () => {
     },
     { statusCode: 401 }
   ).as("getUnauthenticatedUser");
+
+  cy.intercept(
+    {
+      method: "GET",
+      pathname: "/api/v1/teams",
+    },
+    { statusCode: 401 }
+  ).as("getUnauthenticatedTeams");
 });
 
 Cypress.Commands.add(
