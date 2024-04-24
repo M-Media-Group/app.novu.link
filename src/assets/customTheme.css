@@ -7,9 +7,20 @@ article {
     padding-bottom: calc(var(--pico-block-spacing-vertical) * 1.6);
 }
 
-article>header {
-    border-bottom: unset;
+article>header,
+article>footer {
+    border: unset;
     background: var(--pico-card-background-color);
+}
+
+article>footer,
+article>:last-child:is(.images) {
+    margin-bottom: calc(var(--pico-block-spacing-vertical)* -2) !important;
+}
+
+
+article>:first-child:is(.images) {
+    margin-top: calc(var(--pico-block-spacing-vertical)* -2) !important;
 }
 
 .main-grid-display {

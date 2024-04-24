@@ -445,3 +445,18 @@ article {
 .dropdown:has(summary[aria-invalid=false])+small {
   color: var(--pico-ins-color);
 }
+
+
+/* Not articles with a table @todo add back to vue3-starter-kit */
+article,
+article>:not(>table) {
+  overflow-wrap: anywhere;
+
+  /* Can also be done with below @todo check which is better */
+  /* word-break: break-word; */
+}
+
+/** Fix link as button in nav margin @todo add back to vue3-starter-kit */
+nav a[role=button] {
+  margin-top: 0;
+}
