@@ -49,15 +49,6 @@ const selectResult = (result: string[]) => {
     // @ts-ignore
     (item) => item.place_id == result
   );
-
-  console.log(
-    "result",
-    result,
-    "found",
-    selectedGeoResult.value,
-    "all",
-    currentGeoResults.value
-  );
 };
 
 const optionsToShow = computed(() => {

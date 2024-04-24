@@ -95,7 +95,6 @@ const submitForm = async () => {
     }
     router.push(`/redirects/${response.data.uuid}`);
   } else {
-    console.log(response);
     baseFormRef.value.setInputErrors(response.data.errors);
   }
 
