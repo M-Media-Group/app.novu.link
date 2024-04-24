@@ -19,8 +19,8 @@ const getAllRules = async (redirectId?: string) => {
   isLoading.value = true;
 
   const endpoint = redirectId
-    ? `api/v1/rules?redirectId=${redirectId}`
-    : "api/v1/rules";
+    ? `/api/v1/rules?redirectId=${redirectId}`
+    : "/api/v1/rules";
 
   // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly
   const response = await axios.get(endpoint, {
@@ -57,7 +57,7 @@ const testRule = async (
   // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly. Because its a post request to `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`, we need to set the headers in the data object
   const response = await axios
     .post(
-      `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`,
+      `/api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`,
       {},
       {
         transformRequest: [

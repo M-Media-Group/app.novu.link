@@ -27,7 +27,7 @@ const getData = async (startDate?: string, endDate?: string) => {
     "languages",
   ];
 
-  const response = await axios.get("api/v1/redirects/analytics", {
+  const response = await axios.get("/api/v1/redirects/analytics", {
     params: {
       // Needs to be passed as an array
       withCount,

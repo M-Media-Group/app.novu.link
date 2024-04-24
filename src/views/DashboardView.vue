@@ -43,7 +43,7 @@ const itemData = computed(() => ({
       href: "/settings",
       target: "",
       // If the email ends with @novu.link, we consider it incomplete
-      completed: !userStore.user?.email.endsWith("@novu.link"),
+      completed: !userStore.user?.email?.endsWith("@novu.link"),
     },
     {
       text: t("Confirm your email"),

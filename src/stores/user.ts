@@ -68,7 +68,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Check if the email is already in use by calling POST "email-exists/" + email with axios. If it returns 404, the email is not in use.
     try {
-      const response = await axios.post("email-exists/" + email);
+      const response = await axios.post("/email-exists/" + email);
       return response.status === 200;
     } catch (error: any) {
       if (error.response.status === 404) {
@@ -102,7 +102,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Check if the email is already in use
     try {
-      await axios.post("login", {
+      await axios.post("/login", {
         email: email,
         password: password,
       });
@@ -144,7 +144,7 @@ export const useUserStore = defineStore("user", () => {
 
     try {
       // Check if the email is already in use
-      await axios.post("register", {
+      await axios.post("/register", {
         email: email,
         password: password,
         password_confirmation: password,
@@ -179,7 +179,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Submit a reset password
     try {
-      await axios.post("user/otp", {
+      await axios.post("/user/otp", {
         [method]: notifiable,
       });
       $bus.$emit(eventTypes.sent_otp);
@@ -205,7 +205,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Submit a reset password
     try {
-      await axios.post("user/otp/confirm", {
+      await axios.post("/user/otp/confirm", {
         otp: otp,
       });
       $bus.$emit(eventTypes.confirmed_otp);
@@ -230,7 +230,7 @@ export const useUserStore = defineStore("user", () => {
     }
     isLoading.value = true;
     try {
-      await axios.post("email/verification-notification", {
+      await axios.post("/email/verification-notification", {
         email: user.value.email,
       });
       return true;
@@ -256,7 +256,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Submit a reset password
     try {
-      await axios.post("forgot-password", {
+      await axios.post("/forgot-password", {
         email: email,
       });
       $bus.$emit(eventTypes.sent_reset_password_email);
@@ -297,7 +297,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Submit a reset password
     try {
-      await axios.post("reset-password", {
+      await axios.post("/reset-password", {
         email: email,
         token: token,
         password: password,
@@ -327,7 +327,7 @@ export const useUserStore = defineStore("user", () => {
 
     // Submit a reset password
     try {
-      await axios.post("user/confirm-password", {
+      await axios.post("/user/confirm-password", {
         password: password,
       });
       $bus.$emit(eventTypes.confirmed_password);
@@ -347,7 +347,7 @@ export const useUserStore = defineStore("user", () => {
   async function shouldConfirmPassword() {
     isLoading.value = true;
     try {
-      const response = await axios.get("user/confirmed-password-status");
+      const response = await axios.get("/user/confirmed-password-status");
       return !response.data.confirmed;
     } catch (error: any) {
       return error.response;
@@ -361,7 +361,7 @@ export const useUserStore = defineStore("user", () => {
    *
    */
   async function getCsrfToken() {
-    await axios.get("sanctum/csrf-cookie");
+    await axios.get("/sanctum/csrf-cookie");
   }
 
   /**
@@ -370,7 +370,7 @@ export const useUserStore = defineStore("user", () => {
    */
   async function logout() {
     isLoading.value = true;
-    await axios.post("logout");
+    await axios.post("/logout");
     isAuthenticated.value = false;
     user.value = null;
     isLoading.value = false;
@@ -387,7 +387,7 @@ export const useUserStore = defineStore("user", () => {
   async function update(name: string, email: string, phone?: string | null) {
     isLoading.value = true;
     try {
-      await axios.put("user/profile-information", {
+      await axios.put("/user/profile-information", {
         name: name ?? user.value?.name,
         email: email ?? user.value?.email,
         phone_number: phone ?? user.value?.phone_number,
