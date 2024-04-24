@@ -37,8 +37,6 @@ axios.interceptors.response.use(
       router.push({ name: "login-otp" });
     } else if (error.response?.status === 429) {
       router.push({ name: "429" });
-    } else if (error.response?.status === 401) {
-      router.push({ name: "login" });
     }
     return Promise.reject(error);
   }
