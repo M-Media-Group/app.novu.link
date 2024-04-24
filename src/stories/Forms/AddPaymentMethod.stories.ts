@@ -24,6 +24,15 @@ const meta: Meta<typeof AddPaymentMethod> = {
         rules: [{ id: "aria-hidden-focus", enabled: false }],
       },
     },
+
+    mockData: [
+      {
+        url: "/user/payment-intent",
+        method: "GET",
+        status: 200,
+        response: null,
+      },
+    ],
   },
 };
 
