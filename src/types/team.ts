@@ -3,8 +3,8 @@ export interface Team {
   user_id?: number;
   name: string;
   personal_team?: boolean;
-  created_at?: Date;
-  updated_at?: Date;
+  created_at?: Date | string;
+  updated_at?: Date | string;
   is_billing_exempt?: boolean;
   stripe_id?: string;
   pm_type?: string;
