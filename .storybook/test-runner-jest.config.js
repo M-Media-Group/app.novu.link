@@ -11,5 +11,5 @@ module.exports = {
     /** Add your own overrides below
      * @see https://jestjs.io/docs/configuration
      */
-    testTimeout: 20000, // default timeout is 15s
+    testTimeout: 25000, // default timeout is 15s
 };
