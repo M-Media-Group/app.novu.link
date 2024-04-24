@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
 import SingleQR from "@/components/screens/SingleQR.vue";
+import { vueRouter } from "storybook-vue3-router";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof SingleQR> = {
@@ -23,3 +24,15 @@ type Story = StoryObj<typeof SingleQR>;
  * to learn how to use render functions.
  */
 export const Default: Story = {};
+
+// Add vueRouter decorator to story
+/** @todo check and fix why this is even required, theoretically vueRouter should already work and this "hack"/re-declaration here should not be required */
+Default.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
