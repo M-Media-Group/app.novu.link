@@ -47,6 +47,19 @@ export const WithUserAlreadyAuthenticated: Story = {
 };
 
 export const OnRegisterScreen: Story = {
+  parameters: {
+    mockData: [
+      {
+        url: "/email-exists/:email",
+        method: "POST",
+        status: 404,
+        response: {
+          data: {},
+        },
+      },
+    ],
+  },
+
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
     // First we fill the field with the user email
