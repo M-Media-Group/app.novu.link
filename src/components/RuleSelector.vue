@@ -181,6 +181,7 @@ watch(isValidValue, () => {
     ref="operatorInput"
     name="operator"
     :required="required"
+    aria-label="Operator"
   >
     <option
       v-for="operator in allowedOperators"

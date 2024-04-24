@@ -6,7 +6,7 @@ import {
   sharedInputArgs,
 } from "../Inputs/SharedInputArgs";
 
-import axios from "axios";
+import rulesFixture from "../../../cypress/fixtures/rules.json";
 
 const meta: Meta<typeof RuleSelector> = {
   title: "Components/RuleSelector",
@@ -33,6 +33,17 @@ const meta: Meta<typeof RuleSelector> = {
     },
   },
 
+  parameters: {
+    mockData: [
+      {
+        url: "/api/v1/rules",
+        method: "GET",
+        status: 200,
+        response: rulesFixture,
+      },
+    ],
+  },
+
   // @ts-ignore
   decorators: [sharedDecorators],
 
@@ -40,7 +51,6 @@ const meta: Meta<typeof RuleSelector> = {
   render: (args) => ({
     components: { RuleSelector },
     setup() {
-      axios.defaults.baseURL = import.meta.env.VITE_API_URL;
       return { args };
     },
     template: "<rule-selector v-bind='args' v-model='args.modelValue' />",

@@ -3,7 +3,8 @@ import SimpleAddEndpointView from "@/views/SimpleAddEndpointView.vue";
 import { useUserStore } from "@/stores/user";
 // Import the user fixture json data
 import userFixture from "../../cypress/fixtures/user.json";
-import axios from "axios";
+import redirectsFixture from "../../cypress/fixtures/redirects.json";
+import rulesFixture from "../../cypress/fixtures/rules.json";
 
 const meta: Meta<typeof SimpleAddEndpointView> = {
   title: "Page/SimpleAddEndpointView",
@@ -12,19 +13,28 @@ const meta: Meta<typeof SimpleAddEndpointView> = {
     components: { SimpleAddEndpointView },
     template: "<SimpleAddEndpointView />",
     setup() {
-      axios.defaults.baseURL = import.meta.env.VITE_API_URL;
       return { args };
     },
   }),
-  parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: "fullscreen",
-  },
+
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
 
   args: {
-    redirectId: "123",
+    redirectId: redirectsFixture[0].uuid,
+  },
+
+  parameters: {
+    layout: "fullscreen",
+
+    mockData: [
+      {
+        url: "/api/v1/rules?redirectId=" + redirectsFixture[0].uuid,
+        method: "GET",
+        status: 200,
+        response: rulesFixture,
+      },
+    ],
   },
 };
 
@@ -46,7 +56,6 @@ export const WithUserData: Story = {
         created_at: new Date(),
         updated_at: new Date(),
       };
-      axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
       return { args };
     },

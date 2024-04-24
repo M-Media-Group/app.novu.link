@@ -5,8 +5,7 @@ import { useUserStore } from "@/stores/user";
 
 import userFixture from "../../../cypress/fixtures/user.json";
 import redirectsFixture from "../../../cypress/fixtures/redirects.json";
-
-import axios from "axios";
+import rulesFixture from "../../../cypress/fixtures/rules.json";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof SimpleAddEndpoint> = {
@@ -17,6 +16,16 @@ const meta: Meta<typeof SimpleAddEndpoint> = {
   args: {
     redirectId: redirectsFixture[0].uuid,
     fallbackUrl: redirectsFixture[0].endpoints[0].endpoint,
+  },
+  parameters: {
+    mockData: [
+      {
+        url: "/api/v1/rules?redirectId=" + redirectsFixture[0].uuid,
+        method: "GET",
+        status: 200,
+        response: rulesFixture,
+      },
+    ],
   },
 };
 
@@ -40,7 +49,6 @@ export const Default: Story = {
         updated_at: new Date(),
       };
 
-      axios.defaults.baseURL = import.meta.env.VITE_API_URL;
       return { args };
     },
     template: "<simple-add-endpoint v-bind='args' />",
