@@ -14,7 +14,7 @@ export default class extends baseGate {
 
   route(): false | RouteLocationRaw {
     return {
-      path: "/",
+      path: "/dashboard",
     };
   }
 }

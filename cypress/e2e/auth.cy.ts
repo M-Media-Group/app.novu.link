@@ -264,6 +264,8 @@ describe("Login", () => {
       }
     ).as("login");
 
+    cy.handleAuthenticatedUser();
+
     // Click the submit button to advance to the next screen
     cy.get("button[type=submit]").click();
 
@@ -274,7 +276,7 @@ describe("Login", () => {
     //   .should("have.property", "X-XSRF-TOKEN", "token");
 
     // We should be redirected to the dashboard
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
 
   it("Logs in and redirects when a redirect is supplied", () => {
@@ -554,7 +556,7 @@ describe("Register", () => {
     cy.get("input[name=name]").type("{enter}");
 
     // Confirm we are redirected to the "/" path
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
 
     // Confirm that the navigation bar does not have a link to the login page
     cy.get("a[href='/login']").should("not.exist");
@@ -749,7 +751,7 @@ describe("Confirm email", () => {
     cy.handleAuthenticatedUser();
 
     cy.visit("/confirm-email");
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
 
   it("Shows email confirmation resend page", () => {
@@ -809,8 +811,8 @@ describe("Confirm email", () => {
 describe("Logout", () => {
   beforeEach(() => {
     cy.handleCsrf();
+    cy.visit("/dashboard");
     cy.handleAuthenticatedUser();
-    cy.visit("/");
   });
 
   it("Logs out", () => {
@@ -859,7 +861,7 @@ describe("Logout", () => {
     //   .should("have.property", "X-XSRF-TOKEN", "token");
 
     // We should be redirected to the dashboard
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
 });
 
@@ -936,7 +938,7 @@ describe("Confirm password", () => {
     cy.get("button[type=submit]").should("be.disabled");
 
     // The user should be redirected once confirmed
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("eq", "/dashboard");
   });
 });
 

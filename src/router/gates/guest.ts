@@ -8,7 +8,6 @@ export default class extends baseGate {
     if (store.isAuthenticated) {
       return {
         path: "/dashboard",
-        setRedirectToIntended: false,
       };
     }
   }

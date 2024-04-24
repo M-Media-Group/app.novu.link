@@ -77,6 +77,14 @@ Cypress.Commands.add("handleAuthenticatedUser", () => {
     },
     { fixture: "teams" }
   ).as("getTeams");
+
+  cy.intercept(
+    {
+      method: "GET",
+      pathname: "/dashboard",
+    },
+    { fixture: "dashboard" }
+  ).as("getDashboard");
 });
 
 Cypress.Commands.add("handleUnauthenticatedUser", () => {
