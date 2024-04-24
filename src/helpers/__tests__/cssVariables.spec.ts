@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 // Mock the getComputedStyle function
 const mockGetComputedStyle = (value: string = "mocked value") => {
   const originalGetComputedStyle = window.getComputedStyle;
-  window.getComputedStyle = (element: Element) =>
+  window.getComputedStyle = () =>
     ({
       getPropertyValue: (prop: string) => {
         return {

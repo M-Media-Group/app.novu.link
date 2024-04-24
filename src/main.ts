@@ -10,6 +10,8 @@ import router from "./router";
 import "./eventBus/listeners/index";
 
 import VueGtagPlugin from "vue-gtag";
+import VueHotjar from "vue-hotjar-next";
+
 import "./assets/main.css";
 import i18n, { SUPPORT_LOCALES } from "./locales/i18n";
 import { ThemePlugin } from "./themes/useTheme";
@@ -26,6 +28,19 @@ axios.defaults.withCredentials = true;
 // Set accept header
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const gates = router.currentRoute.value.meta?.gates as string[] | undefined;
+    if (error.response?.status === 401 && gates?.includes("auth")) {
+      router.push({ name: "login" });
+    } else if (error.response?.status === 429) {
+      router.push({ name: "429" });
+    }
+    return Promise.reject(error);
+  }
+);
 
 app.use(createPinia());
 app.use(router);
@@ -70,6 +85,12 @@ app.use(
   },
   router
 );
+
+app.use(VueHotjar, {
+  id: import.meta.env.VITE_HOTJAR_MEASUREMENT_ID,
+  isProduction: import.meta.env.PROD,
+  snippetVersion: 6,
+});
 
 app.use(EventsPlugin);
 
