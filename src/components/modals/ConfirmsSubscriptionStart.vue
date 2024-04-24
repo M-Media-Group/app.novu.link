@@ -8,8 +8,8 @@ import { defineAsyncComponent, ref } from "vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import { useTeamStore } from "@/stores/team";
 import BaseButton from "@/components/BaseButton.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
 import subscribedRedirect from "@/router/gates/subscribedRedirect";
+import { startSubscription } from "@/useRedirects";
 
 const emits = defineEmits(["confirmed"]);
 
@@ -38,19 +38,33 @@ const props = defineProps({
 
 const teamStore = useTeamStore();
 
-const $bus = useEventsBus();
-
 const modal = ref();
 
 const isConfirming = ref(false);
+const isLoading = ref(false);
 
 const showAddForm = ref(teamStore.activeTeam?.pm_type === null);
 
 const confirmSubButton = ref();
 
+const startSubscriptionForRedirect = async () => {
+  if (!props.redirectId) {
+    return;
+  }
+  isLoading.value = true;
+
+  startSubscription(props.redirectId)
+    .then(() => {
+      handleConfirmed();
+    })
+    .catch(() => {
+      isLoading.value = false;
+    });
+};
+
 const startConfirming = async () => {
   isConfirming.value = true;
-  console.log("startConfirming", props.redirectId);
+  isLoading.value = true;
   if (
     (await new subscribedRedirect()
       .setOptions({
@@ -63,18 +77,24 @@ const startConfirming = async () => {
     return handleConfirmed();
   }
   modal.value.openModal();
+  isLoading.value = false;
 };
 
 const handleConfirmed = () => {
   emits("confirmed");
   modal.value.closeModal();
   showAddForm.value = false;
-  $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
+  isLoading.value = false;
 };
 
 const AddPaymentMethod = defineAsyncComponent(
   () => import("@/forms/AddPaymentMethod.vue")
 );
+
+const handleConfirmedWithPaymentMethod = () => {
+  showAddForm.value = false;
+  startSubscriptionForRedirect();
+};
 
 // expose startConfirming so we can call it from the parent component
 defineExpose<{ startConfirming: () => void }>({ startConfirming });
@@ -98,7 +118,7 @@ defineExpose<{ startConfirming: () => void }>({ startConfirming });
       </p>
       <add-payment-method
         v-if="modal?.isModalOpen && showAddForm"
-        @success="handleConfirmed"
+        @success="handleConfirmedWithPaymentMethod"
         :showLabel="false"
         :submitText="$t('Subscribe and activate destination')"
       />
@@ -114,9 +134,11 @@ defineExpose<{ startConfirming: () => void }>({ startConfirming });
         <br />
         <!-- Button to confirm subscription -->
         <base-button
-          @click="handleConfirmed"
+          @click="startSubscriptionForRedirect"
           type="submit"
           ref="confirmSubButton"
+          :disabled="isLoading"
+          :aria-busy="isLoading"
         >
           {{ submitText }}
         </base-button>
