@@ -27,7 +27,7 @@ axios.defaults.withXSRFToken = true;
 axios.defaults.withCredentials = true;
 // Set accept header
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+// axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 axios.interceptors.response.use(
   (response) => response,
@@ -37,6 +37,8 @@ axios.interceptors.response.use(
       router.push({ name: "login-otp" });
     } else if (error.response?.status === 429) {
       router.push({ name: "429" });
+    } else if (error.response?.status === 401) {
+      router.push({ name: "login" });
     }
     return Promise.reject(error);
   }

@@ -17,7 +17,7 @@ export default class extends baseGate {
   route(): false | RouteLocationRaw {
     // If the route was supposed to be login-otp, we should redirect to login-otp, else just login
     return {
-      name: "login/otp",
+      name: "login-otp",
     };
   }
 }
