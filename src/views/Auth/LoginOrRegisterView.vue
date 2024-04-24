@@ -13,7 +13,7 @@ const redirect = () => {
 
 <template>
   <h1>{{ $t("Authenticate") }}</h1>
-  <card-element :titleHeadingLevel="2" :title="$t('Connect')">
+  <card-element :titleHeadingLevel="2">
     <login-or-register @success="redirect" />
   </card-element>
 </template>
