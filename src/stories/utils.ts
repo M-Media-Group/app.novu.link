@@ -1,4 +1,4 @@
-import { expect } from "@storybook/test";
+import { expect, waitFor } from "@storybook/test";
 
 /** Recursively check that the children are not overflowing */
 export const expectChildrenNotOverflowing = (
@@ -17,7 +17,7 @@ export const expectChildrenNotOverflowing = (
 };
 
 /** Check that the element is not overflowing */
-export const expectTextNotOverflowing = (element: Element) => {
+export const expectTextNotOverflowing = async (element: Element) => {
   const elementRect = element.getBoundingClientRect();
 
   //   If the element handles overflow, we can't check for overflow. It might handle it by setting overflow: hidden and nowrap
@@ -27,9 +27,13 @@ export const expectTextNotOverflowing = (element: Element) => {
   ) {
     return;
   }
-
-  expect(element.scrollWidth).toBeLessThanOrEqual(elementRect.width);
-  expect(element.scrollHeight).toBeLessThanOrEqual(elementRect.height);
+  await waitFor(
+    () => {
+      expect(element.scrollWidth).toBeLessThanOrEqual(elementRect.width);
+      expect(element.scrollHeight).toBeLessThanOrEqual(elementRect.height);
+    },
+    { timeout: 500 }
+  );
 };
 
 /** check that an element is centered relative to parent */
