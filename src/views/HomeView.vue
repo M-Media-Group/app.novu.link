@@ -3,6 +3,7 @@ import CreateRedirect from "@/forms/CreateRedirect.vue";
 import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
+import NewNovuLinkDemo from "@/assets/CroppedNovuLinkDemo.gif";
 
 const { locale } = useI18n();
 
@@ -60,8 +61,13 @@ const scrollToTop = () => {
     </card-element>
   </section>
 
-  <section id="testimonials">
-    <h2>{{ $t("What our customers say") }}</h2>
+  <section id="testimonials" class="two-column-grid">
+    <hgroup>
+      <h2>{{ $t("What our customers say") }}</h2>
+      <p>
+        {{ $t("Across industries, our magic links are making a difference") }}
+      </p>
+    </hgroup>
     <ul>
       <li v-for="testimonial in testimonialData" :key="testimonial.id">
         <hgroup>
@@ -73,7 +79,31 @@ const scrollToTop = () => {
     </ul>
   </section>
 
-  <section id="painPoints">
+  <section id="goodPoints">
+    <hgroup>
+      <h2>{{ $t("How Novu.Link does even more") }}</h2>
+      <p>
+        {{
+          $t(
+            "We've taken the best parts of QR codes and made them even better."
+          )
+        }}
+      </p>
+    </hgroup>
+    <div class="two-column-grid">
+      <img :src="NewNovuLinkDemo" alt="Novu.Link demo" />
+      <ul>
+        <li v-for="goodPoint in goodPointsData" :key="goodPoint.id">
+          <hgroup>
+            <h3>{{ goodPoint.name }}</h3>
+          </hgroup>
+          <p>{{ goodPoint.description }}</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="painPoints" class="two-column-grid">
     <h2>{{ $t("Situations Novu.Link saves you from") }}</h2>
     <ul>
       <li v-for="painPoint in painPointsData" :key="painPoint.id">
@@ -85,22 +115,15 @@ const scrollToTop = () => {
     </ul>
   </section>
 
-  <section id="goodPoints">
-    <h2>{{ $t("How Novu.Link does even more") }}</h2>
-    <ul>
-      <li v-for="goodPoint in goodPointsData" :key="goodPoint.id">
-        <hgroup>
-          <h3>{{ goodPoint.name }}</h3>
-        </hgroup>
-        <p>{{ goodPoint.description }}</p>
-      </li>
-    </ul>
-  </section>
-
   <section id="pricing">
-    <h2>{{ $t("Pricing") }}</h2>
-    <ul>
-      <li v-for="pricing in pricingData" :key="pricing.id">
+    <hgroup>
+      <h2>{{ $t("Pricing") }}</h2>
+      <p>
+        {{ $t("Billed anually. Cancel anytime") }}
+      </p>
+    </hgroup>
+    <ul class="three-column-grid">
+      <card-element v-for="pricing in pricingData" :key="pricing.id">
         <hgroup>
           <h3>{{ pricing.name }}</h3>
           <p>{{ pricing.price }}</p>
@@ -115,13 +138,13 @@ const scrollToTop = () => {
         <button type="button" @click="scrollToTop">
           {{ $t("Get started") }}
         </button>
-      </li>
+      </card-element>
     </ul>
   </section>
 
   <section id="features">
     <h2>{{ $t("Features") }}</h2>
-    <ul>
+    <ul class="two-column-grid">
       <li v-for="feature in featureData" :key="feature.id">
         <hgroup>
           <h3>{{ feature.name }}</h3>
@@ -132,13 +155,15 @@ const scrollToTop = () => {
     </ul>
   </section>
 
-  <section id="faq">
+  <section id="faq" class="two-column-grid">
     <h2>{{ $t("FAQ") }}</h2>
     <!-- For FAQ we will use a details -->
-    <details v-for="faq in faqData" :key="faq.id">
-      <summary>{{ faq.question }}</summary>
-      <p>{{ faq.answer }}</p>
-    </details>
+    <div>
+      <details v-for="faq in faqData" :key="faq.id">
+        <summary>{{ faq.question }}</summary>
+        <p>{{ faq.answer }}</p>
+      </details>
+    </div>
   </section>
 
   <!-- Get started section -->
@@ -181,5 +206,9 @@ li {
 
 section:not(.hero-section) {
   margin-bottom: calc(var(--pico-spacing) * 3);
+}
+
+img {
+  border-radius: var(--pico-border-radius);
 }
 </style>

@@ -43,8 +43,15 @@ article:has(>:first-child:is(.images)) {
     gap: var(--pico-block-spacing-horizontal);
 }
 
+.three-column-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--pico-block-spacing-horizontal);
+}
+
 @media (min-width: 768px) {
-    .two-column-grid {
+
+    .two-column-grid,
+    .three-column-grid {
         display: grid;
     }
 }
