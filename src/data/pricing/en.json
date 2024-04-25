@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Basic",
+        "description": "For when you just need to be able to change a fixed URL sometimes.",
+        "price": "Free",
+        "features": [
+            "Up to 3,000 redirects per month"
+        ]
+    },
+    {
+        "name": "Pro",
+        "description": "Supercharged links with 300+ rule combinations to redirect anywhere.",
+        "price": "€3 / link / month",
+        "features": [
+            "Up to 30,000 redirects per month"
+        ]
+    },
+    {
+        "name": "Enterprise",
+        "description": "Custom built linking solutions tailored for your business needs.",
+        "price": "Contact sales",
+        "features": [
+            "Scalable as needed"
+        ]
+    }
+]

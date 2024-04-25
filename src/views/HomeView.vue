@@ -11,6 +11,7 @@ const testimonialData = ref([] as any[]);
 const faqData = ref([] as any[]);
 const goodPointsData = ref([] as any[]);
 const painPointsData = ref([] as any[]);
+const pricingData = ref([] as any[]);
 
 // Load the features from the correct locale
 const loadData = (dataset = "features", localeToUse = locale.value) => {
@@ -27,11 +28,19 @@ watch(
     faqData.value = await loadData("faqs", newLocale);
     goodPointsData.value = await loadData("goodPoints", newLocale);
     painPointsData.value = await loadData("painPoints", newLocale);
+    pricingData.value = await loadData("pricing", newLocale);
   },
   {
     immediate: true,
   }
 );
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
 </script>
 
 <template>
@@ -88,6 +97,28 @@ watch(
     </ul>
   </section>
 
+  <section id="pricing">
+    <h2>{{ $t("Pricing") }}</h2>
+    <ul>
+      <li v-for="pricing in pricingData" :key="pricing.id">
+        <hgroup>
+          <h3>{{ pricing.name }}</h3>
+          <p>{{ pricing.price }}</p>
+        </hgroup>
+        <p>{{ pricing.description }}</p>
+        <ul>
+          <li v-for="feature in pricing.features" :key="feature.id">
+            <p>{{ feature }}</p>
+          </li>
+        </ul>
+        <!-- Scroll to top button "Get started" -->
+        <button type="button" @click="scrollToTop">
+          {{ $t("Get started") }}
+        </button>
+      </li>
+    </ul>
+  </section>
+
   <section id="features">
     <h2>{{ $t("Features") }}</h2>
     <ul>
@@ -119,5 +150,15 @@ h2 {
 }
 hgroup h2 + p {
   font-size: 300%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+  margin-bottom: calc(var(--pico-spacing) * 3);
 }
 </style>
