@@ -29,3 +29,36 @@ Default.decorators = [
     },
   ]),
 ];
+
+export const WithDestinations: Story = {
+  args: {
+    endpoints: [
+      {
+        id: 1,
+        redirect_uuid: "https://example.com",
+        endpoint: "http://192.168.10.17:8001/redirects/Bs5mOLf",
+      },
+      {
+        id: 2,
+        redirect_uuid: "https://example.com",
+        endpoint:
+          "http://localhost:3001/?path=/story/components-qrdestinations--with-destinations",
+      },
+      {
+        id: 3,
+        redirect_uuid: "https://example.com",
+        endpoint: "https://developer.mozilla.org/en-US/docs/Web/CSS/width",
+      },
+    ],
+  },
+};
+
+WithDestinations.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
