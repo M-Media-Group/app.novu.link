@@ -6,20 +6,17 @@ const t = i18n.global.t;
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, computed, ref } from "vue";
-import { removeProtocol } from "@/helpers/urlFormatter";
 import TabNav from "../TabNav.vue";
-import { parseRuleGroup } from "@/useRules";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Endpoint } from "@/types/redirect";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
-import EditEndpoint from "@/components/modals/EditEndpoint.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import CardElement from "@/components/CardElement.vue";
 
 import { getRedirectUrl } from "@/useRedirects";
-import { watch } from "vue";
+import { defineAsyncComponent, watch } from "vue";
 
 import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
 
@@ -222,6 +219,10 @@ watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
 });
 
 const magicLink = getRedirectUrl(props.redirectId);
+
+const QRDestinations = defineAsyncComponent(
+  () => import("@/components/QR/QRDestinations.vue")
+);
 </script>
 
 <template>
@@ -305,37 +306,11 @@ const magicLink = getRedirectUrl(props.redirectId);
     </div>
 
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('2')">
-      <template v-for="endpoint in endpoints" :key="endpoint.id">
-        <edit-endpoint
-          v-if="endpoint.id"
-          :redirectId="redirectId"
-          :endpointId="endpoint.id"
-          :currentUrl="endpoint.endpoint"
-        >
-          <card-element :loading="isLoading">
-            <hgroup>
-              <h3>{{ removeProtocol(endpoint.endpoint) }}</h3>
-              <p v-if="endpoint.rule_groups?.[0]">
-                {{ $t("If") }} {{ parseRuleGroup(endpoint.rule_groups[0])[0] }}
-              </p>
-              <p v-else>
-                {{ $t("If no rules match") }}
-              </p>
-            </hgroup>
-          </card-element>
-        </edit-endpoint>
-      </template>
-      <base-button
-        :to="{
-          name: 'add-endpoint',
-          params: { redirectId: props.redirectId },
-        }"
-        >{{
-          hasBillableRedirects
-            ? $t("Add more free destinations")
-            : $t("Add more destinations to same code")
-        }}</base-button
-      >
+      <q-r-destinations
+        :redirectId="redirectId"
+        :endpoints="endpoints"
+        :isLoading="isLoading"
+      />
     </div>
 
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('4')">
