@@ -32,11 +32,19 @@ const props = defineProps({
     type: Number,
     default: 240,
   },
+  /** If the card should render as a skeleton loader */
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const emit = defineEmits<{
   update: [string | null];
 }>();
+
+const isReady = ref(false);
 
 const qrCodeDataURL = ref<string | null>(null);
 
@@ -85,6 +93,9 @@ const compute2 = async (
   reader.onload = () => {
     qrCodeDataURL.value = reader.result as string;
     emit("update", qrCodeDataURL.value);
+
+    // set isReady to true and make it non-reactive
+    isReady.value = true;
   };
   return reader.result as string;
 };
@@ -116,22 +127,24 @@ watch(
 </script>
 
 <template>
-  <div class="main-grid-display smaller-gap">
-    <img
-      :height="dimensions"
-      :width="dimensions"
-      :src="qrCodeDataURL ?? imgSrc ?? LinkReady"
-      alt="QR code"
-    />
-  </div>
+  <div
+    v-if="!isReady || loading"
+    class="gl-animate-skeleton-loader"
+    :style="{ height: dimensions + 'px', width: dimensions + 'px' }"
+  ></div>
+  <img
+    v-else
+    :height="dimensions"
+    :width="dimensions"
+    :src="qrCodeDataURL ?? imgSrc ?? LinkReady"
+    alt="QR code"
+  />
 </template>
 <style scoped>
 /* The image should be 100% to a maximum of 400px */
 img {
   aspect-ratio: 1;
-
   margin: 0 auto;
-
   border-radius: var(--pico-border-radius);
 }
 </style>

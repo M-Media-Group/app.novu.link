@@ -1,16 +1,11 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
-import {
-  getRedirectQrCodeDataUrl,
-  getRedirectQrCodeUrl,
-  getRedirectUrl,
-} from "@/useRedirects";
 
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
-import { type PropType, computed, onMounted, ref, watch } from "vue";
+import { type PropType, computed, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import TabNav from "../TabNav.vue";
@@ -18,14 +13,14 @@ import LineChart from "@/components/charts/LineChart.vue";
 import { parseRuleGroup } from "@/useRules";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Endpoint } from "@/types/redirect";
-import LinkReady from "@/assets/linkReady.png";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 import EditEndpoint from "@/components/modals/EditEndpoint.vue";
+import QRCode from "@/components/QRCode.vue";
+import { getRedirectUrl } from "@/useRedirects";
+import { watch } from "vue";
 
 import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
-
-import QRCodeStyling from "qr-code-styling";
 
 const $bus = useEventsBus();
 
@@ -120,9 +115,14 @@ const copyToClipboard = (text: string) => {
   }, 3000);
 };
 
+const qrCodeDataURL = ref<string | null>(null);
+
 const downloadQRCode = () => {
+  if (!qrCodeDataURL.value) {
+    return;
+  }
   const link = document.createElement("a");
-  link.href = qrCodeDataURL.value ?? imgSrc.value ?? LinkReady;
+  link.href = qrCodeDataURL.value;
   link.download = `${props.redirectName}.png`;
   link.target = "_blank";
   link.click();
@@ -200,90 +200,10 @@ const scrollUp = (element: HTMLElement) => {
   element.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
-const qrCodeDataURL = ref<string | null>(null);
-
-const compute2 = async (
-  lighColor = "#ffffff",
-  darkColor = "#000000",
-  logoDataUrl: string | null = null,
-  shape = "square" as "square" | "rounded" | "circle"
-) => {
-  if (!basicUrl.value) {
-    return;
-  }
-
-  const qrCode = new QRCodeStyling({
-    width: 480,
-    height: 480,
-    type: "svg",
-    data: basicUrl.value,
-    image: logoDataUrl ?? undefined,
-    margin: 2,
-    dotsOptions: {
-      color: darkColor,
-      type: shape === "circle" ? "rounded" : shape,
-    },
-    backgroundOptions: {
-      color: lighColor,
-    },
-    cornersSquareOptions: {
-      color: darkColor,
-      // type: shape === "rounded" ? "square" : shape,
-    },
-    cornersDotOptions: {
-      color: darkColor,
-      // type: shape === "rounded" ? "dot" : shape,
-    },
-    imageOptions: {
-      crossOrigin: "anonymous",
-      margin: 2,
-    },
-    qrOptions: {
-      errorCorrectionLevel: "L",
-    },
-  });
-
-  const data = (await qrCode.getRawData()) as Blob;
-  // The above is a blob, we need to convert it to a data URL
-  const reader = new FileReader();
-  reader.readAsDataURL(data);
-  reader.onload = () => {
-    qrCodeDataURL.value = reader.result as string;
-  };
-  return reader.result as string;
-};
-
 const lightColor = ref("#ffffff");
 const darkColor = ref("#000000");
 const logoDataUrl = ref<string | null>(null);
 const selectedShape = ref("square" as "square" | "rounded" | "circle");
-
-watch(
-  [lightColor, darkColor, logoDataUrl, selectedShape],
-  async () => {
-    await compute2(
-      lightColor.value,
-      darkColor.value,
-      logoDataUrl.value,
-      selectedShape.value
-    );
-
-    // Scroll up so we can see the QR code
-    scrollUp(document.querySelector(".main-grid-display") as HTMLElement);
-  },
-  { immediate: false }
-);
-
-const imgSrc = ref<string | null>(null);
-const magicLink = ref<string | null>(null);
-const basicUrl = ref<string | null>(null);
-
-onMounted(async () => {
-  imgSrc.value = await getRedirectQrCodeUrl(props.redirectId);
-  magicLink.value = await getRedirectUrl(props.redirectId);
-  basicUrl.value = await getRedirectQrCodeDataUrl(props.redirectId);
-  compute2();
-});
 
 const handleLogoUpload = async (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -294,6 +214,13 @@ const handleLogoUpload = async (event: Event) => {
   // Set the local url to the logo
   logoDataUrl.value = file ? URL.createObjectURL(file) : null;
 };
+
+const magicLink = getRedirectUrl(props.redirectId);
+
+watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
+  // Scroll up so we can see the QR code
+  scrollUp(document.querySelector(".main-grid-display") as HTMLElement);
+});
 </script>
 
 <template>
@@ -304,11 +231,14 @@ const handleLogoUpload = async (event: Event) => {
     </hgroup>
 
     <div class="main-grid-display smaller-gap">
-      <img
-        height="240"
-        width="240"
-        :src="qrCodeDataURL ?? imgSrc ?? LinkReady"
-        alt="QR code"
+      <q-r-code
+        :redirectId="props.redirectId"
+        :lightColor="lightColor"
+        :darkColor="darkColor"
+        :logoDataUrl="logoDataUrl"
+        :selectedShape="selectedShape"
+        @update="qrCodeDataURL = $event"
+        :loading="isLoading"
       />
     </div>
 
