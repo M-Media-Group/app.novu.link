@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { type PropType, defineAsyncComponent, ref } from "vue";
+import { type PropType, ref } from "vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
+import EditEndpoint from "@/forms/EditEndpoint.vue";
 
 const emits = defineEmits(["confirmed"]);
 
@@ -32,10 +33,6 @@ const handleConfirmed = () => {
   emits("confirmed");
   modal.value.closeModal();
 };
-
-const EditEndpoint = defineAsyncComponent(
-  () => import("@/forms/EditEndpoint.vue")
-);
 </script>
 <template>
   <span>
@@ -54,7 +51,6 @@ const EditEndpoint = defineAsyncComponent(
         :redirectId="redirectId"
         :endpointId="endpointId"
         :currentUrl="currentUrl"
-        v-if="modal?.isModalOpen"
         @success="handleConfirmed"
       />
     </base-modal>
