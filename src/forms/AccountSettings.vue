@@ -75,7 +75,7 @@ const submitForm = async () => {
       :placeholder="$t('Name')"
       v-model="name"
       minlength="2"
-      pattern=".{2,}"
+      pattern="\p{Alpha}{2,}"
       autofocus
       required
     />
