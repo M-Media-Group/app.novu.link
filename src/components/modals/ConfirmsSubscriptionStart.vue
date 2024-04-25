@@ -74,7 +74,7 @@ const startConfirming = async () => {
       })
       .handle();
 
-    if (gateRun) {
+    if (gateRun !== false) {
       return handleConfirmed();
     }
 

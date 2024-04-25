@@ -449,7 +449,7 @@ article {
 
 /* Not articles with a table @todo add back to vue3-starter-kit */
 article,
-article>:not(>table) {
+article:not(:has(table)) {
   overflow-wrap: anywhere;
 
   /* Can also be done with below @todo check which is better */
