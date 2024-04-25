@@ -140,6 +140,23 @@ const scrollToTop = () => {
       <p>{{ faq.answer }}</p>
     </details>
   </section>
+
+  <!-- Get started section -->
+  <section id="getStarted">
+    <hgroup>
+      <h2>{{ $t("Get started") }}</h2>
+      <p>
+        {{
+          $t(
+            "Permanent QR codes exist as long as we’re around, and we don’t plan on going anywhere anytime soon."
+          )
+        }}
+      </p>
+    </hgroup>
+    <card-element>
+      <create-redirect :autofocus="true"></create-redirect>
+    </card-element>
+  </section>
 </template>
 <style scoped>
 .hero-section {
