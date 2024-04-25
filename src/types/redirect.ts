@@ -8,7 +8,7 @@ export interface Redirect {
   deleted_at: null;
   todays_clicks_count: number;
   endpoints: Endpoint[];
-  subscribed_at: Date | null;
+  subscribed_at: Date | string | null;
 }
 
 export interface Endpoint {

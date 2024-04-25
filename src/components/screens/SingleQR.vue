@@ -86,6 +86,13 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
+
+  /** The loading state */
+  loading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const isLoading = ref(false);
@@ -240,7 +247,7 @@ const QRDestinations = defineAsyncComponent(
         :logoDataUrl="logoDataUrl"
         :selectedShape="selectedShape"
         @update="qrCodeDataURL = $event"
-        :loading="isLoading"
+        :loading="isLoading || loading"
       />
     </div>
 
@@ -300,7 +307,7 @@ const QRDestinations = defineAsyncComponent(
         :lineChartData="lineChartData"
         :clicksAllTime="clicksAllTime"
         :bestEndpoint="bestEndpoint"
-        :isLoading="isLoading"
+        :isLoading="isLoading || loading"
         :hasBillableRedirects="hasBillableRedirects"
       />
     </div>
@@ -309,13 +316,13 @@ const QRDestinations = defineAsyncComponent(
       <q-r-destinations
         :redirectId="redirectId"
         :endpoints="endpoints"
-        :isLoading="isLoading"
+        :isLoading="isLoading || loading"
       />
     </div>
 
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('4')">
       <card-element
-        :loading="isLoading"
+        :loading="isLoading || loading"
         :title="$t('Code design')"
         :subtitle="$t('Customise the look of your magic link')"
       >
@@ -366,7 +373,7 @@ const QRDestinations = defineAsyncComponent(
           >
         </confirms-subscription-start>
       </card-element>
-      <card-element :loading="isLoading">
+      <card-element :loading="isLoading || loading">
         <hgroup>
           <h3>{{ $t("Link settings") }}</h3>
         </hgroup>
@@ -376,7 +383,7 @@ const QRDestinations = defineAsyncComponent(
           :showLabel="true"
         />
       </card-element>
-      <card-element :loading="isLoading">
+      <card-element :loading="isLoading || loading">
         <hgroup>
           <h3>
             {{
@@ -411,7 +418,7 @@ const QRDestinations = defineAsyncComponent(
         <unsubscribe-redirect v-else :redirectId="props.redirectId" />
       </card-element>
       <!-- Delete card element -->
-      <card-element :loading="isLoading">
+      <card-element :loading="isLoading || loading">
         <hgroup>
           <h3>{{ $t("Delete Magic Link") }}</h3>
           <p>{{ $t("Delete this magic link and all its destinations") }}</p>
