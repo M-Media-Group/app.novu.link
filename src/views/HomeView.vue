@@ -122,7 +122,7 @@ const scrollToTop = () => {
         {{ $t("Billed anually. Cancel anytime") }}
       </p>
     </hgroup>
-    <ul class="three-column-grid">
+    <div class="three-column-grid">
       <card-element v-for="pricing in pricingData" :key="pricing.id">
         <hgroup>
           <h3>{{ pricing.name }}</h3>
@@ -139,7 +139,7 @@ const scrollToTop = () => {
           {{ $t("Get started") }}
         </button>
       </card-element>
-    </ul>
+    </div>
   </section>
 
   <section id="features">
