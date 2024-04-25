@@ -146,7 +146,8 @@ watch(
 </template>
 <style scoped>
 /* The image should be 100% to a maximum of 400px */
-img {
+img,
+.gl-animate-skeleton-loader {
   aspect-ratio: 1;
   margin: 0 auto;
   border-radius: var(--pico-border-radius);
