@@ -71,3 +71,23 @@ export const startSubscription = async (redirectId: string) => {
     return Promise.reject();
   }
 };
+
+export const unsubscribe = async (redirectId: string) => {
+  const response = await axios.post(
+    `/api/v1/redirects/${redirectId}/unsubscribe`
+  );
+
+  if (response.status === 200) {
+    $bus.$emit(eventTypes.unsubscribed);
+    return Promise.resolve(true);
+  } else {
+    const t = i18n.global.t;
+    console.error("Failed to unsubscribe", response);
+    alert(
+      t("An error occurred. Please try again.") +
+        " " +
+        t("Your subscription was not canceled.")
+    );
+    return Promise.reject(response);
+  }
+};

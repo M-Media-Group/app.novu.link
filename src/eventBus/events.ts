@@ -22,6 +22,7 @@ export enum eventTypes {
   changed_team = "changed_team",
   confirmed_willingness_to_start_subscription = "confirmed_willingness_to_start_subscription",
   started_subscription = "started_subscription",
+  unsubscribed = "unsubscribed",
   created_redirect = "created_redirect",
   created_endpoint = "created_endpoint",
   copied_redirect = "copied_redirect",

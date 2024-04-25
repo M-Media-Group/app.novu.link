@@ -47,6 +47,11 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  /** The CSS classes to apply to the submit button */
+  submitButtonClasses: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(["submit"]);
@@ -273,6 +278,7 @@ defineExpose({
         type="submit"
         :disabled="!formIsValid || disabled || isLoading || navIsLoading"
         :aria-busy="isLoading"
+        :class="submitButtonClasses"
       >
         {{ $t(submitText) }}
       </base-button>

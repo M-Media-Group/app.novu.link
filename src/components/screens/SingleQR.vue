@@ -20,6 +20,7 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Endpoint } from "@/types/redirect";
 import LinkReady from "@/assets/linkReady.png";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
+import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 
 import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
 
@@ -559,9 +560,7 @@ const handleLogoUpload = async (event: Event) => {
             >
           </confirms-subscription-start>
         </template>
-        <base-button v-else class="outline">{{
-          $t("Unsubscribe")
-        }}</base-button>
+        <unsubscribe-redirect v-else :redirectId="props.redirectId" />
       </card-element>
       <!-- Delete card element -->
       <card-element :loading="isLoading">
