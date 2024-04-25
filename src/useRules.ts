@@ -42,22 +42,28 @@ const getAllRules = async (redirectId?: string) => {
  * @param ruleName
  * @param operator
  * @param value
+ * @param redirectId
  * @returns
  */
 const testRule = async (
   ruleName?: keyof Rules,
   operator?: string,
-  value?: string
+  value?: string,
+  redirectId?: string
 ) => {
   // If not all data is set, return an error
   if (!ruleName || !operator || !value) {
     throw new Error("Missing data to test rule");
   }
 
+  const url =
+    `/api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}` +
+    (redirectId ? `&redirectId=${redirectId}` : "");
+
   // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly. Because its a post request to `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`, we need to set the headers in the data object
   const response = await axios
     .post(
-      `/api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`,
+      url,
       {},
       {
         transformRequest: [
@@ -182,7 +188,8 @@ export function useRules(
     testRule(
       modelData?.value?.selectedRuleKey as keyof Rules,
       modelData?.value?.selectedOperator,
-      modelData?.value?.selectedValue
+      modelData?.value?.selectedValue,
+      redirectId?.value
     )
       .then((passes) => {
         userWouldPass.value = passes;
