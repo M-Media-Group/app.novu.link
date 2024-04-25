@@ -220,8 +220,7 @@ textarea.unset-width {
 
 .placeholder-chart,
 .placeholder-chart.gl-animate-skeleton-loader {
-    /* Maintains same aspect of lineChart in Chart.js */
-    aspect-ratio: 3 / 1;
+    /* Maintains same aspect of lineChart in Chart.js - warning aspect-ratio seems to cause weird bug seen only after compiling all code */
     display: flex;
     width: 100%;
 
