@@ -43,7 +43,7 @@ const submitForm = async () => {
     :disabled="isLoading || success"
     :isLoading="isLoading"
     :submitText="$t('Unsubscribe')"
-    :submitButtonClasses="['outline']"
+    :submitButtonClasses="['outline', 'unset-width']"
   >
   </base-form>
 </template>
