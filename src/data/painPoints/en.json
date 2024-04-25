@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Mass-emailed a link with a typo",
+        "description": "If you would have sent a Novu.Link, you could update the destination URL even after its been sent."
+    },
+    {
+        "name": "Printed 100,000 flyers with the old (wrong) website",
+        "description": "Easy hack to double your costs and create awkward discussions with stakeholders. Or don’t, just by printing a QR code generated from Novu.Link - you can change those even after they’ve been printed."
+    },
+    {
+        "name": "Forgot to re-buy your domain",
+        "description": "Welp ok, lets be honest - thats a huge oversight. Luckily people with your Novu.Link can be temporarily redirected to your Facebook page while you, uhhh, “fix some minor unforeseen technical issues”."
+    },
+    {
+        "name": "Link too long to send in WhatsApp",
+        "description": "Yep, WhatsApp has limitations on link lengths, especially when they are actions in button. Since you’re using Novu.Link magic links, you don’t have that problem."
+    }
+]

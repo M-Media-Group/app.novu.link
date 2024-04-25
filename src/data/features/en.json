@@ -1,0 +1,182 @@
+[
+    {
+        "name": "Unlimited lifetime magic links",
+        "description": "Create as many magic links as you want, without any limit.",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
+        "name": "Unlimited redirect changes",
+        "description": "Change where your magic links redirect to as many times as you want, without any limit.",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
+        "name": "Variable passing",
+        "description": "Any variable appended to the magic link will be automatically passed on when clicked.",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
+        "name": "Track where link is used",
+        "description": "Add 'sources' to your links to remember where they are used. Places can be physical and virtual. We'll also automatically add sources when we find them.",
+        "category": "Analytics",
+        "min_subscription": 0
+    },
+    {
+        "name": "Unlimited team members",
+        "description": "Add as many team members as you need",
+        "category": "Teams",
+        "min_subscription": 0
+    },
+    {
+        "name": "Magic link analytics",
+        "description": "Track how many times your magic link was interacted with",
+        "category": "Analytics",
+        "min_subscription": 0
+    },
+    {
+        "name": "QR Code",
+        "description": "Get a free QR code with each free magic link",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
+        "name": "No ads during redirects",
+        "description": "Show no ads to your users during the redirect",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
+        "name": "Multiple team member permission levels",
+        "description": "Each team member can have their own permission level",
+        "category": "Teams",
+        "min_subscription": 0
+    },
+    {
+        "name": "Two Factor Authentication (2FA)",
+        "description": "Add a second factor to your account to protect your account from being hacked",
+        "category": "Teams",
+        "min_subscription": 0
+    },
+    {
+        "name": "Dynamic variables in endpoints",
+        "description": "Use rule values in your URLs to create dynamic endpoints, for example: http://example.com/?date={Date}",
+        "category": "Magic links",
+        "min_subscription": 1
+    },
+    {
+        "name": "Analytics central hub",
+        "description": "See an overview of your magic link performance in the beautiful analytics dashboard",
+        "category": "Analytics",
+        "min_subscription": 1
+    },
+    {
+        "name": "Unique click counts",
+        "description": "Track how many unique people clicked on your dynamic magic link",
+        "category": "Analytics",
+        "images": [
+            "../../images/analytics/uniqueClicks.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Breakdown of where your clicks are coming from",
+        "description": "See all the referrers of your clicks",
+        "category": "Analytics",
+        "min_subscription": 1
+    },
+    {
+        "name": "Breakdown of most common countries your clicks come from",
+        "description": "See all the countries your clicks occured in",
+        "category": "Analytics",
+        "images": [
+            "../../images/analytics/countries.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "See your best performing time of day",
+        "description": "Get detailed charts showing you when your links are most clicked or scanned",
+        "category": "Analytics",
+        "images": [
+            "../../images/analytics/timeOfDays.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect to multiple endpoints",
+        "description": "Redirect to multiple endpoints based on any rules you choose",
+        "category": "Rules based redirects",
+        "images": [
+            "../../images/rules.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Create any amount of endpoints",
+        "description": "Make unlimited amounts of smart endpoints per each magic link you define",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the time of day",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the users country",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Run A/B tests by redirecting a subset of users to different endpoints",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the users language",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the date",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the users IP address",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the variables in the link",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on where the user came from",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect based on the user-agent of the browser",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    },
+    {
+        "name": "Other rules based magic redirects",
+        "description": "Rules based redirects",
+        "category": "Rules based redirects",
+        "min_subscription": 1
+    }
+]

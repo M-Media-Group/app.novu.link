@@ -1,0 +1,182 @@
+[
+    {
+        "name": "Liens magiques illimités à vie",
+        "description": "Créez autant de liens magiques que vous le souhaitez, sans aucune limite.",
+        "category": "Liens magiques",
+        "min_subscription": 0
+    },
+    {
+        "name": "Changements de redirection illimités",
+        "description": "Modifiez autant de fois que vous le souhaitez l'endroit où vos liens magiques redirigent, sans aucune limite.",
+        "category": "Liens magiques",
+        "min_subscription": 0
+    },
+    {
+        "name": "Transmission de variables",
+        "description": "Toute variable ajoutée au lien magique sera automatiquement transmise lorsqu'elle est cliquée.",
+        "category": "Liens magiques",
+        "min_subscription": 0
+    },
+    {
+        "name": "Suivi de l'utilisation du lien",
+        "description": "Ajoutez des 'sources' à vos liens pour vous rappeler où ils sont utilisés. Les endroits peuvent être physiques et virtuels. Nous ajouterons également automatiquement des sources lorsque nous les trouverons.",
+        "category": "Analytique",
+        "min_subscription": 0
+    },
+    {
+        "name": "Membres d'équipe illimités",
+        "description": "Ajoutez autant de membres d'équipe que nécessaire",
+        "category": "Équipes",
+        "min_subscription": 0
+    },
+    {
+        "name": "Analytique des liens magiques",
+        "description": "Suivez combien de fois votre lien magique a été utilisé",
+        "category": "Analytique",
+        "min_subscription": 0
+    },
+    {
+        "name": "Code QR",
+        "description": "Obtenez gratuitement un code QR avec chaque lien magique gratuit",
+        "category": "Liens magiques",
+        "min_subscription": 0
+    },
+    {
+        "name": "Aucune publicité pendant les redirections",
+        "description": "Ne montrez aucune publicité à vos utilisateurs pendant la redirection",
+        "category": "Liens magiques",
+        "min_subscription": 0
+    },
+    {
+        "name": "Niveaux de permission multiples pour les membres de l'équipe",
+        "description": "Chaque membre de l'équipe peut avoir son propre niveau de permission",
+        "category": "Équipes",
+        "min_subscription": 0
+    },
+    {
+        "name": "Authentification à deux facteurs (2FA)",
+        "description": "Ajoutez un second facteur à votre compte pour protéger votre compte contre le piratage",
+        "category": "Équipes",
+        "min_subscription": 0
+    },
+    {
+        "name": "Variables dynamiques dans les points d'accès",
+        "description": "Utilisez des valeurs de règle dans vos URL pour créer des points d'accès dynamiques, par exemple : http://exemple.com/?date={Date}",
+        "category": "Liens magiques",
+        "min_subscription": 1
+    },
+    {
+        "name": "Hub central d'analyse",
+        "description": "Consultez une vue d'ensemble de la performance de vos liens magiques dans le magnifique tableau de bord d'analyse",
+        "category": "Analytique",
+        "min_subscription": 1
+    },
+    {
+        "name": "Comptage des clics uniques",
+        "description": "Suivez combien de personnes uniques ont cliqué sur votre lien magique dynamique",
+        "category": "Analytique",
+        "images": [
+            "../../images/analytics/uniqueClicks.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Répartition des provenances de vos clics",
+        "description": "Voyez tous les référents de vos clics",
+        "category": "Analytique",
+        "min_subscription": 1
+    },
+    {
+        "name": "Répartition des pays les plus courants d'où proviennent vos clics",
+        "description": "Voyez tous les pays dans lesquels vos clics se sont produits",
+        "category": "Analytique",
+        "images": [
+            "../../images/analytics/countries.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Voyez votre meilleur moment de la journée",
+        "description": "Obtenez des graphiques détaillés vous montrant quand vos liens sont le plus cliqués ou scannés",
+        "category": "Analytique",
+        "images": [
+            "../../images/analytics/timeOfDays.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Rediriger vers plusieurs points d'accès",
+        "description": "Redirigez vers plusieurs points d'accès en fonction de toutes les règles que vous choisissez",
+        "category": "Redirections basées sur des règles",
+        "images": [
+            "../../images/rules.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Créez n'importe quel nombre de points d'accès",
+        "description": "Créez un nombre illimité de points d'accès intelligents pour chaque lien magique que vous définissez",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction de l'heure de la journée",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction du pays de l'utilisateur",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Effectuez des tests A/B en redirigeant un sous-ensemble d'utilisateurs vers différents points d'accès",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction de la langue de l'utilisateur",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction de la date",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction de l'adresse IP de l'utilisateur",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction des variables dans le lien",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction de l'origine de l'utilisateur",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirection en fonction de l'agent utilisateur du navigateur",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    },
+    {
+        "name": "Autres redirections magiques basées sur des règles",
+        "description": "Redirections basées sur des règles",
+        "category": "Redirections basées sur des règles",
+        "min_subscription": 1
+    }
+]

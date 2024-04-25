@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Parlez vous Français? This way, please -->",
+        "description": "Redirect your customers to pages and links relevant to them, in languages they speak. It works in any language BTW."
+    },
+    {
+        "name": "Look at the time!",
+        "description": "Need to show a different link depending on the current time of day? No problem. The hardest choice to make will be whether its your time or their time (you can choose, of course)."
+    },
+    {
+        "name": "Sorry, we’re not talking to you.",
+        "description": "Limiting your links reach based on a country? Choose to invite-only or ban certain users based on the countries they come from."
+    },
+    {
+        "name": "iOS? To the App Store!",
+        "description": "Redirect users based on their device, browser, and anything else you’d like that you find in the user-agent."
+    }
+]

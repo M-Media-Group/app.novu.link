@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Envoyé un lien par e-mail avec une faute de frappe",
+        "description": "Si vous aviez envoyé un Novu.Link, vous auriez pu mettre à jour l'URL de destination même après son envoi."
+    },
+    {
+        "name": "Imprimé 100 000 flyers avec l'ancien (mauvais) site web",
+        "description": "Astuce facile pour doubler vos coûts et créer des discussions gênantes avec les parties prenantes. Ou ne le faites pas, en imprimant simplement un code QR généré à partir de Novu.Link - vous pouvez les modifier même après leur impression."
+    },
+    {
+        "name": "Oublié de renouveler votre nom de domaine",
+        "description": "Eh bien d'accord, soyons honnêtes - c'est une énorme omission. Heureusement, les personnes avec votre Novu.Link peuvent être temporairement redirigées vers votre page Facebook pendant que vous, euhhh, « corrigez quelques problèmes techniques mineurs imprévus »."
+    },
+    {
+        "name": "Lien trop long à envoyer sur WhatsApp",
+        "description": "Oui, WhatsApp a des limitations sur la longueur des liens, surtout lorsqu'ils sont des actions dans un bouton. Comme vous utilisez des liens magiques Novu.Link, vous n'avez pas ce problème."
+    }
+]

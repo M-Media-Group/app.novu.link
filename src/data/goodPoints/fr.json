@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Parlez-vous français ? Par ici, s'il vous plaît -->",
+        "description": "Redirigez vos clients vers des pages et des liens pertinents pour eux, dans les langues qu'ils parlent. Ça fonctionne dans n'importe quelle langue d'ailleurs."
+    },
+    {
+        "name": "Regardez l'heure !",
+        "description": "Besoin d'afficher un lien différent en fonction de l'heure actuelle ? Pas de problème. Le choix le plus difficile sera de décider s'il s'agit de votre heure ou de leur heure (vous pouvez choisir, bien sûr)."
+    },
+    {
+        "name": "Désolé, nous ne vous parlons pas.",
+        "description": "Limitez la portée de vos liens en fonction d'un pays ? Choisissez d'inviter uniquement ou d'interdire certains utilisateurs en fonction des pays d'où ils viennent."
+    },
+    {
+        "name": "iOS ? Direction l'App Store !",
+        "description": "Redirigez les utilisateurs en fonction de leur appareil, navigateur, et tout ce que vous souhaitez trouver dans l'agent utilisateur."
+    }
+]
