@@ -179,7 +179,7 @@ const scrollToTop = () => {
       </p>
     </hgroup>
     <card-element>
-      <create-redirect :autofocus="true"></create-redirect>
+      <create-redirect :autofocus="false"></create-redirect>
     </card-element>
   </section>
 </template>
