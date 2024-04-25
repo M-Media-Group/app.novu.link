@@ -4,7 +4,7 @@ import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 const featureData = ref([] as any[]);
 const testimonialData = ref([] as any[]);
