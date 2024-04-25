@@ -33,6 +33,12 @@ const defaultEndpoint = (redirect: Redirect) => {
   </hgroup>
   <div>
     <card-element
+      v-if="isLoading"
+      :title="$t('Magic links')"
+      :subtitle="$t('Magic links')"
+      :loading="true"
+    ></card-element>
+    <card-element
       v-for="redirect in redirects"
       :key="redirect.uuid"
       @click="$router.push(`/redirects/${redirect.uuid}`)"
