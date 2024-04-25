@@ -47,10 +47,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  /** The CSS classes to apply to the submit button */
+  /** The CSS classes to apply to the submit button. Null should theoretically render no class, but there's a known Vue3 issue @see https://github.com/vuejs/core/issues/3173 */
   submitButtonClasses: {
-    type: Array,
-    default: () => [],
+    type: Array as PropType<string[] | null>,
+    default: null,
   },
 });
 
