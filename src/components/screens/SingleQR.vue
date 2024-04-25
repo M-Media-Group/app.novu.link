@@ -6,10 +6,8 @@ const t = i18n.global.t;
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, computed, ref } from "vue";
-import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import TabNav from "../TabNav.vue";
-import LineChart from "@/components/charts/LineChart.vue";
 import { parseRuleGroup } from "@/useRules";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Endpoint } from "@/types/redirect";
@@ -17,6 +15,9 @@ import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 import EditEndpoint from "@/components/modals/EditEndpoint.vue";
 import QRCode from "@/components/QRCode.vue";
+import QRAnalytics from "@/components/QR/QRAnalytics.vue";
+import CardElement from "@/components/CardElement.vue";
+
 import { getRedirectUrl } from "@/useRedirects";
 import { watch } from "vue";
 
@@ -37,11 +38,11 @@ const props = defineProps({
     default: "Magic link",
   },
 
-  /** When the redirect subscription was started */
-  subscribedAt: {
-    type: String as PropType<string | null>,
+  /** When the redirect subscription was started. */
+  subscribed: {
+    type: Boolean,
     required: false,
-    default: null,
+    default: false,
   },
 
   showTitle: {
@@ -93,7 +94,7 @@ const props = defineProps({
 const isLoading = ref(false);
 
 const hasBillableRedirects = computed(() => {
-  return !!(props.subscribedAt || props.endpoints.length > 1);
+  return !!(props.subscribed || props.endpoints.length > 1);
 });
 
 const copiedTimeout = ref<NodeJS.Timeout | null>(null);
@@ -195,11 +196,6 @@ const lineChartData = computed(() => {
   return filledData;
 });
 
-const scrollUp = (element: HTMLElement) => {
-  // Scroll so that the element is at the top of the screen
-  element.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
 const lightColor = ref("#ffffff");
 const darkColor = ref("#000000");
 const logoDataUrl = ref<string | null>(null);
@@ -215,12 +211,17 @@ const handleLogoUpload = async (event: Event) => {
   logoDataUrl.value = file ? URL.createObjectURL(file) : null;
 };
 
-const magicLink = getRedirectUrl(props.redirectId);
+const scrollUp = (element: HTMLElement) => {
+  // Scroll so that the element is at the top of the screen
+  element.scrollIntoView({ behavior: "smooth", block: "start" });
+};
 
 watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
   // Scroll up so we can see the QR code
   scrollUp(document.querySelector(".main-grid-display") as HTMLElement);
 });
+
+const magicLink = getRedirectUrl(props.redirectId);
 </script>
 
 <template>
@@ -292,78 +293,15 @@ watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
     >
     </tab-nav>
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('1')">
-      <div class="two-column-grid mobile-grid">
-        <card-element :loading="isLoading">
-          <hgroup v-if="clicksToday !== null">
-            <h3>{{ clicksToday }}</h3>
-            <p>{{ $t("Scans today") }}</p>
-          </hgroup>
-        </card-element>
-
-        <card-element :loading="isLoading">
-          <hgroup v-if="clicksAllTime !== null">
-            <h3>{{ clicksAllTime }}</h3>
-            <p>{{ $t("Scans all time") }}</p>
-          </hgroup>
-        </card-element>
-      </div>
-      <template v-if="hasBillableRedirects === true">
-        <card-element v-if="bestEndpoint">
-          <hgroup>
-            <h3>{{ removeProtocol(bestEndpoint) }}</h3>
-            <p>{{ $t("Best performing destination") }}</p>
-          </hgroup>
-        </card-element>
-
-        <card-element>
-          <hgroup>
-            <h2>{{ $t("Scans by time of day") }}</h2>
-            <p>{{ $t("By scans") }}</p>
-          </hgroup>
-          <line-chart v-if="lineChartData" :clickData="lineChartData" />
-        </card-element>
-      </template>
-      <template v-if="hasBillableRedirects !== true">
-        <confirms-subscription-start
-          :redirectId="props.redirectId"
-          :title="$t('Enable advanced analytics')"
-          :submitText="$t('Enable advanced analytics')"
-        >
-          <base-button class="full-width no-margin">
-            {{ $t("Enable advanced analytics") }}</base-button
-          >
-        </confirms-subscription-start>
-      </template>
-
-      <base-button class="full-width" to="/analytics" v-else>{{
-        $t("Go to advanced analytics")
-      }}</base-button>
-      <card-element v-if="hasBillableRedirects !== true">
-        <hgroup>
-          <h2>{{ $t("Scans by time of day") }}</h2>
-          <p>{{ $t("By scans") }}</p>
-        </hgroup>
-        <p>
-          {{
-            $t(
-              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-            )
-          }}
-        </p>
-      </card-element>
-      <card-element v-if="hasBillableRedirects !== true">
-        <hgroup>
-          <h3>--</h3>
-          <p>{{ $t("Best performing destination") }}</p>
-        </hgroup>
-        <p>
-          {{
-            $t(
-              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-            )
-          }}
-        </p>
-      </card-element>
+      <q-r-analytics
+        :redirectId="redirectId"
+        :clicksToday="clicksToday"
+        :lineChartData="lineChartData"
+        :clicksAllTime="clicksAllTime"
+        :bestEndpoint="bestEndpoint"
+        :isLoading="isLoading"
+        :hasBillableRedirects="hasBillableRedirects"
+      />
     </div>
 
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('2')">
@@ -443,7 +381,7 @@ watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
           </select>
         </div>
         <confirms-subscription-start
-          :redirectId="props.redirectId"
+          :redirectId="redirectId"
           :title="$t('Enable custom designs')"
           :submitText="$t('Enable custom designs')"
           v-if="!hasBillableRedirects"
@@ -486,7 +424,7 @@ watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
         </hgroup>
         <template v-if="hasBillableRedirects !== true">
           <confirms-subscription-start
-            :redirectId="props.redirectId"
+            :redirectId="redirectId"
             :title="$t('Subscribe')"
             :submitText="$t('Subscribe Magic Link')"
           >

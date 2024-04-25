@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import LinkReady from "@/assets/linkReady.png";
 
-import QRCodeStyling from "qr-code-styling";
+import QRCodeStyling, { type FileExtension } from "qr-code-styling";
 import type { PropType } from "vue";
 import { getRedirectQrCodeDataUrl } from "@/useRedirects";
 
@@ -50,17 +50,20 @@ const qrCodeDataURL = ref<string | null>(null);
 
 const reader = new FileReader();
 
+const qrCode = new QRCodeStyling();
+
 const compute2 = async (
   urlToEncode = "",
   lighColor = "#ffffff",
   darkColor = "#000000",
   logoDataUrl: string | null = null,
-  shape = "square" as "square" | "rounded" | "circle"
+  shape = "square" as "square" | "rounded" | "circle",
+  dimensions = props.dimensions * 2,
+  fileType = "png" as FileExtension
 ) => {
-  const qrCode = new QRCodeStyling({
-    width: 480,
-    height: 480,
-    type: "svg",
+  qrCode.update({
+    width: dimensions * 2,
+    height: dimensions * 2,
     data: urlToEncode,
     image: logoDataUrl ?? undefined,
     margin: 2,
@@ -88,7 +91,7 @@ const compute2 = async (
     },
   });
 
-  const data = (await qrCode.getRawData()) as Blob;
+  const data = (await qrCode.getRawData(fileType)) as Blob;
   // The above is a blob, we need to convert it to a data URL
   reader.readAsDataURL(data);
   reader.onload = () => {

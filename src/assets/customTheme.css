@@ -217,3 +217,30 @@ select.unset-width,
 textarea.unset-width {
     width: unset;
 }
+
+.placeholder-chart,
+.placeholder-chart.gl-animate-skeleton-loader {
+    /* Maintains same aspect of lineChart in Chart.js */
+    aspect-ratio: 3 / 1;
+    display: flex;
+    width: 100%;
+
+    /* Align text center */
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 300px;
+}
+
+.placeholder-chart::before {
+    position: absolute;
+    content: "";
+    font-size: 1.2rem;
+    background-color: var(--pico-secondary-background);
+    border-radius: var(--pico-border-radius);
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

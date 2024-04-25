@@ -4,9 +4,12 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Endpoint } from "@/types/redirect";
 import { type PropType, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
+import { useTeamStore } from "@/stores/team";
 
 const $bus = useEventsBus();
 const router = useRouter();
+
+const teamStore = useTeamStore();
 
 defineProps({
   /** The redirect ID to add the endpoint for */
@@ -68,7 +71,7 @@ onUnmounted(() => {
     <single-q-r
       :showTitle="false"
       :redirectName="redirectName"
-      :subscribedAt="subscribedAt"
+      :subscribed="teamStore.activeTeam?.is_billing_exempt || !!subscribedAt"
       v-bind="$props"
     />
   </div>
