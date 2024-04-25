@@ -21,6 +21,7 @@ import type { Endpoint } from "@/types/redirect";
 import LinkReady from "@/assets/linkReady.png";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
+import EditEndpoint from "@/components/modals/EditEndpoint.vue";
 
 import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
 
@@ -436,22 +437,26 @@ const handleLogoUpload = async (event: Event) => {
     </div>
 
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('2')">
-      <card-element
-        :loading="isLoading"
-        v-for="endpoint in endpoints"
-        :key="endpoint.id"
-      >
-        <hgroup>
-          <h3>{{ removeProtocol(endpoint.endpoint) }}</h3>
-          <p v-if="endpoint.rule_groups[0]">
-            {{ $t("If") }} {{ parseRuleGroup(endpoint.rule_groups[0])[0] }}
-          </p>
-          <p v-else>
-            {{ $t("If no rules match") }}
-          </p>
-        </hgroup>
-      </card-element>
-
+      <template v-for="endpoint in endpoints" :key="endpoint.id">
+        <edit-endpoint
+          v-if="endpoint.id"
+          :redirectId="redirectId"
+          :endpointId="endpoint.id"
+          :currentUrl="endpoint.endpoint"
+        >
+          <card-element :loading="isLoading">
+            <hgroup>
+              <h3>{{ removeProtocol(endpoint.endpoint) }}</h3>
+              <p v-if="endpoint.rule_groups?.[0]">
+                {{ $t("If") }} {{ parseRuleGroup(endpoint.rule_groups[0])[0] }}
+              </p>
+              <p v-else>
+                {{ $t("If no rules match") }}
+              </p>
+            </hgroup>
+          </card-element>
+        </edit-endpoint>
+      </template>
       <base-button
         :to="{
           name: 'add-endpoint',
