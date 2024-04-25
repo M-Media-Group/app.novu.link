@@ -59,7 +59,9 @@ const itemData = computed(() => ({
     },
     {
       text: "Test your magic link",
-      href: `/redirects/${data.value?.bestRedirect?.uuid}`,
+      href: !data.value?.bestRedirect?.uuid
+        ? "/redirects/create"
+        : `/redirects/${data.value?.bestRedirect?.uuid}`,
       target: "",
       completed: data.value?.clicks?.total
         ? data.value?.clicks?.total > 0
@@ -72,8 +74,10 @@ const itemData = computed(() => ({
       completed: data.value?.hasPaymentMethodSet,
     },
     {
-      text: "Create your first Smart Magic Link",
-      href: `/redirects/${data.value?.bestRedirect?.uuid}`,
+      text: t("Create your first Smart Magic Link"),
+      href: !data.value?.bestRedirect?.uuid
+        ? "/redirects/create"
+        : `/redirects/${data.value?.bestRedirect?.uuid}`,
       target: "",
       completed: data.value?.hasBillableRedirects,
     },
