@@ -203,6 +203,10 @@ aside {
 
 }
 
-.unset-width {
+.unset-width,
+button[type=submit].unset-width,
+input:not([type=checkbox], [type=radio]).unset-width,
+select.unset-width,
+textarea.unset-width {
     width: unset;
 }
