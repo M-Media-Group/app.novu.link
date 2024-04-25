@@ -48,6 +48,8 @@ const isReady = ref(false);
 
 const qrCodeDataURL = ref<string | null>(null);
 
+const reader = new FileReader();
+
 const compute2 = async (
   urlToEncode = "",
   lighColor = "#ffffff",
@@ -88,7 +90,6 @@ const compute2 = async (
 
   const data = (await qrCode.getRawData()) as Blob;
   // The above is a blob, we need to convert it to a data URL
-  const reader = new FileReader();
   reader.readAsDataURL(data);
   reader.onload = () => {
     qrCodeDataURL.value = reader.result as string;
