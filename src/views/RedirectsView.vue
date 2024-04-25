@@ -17,11 +17,15 @@ getRedirects().then((response) => {
 });
 
 const defaultEndpoint = (redirect: Redirect) => {
+  if (redirect.endpoints.length === 0) {
+    return "";
+  }
   const defaultEndpoint = redirect.endpoints.find(
     (endpoint) => endpoint.is_default
   )?.endpoint;
   if (!defaultEndpoint) {
-    return null;
+    // just grab the first endpoint if there is no default
+    return removeProtocol(redirect.endpoints[0].endpoint);
   }
   return removeProtocol(defaultEndpoint);
 };
