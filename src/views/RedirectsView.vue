@@ -4,6 +4,7 @@ import type { Redirect } from "@/types/redirect";
 import CardElement from "@/components/CardElement.vue";
 import { getRedirectQrCodeUrl, getRedirects } from "@/useRedirects";
 import { removeProtocol } from "@/helpers/urlFormatter";
+import BaseButton from "@/components/BaseButton.vue";
 
 const redirects = ref([] as Redirect[]);
 const isLoading = ref(true);
@@ -56,6 +57,15 @@ const defaultEndpoint = (redirect: Redirect) => {
           alt="QR code"
         />
       </template>
+    </card-element>
+
+    <card-element
+      v-if="redirects.length === 0 && !isLoading"
+      :title="$t('Create a free permanent magic link')"
+    >
+      <base-button to="/redirects/create">
+        {{ $t("Create a free permanent magic link") }}
+      </base-button>
     </card-element>
   </div>
 </template>

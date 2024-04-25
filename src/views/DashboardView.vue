@@ -58,7 +58,7 @@ const itemData = computed(() => ({
       completed: data.value?.bestRedirect?.uuid,
     },
     {
-      text: "Test your magic link",
+      text: t("Test your magic link"),
       href: !data.value?.bestRedirect?.uuid
         ? "/redirects/create"
         : `/redirects/${data.value?.bestRedirect?.uuid}`,
