@@ -178,4 +178,8 @@ li {
   list-style-type: none;
   margin-bottom: calc(var(--pico-spacing) * 3);
 }
+
+section:not(.hero-section) {
+  margin-bottom: calc(var(--pico-spacing) * 3);
+}
 </style>
