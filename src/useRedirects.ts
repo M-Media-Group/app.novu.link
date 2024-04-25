@@ -50,6 +50,17 @@ export const addRedirectEndpoint = async (
   return await axios.post(`/api/v1/redirects/${redirectId}/endpoints`, data);
 };
 
+export const updateRedirectEndpoint = async (
+  redirectId: string,
+  endpointId: string,
+  data: Endpoint
+) => {
+  return await axios.put(
+    `/api/v1/redirects/${redirectId}/endpoints/${endpointId}`,
+    data
+  );
+};
+
 export const startSubscription = async (redirectId: string) => {
   $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
 

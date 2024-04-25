@@ -20,7 +20,7 @@ export interface Endpoint {
   order?: number;
   created_at?: Date;
   updated_at?: Date;
-  rule_groups: any[];
+  rule_groups?: any[];
   clicks?: Click[];
 }
 
