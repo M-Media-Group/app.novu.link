@@ -90,12 +90,16 @@ const getData = () => {
 onMounted(() => {
   $bus.$on(eventTypes.started_subscription, getData);
   $bus.$on(eventTypes.unsubscribed, getData);
+  $bus.$on(eventTypes.updated_redirect, getData);
+  $bus.$on(eventTypes.updated_endpoint, getData);
   getData();
 });
 
 onUnmounted(() => {
   $bus.$off(eventTypes.started_subscription, getData);
   $bus.$off(eventTypes.unsubscribed, getData);
+  $bus.$off(eventTypes.updated_redirect, getData);
+  $bus.$off(eventTypes.updated_endpoint, getData);
 });
 </script>
 <template>
