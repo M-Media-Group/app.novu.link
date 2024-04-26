@@ -20,10 +20,6 @@ const props = defineProps({
   },
 });
 
-const refreshPage = () => {
-  router.go(0);
-};
-
 const isLoading = ref(true);
 
 // All refs
@@ -92,12 +88,12 @@ const getData = () => {
 };
 
 onMounted(() => {
-  $bus.$on(eventTypes.started_subscription, refreshPage);
+  $bus.$on(eventTypes.started_subscription, getData);
   getData();
 });
 
 onUnmounted(() => {
-  $bus.$off(eventTypes.started_subscription, refreshPage);
+  $bus.$off(eventTypes.started_subscription, getData);
 });
 </script>
 <template>
