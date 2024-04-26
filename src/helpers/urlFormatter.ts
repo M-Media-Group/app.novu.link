@@ -55,32 +55,32 @@ export function looksLikeStartingWithProtocol(url: string) {
   }
 
   //   if the second letter is not a "t" or "T" return false
-  if (!url[1].toLowerCase().startsWith("t")) {
+  if (!url[1]?.toLowerCase().startsWith("t")) {
     return false;
   }
 
   // if the third letter is not a "t" or "T" return false
-  if (!url[2].toLowerCase().startsWith("t")) {
+  if (!url[2]?.toLowerCase().startsWith("t")) {
     return false;
   }
 
   // if the fourth letter is not a "p" or "P" return false
-  if (!url[3].toLowerCase().startsWith("p")) {
+  if (!url[3]?.toLowerCase().startsWith("p")) {
     return false;
   }
 
   // If the fifth letter is not a ":" or "s" return false
-  if (!url[4].startsWith(":") && !url[4].toLowerCase().startsWith("s")) {
+  if (!url[4]?.startsWith(":") && !url[4].toLowerCase().startsWith("s")) {
     return false;
   }
 
   //   If the sixth letter is not a ":" or "/" return false
-  if (!url[5].startsWith(":") && !url[5].startsWith("/")) {
+  if (!url[5]?.startsWith(":") && !url[5].startsWith("/")) {
     return false;
   }
 
   // If the seventh letter is not a "/" return false
-  if (!url[6].startsWith("/")) {
+  if (!url[6]?.startsWith("/")) {
     return false;
   }
 
