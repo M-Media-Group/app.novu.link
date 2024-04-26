@@ -89,11 +89,13 @@ const getData = () => {
 
 onMounted(() => {
   $bus.$on(eventTypes.started_subscription, getData);
+  $bus.$on(eventTypes.unsubscribed, getData);
   getData();
 });
 
 onUnmounted(() => {
   $bus.$off(eventTypes.started_subscription, getData);
+  $bus.$off(eventTypes.unsubscribed, getData);
 });
 </script>
 <template>

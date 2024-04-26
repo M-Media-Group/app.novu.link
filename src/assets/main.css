@@ -460,3 +460,15 @@ article:not(:has(table)) {
 nav a[role=button] {
   margin-top: 0;
 }
+
+/** Fix inconsistent margins and borders when used in groups */
+[role=group] .dropdown:not(:first-child),
+[role=search] .dropdown:not(:first-child) {
+  margin-left: calc(var(--pico-border-width) * -1);
+}
+
+[role=group]>:not(:first-child)>summary,
+[role=search]>:not(:first-child)>summary {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

@@ -249,4 +249,12 @@ export default {
       5000
     ).show();
   },
+  [eventTypes.unsubscribed]: () => {
+    new CustomNotification(
+      "success",
+      t("You have been unsubscribed."),
+      ["browser"],
+      5000
+    ).show();
+  },
 } as Record<eventTypes, any>;
