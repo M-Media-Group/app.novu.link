@@ -97,10 +97,6 @@ const props = defineProps({
 
 const isLoading = ref(false);
 
-const hasBillableRedirects = computed(() => {
-  return !!(props.subscribed || props.endpoints.length > 1);
-});
-
 const copiedTimeout = ref<NodeJS.Timeout | null>(null);
 
 const copyToClipboard = (text: string) => {
@@ -141,7 +137,7 @@ const printMagicLink = () => {
 const openTabs = ref(["1"]);
 
 const lineChartData = computed(() => {
-  if (!hasBillableRedirects.value || !props.endpoints.length) {
+  if (!props.subscribed || !props.endpoints.length) {
     return [];
   }
   // Each data item has a clicks_by_time_of_day array, we need to return it. We can flatten the array with flatMap
@@ -258,7 +254,7 @@ const QRDestinations = defineAsyncComponent(
           params: { redirectId: props.redirectId },
         }"
         >{{
-          hasBillableRedirects
+          subscribed
             ? $t("Add more free destinations")
             : $t("Add more destinations to same code")
         }}</base-button
@@ -308,7 +304,7 @@ const QRDestinations = defineAsyncComponent(
         :clicksAllTime="clicksAllTime"
         :bestEndpoint="bestEndpoint"
         :isLoading="isLoading || loading"
-        :hasBillableRedirects="hasBillableRedirects"
+        :hasBillableRedirects="subscribed"
       />
     </div>
 
@@ -326,7 +322,7 @@ const QRDestinations = defineAsyncComponent(
         :title="$t('Code design')"
         :subtitle="$t('Customise the look of your magic link')"
       >
-        <div :class="{ disabled: !hasBillableRedirects }">
+        <div :class="{ disabled: !subscribed }">
           <div class="two-column-grid mobile-grid">
             <div>
               <label for="darkColor">{{ $t("Color") }}</label>
@@ -335,7 +331,7 @@ const QRDestinations = defineAsyncComponent(
                 type="color"
                 v-model="darkColor"
                 name="darkColor"
-                :disabled="!hasBillableRedirects"
+                :disabled="!subscribed"
               />
             </div>
             <div>
@@ -345,7 +341,7 @@ const QRDestinations = defineAsyncComponent(
                 type="color"
                 v-model="lightColor"
                 name="lightColor"
-                :disabled="!hasBillableRedirects"
+                :disabled="!subscribed"
               />
             </div>
           </div>
@@ -355,7 +351,7 @@ const QRDestinations = defineAsyncComponent(
             name="shape"
             id="shape"
             v-model="selectedShape"
-            :disabled="!hasBillableRedirects"
+            :disabled="!subscribed"
           >
             <option value="square">{{ $t("Square") }}</option>
             <option value="rounded">{{ $t("Rounded") }}</option>
@@ -366,7 +362,7 @@ const QRDestinations = defineAsyncComponent(
           :redirectId="redirectId"
           :title="$t('Enable custom designs')"
           :submitText="$t('Enable custom designs')"
-          v-if="!hasBillableRedirects"
+          v-if="!subscribed"
         >
           <base-button class="full-width no-margin">
             {{ $t("Enable custom designs") }}</base-button
@@ -387,14 +383,14 @@ const QRDestinations = defineAsyncComponent(
         <hgroup>
           <h3>
             {{
-              hasBillableRedirects
+              subscribed
                 ? $t("Unsubscribe Magic Link")
                 : $t("Subscribe Magic Link")
             }}
           </h3>
           <p>
             {{
-              hasBillableRedirects
+              subscribed
                 ? $t(
                     "Remove advanced analytics, multiple destinations, and custom designs"
                   )
@@ -404,7 +400,7 @@ const QRDestinations = defineAsyncComponent(
             }}
           </p>
         </hgroup>
-        <template v-if="hasBillableRedirects !== true">
+        <template v-if="subscribed !== true">
           <confirms-subscription-start
             :redirectId="redirectId"
             :title="$t('Subscribe')"
