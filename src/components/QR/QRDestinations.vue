@@ -6,6 +6,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import type { PropType } from "vue";
 import type { Endpoint } from "@/types/redirect";
 import { parseRuleGroup } from "@/useRules";
+import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
 
 defineProps({
   redirectId: {
@@ -17,7 +18,7 @@ defineProps({
     required: false,
     default: () => [],
   },
-  hasBillableRedirects: {
+  subscribed: {
     type: Boolean,
     required: false,
     default: false,
@@ -43,7 +44,7 @@ defineProps({
         <h3>{{ $t("No destinations yet") }}</h3>
         <p>
           {{
-            hasBillableRedirects
+            subscribed
               ? $t("Add free destinations")
               : $t("Add more destinations to same code")
           }}
@@ -51,14 +52,19 @@ defineProps({
       </hgroup>
     </card-element>
   </template>
-  <template v-else v-for="endpoint in endpoints" :key="endpoint.id">
+  <template v-else v-for="(endpoint, index) in endpoints" :key="endpoint.id">
     <edit-endpoint
       v-if="endpoint.id && endpoint.redirect_uuid"
       :redirectId="endpoint.redirect_uuid"
       :endpointId="endpoint.id"
       :currentUrl="endpoint.endpoint"
     >
-      <card-element :loading="isLoading">
+      <card-element
+        :loading="isLoading"
+        :class="{
+          disabled: !subscribed && index > 0,
+        }"
+      >
         <hgroup>
           <h3>{{ removeProtocol(endpoint.endpoint) }}</h3>
           <p v-if="endpoint.rule_groups?.[0]">
@@ -70,6 +76,18 @@ defineProps({
         </hgroup>
       </card-element>
     </edit-endpoint>
+
+    <!-- IF we have more than 1 endpoint, and the others are locked due to unsub, show subsctibe button -->
+    <confirms-subscription-start
+      v-if="redirectId && !subscribed && index === 0 && endpoints.length > 1"
+      :redirectId="redirectId"
+      :title="$t('Activate other destinations')"
+      :submitText="$t('Activate other destinations')"
+    >
+      <base-button class="full-width">{{
+        $t("Activate other destinations")
+      }}</base-button>
+    </confirms-subscription-start>
   </template>
   <base-button
     v-if="redirectId"
@@ -79,7 +97,7 @@ defineProps({
     }"
     :loading="isLoading"
     >{{
-      hasBillableRedirects
+      subscribed
         ? $t("Add more free destinations")
         : $t("Add more destinations to same code")
     }}</base-button

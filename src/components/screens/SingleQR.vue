@@ -304,7 +304,7 @@ const QRDestinations = defineAsyncComponent(
         :clicksAllTime="clicksAllTime"
         :bestEndpoint="bestEndpoint"
         :isLoading="isLoading || loading"
-        :hasBillableRedirects="subscribed"
+        :subscribed="subscribed"
       />
     </div>
 
@@ -313,6 +313,7 @@ const QRDestinations = defineAsyncComponent(
         :redirectId="redirectId"
         :endpoints="endpoints"
         :isLoading="isLoading || loading"
+        :subscribed="subscribed"
       />
     </div>
 

@@ -46,7 +46,7 @@ defineProps({
     :is="to ? 'router-link' : 'vue:template'"
     :to="to ? to : undefined"
   >
-    <article>
+    <article v-bind="$attrs">
       <div class="images overflow-auto" v-if="images" tabindex="0">
         <img
           v-for="image in images"
@@ -78,7 +78,7 @@ defineProps({
       </footer>
     </article>
   </component>
-  <article v-else>
+  <article v-else v-bind="$attrs">
     <div class="images" v-if="images?.length">
       <div class="gl-animate-skeleton-loader" style="height: 100%"></div>
     </div>

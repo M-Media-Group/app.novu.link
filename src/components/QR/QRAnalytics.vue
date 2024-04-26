@@ -33,7 +33,7 @@ defineProps({
     required: false,
     default: null,
   },
-  hasBillableRedirects: {
+  subscribed: {
     type: Boolean,
     required: false,
     default: false,
@@ -62,7 +62,7 @@ defineProps({
       </hgroup>
     </card-element>
   </div>
-  <template v-if="hasBillableRedirects">
+  <template v-if="subscribed">
     <card-element v-if="bestEndpoint">
       <hgroup>
         <h3 class="gl-animate-skeleton-loader" v-if="isLoading"></h3>
