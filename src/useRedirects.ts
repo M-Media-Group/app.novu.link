@@ -55,10 +55,17 @@ export const updateRedirectEndpoint = async (
   endpointId: string,
   data: Endpoint
 ) => {
-  return await axios.put(
+  const results = await axios.put(
     `/api/v1/redirects/${redirectId}/endpoints/${endpointId}`,
     data
   );
+
+  // If the results are successful, emit an event to let the app know that the endpoint was updated
+  if (results.status === 200) {
+    $bus.$emit(eventTypes.updated_endpoint, endpointId);
+  }
+
+  return results;
 };
 
 export const startSubscription = async (redirectId: string) => {

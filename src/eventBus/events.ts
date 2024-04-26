@@ -25,6 +25,8 @@ export enum eventTypes {
   unsubscribed = "unsubscribed",
   created_redirect = "created_redirect",
   created_endpoint = "created_endpoint",
+  updated_redirect = "updated_redirect",
+  updated_endpoint = "updated_endpoint",
   copied_redirect = "copied_redirect",
   downloaded_redirect_qr_code = "downloaded_redirect_qr_code",
   sent_otp = "sent_otp",
