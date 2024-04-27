@@ -52,6 +52,12 @@ const props = defineProps({
     type: Array as PropType<string[] | null>,
     default: null,
   },
+
+  /** IF the form should display inline. Useful for single-input forms */
+  inline: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["submit"]);
@@ -262,28 +268,32 @@ defineExpose({
     @keydown.enter.prevent="submit"
     @submit.prevent="submit"
   >
-    <!-- @slot This is the default slot for the form. You can use this to add any input or button you want. -->
-    <slot></slot>
-
-    <!-- @slot This is the slot for the submit button. You can use this to add a custom submit button or action. -->
-    <slot
-      name="submit"
-      :submitText="submitText"
-      :submit="submit"
-      :disabled="!formIsValid || disabled || isLoading || navIsLoading"
-      :isLoading="isLoading"
+    <component
+      :role="inline ? 'group' : null"
+      :is="inline ? 'fieldset' : 'div'"
     >
-      <base-button
-        v-if="showSubmitButton"
-        type="submit"
-        :disabled="!formIsValid || disabled || isLoading || navIsLoading"
-        :aria-busy="isLoading"
-        :class="submitButtonClasses"
-      >
-        {{ $t(submitText) }}
-      </base-button>
-    </slot>
+      <!-- @slot This is the default slot for the form. You can use this to add any input or button you want. -->
+      <slot></slot>
 
+      <!-- @slot This is the slot for the submit button. You can use this to add a custom submit button or action. -->
+      <slot
+        name="submit"
+        :submitText="submitText"
+        :submit="submit"
+        :disabled="!formIsValid || disabled || isLoading || navIsLoading"
+        :isLoading="isLoading"
+      >
+        <base-button
+          v-if="showSubmitButton"
+          type="submit"
+          :disabled="!formIsValid || disabled || isLoading || navIsLoading"
+          :aria-busy="isLoading"
+          :class="submitButtonClasses"
+        >
+          {{ $t(submitText) }}
+        </base-button>
+      </slot>
+    </component>
     <!-- @slot This is the slot for after the submit. This is useful for back buttons or other actions. -->
     <slot name="after-submit"></slot>
   </form>
