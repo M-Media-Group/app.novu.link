@@ -9,6 +9,7 @@ exports[`NavBar > renders properly when logged in 1`] = `
     <li data-v-2202255b=""><a role="button" href="[object Object]">
         <!-- @slot This is the default slot which contains the text.  -->New magic link
       </a></li>
+    <!--v-if-->
     <li data-v-2202255b=""><button data-v-2202255b="" type="button" tabindex="0" class="outline" aria-label="Open the menu"><span data-v-2202255b="" aria-hidden="true">☰</span></button></li>
   </ul>
 </nav>
@@ -56,6 +57,7 @@ exports[`NavBar > renders properly when logged out 1`] = `
     <li data-v-2202255b=""><a role="button" href="[object Object]">
         <!-- @slot This is the default slot which contains the text.  -->New magic link
       </a></li>
+    <li data-v-2202255b=""><a data-v-2202255b="">Login</a></li>
     <li data-v-2202255b=""><button data-v-2202255b="" type="button" tabindex="0" class="outline" aria-label="Open the menu"><span data-v-2202255b="" aria-hidden="true">☰</span></button></li>
   </ul>
 </nav>
