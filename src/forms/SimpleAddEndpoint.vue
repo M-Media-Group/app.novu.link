@@ -198,7 +198,6 @@ const debounceAddProtocolIfMissing = debounce(
         "
         :allowBackgroundClickToClose="false"
         :gate="[
-          'auth',
           'confirmedEmailOrPhone',
           {
             name: 'subscribedRedirect',

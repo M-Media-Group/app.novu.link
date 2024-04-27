@@ -93,17 +93,18 @@ const getData = () => {
 };
 
 onMounted(() => {
-  $bus.$on(eventTypes.started_subscription, getData);
-  $bus.$on(eventTypes.unsubscribed, getData);
-  $bus.$on(eventTypes.updated_redirect, getData);
-  $bus.$on(eventTypes.updated_endpoint, getData);
-  $bus.$on(eventTypes.set_active_team, getData);
   if (!teamStore.activeTeam) {
     isLoading.value = false;
     startTimer();
   } else {
     getData();
   }
+
+  $bus.$on(eventTypes.started_subscription, getData);
+  $bus.$on(eventTypes.unsubscribed, getData);
+  $bus.$on(eventTypes.updated_redirect, getData);
+  $bus.$on(eventTypes.updated_endpoint, getData);
+  $bus.$on(eventTypes.set_active_team, getData);
 });
 
 onUnmounted(() => {

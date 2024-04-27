@@ -91,7 +91,7 @@ const router = createRouter({
       path: "/redirects/:redirectId/endpoints/add",
       name: "add-endpoint",
       meta: {
-        gates: ["auth", "confirmedEmailOrPhone"],
+        gates: ["auth"],
       },
       component: () => import("../views/SimpleAddEndpointView.vue"),
       // Pass the props to the component
