@@ -52,13 +52,25 @@ const randomName = () => {
 
 randomName();
 
-defineProps({
+const props = defineProps({
   /** If the form should autofocus */
   autofocus: {
     type: Boolean,
     default: true,
   },
+  showNameInput: {
+    type: Boolean,
+    default: true,
+  },
+  prefillName: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+if (props.prefillName) {
+  name.value = t("Untitled Magic Link");
+}
 
 const debounceAddProtocolIfMissing = debounce(
   (data: string) =>
@@ -95,10 +107,7 @@ const submitForm = async () => {
     $bus.$emit(eventTypes.created_redirect);
     // If not logged in, redirect to "/login/otp"
     if (!userStore.isAuthenticated) {
-      router.push({
-        name: "login-otp",
-        query: { redirect: `/redirects/${response.data.uuid}` },
-      });
+      router.push(`/new-redirect/${response.data.uuid}`);
       return;
     }
     router.push(`/redirects/${response.data.uuid}`);
@@ -117,8 +126,10 @@ const submitForm = async () => {
     ref="baseFormRef"
     :isLoading="isLoading"
   >
-    <label for="name">{{ $t("Magic link name") }}</label
-    ><input id="name" type="text" required v-model="name" />
+    <template v-if="showNameInput">
+      <label for="name">{{ $t("Magic link name") }}</label
+      ><input id="name" type="text" required v-model="name" />
+    </template>
     <label for="default_endpoint"> {{ $t("Go to") }} </label
     ><input
       name="default_endpoint"
@@ -131,7 +142,6 @@ const submitForm = async () => {
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
       required
       v-model="defaultEndpoint"
-      autofocus
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "

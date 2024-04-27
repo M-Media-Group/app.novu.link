@@ -29,7 +29,7 @@ const props = defineProps({
   },
   /** The name of the redirect, used when downloading */
   redirectName: {
-    type: String,
+    type: String as PropType<string | null>,
     required: false,
     default: "Magic link",
   },
@@ -417,7 +417,7 @@ const OtpLoginOrRegister = defineAsyncComponent(
         </hgroup>
         <redirect-settings
           :redirectId="props.redirectId"
-          :redirectName="props.redirectName"
+          :redirectName="props.redirectName ?? undefined"
           :showLabel="true"
         />
       </card-element>

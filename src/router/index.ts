@@ -80,6 +80,17 @@ const router = createRouter({
       name: "create-redirect",
       component: () => import("../views/CreateRedirectView.vue"),
     },
+    /** @todo refactor this, its basically the same as the basic redirect page */
+    {
+      path: "/new-redirect/:redirectId",
+      name: "new-redirect",
+      meta: {
+        gates: ["guest"],
+      },
+      component: () => import("../views/NewRedirectView.vue"),
+      // Pass the props to the component
+      props: true,
+    },
     {
       path: "/redirects/:redirectId",
       name: "redirect",
