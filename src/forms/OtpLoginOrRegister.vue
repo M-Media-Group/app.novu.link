@@ -102,6 +102,12 @@ const toggleUsePhone = async () => {
 };
 </script>
 <template>
+  <label v-if="inline && !isOnOtpPage" :for="usePhone ? 'phone' : 'email'">
+    {{ usePhone ? $t("Phone number (starting with +)") : $t("Email") }}
+  </label>
+  <label v-else-if="inline">
+    {{ $t("One-time password") }}
+  </label>
   <base-form
     v-if="isOnOtpPage"
     @submit="validateOtp"
@@ -162,6 +168,8 @@ const toggleUsePhone = async () => {
         :autofocus="autofocus"
         v-model="userStore.userEmail"
         ref="phoneInput"
+        autocomplete="email"
+        :placeholder="$t('Email')"
       />
     </template>
     <template v-else>
@@ -180,7 +188,7 @@ const toggleUsePhone = async () => {
         pattern="^\+[0-9]{1,15}$"
         minlength="7"
         maxlength="16"
-        :placeholder="$t('+339123456789')"
+        :placeholder="$t('Phone number')"
         ref="phoneInput"
       />
     </template>

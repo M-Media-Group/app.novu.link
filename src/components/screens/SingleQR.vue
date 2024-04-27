@@ -243,6 +243,13 @@ const OtpLoginOrRegister = defineAsyncComponent(
     <hgroup class="smaller-gap">
       <h2 v-if="showTitle">{{ title }}</h2>
       <p>{{ description }}</p>
+      <p v-if="!authenticated">
+        {{
+          $t(
+            "Claim your link now to edit designs, manage destinations, and see analytics."
+          )
+        }}
+      </p>
     </hgroup>
 
     <div class="main-grid-display smaller-gap">
@@ -282,19 +289,13 @@ const OtpLoginOrRegister = defineAsyncComponent(
     </div>
 
     <div class="main-grid-display smaller-gap">
-      <p v-if="!authenticated">
-        {{
-          $t(
-            "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now."
-          )
-        }}
-      </p>
       <otp-login-or-register
         v-if="!authenticated"
         :inline="true"
         :autofocus="false"
         :submitText="$t('Claim link')"
       />
+
       <base-button
         v-else
         :to="{
@@ -323,10 +324,10 @@ const OtpLoginOrRegister = defineAsyncComponent(
     <div class="main-grid-display smaller-gap" v-show="openTabs.includes('1')">
       <q-r-analytics
         :redirectId="redirectId"
-        :clicksToday="clicksToday"
-        :lineChartData="lineChartData"
-        :clicksAllTime="clicksAllTime"
-        :bestEndpoint="bestEndpoint"
+        :clicksToday="!authenticated ? undefined : clicksToday"
+        :lineChartData="!authenticated ? undefined : lineChartData"
+        :clicksAllTime="!authenticated ? undefined : clicksAllTime"
+        :bestEndpoint="!authenticated ? undefined : bestEndpoint"
         :isLoading="isLoading || loading"
         :subscribed="subscribed"
       />
