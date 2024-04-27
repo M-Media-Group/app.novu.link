@@ -37,6 +37,24 @@ const interceptedByGate = ref("");
 
 const runGates = useGateKeeper() as Function;
 
+const getGateDataFromProps = (gateName: string): Gate | undefined => {
+  if (typeof props.gate === "string") {
+    return;
+  }
+  // If the props.gate is a single gate, return it
+  if (!Array.isArray(props.gate)) {
+    return props.gate;
+  }
+
+  const response = props.gate.find((gate) => {
+    return typeof gate !== "string" && gate?.name === gateName
+      ? gate
+      : undefined;
+  });
+
+  return typeof response === "string" ? undefined : response;
+};
+
 const startConfirming = async () => {
   if (props.gate === undefined) {
     return;
@@ -108,6 +126,7 @@ const setElement = () => {
           :is="ConfirmationElement"
           v-if="formToUse && modal?.isModalOpen"
           @success="startConfirming"
+          v-bind="getGateDataFromProps(interceptedByGate)?.options"
         />
       </slot>
     </base-modal>
