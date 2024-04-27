@@ -244,8 +244,8 @@ textarea.unset-width {
 }
 
 /** @todo check if this needs to go back to original CSS fix file */
-[role=group] button {
-    min-width: max-content;
+[role=group] button.fit {
+    min-width: fit-content;
 }
 
 .sticky {
@@ -256,4 +256,8 @@ textarea.unset-width {
     z-index: 2;
     padding-bottom: 1rem;
     ;
+}
+
+.flex-start {
+    align-items: flex-start;
 }

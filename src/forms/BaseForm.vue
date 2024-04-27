@@ -292,7 +292,8 @@ defineExpose({
           type="submit"
           :disabled="!formIsValid || disabled || isLoading || navIsLoading"
           :aria-busy="isLoading"
-          :class="submitButtonClasses"
+          :class="// We need to merge both { fit: !inline } and submitButtonClasses
+          [{ fit: inline }, submitButtonClasses]"
         >
           {{ $t(submitText) }}
         </base-button>
