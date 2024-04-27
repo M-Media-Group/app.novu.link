@@ -7,7 +7,6 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { formatUrl } from "@/helpers/urlFormatter";
 import { debounce } from "@/helpers/debounce";
-import { useUserStore } from "@/stores/user";
 
 const $bus = useEventsBus();
 
@@ -21,8 +20,6 @@ const isLoading = ref(false);
 const baseFormRef = ref();
 
 const router = useRouter();
-
-const userStore = useUserStore();
 
 const randomName = () => {
   const wordList = [
@@ -105,11 +102,7 @@ const submitForm = async () => {
   if (response.status === 201) {
     baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_redirect);
-    // If not logged in, redirect to "/login/otp"
-    if (!userStore.isAuthenticated) {
-      router.push(`/new-redirect/${response.data.uuid}`);
-      return;
-    }
+
     router.push(`/redirects/${response.data.uuid}`);
   } else {
     baseFormRef.value.setInputErrors(response.data.errors);

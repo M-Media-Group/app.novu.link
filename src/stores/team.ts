@@ -45,6 +45,10 @@ export const useTeamStore = defineStore("team", () => {
   $bus?.$on(eventTypes.logged_in, getUserTeams);
   $bus?.$on(eventTypes.registered, getUserTeams);
   $bus?.$on(eventTypes.confirmed_otp, getUserTeams);
+  $bus?.$on(eventTypes.logged_out, () => {
+    teams.value = [];
+    activeTeamId.value = null;
+  });
 
   const activeTeam = computed(() => {
     if (!activeTeamId.value || !teams.value.length) {

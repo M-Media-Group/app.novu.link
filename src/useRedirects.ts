@@ -21,10 +21,12 @@ export const createRedirect = async (data: any) => {
 };
 
 export const updateRedirect = async (redirectId: string, data: any) => {
-  return (await axios.put(
-    `/api/v1/redirects/${redirectId}`,
-    data
-  )) as AxiosResponse<void>;
+  return await axios
+    .put(`/api/v1/redirects/${redirectId}`, data)
+    .then((response) => {
+      $bus.$emit(eventTypes.updated_redirect, redirectId);
+      return response;
+    });
 };
 
 export const deleteRedirect = async (redirectId: string) => {
