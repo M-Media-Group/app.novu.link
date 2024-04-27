@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Analytics",
+        "title": "Advanced Analytics and Reporting on your connections",
+        "description": "Get detailed insights on your connections and their activities. Understand how your connections are engaging with your content and how you can improve your engagement with them.",
+        "image": "undraw_connected_world_wuay.svg"
+    },
+    {
+        "id": 2,
+        "name": "Destinations",
+        "title": "Route your customers to the right destination",
+        "description": "Route your customers to the right destination based on their preferences and activities. Provide a personalized experience to your customers and increase your conversion rates.",
+        "image": "undraw_right_direction_tge8.svg"
+    },
+    {
+        "id": 3,
+        "name": "Automation",
+        "title": "Automate your marketing campaigns",
+        "description": "Automate your marketing campaigns and save time and effort. Create personalized campaigns based on your customer's preferences and activities and increase your conversion rates.",
+        "image": "undraw_specs_re_546x.svg"
+    },
+    {
+        "id": 4,
+        "name": "Design",
+        "title": "Design beautiful codes",
+        "description": "Design beautiful codes with our easy-to-use editor. Customize the colors, fonts, and layout of your codes to match your brand and increase your conversion rates.",
+        "image": "undraw_designer_re_5v95.svg"
+    }
+]

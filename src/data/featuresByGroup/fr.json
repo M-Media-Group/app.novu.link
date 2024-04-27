@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Analytique",
+        "title": "Analyses avancées et rapports sur vos connexions",
+        "description": "Obtenez des informations détaillées sur vos connexions et leurs activités. Comprenez comment vos connexions interagissent avec votre contenu et comment vous pouvez améliorer votre engagement avec eux.",
+        "image": "undraw_connected_world_wuay.svg"
+    },
+    {
+        "id": 2,
+        "name": "Destinations",
+        "title": "Dirigez vos clients vers la bonne destination",
+        "description": "Dirigez vos clients vers la bonne destination en fonction de leurs préférences et de leurs activités. Offrez une expérience personnalisée à vos clients et augmentez vos taux de conversion.",
+        "image": "undraw_right_direction_tge8.svg"
+    },
+    {
+        "id": 3,
+        "name": "Automatisation",
+        "title": "Automatisez vos campagnes marketing",
+        "description": "Automatisez vos campagnes marketing et gagnez du temps et des efforts. Créez des campagnes personnalisées en fonction des préférences et des activités de vos clients et augmentez vos taux de conversion.",
+        "image": "undraw_specs_re_546x.svg"
+    },
+    {
+        "id": 4,
+        "name": "Design",
+        "title": "Concevez de magnifiques codes",
+        "description": "Concevez de magnifiques codes avec notre éditeur facile à utiliser. Personnalisez les couleurs, les polices et la mise en page de vos codes pour correspondre à votre marque et augmenter vos taux de conversion.",
+        "image": "undraw_designer_re_5v95.svg"
+    }
+]

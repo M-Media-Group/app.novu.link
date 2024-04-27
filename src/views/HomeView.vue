@@ -3,8 +3,8 @@ import CreateRedirect from "@/forms/CreateRedirect.vue";
 import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
-import NewNovuLinkDemo from "@/assets/CroppedNovuLinkDemo.gif";
 import image from "@/assets/undraw_share_link.svg";
+import TabNav from "@/components/TabNav.vue";
 
 const { locale } = useI18n();
 
@@ -14,6 +14,9 @@ const faqData = ref([] as any[]);
 const goodPointsData = ref([] as any[]);
 const painPointsData = ref([] as any[]);
 const pricingData = ref([] as any[]);
+const featuresByGroupData = ref([] as any[]);
+
+const openTabs = ref(["1"]);
 
 // Load the features from the correct locale
 const loadData = (dataset = "features", localeToUse = locale.value) => {
@@ -31,6 +34,7 @@ watch(
     goodPointsData.value = await loadData("goodPoints", newLocale);
     painPointsData.value = await loadData("painPoints", newLocale);
     pricingData.value = await loadData("pricing", newLocale);
+    featuresByGroupData.value = await loadData("featuresByGroup", newLocale);
   },
   {
     immediate: true,
@@ -43,6 +47,24 @@ const scrollToTop = () => {
     behavior: "smooth",
   });
 };
+
+const computeTabOptions = (featuresByGroupData: any[]) => {
+  return featuresByGroupData.map((group) => ({
+    render: group.name,
+    id: group.id,
+  }));
+};
+
+/**
+ *
+ * @param asset - the asset to get
+ */
+const assetUrl = (asset: string, extension = "png") =>
+  new URL(
+    `../assets/${asset}`,
+
+    import.meta.url
+  ).href;
 </script>
 
 <template>
@@ -95,27 +117,26 @@ const scrollToTop = () => {
         }}
       </p>
     </hgroup>
-    <div class="two-column-grid">
-      <img :src="NewNovuLinkDemo" alt="Novu.Link demo" />
-      <ul>
-        <li v-for="goodPoint in goodPointsData" :key="goodPoint.id">
+    <tab-nav
+      :options="computeTabOptions(featuresByGroupData)"
+      v-model="openTabs"
+    >
+    </tab-nav>
+
+    <ul>
+      <li
+        v-for="goodPoint in featuresByGroupData"
+        :key="goodPoint.id"
+        v-show="openTabs.includes(`${goodPoint.id}`)"
+        class="two-column-grid three-two-grid"
+      >
+        <div>
           <hgroup>
-            <h3>{{ goodPoint.name }}</h3>
+            <h3>{{ goodPoint.title }}</h3>
           </hgroup>
           <p>{{ goodPoint.description }}</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="painPoints" class="two-column-grid">
-    <h2>{{ $t("Situations Novu.Link saves you from") }}</h2>
-    <ul>
-      <li v-for="painPoint in painPointsData" :key="painPoint.id">
-        <hgroup>
-          <h3>{{ painPoint.name }}</h3>
-        </hgroup>
-        <p>{{ painPoint.description }}</p>
+        </div>
+        <img :src="assetUrl(goodPoint.image)" alt="Novu.Link demo" />
       </li>
     </ul>
   </section>
@@ -189,7 +210,8 @@ const scrollToTop = () => {
   </section>
 </template>
 <style scoped>
-.hero-section {
+.hero-section,
+.three-two-grid {
   grid-template-columns: 3fr 2fr;
 }
 .hero-section hgroup > p {
@@ -197,6 +219,9 @@ const scrollToTop = () => {
 }
 h2 {
   font-size: 300%;
+}
+h3 {
+  font-size: 200%;
 }
 hgroup h2 + p {
   font-size: 300%;
@@ -218,5 +243,13 @@ section:not(.hero-section) {
 
 img {
   border-radius: var(--pico-border-radius);
+}
+
+.tab-nav button {
+  font-size: 300%;
+}
+
+.tab-nav {
+  margin-bottom: var(--pico-spacing);
 }
 </style>
