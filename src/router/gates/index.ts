@@ -6,6 +6,7 @@ import confirmedPassword from "./confirmedPassword";
 import confirmedEmail from "./confirmedEmail";
 import unconfirmedEmail from "./unconfirmedEmail";
 import confirmedEmailOrPhone from "./confirmedEmailOrPhone";
+import subscribedRedirect from "./subscribedRedirect";
 
 export default {
   auth,
@@ -16,4 +17,5 @@ export default {
   confirmedEmail,
   unconfirmedEmail,
   confirmedEmailOrPhone,
+  subscribedRedirect,
 };
