@@ -243,3 +243,8 @@ textarea.unset-width {
     right: 0;
     bottom: 0;
 }
+
+/** @todo check if this needs to go back to original CSS fix file */
+[role=group] input+button {
+    min-width: fit-content;
+}
