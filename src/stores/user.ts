@@ -38,7 +38,12 @@ export const useUserStore = defineStore("user", () => {
     try {
       const response = await axios.get("/api/user");
       user.value = response.data;
+
       isAuthenticated.value = true;
+
+      userEmail.value = response.data.email;
+      userPhone.value = response.data.phone_number;
+
       await getCsrfToken();
     } catch (error) {
       console.log(error);
@@ -205,12 +210,21 @@ export const useUserStore = defineStore("user", () => {
 
     // Submit a reset password
     try {
-      await axios.post("/user/otp/confirm", {
+      const response = await axios.post("/user/otp/confirm", {
         otp: otp,
       });
-      $bus.$emit(eventTypes.confirmed_otp);
       // Fetch the user
+      $bus.$emit(eventTypes.confirmed_otp);
+
       await getUser();
+
+      // The response tells us if the user is new or not
+      if (response.data.user_created) {
+        $bus.$emit(eventTypes.registered);
+      } else {
+        $bus.$emit(eventTypes.logged_in);
+      }
+
       return true;
     } catch (error: any) {
       return error.response;
