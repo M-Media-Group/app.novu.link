@@ -15,7 +15,17 @@ const usePhone = ref(true);
 const secondsBetweenOtpRequests = 35;
 const lastRequestTime = ref(0);
 
-const emit = defineEmits(["success"]);
+const emit = defineEmits<{
+  success: [];
+}>();
+
+defineProps({
+  /** If the form should be displayed in a single line */
+  inline: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const { t } = useI18n();
 
@@ -89,7 +99,8 @@ const toggleUsePhone = async () => {
     @submit="validateOtp"
     :isLoading="isLoading"
     :disabled="isLoading"
-    ><p>
+    :inline="inline"
+    ><p v-show="!inline">
       {{ $t("Enter the code you received.") }}
       {{
         !usePhone
@@ -97,7 +108,7 @@ const toggleUsePhone = async () => {
           : $t("Check your phone.")
       }}
     </p>
-    <label for="otp">OTP</label>
+    <label for="otp" v-show="!inline">OTP</label>
     <input
       type="text"
       name="otp"
@@ -107,6 +118,8 @@ const toggleUsePhone = async () => {
       pattern="[0-9]*"
       minlength="6"
       maxlength="6"
+      :placeholder="$t('One-time password')"
+      autofocus
       @input="validateOtp"
     />
 
@@ -127,9 +140,10 @@ const toggleUsePhone = async () => {
     @submit="makeOtpRequest"
     :isLoading="isLoading"
     :disabled="isLoading"
+    :inline="inline"
   >
     <template v-if="!usePhone">
-      <label for="email">{{ $t("Email") }}</label>
+      <label for="email" v-show="!inline">{{ $t("Email") }}</label>
       <input
         id="email"
         type="email"
@@ -141,7 +155,9 @@ const toggleUsePhone = async () => {
       />
     </template>
     <template v-else>
-      <label for="phone">{{ $t("Phone number (starting with +)") }}</label>
+      <label for="phone" v-show="!inline">{{
+        $t("Phone number (starting with +)")
+      }}</label>
       <input
         id="phone"
         type="tel"
@@ -158,13 +174,15 @@ const toggleUsePhone = async () => {
         ref="phoneInput"
       />
     </template>
-    <p>
-      <a v-if="!usePhone" href="#" @click.prevent="toggleUsePhone">{{
-        $t("Use phone instead")
-      }}</a>
-      <a v-else href="#" @click.prevent="toggleUsePhone">{{
-        $t("Use email instead")
-      }}</a>
-    </p>
+    <template #after-submit>
+      <p>
+        <a v-if="!usePhone" href="#" @click.prevent="toggleUsePhone">{{
+          $t("Use phone instead")
+        }}</a>
+        <a v-else href="#" @click.prevent="toggleUsePhone">{{
+          $t("Use email instead")
+        }}</a>
+      </p>
+    </template>
   </base-form>
 </template>
