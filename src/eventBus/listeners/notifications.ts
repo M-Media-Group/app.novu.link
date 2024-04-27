@@ -217,6 +217,14 @@ export default {
       5000
     ).show();
   },
+  [eventTypes.logged_in]: () => {
+    new CustomNotification(
+      "success",
+      t("Welcome back!"),
+      ["browser"],
+      5000
+    ).show();
+  },
   [eventTypes.copied_redirect]: () => {
     new CustomNotification(
       "success",
