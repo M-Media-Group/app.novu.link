@@ -97,7 +97,7 @@ const handleConfirmedWithPaymentMethod = () => {
       v-if="showAddForm"
       @success="handleConfirmedWithPaymentMethod"
       :showLabel="false"
-      :submitText="$t('Subscribe')"
+      :submitText="submitText"
     />
     <template v-else>
       <!-- Show current payment method, and a link to turn on the form to add-payment method -->
