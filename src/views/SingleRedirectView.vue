@@ -122,6 +122,7 @@ onUnmounted(() => {
       :bestEndpoint="bestEndpoint"
       :endpoints="endpoints"
       :loading="isLoading"
+      :authenticated="!!teamStore.activeTeam"
     />
   </div>
 </template>
