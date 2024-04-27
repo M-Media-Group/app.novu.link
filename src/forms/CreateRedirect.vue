@@ -63,6 +63,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  inline: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 if (props.prefillName) {
@@ -112,18 +116,22 @@ const submitForm = async () => {
 };
 </script>
 <template>
+  <label for="default_endpoint" v-show="inline"> {{ $t("Go to") }} </label>
   <base-form
     :autofocus="autofocus"
-    :submitText="$t('Create a free permanent magic link')"
+    :submitText="
+      inline ? $t('New magic link') : $t('Create a free permanent magic link')
+    "
     @submit="submitForm"
     ref="baseFormRef"
     :isLoading="isLoading"
+    :inline="inline"
   >
     <template v-if="showNameInput">
-      <label for="name">{{ $t("Magic link name") }}</label
+      <label for="name" v-show="!inline">{{ $t("Magic link name") }}</label
       ><input id="name" type="text" required v-model="name" />
     </template>
-    <label for="default_endpoint"> {{ $t("Go to") }} </label
+    <label for="default_endpoint" v-show="!inline"> {{ $t("Go to") }} </label
     ><input
       name="default_endpoint"
       type="url"
@@ -139,8 +147,13 @@ const submitForm = async () => {
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "
     />
-    <small>
+    <small v-show="!inline">
       {{ $t("This is where your magic link will redirect to by default.") }}
     </small>
+    <template #after-submit>
+      <small v-show="inline">
+        {{ $t("This is where your magic link will redirect to by default.") }}
+      </small>
+    </template>
   </base-form>
 </template>

@@ -18,6 +18,6 @@ const redirect = () => {
     <card-element :titleHeadingLevel="2">
       <login-or-register @success="redirect" />
     </card-element>
-    <img :src="image" />
+    <img :src="image" alt="A person holding a link" />
   </div>
 </template>

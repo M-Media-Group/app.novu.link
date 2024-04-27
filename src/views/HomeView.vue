@@ -4,6 +4,7 @@ import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import NewNovuLinkDemo from "@/assets/CroppedNovuLinkDemo.gif";
+import image from "@/assets/undraw_share_link.svg";
 
 const { locale } = useI18n();
 
@@ -55,10 +56,14 @@ const scrollToTop = () => {
           )
         }}
       </p>
+      <create-redirect
+        :autofocus="false"
+        :showNameInput="false"
+        :inline="true"
+      ></create-redirect>
     </hgroup>
-    <card-element>
-      <create-redirect :autofocus="false"></create-redirect>
-    </card-element>
+
+    <img :src="image" alt="Link shortener" />
   </section>
 
   <section id="testimonials" class="two-column-grid">

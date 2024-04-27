@@ -138,8 +138,12 @@ const callActionsOnAllInputs = (
   }
 };
 
-const setInputErrors = (errors: Record<string, string | string[]>) => {
+const setInputErrors = (errors?: Record<string, string | string[] | null>) => {
   // For each key in errors, find the input and call setErrorOnInput with the value
+  if (!errors) {
+    return;
+  }
+
   for (const [key, value] of Object.entries(errors)) {
     const input = formElement.value?.elements.namedItem(
       key

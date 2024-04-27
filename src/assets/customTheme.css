@@ -244,6 +244,16 @@ textarea.unset-width {
 }
 
 /** @todo check if this needs to go back to original CSS fix file */
-[role=group] input+button {
-    min-width: fit-content;
+[role=group] button {
+    min-width: max-content;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+    background: var(--pico-background-color);
+    margin-top: calc(var(--pico-nav-element-spacing-vertical) * -1);
+    z-index: 2;
+    padding-bottom: 1rem;
+    ;
 }
