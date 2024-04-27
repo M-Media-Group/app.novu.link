@@ -29,7 +29,7 @@ const emit = defineEmits<{
 const success = ref(false);
 const isLoading = ref(false);
 
-const showAddForm = ref(teamStore.activeTeam?.pm_type === null);
+const showAddForm = ref(typeof teamStore.activeTeam?.pm_type !== "string");
 
 const baseFormRef = ref();
 
