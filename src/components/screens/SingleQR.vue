@@ -289,7 +289,12 @@ const OtpLoginOrRegister = defineAsyncComponent(
           )
         }}
       </p>
-      <otp-login-or-register v-if="!authenticated" :inline="true" />
+      <otp-login-or-register
+        v-if="!authenticated"
+        :inline="true"
+        :autofocus="false"
+        :submitText="$t('Claim link')"
+      />
       <base-button
         v-else
         :to="{
