@@ -38,6 +38,9 @@ const blur = () => {
           {{ $t("New magic link") }}
         </base-button>
       </li>
+      <li v-if="!user?.isAuthenticated">
+        <router-link to="/login">{{ $t("Login") }}</router-link>
+      </li>
       <li>
         <base-button
           class="outline"
