@@ -66,14 +66,14 @@ const scrollToTop = () => {
     <img :src="image" alt="Link shortener" />
   </section>
 
-  <section id="testimonials" class="two-column-grid">
+  <section id="testimonials">
     <hgroup>
       <h2>{{ $t("What our customers say") }}</h2>
       <p>
         {{ $t("Across industries, our magic links are making a difference") }}
       </p>
     </hgroup>
-    <ul>
+    <ul class="two-column-grid">
       <li v-for="testimonial in testimonialData" :key="testimonial.id">
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
