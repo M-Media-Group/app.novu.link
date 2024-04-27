@@ -26,10 +26,9 @@ article:has(>:first-child:is(.images)) {
     display: grid;
     gap: calc(var(--pico-block-spacing-vertical) * 1.6);
 
+    /** @todo this may also need the "fieldset", but it doesnt look good with the OTP */
     >*,
-    article,
-
-    fieldset {
+    article {
         margin-bottom: 0;
     }
 }
