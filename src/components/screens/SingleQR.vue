@@ -93,6 +93,13 @@ const props = defineProps({
     required: false,
     default: false,
   },
+
+  /** IF the user is authenticated */
+  authenticated: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const isLoading = ref(false);
@@ -226,6 +233,10 @@ const magicLink = getRedirectUrl(props.redirectId);
 const QRDestinations = defineAsyncComponent(
   () => import("@/components/QR/QRDestinations.vue")
 );
+
+const OtpLoginOrRegister = defineAsyncComponent(
+  () => import("@/forms/OtpLoginOrRegister.vue")
+);
 </script>
 
 <template>
@@ -236,32 +247,18 @@ const QRDestinations = defineAsyncComponent(
     </hgroup>
 
     <div class="main-grid-display smaller-gap">
-      <q-r-code
-        :redirectId="props.redirectId"
-        :lightColor="lightColor"
-        :darkColor="darkColor"
-        :logoDataUrl="logoDataUrl"
-        :selectedShape="selectedShape"
-        @update="qrCodeDataURL = $event"
-        :loading="isLoading || loading"
-      />
-    </div>
-
-    <div class="main-grid-display smaller-gap">
-      <base-button
-        :to="{
-          name: 'add-endpoint',
-          params: { redirectId: props.redirectId },
-        }"
-        >{{
-          subscribed
-            ? $t("Add more free destinations")
-            : $t("Add more destinations to same code")
-        }}</base-button
-      >
-      <!-- <base-button class="outline">Customise design</base-button> -->
       <details class="dropdown">
-        <summary role="button" class="outline">{{ $t("Share") }}</summary>
+        <summary>
+          <q-r-code
+            :redirectId="props.redirectId"
+            :lightColor="lightColor"
+            :darkColor="darkColor"
+            :logoDataUrl="logoDataUrl"
+            :selectedShape="selectedShape"
+            @update="qrCodeDataURL = $event"
+            :loading="isLoading || loading"
+          />
+        </summary>
         <ul>
           <li>
             <a href="#" @click.prevent="downloadQRCode">{{
@@ -283,6 +280,29 @@ const QRDestinations = defineAsyncComponent(
           </li>
         </ul>
       </details>
+    </div>
+
+    <div class="main-grid-display smaller-gap">
+      <p v-if="!authenticated">
+        {{
+          $t(
+            "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now."
+          )
+        }}
+      </p>
+      <otp-login-or-register v-if="!authenticated" :inline="true" />
+      <base-button
+        v-else
+        :to="{
+          name: 'add-endpoint',
+          params: { redirectId: props.redirectId },
+        }"
+        >{{
+          subscribed
+            ? $t("Add more free destinations")
+            : $t("Add more destinations to same code")
+        }}</base-button
+      >
     </div>
 
     <tab-nav
@@ -446,5 +466,23 @@ details > summary {
   top: 0;
   z-index: 1;
   background: var(--pico-background-color);
+}
+
+details.dropdown {
+  padding: 0;
+  width: fit-content;
+  margin: 0 auto;
+}
+details.dropdown > summary {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+details.dropdown summary::after {
+  position: absolute;
+  bottom: calc(var(--pico-spacing) / 2);
+  transform: scale(1.5);
+  right: calc(var(--pico-spacing));
 }
 </style>
