@@ -29,7 +29,7 @@ defineProps({
     default: null,
   },
   lineChartData: {
-    type: Array as PropType<Array<{ name: string; count: number }>>,
+    type: Array as PropType<Array<{ name: string; count: number }> | null>,
     required: false,
     default: null,
   },
@@ -80,7 +80,10 @@ defineProps({
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
       ></div>
-      <line-chart v-else-if="lineChartData" :clickData="lineChartData" />
+      <line-chart
+        v-else-if="lineChartData && lineChartData.length > 0"
+        :clickData="lineChartData"
+      />
       <div v-else class="placeholder-chart">
         {{ $t("No data available") }}
       </div>
