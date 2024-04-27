@@ -6,7 +6,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import type { PropType } from "vue";
 import type { Endpoint } from "@/types/redirect";
 import { parseRuleGroup } from "@/useRules";
-import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 defineProps({
   redirectId: {
@@ -78,16 +78,32 @@ defineProps({
     </edit-endpoint>
 
     <!-- IF we have more than 1 endpoint, and the others are locked due to unsub, show subsctibe button -->
-    <confirms-subscription-start
+    <confirms-gate
       v-if="redirectId && !subscribed && index === 0 && endpoints.length > 1"
-      :redirectId="redirectId"
       :title="$t('Activate other destinations')"
-      :submitText="$t('Activate other destinations')"
+      :description="
+        $t(
+          'Additional destinations and design changes are free after you subscribe.'
+        )
+      "
+      :allowBackgroundClickToClose="false"
+      :gate="[
+        'auth',
+        'confirmedEmailOrPhone',
+        {
+          name: 'subscribedRedirect',
+          options: {
+            redirectId,
+            title: $t('Activate other destinations'),
+            submitText: $t('Activate other destinations'),
+          },
+        },
+      ]"
     >
       <base-button class="full-width">{{
         $t("Activate other destinations")
       }}</base-button>
-    </confirms-subscription-start>
+    </confirms-gate>
   </template>
   <base-button
     v-if="redirectId"

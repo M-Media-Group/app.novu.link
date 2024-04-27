@@ -5,7 +5,7 @@ import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import type { PropType } from "vue";
 
-import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 defineProps({
   redirectId: {
@@ -91,15 +91,31 @@ defineProps({
     }}</base-button>
   </template>
   <template v-else>
-    <confirms-subscription-start
-      :redirectId="redirectId"
+    <confirms-gate
       :title="$t('Enable advanced analytics')"
-      :submitText="$t('Enable advanced analytics')"
+      :description="
+        $t(
+          'Additional destinations and design changes are free after you subscribe.'
+        )
+      "
+      :allowBackgroundClickToClose="false"
+      :gate="[
+        'auth',
+        'confirmedEmailOrPhone',
+        {
+          name: 'subscribedRedirect',
+          options: {
+            redirectId,
+            title: $t('Enable advanced analytics'),
+            submitText: $t('Enable advanced analytics'),
+          },
+        },
+      ]"
     >
       <base-button class="full-width">
         {{ $t("Enable advanced analytics") }}</base-button
       >
-    </confirms-subscription-start>
+    </confirms-gate>
 
     <card-element>
       <hgroup>

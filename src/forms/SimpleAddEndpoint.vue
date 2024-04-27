@@ -4,12 +4,12 @@ import BaseForm from "./BaseForm.vue";
 import RuleSelector from "@/components/RuleSelector.vue";
 import type { RuleModel } from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
-import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";
 import { formatUrl, removeProtocol } from "@/helpers/urlFormatter";
 import { addRedirectEndpoint } from "@/useRedirects";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 const $bus = useEventsBus();
 
@@ -186,22 +186,34 @@ const debounceAddProtocolIfMissing = debounce(
     <!-- </TransitionGroup> -->
 
     <template #submit="{ disabled, isLoading, submitText }">
-      <confirms-subscription-start
+      <confirms-gate
         ref="subscriptionStartRef"
         @confirmed="submitForm"
         @failed="handleFailedConfirmation"
-        :redirectId="props.redirectId"
+        :title="$t('Activate destination')"
+        :description="
+          $t(
+            'Additional destinations and design changes are free after you subscribe.'
+          )
+        "
+        :allowBackgroundClickToClose="false"
+        :gate="[
+          'auth',
+          'confirmedEmailOrPhone',
+          {
+            name: 'subscribedRedirect',
+            options: {
+              redirectId,
+              title: $t('Activate destination'),
+              submitText: $t('Subscribe and activate destination'),
+            },
+          },
+        ]"
       >
-        <template v-slot="{ isConfirming }">
-          <base-button
-            :disabled="disabled"
-            type="submit"
-            :aria-busy="isLoading || isConfirming"
-          >
-            {{ $t(submitText) }}
-          </base-button>
-        </template>
-      </confirms-subscription-start>
+        <base-button :disabled="disabled" type="submit" :aria-busy="isLoading">
+          {{ $t(submitText) }}
+        </base-button>
+      </confirms-gate>
     </template>
   </base-form>
 </template>
