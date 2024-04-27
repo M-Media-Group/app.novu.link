@@ -25,6 +25,14 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  autofocus: {
+    type: Boolean,
+    default: true,
+  },
+  submitText: {
+    type: String,
+    default: "Submit",
+  },
 });
 
 const { t } = useI18n();
@@ -119,7 +127,7 @@ const toggleUsePhone = async () => {
       minlength="6"
       maxlength="6"
       :placeholder="$t('One-time password')"
-      autofocus
+      :autofocus="autofocus"
       @input="validateOtp"
     />
 
@@ -141,6 +149,8 @@ const toggleUsePhone = async () => {
     :isLoading="isLoading"
     :disabled="isLoading"
     :inline="inline"
+    :autofocus="autofocus"
+    :submitText="submitText"
   >
     <template v-if="!usePhone">
       <label for="email" v-show="!inline">{{ $t("Email") }}</label>
@@ -149,7 +159,7 @@ const toggleUsePhone = async () => {
         type="email"
         name="email"
         required
-        autofocus
+        :autofocus="autofocus"
         v-model="userStore.userEmail"
         ref="phoneInput"
       />
@@ -164,7 +174,7 @@ const toggleUsePhone = async () => {
         name="phone"
         inputmode="tel"
         required
-        autofocus
+        :autofocus="autofocus"
         v-model="userStore.userPhone"
         autocomplete="tel"
         pattern="^\+[0-9]{1,15}$"
