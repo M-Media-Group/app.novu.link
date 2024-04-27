@@ -185,14 +185,12 @@ const toggleUsePhone = async () => {
       />
     </template>
     <template #after-submit>
-      <p>
-        <a v-if="!usePhone" href="#" @click.prevent="toggleUsePhone">{{
-          $t("Use phone instead")
-        }}</a>
-        <a v-else href="#" @click.prevent="toggleUsePhone">{{
-          $t("Use email instead")
-        }}</a>
-      </p>
+      <a v-if="!usePhone" href="#" @click.prevent="toggleUsePhone">{{
+        $t("Use phone instead")
+      }}</a>
+      <a v-else href="#" @click.prevent="toggleUsePhone">{{
+        $t("Use email instead")
+      }}</a>
     </template>
   </base-form>
 </template>
