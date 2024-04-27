@@ -154,6 +154,7 @@ const convertSecondsToMinutes = (seconds: number) => {
         <router-link to="/redirects">Default Campaign</router-link>
       </p>
     </hgroup>
+    <progress v-if="!teamStore.activeTeam" :value="timer" :max="timerLength" />
     <single-q-r
       :showTitle="false"
       :redirectName="redirectName"
@@ -166,6 +167,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :endpoints="endpoints"
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
+      :description="teamStore.activeTeam ? undefined : ''"
     />
   </div>
 </template>
