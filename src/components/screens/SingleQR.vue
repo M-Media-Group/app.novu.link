@@ -14,11 +14,10 @@ import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import CardElement from "@/components/CardElement.vue";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 import { getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
-
-import ConfirmsSubscriptionStart from "@/components/modals/ConfirmsSubscriptionStart.vue";
 
 const $bus = useEventsBus();
 
@@ -379,16 +378,33 @@ const OtpLoginOrRegister = defineAsyncComponent(
             <option value="circle">{{ $t("Circle") }}</option>
           </select>
         </div>
-        <confirms-subscription-start
-          :redirectId="redirectId"
+
+        <confirms-gate
           :title="$t('Enable custom designs')"
-          :submitText="$t('Enable custom designs')"
           v-if="!subscribed"
+          :description="
+            $t(
+              'Additional destinations and design changes are free after you subscribe.'
+            )
+          "
+          :allowBackgroundClickToClose="false"
+          :gate="[
+            'auth',
+            'confirmedEmailOrPhone',
+            {
+              name: 'subscribedRedirect',
+              options: {
+                redirectId,
+                title: $t('Enable custom designs'),
+                submitText: $t('Enable custom designs'),
+              },
+            },
+          ]"
         >
-          <base-button class="full-width no-margin">
+          <base-button class="full-width">
             {{ $t("Enable custom designs") }}</base-button
           >
-        </confirms-subscription-start>
+        </confirms-gate>
       </card-element>
       <card-element :loading="isLoading || loading">
         <hgroup>
@@ -422,15 +438,29 @@ const OtpLoginOrRegister = defineAsyncComponent(
           </p>
         </hgroup>
         <template v-if="subscribed !== true">
-          <confirms-subscription-start
-            :redirectId="redirectId"
+          <confirms-gate
             :title="$t('Subscribe')"
-            :submitText="$t('Subscribe Magic Link')"
+            :description="
+              $t(
+                'Additional destinations and design changes are free after you subscribe.'
+              )
+            "
+            :allowBackgroundClickToClose="false"
+            :gate="[
+              'auth',
+              'confirmedEmailOrPhone',
+              {
+                name: 'subscribedRedirect',
+                options: {
+                  redirectId,
+                  title: $t('Subscribe'),
+                  submitText: $t('Subscribe Magic Link'),
+                },
+              },
+            ]"
           >
-            <base-button class="full-width no-margin">
-              {{ $t("Subscribe") }}</base-button
-            >
-          </confirms-subscription-start>
+            <base-button class="full-width"> {{ $t("Subscribe") }}</base-button>
+          </confirms-gate>
         </template>
         <unsubscribe-redirect v-else :redirectId="props.redirectId" />
       </card-element>
