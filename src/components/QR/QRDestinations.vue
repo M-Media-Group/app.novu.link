@@ -88,7 +88,6 @@ defineProps({
       "
       :allowBackgroundClickToClose="false"
       :gate="[
-        'auth',
         'confirmedEmailOrPhone',
         {
           name: 'subscribedRedirect',

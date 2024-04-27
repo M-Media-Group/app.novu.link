@@ -242,7 +242,6 @@ const OtpLoginOrRegister = defineAsyncComponent(
   <div class="main-grid-display">
     <hgroup class="smaller-gap">
       <h2 v-if="showTitle">{{ title }}</h2>
-      <p>{{ description }}</p>
       <p v-if="!authenticated">
         {{
           $t(
@@ -250,6 +249,7 @@ const OtpLoginOrRegister = defineAsyncComponent(
           )
         }}
       </p>
+      <p v-else>{{ description }}</p>
     </hgroup>
 
     <div class="main-grid-display smaller-gap">
@@ -395,7 +395,6 @@ const OtpLoginOrRegister = defineAsyncComponent(
           "
           :allowBackgroundClickToClose="false"
           :gate="[
-            'auth',
             'confirmedEmailOrPhone',
             {
               name: 'subscribedRedirect',
@@ -453,7 +452,6 @@ const OtpLoginOrRegister = defineAsyncComponent(
             "
             :allowBackgroundClickToClose="false"
             :gate="[
-              'auth',
               'confirmedEmailOrPhone',
               {
                 name: 'subscribedRedirect',
@@ -476,7 +474,14 @@ const OtpLoginOrRegister = defineAsyncComponent(
           <h3>{{ $t("Delete Magic Link") }}</h3>
           <p>{{ $t("Delete this magic link and all its destinations") }}</p>
         </hgroup>
-        <base-button class="outline">{{ $t("Delete forever") }}</base-button>
+        <p v-if="!authenticated">
+          {{
+            $t("If you don't claim your link it will be deleted in 3 minutes.")
+          }}
+        </p>
+        <base-button v-else class="outline">{{
+          $t("Delete forever")
+        }}</base-button>
       </card-element>
     </div>
   </div>
