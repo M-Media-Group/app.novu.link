@@ -119,6 +119,10 @@ const setElement = () => {
     () => import(`./../../forms/${formToUse.value}.vue`)
   );
 };
+
+defineExpose({
+  startConfirming,
+});
 </script>
 <template>
   <span>
