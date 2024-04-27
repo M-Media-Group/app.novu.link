@@ -192,6 +192,9 @@ const scrollToTop = () => {
 .hero-section {
   grid-template-columns: 3fr 2fr;
 }
+.hero-section hgroup > p {
+  margin-bottom: var(--pico-spacing);
+}
 h2 {
   font-size: 300%;
 }
