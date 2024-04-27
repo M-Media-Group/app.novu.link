@@ -150,7 +150,7 @@ const convertSecondsToMinutes = (seconds: number) => {
         }}
       </h1>
       <h1 v-else>{{ redirectName ?? $t("Magic link") }}</h1>
-      <p>
+      <p v-if="teamStore.activeTeam">
         <router-link to="/redirects">Default Campaign</router-link>
       </p>
     </hgroup>
