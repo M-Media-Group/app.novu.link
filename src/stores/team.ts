@@ -37,8 +37,15 @@ export const useTeamStore = defineStore("team", () => {
       return;
     }
 
+    const hasActiveTeam = !!activeTeamId.value;
+
     // Set the active team to the team that has is_active set to true
     activeTeamId.value = activeTeam;
+
+    // If there is current no active team, we emit an event
+    if (!hasActiveTeam) {
+      $bus.$emit(eventTypes.set_active_team);
+    }
   };
 
   //   If we get an authenticated event on the event bus, we should fetch the user's teams.

@@ -97,8 +97,7 @@ onMounted(() => {
   $bus.$on(eventTypes.unsubscribed, getData);
   $bus.$on(eventTypes.updated_redirect, getData);
   $bus.$on(eventTypes.updated_endpoint, getData);
-  $bus.$on(eventTypes.logged_in, getData);
-  $bus.$on(eventTypes.registered, getData);
+  $bus.$on(eventTypes.set_active_team, getData);
   if (!teamStore.activeTeam) {
     isLoading.value = false;
     startTimer();
@@ -112,8 +111,7 @@ onUnmounted(() => {
   $bus.$off(eventTypes.unsubscribed, getData);
   $bus.$off(eventTypes.updated_redirect, getData);
   $bus.$off(eventTypes.updated_endpoint, getData);
-  $bus.$off(eventTypes.logged_in, getData);
-  $bus.$off(eventTypes.registered, getData);
+  $bus.$off(eventTypes.set_active_team, getData);
 });
 
 const timerLength = 60 * 3;
