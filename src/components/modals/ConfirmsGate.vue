@@ -7,7 +7,10 @@ import {
   useSlots,
 } from "vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
-import type { Gate } from "@m-media/vue3-gate-keeper/src/gateKeeper";
+import type {
+  Gate,
+  GateOptions,
+} from "@m-media/vue3-gate-keeper/src/gateKeeper";
 import { useGateKeeper } from "@m-media/vue3-gate-keeper";
 
 const props = defineProps({
@@ -20,6 +23,19 @@ const props = defineProps({
   gate: {
     type: [Array, String] as PropType<string | Gate | (Gate | string)[]>,
     required: true,
+  },
+
+  /** The description of the modal. It will be in the body of the opened modal. */
+  description: {
+    type: String as PropType<string | null>,
+    default: null,
+  },
+
+  /** Set to false to prevent the modal from closing when the background is clicked. */
+  allowBackgroundClickToClose: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
 
@@ -37,13 +53,15 @@ const interceptedByGate = ref("");
 
 const runGates = useGateKeeper() as Function;
 
-const getGateDataFromProps = (gateName: string): Gate | undefined => {
+const getGateDataFromProps = (
+  gateName: string
+): GateOptions["gateOptions"] | undefined => {
   if (typeof props.gate === "string") {
     return;
   }
   // If the props.gate is a single gate, return it
   if (!Array.isArray(props.gate)) {
-    return props.gate;
+    return props.gate.options;
   }
 
   const response = props.gate.find((gate) => {
@@ -52,7 +70,7 @@ const getGateDataFromProps = (gateName: string): Gate | undefined => {
       : undefined;
   });
 
-  return typeof response === "string" ? undefined : response;
+  return typeof response === "string" ? undefined : response?.options;
 };
 
 const startConfirming = async () => {
@@ -111,11 +129,15 @@ const setElement = () => {
 
     <base-modal
       ref="modal"
-      :title="title"
+      :title="getGateDataFromProps(interceptedByGate)?.title ?? title"
       :showTrigger="false"
       :showFooter="false"
+      :allowBackgroundClickToClose="allowBackgroundClickToClose"
       @closed="isConfirming = false"
     >
+      <p v-if="description">
+        {{ description }}
+      </p>
       <!-- @slot This is the slot for the confirmation element. This is the form or element that will be shown in the modal. -->
       <slot
         :name="'confirmationElement:' + interceptedByGate"
@@ -126,7 +148,7 @@ const setElement = () => {
           :is="ConfirmationElement"
           v-if="formToUse && modal?.isModalOpen"
           @success="startConfirming"
-          v-bind="getGateDataFromProps(interceptedByGate)?.options"
+          v-bind="getGateDataFromProps(interceptedByGate)"
         />
       </slot>
     </base-modal>
