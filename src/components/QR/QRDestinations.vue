@@ -39,17 +39,15 @@ defineProps({
     </card-element>
   </template>
   <template v-else-if="endpoints.length === 0">
-    <card-element :loading="isLoading">
-      <hgroup>
-        <h3>{{ $t("No destinations yet") }}</h3>
-        <p>
-          {{
-            subscribed
-              ? $t("Add free destinations")
-              : $t("Add more destinations to same code")
-          }}
-        </p>
-      </hgroup>
+    <card-element
+      :loading="isLoading"
+      :title="$t('No destinations yet')"
+      :subtitle="
+        subscribed
+          ? $t('Add free destinations')
+          : $t('Add more destinations to same code')
+      "
+    >
     </card-element>
   </template>
   <template v-else v-for="(endpoint, index) in endpoints" :key="endpoint.id">
@@ -64,16 +62,13 @@ defineProps({
         :class="{
           disabled: !subscribed && index > 0,
         }"
+        :title="removeProtocol(endpoint.endpoint)"
+        :subtitle="
+          endpoint.rule_groups?.[0]
+            ? $t('If') + ' ' + parseRuleGroup(endpoint.rule_groups[0])[0]
+            : $t('If no rules match')
+        "
       >
-        <hgroup>
-          <h3>{{ removeProtocol(endpoint.endpoint) }}</h3>
-          <p v-if="endpoint.rule_groups?.[0]">
-            {{ $t("If") }} {{ parseRuleGroup(endpoint.rule_groups[0])[0] }}
-          </p>
-          <p v-else>
-            {{ $t("If no rules match") }}
-          </p>
-        </hgroup>
       </card-element>
     </edit-endpoint>
 
