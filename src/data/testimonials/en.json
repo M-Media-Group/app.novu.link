@@ -5,10 +5,6 @@
         "jobTitle": "Restaurant Manager"
     },
     {
-        "name": "江西",
-        "description": "As a startup, we're not super sure if even our website domain name will stay the same yet - so we've used this app to generate links that we can use on our tradeshow materials. If we ever do change the domain name, we can easily update the links online without having to pay to re-print everything."
-    },
-    {
         "name": "Loulan",
         "description": "We've been able to generate a single magic link that sits on our social media platforms, and it automatically redirects users to our correct website based on their current location and browser language. As an added benefit, we get to see how our links are performing and understand more about our users that use them.",
         "jobTitle": "Social activist"
@@ -17,5 +13,9 @@
         "name": "Kate",
         "description": "At our bed and breakfast, we placed QR codes in our guest rooms to greet them and provide relevant information about their stay. Everytime a new guest arrives, we just change where the QR code redirects to without having to go into each room and physically change the QR code. It's great!",
         "jobTitle": "Floral B&B founder"
+    },
+    {
+        "name": "江西",
+        "description": "As a startup, we're not super sure if even our website domain name will stay the same yet - so we've used this app to generate links that we can use on our tradeshow materials. If we ever do change the domain name, we can easily update the links online without having to pay to re-print everything."
     }
 ]

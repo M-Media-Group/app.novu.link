@@ -472,3 +472,14 @@ nav a[role=button] {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+/** Fix tooltip overflowing parent */
+[data-tooltip]:focus::after,
+[data-tooltip]:focus::before,
+[data-tooltip]:hover::after,
+[data-tooltip]:hover::before,
+
+[data-tooltip]::before {
+  white-space: pre-wrap;
+  min-width: 20ch;
+}

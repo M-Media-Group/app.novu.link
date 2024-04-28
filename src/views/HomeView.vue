@@ -95,8 +95,11 @@ const assetUrl = (asset: string, extension = "png") =>
         {{ $t("Across industries, our magic links are making a difference") }}
       </p>
     </hgroup>
-    <ul class="two-column-grid">
-      <li v-for="testimonial in testimonialData" :key="testimonial.id">
+    <ul class="three-column-grid">
+      <li
+        v-for="testimonial in testimonialData.slice(0, 3)"
+        :key="testimonial.id"
+      >
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
           <p v-if="testimonial.jobTitle">{{ testimonial.jobTitle }}</p>
@@ -170,15 +173,25 @@ const assetUrl = (asset: string, extension = "png") =>
 
   <section id="features">
     <h2>{{ $t("Features") }}</h2>
-    <ul class="two-column-grid">
-      <li v-for="feature in featureData" :key="feature.id">
-        <hgroup>
-          <h3>{{ feature.name }}</h3>
-          <p>{{ feature.min_subscription === 0 ? "Free" : "Pro" }}</p>
-        </hgroup>
-        <p>{{ feature.description }}</p>
-      </li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>{{ $t("Feature") }}</th>
+          <th>{{ $t("Basic") }}</th>
+          <th>{{ $t("Tiny Tinkerer") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="feature in featureData" :key="feature.id">
+          <td>
+            {{ feature.name }}
+            <span :data-tooltip="feature.description">?</span>
+          </td>
+          <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
+          <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
   <section id="faq" class="two-column-grid">

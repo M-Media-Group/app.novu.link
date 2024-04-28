@@ -5,11 +5,6 @@
         "jobTitle": "Gérant de restaurant"
     },
     {
-        "name": "江西",
-        "description": "En tant que start-up, nous ne sommes pas sûrs que même le nom de domaine de notre site web reste le même pour le moment - nous avons donc utilisé cette application pour générer des liens que nous pouvons utiliser sur nos supports de salon. Si nous changeons jamais le nom de domaine, nous pouvons facilement mettre à jour les liens en ligne sans avoir à payer pour tout réimprimer.",
-        "jobTitle": null
-    },
-    {
         "name": "Loulan",
         "description": "Nous avons été en mesure de générer un seul lien magique qui se trouve sur nos plateformes de médias sociaux, et il redirige automatiquement les utilisateurs vers notre site web correct en fonction de leur emplacement actuel et de la langue du navigateur. En outre, nous avons la possibilité de voir comment nos liens se comportent et de mieux comprendre nos utilisateurs qui les utilisent.",
         "jobTitle": "Militant social"
@@ -18,5 +13,10 @@
         "name": "Kate",
         "description": "Dans notre maison d'hôtes, nous avons placé des codes QR dans nos chambres d'hôtes pour les saluer et leur fournir des informations pertinentes sur leur séjour. Chaque fois qu'un nouveau client arrive, nous changeons simplement l'endroit où le code QR redirige sans avoir à entrer dans chaque chambre et à changer physiquement le code QR. C'est génial!",
         "jobTitle": "Fondatrice de la maison d'hôtes florale"
+    },
+    {
+        "name": "江西",
+        "description": "En tant que start-up, nous ne sommes pas sûrs que même le nom de domaine de notre site web reste le même pour le moment - nous avons donc utilisé cette application pour générer des liens que nous pouvons utiliser sur nos supports de salon. Si nous changeons jamais le nom de domaine, nous pouvons facilement mettre à jour les liens en ligne sans avoir à payer pour tout réimprimer.",
+        "jobTitle": null
     }
 ]
