@@ -105,15 +105,14 @@ const handleConfirmedWithPaymentMethod = () => {
         {{ $t("Default payment method") }}:
         {{ teamStore.activeTeam?.pm_type?.toUpperCase() }} ****
         {{ teamStore.activeTeam?.pm_last_four }}
+        -
+        <a @click="showAddForm = true">{{ $t("Add a new card") }}</a>
       </p>
-      <a @click="showAddForm = true">{{ $t("Add a new payment method") }}</a>
 
       <!-- Button to confirm subscription -->
     </template>
 
     <template #submit v-if="!showAddForm">
-      <br />
-      <br />
       <base-button
         @click="startSubscriptionForRedirect"
         type="submit"
