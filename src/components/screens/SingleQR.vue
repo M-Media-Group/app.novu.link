@@ -16,6 +16,8 @@ import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
+import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
+
 import { getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
 
@@ -236,215 +238,180 @@ const QRDestinations = defineAsyncComponent(
 const OtpLoginOrRegister = defineAsyncComponent(
   () => import("@/forms/OtpLoginOrRegister.vue")
 );
+
+const confetti = ref();
+
+const triggerSuccess = () => {
+  confetti.value.initBurst();
+};
+
+defineExpose({
+  triggerSuccess,
+});
 </script>
 
 <template>
-  <div class="main-grid-display">
-    <hgroup class="smaller-gap">
-      <h2 v-if="showTitle">{{ title }}</h2>
-      <p v-if="!authenticated">
-        {{
-          $t(
-            "Claim your link now to edit designs, manage destinations, and see analytics."
-          )
-        }}
-      </p>
-      <p v-else>{{ description }}</p>
-    </hgroup>
+  <background-confetti ref="confetti" :fireOnLoad="false" />
+  <div class="two-column-grid flex-start reverse">
+    <div class="main-grid-display sticky-on-desktop">
+      <hgroup class="smaller-gap">
+        <h2 v-if="showTitle">{{ title }}</h2>
+        <p>{{ description }}</p>
+      </hgroup>
 
-    <div class="main-grid-display smaller-gap">
-      <details class="dropdown">
-        <summary>
-          <q-r-code
-            :redirectId="props.redirectId"
-            :lightColor="lightColor"
-            :darkColor="darkColor"
-            :logoDataUrl="logoDataUrl"
-            :selectedShape="selectedShape"
-            @update="qrCodeDataURL = $event"
-            :loading="isLoading || loading"
+      <div class="main-grid-display smaller-gap">
+        <details class="dropdown">
+          <summary>
+            <q-r-code
+              :redirectId="props.redirectId"
+              :lightColor="lightColor"
+              :darkColor="darkColor"
+              :logoDataUrl="logoDataUrl"
+              :selectedShape="selectedShape"
+              @update="qrCodeDataURL = $event"
+              :loading="isLoading || loading"
+            />
+          </summary>
+          <ul>
+            <li>
+              <a href="#" @click.prevent="downloadQRCode">{{
+                $t("Download QR code")
+              }}</a>
+            </li>
+            <li v-if="magicLink">
+              <a
+                href="#"
+                @click.prevent="copyToClipboard(magicLink)"
+                v-if="!copiedTimeout"
+                >{{ $t("Copy magic link") }}</a
+              >
+              <a href="#" v-else>{{ $t("Copied!") }}</a>
+            </li>
+            <li>
+              <!-- Print button -->
+              <a href="#" @click.prevent="printMagicLink">{{ $t("Print") }}</a>
+            </li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="main-grid-display smaller-gap">
+        <p v-if="!authenticated">
+          {{
+            $t(
+              "Claim your link now to edit designs, manage destinations, and see analytics."
+            )
+          }}
+        </p>
+        <card-element v-if="!authenticated">
+          <otp-login-or-register
+            :inline="true"
+            :autofocus="false"
+            :submitText="$t('Claim link')"
           />
-        </summary>
-        <ul>
-          <li>
-            <a href="#" @click.prevent="downloadQRCode">{{
-              $t("Download QR code")
-            }}</a>
-          </li>
-          <li v-if="magicLink">
-            <a
-              href="#"
-              @click.prevent="copyToClipboard(magicLink)"
-              v-if="!copiedTimeout"
-              >{{ $t("Copy magic link") }}</a
+        </card-element>
+        <base-button
+          v-else
+          :to="{
+            name: 'add-endpoint',
+            params: { redirectId: props.redirectId },
+          }"
+          >{{
+            subscribed
+              ? $t("Add more free destinations")
+              : $t("Add more destinations to same code")
+          }}</base-button
+        >
+      </div>
+    </div>
+    <div class="main-grid-display">
+      <tab-nav
+        :options="[
+          { render: $t('Analytics'), id: '1' },
+          { render: $t('Destinations'), id: '2' },
+          // { render: 'Design', id: '3' },
+          { render: $t('Settings'), id: '4' },
+        ]"
+        v-model="openTabs"
+        @click="scrollUp($event.target)"
+      >
+      </tab-nav>
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('1')"
+      >
+        <q-r-analytics
+          :redirectId="redirectId"
+          :clicksToday="!authenticated ? undefined : clicksToday"
+          :lineChartData="!authenticated ? undefined : lineChartData"
+          :clicksAllTime="!authenticated ? undefined : clicksAllTime"
+          :bestEndpoint="!authenticated ? undefined : bestEndpoint"
+          :isLoading="isLoading || loading"
+          :subscribed="subscribed"
+        />
+      </div>
+
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('2')"
+      >
+        <q-r-destinations
+          :redirectId="redirectId"
+          :endpoints="endpoints"
+          :isLoading="isLoading || loading"
+          :subscribed="subscribed"
+        />
+      </div>
+
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('4')"
+      >
+        <card-element
+          :loading="isLoading || loading"
+          :title="$t('Code design')"
+          :subtitle="$t('Customise the look of your magic link')"
+        >
+          <div :class="{ disabled: !subscribed }">
+            <div class="two-column-grid mobile-grid">
+              <div>
+                <label for="darkColor">{{ $t("Color") }}</label>
+                <input
+                  id="darkColor"
+                  type="color"
+                  v-model="darkColor"
+                  name="darkColor"
+                  :disabled="!subscribed"
+                />
+              </div>
+              <div>
+                <label for="lightColor">{{ $t("Background color") }}</label>
+                <input
+                  id="lightColor"
+                  type="color"
+                  v-model="lightColor"
+                  name="lightColor"
+                  :disabled="!subscribed"
+                />
+              </div>
+            </div>
+
+            <label for="shape">{{ $t("Shape") }}</label>
+            <select
+              name="shape"
+              id="shape"
+              v-model="selectedShape"
+              :disabled="!subscribed"
             >
-            <a href="#" v-else>{{ $t("Copied!") }}</a>
-          </li>
-          <li>
-            <!-- Print button -->
-            <a href="#" @click.prevent="printMagicLink">{{ $t("Print") }}</a>
-          </li>
-        </ul>
-      </details>
-    </div>
-
-    <div class="main-grid-display smaller-gap">
-      <otp-login-or-register
-        v-if="!authenticated"
-        :inline="true"
-        :autofocus="false"
-        :submitText="$t('Claim link')"
-      />
-
-      <base-button
-        v-else
-        :to="{
-          name: 'add-endpoint',
-          params: { redirectId: props.redirectId },
-        }"
-        >{{
-          subscribed
-            ? $t("Add more free destinations")
-            : $t("Add more destinations to same code")
-        }}</base-button
-      >
-    </div>
-
-    <tab-nav
-      :options="[
-        { render: $t('Analytics'), id: '1' },
-        { render: $t('Destinations'), id: '2' },
-        // { render: 'Design', id: '3' },
-        { render: $t('Settings'), id: '4' },
-      ]"
-      v-model="openTabs"
-      @click="scrollUp($event.target)"
-    >
-    </tab-nav>
-    <div class="main-grid-display smaller-gap" v-show="openTabs.includes('1')">
-      <q-r-analytics
-        :redirectId="redirectId"
-        :clicksToday="!authenticated ? undefined : clicksToday"
-        :lineChartData="!authenticated ? undefined : lineChartData"
-        :clicksAllTime="!authenticated ? undefined : clicksAllTime"
-        :bestEndpoint="!authenticated ? undefined : bestEndpoint"
-        :isLoading="isLoading || loading"
-        :subscribed="subscribed"
-      />
-    </div>
-
-    <div class="main-grid-display smaller-gap" v-show="openTabs.includes('2')">
-      <q-r-destinations
-        :redirectId="redirectId"
-        :endpoints="endpoints"
-        :isLoading="isLoading || loading"
-        :subscribed="subscribed"
-      />
-    </div>
-
-    <div class="main-grid-display smaller-gap" v-show="openTabs.includes('4')">
-      <card-element
-        :loading="isLoading || loading"
-        :title="$t('Code design')"
-        :subtitle="$t('Customise the look of your magic link')"
-      >
-        <div :class="{ disabled: !subscribed }">
-          <div class="two-column-grid mobile-grid">
-            <div>
-              <label for="darkColor">{{ $t("Color") }}</label>
-              <input
-                id="darkColor"
-                type="color"
-                v-model="darkColor"
-                name="darkColor"
-                :disabled="!subscribed"
-              />
-            </div>
-            <div>
-              <label for="lightColor">{{ $t("Background color") }}</label>
-              <input
-                id="lightColor"
-                type="color"
-                v-model="lightColor"
-                name="lightColor"
-                :disabled="!subscribed"
-              />
-            </div>
+              <option value="square">{{ $t("Square") }}</option>
+              <option value="rounded">{{ $t("Rounded") }}</option>
+              <option value="circle">{{ $t("Circle") }}</option>
+            </select>
           </div>
 
-          <label for="shape">{{ $t("Shape") }}</label>
-          <select
-            name="shape"
-            id="shape"
-            v-model="selectedShape"
-            :disabled="!subscribed"
-          >
-            <option value="square">{{ $t("Square") }}</option>
-            <option value="rounded">{{ $t("Rounded") }}</option>
-            <option value="circle">{{ $t("Circle") }}</option>
-          </select>
-        </div>
-
-        <confirms-gate
-          :title="$t('Enable custom designs')"
-          v-if="!subscribed"
-          :description="
-            $t(
-              'Additional destinations and design changes are free after you subscribe.'
-            )
-          "
-          :allowBackgroundClickToClose="false"
-          :gate="[
-            'confirmedEmailOrPhone',
-            {
-              name: 'subscribedRedirect',
-              options: {
-                redirectId,
-                title: $t('Enable custom designs'),
-                submitText: $t('Enable custom designs'),
-              },
-            },
-          ]"
-        >
-          <base-button class="full-width">
-            {{ $t("Enable custom designs") }}</base-button
-          >
-        </confirms-gate>
-      </card-element>
-      <card-element :loading="isLoading || loading">
-        <hgroup>
-          <h3>{{ $t("Link settings") }}</h3>
-        </hgroup>
-        <redirect-settings
-          :redirectId="props.redirectId"
-          :redirectName="props.redirectName ?? undefined"
-          :showLabel="true"
-        />
-      </card-element>
-      <card-element :loading="isLoading || loading">
-        <hgroup>
-          <h3>
-            {{
-              subscribed
-                ? $t("Unsubscribe Magic Link")
-                : $t("Subscribe Magic Link")
-            }}
-          </h3>
-          <p>
-            {{
-              subscribed
-                ? $t(
-                    "Remove advanced analytics, multiple destinations, and custom designs"
-                  )
-                : $t(
-                    "Enable advanced analytics, multiple destinations, and custom designs"
-                  )
-            }}
-          </p>
-        </hgroup>
-        <template v-if="subscribed !== true">
           <confirms-gate
-            :title="$t('Subscribe')"
+            :title="$t('Enable custom designs')"
+            v-if="!subscribed"
             :description="
               $t(
                 'Additional destinations and design changes are free after you subscribe.'
@@ -457,32 +424,94 @@ const OtpLoginOrRegister = defineAsyncComponent(
                 name: 'subscribedRedirect',
                 options: {
                   redirectId,
-                  title: $t('Subscribe'),
-                  submitText: $t('Subscribe Magic Link'),
+                  title: $t('Enable custom designs'),
+                  submitText: $t('Enable custom designs'),
                 },
               },
             ]"
           >
-            <base-button class="full-width"> {{ $t("Subscribe") }}</base-button>
+            <base-button class="full-width">
+              {{ $t("Enable custom designs") }}</base-button
+            >
           </confirms-gate>
-        </template>
-        <unsubscribe-redirect v-else :redirectId="props.redirectId" />
-      </card-element>
-      <!-- Delete card element -->
-      <card-element :loading="isLoading || loading">
-        <hgroup>
-          <h3>{{ $t("Delete Magic Link") }}</h3>
-          <p>{{ $t("Delete this magic link and all its destinations") }}</p>
-        </hgroup>
-        <p v-if="!authenticated">
-          {{
-            $t("If you don't claim your link it will be deleted in 3 minutes.")
-          }}
-        </p>
-        <base-button v-else class="outline">{{
-          $t("Delete forever")
-        }}</base-button>
-      </card-element>
+        </card-element>
+        <card-element :loading="isLoading || loading">
+          <hgroup>
+            <h3>{{ $t("Link settings") }}</h3>
+          </hgroup>
+          <redirect-settings
+            :redirectId="props.redirectId"
+            :redirectName="props.redirectName ?? undefined"
+            :showLabel="true"
+          />
+        </card-element>
+        <card-element :loading="isLoading || loading">
+          <hgroup>
+            <h3>
+              {{
+                subscribed
+                  ? $t("Unsubscribe Magic Link")
+                  : $t("Subscribe Magic Link")
+              }}
+            </h3>
+            <p>
+              {{
+                subscribed
+                  ? $t(
+                      "Remove advanced analytics, multiple destinations, and custom designs"
+                    )
+                  : $t(
+                      "Enable advanced analytics, multiple destinations, and custom designs"
+                    )
+              }}
+            </p>
+          </hgroup>
+          <template v-if="subscribed !== true">
+            <confirms-gate
+              :title="$t('Subscribe')"
+              :description="
+                $t(
+                  'Additional destinations and design changes are free after you subscribe.'
+                )
+              "
+              :allowBackgroundClickToClose="false"
+              :gate="[
+                'confirmedEmailOrPhone',
+                {
+                  name: 'subscribedRedirect',
+                  options: {
+                    redirectId,
+                    title: $t('Subscribe'),
+                    submitText: $t('Subscribe Magic Link'),
+                  },
+                },
+              ]"
+            >
+              <base-button class="full-width">
+                {{ $t("Subscribe") }}</base-button
+              >
+            </confirms-gate>
+          </template>
+          <unsubscribe-redirect v-else :redirectId="props.redirectId" />
+        </card-element>
+        <!-- Delete card element -->
+        <card-element :loading="isLoading || loading">
+          <hgroup>
+            <h3>{{ $t("Delete Magic Link") }}</h3>
+            <p>{{ $t("Delete this magic link and all its destinations") }}</p>
+          </hgroup>
+          <p v-if="!authenticated">
+            {{
+              $t(
+                "If you don't claim your link it will be deleted in 3 minutes."
+              )
+            }}
+          </p>
+          <base-button v-else class="outline">{{
+            $t("Delete forever")
+          }}</base-button>
+        </card-element>
+      </div>
     </div>
   </div>
 </template>
@@ -501,8 +530,6 @@ details > summary {
   text-align: center;
 }
 .tab-nav {
-  margin-top: calc(var(--pico-nav-element-spacing-vertical) * -1);
-
   position: sticky;
   top: 0;
   z-index: 1;
@@ -525,5 +552,9 @@ details.dropdown summary::after {
   bottom: calc(var(--pico-spacing) / 2);
   transform: scale(1.5);
   right: calc(var(--pico-spacing));
+}
+
+.main-grid-display {
+  position: relative;
 }
 </style>

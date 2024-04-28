@@ -22,6 +22,8 @@ const props = defineProps({
 
 const isLoading = ref(true);
 
+const singleQRElement = ref();
+
 // All refs
 const redirectName = ref(null as Redirect["name"] | null);
 const subscribedAt = ref(null as Redirect["subscribed_at"]);
@@ -95,6 +97,7 @@ const getData = () => {
 onMounted(() => {
   if (!teamStore.activeTeam) {
     isLoading.value = false;
+    singleQRElement.value.triggerSuccess();
     startTimer();
   } else {
     getData();
@@ -167,6 +170,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"
+      ref="singleQRElement"
     />
   </div>
 </template>
