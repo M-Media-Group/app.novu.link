@@ -14,7 +14,7 @@ defineProps({
     required: false,
   },
   endpoints: {
-    type: Array as PropType<Endpoint[]>,
+    type: Array as PropType<Endpoint[] | null>,
     required: false,
     default: () => [],
   },
@@ -38,7 +38,7 @@ defineProps({
       </hgroup>
     </card-element>
   </template>
-  <template v-else-if="endpoints.length === 0">
+  <template v-else-if="!endpoints || endpoints.length === 0">
     <card-element
       :loading="isLoading"
       :title="$t('No destinations yet')"
@@ -74,7 +74,13 @@ defineProps({
 
     <!-- IF we have more than 1 endpoint, and the others are locked due to unsub, show subsctibe button -->
     <confirms-gate
-      v-if="redirectId && !subscribed && index === 0 && endpoints.length > 1"
+      v-if="
+        redirectId &&
+        !subscribed &&
+        index === 0 &&
+        endpoints &&
+        endpoints.length > 1
+      "
       :title="$t('Activate other destinations')"
       :description="
         $t(
