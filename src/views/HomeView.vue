@@ -265,4 +265,25 @@ img {
 .tab-nav {
   margin-bottom: var(--pico-spacing);
 }
+
+#faq {
+  grid-template-columns: 1fr 3fr;
+}
+
+#faq summary {
+  font-size: 120%;
+  line-height: unset;
+}
+
+#faq details[open] > summary {
+  margin-bottom: unset;
+}
+
+/* The second article in #pricing */
+#pricing > div > :nth-child(2) {
+  scale: 1.05;
+  border-top-color: var(--pico-primary-color);
+  border-top: calc(var(--pico-border-width) * 4) solid var(--pico-primary);
+  border-radius: var(--pico-border-radius);
+}
 </style>
