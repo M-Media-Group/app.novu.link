@@ -1,4 +1,4 @@
-import { event, optIn, optOut, set } from "vue-gtag";
+import { event, optIn, optOut, purchase, set } from "vue-gtag";
 import type { eventTypes } from "../events";
 
 // Define fbq for Facebook Pixel as a function (declare it)
@@ -47,7 +47,12 @@ export default {
     event("create_personal_access_token");
   },
   started_subscription: () => {
-    event("start_subscription");
+    // generate a random transaction id based on time
+    const transactionId = `T${Date.now()}${Math.floor(Math.random() * 1000)}`;
+    purchase({
+      transaction_id: transactionId,
+      value: 36,
+    });
     fbq("track", "Purchase", {
       value: 36,
       currency: "EUR",

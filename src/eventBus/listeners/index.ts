@@ -6,9 +6,10 @@ import notifications from "./notifications";
 import broadcastChannel from "./broadcastChannel";
 // import postMessage from "./postMessage";
 
+const isProduction = import.meta.env.PROD;
+
 export default new Listeners(
-    analytics,
-    notifications,
-    broadcastChannel,
-    console
+  notifications,
+  broadcastChannel,
+  isProduction ? analytics : console
 );
