@@ -267,3 +267,17 @@ textarea.unset-width {
 .flex-start {
     align-items: flex-start;
 }
+
+/* fade in all images */
+img {
+    animation: fade-move-in 0.2s ease-in-out;
+}
+
+.hero-section,
+.three-two-grid {
+    grid-template-columns: 3fr 2fr;
+}
+
+.hero-section hgroup>p {
+    margin-bottom: var(--pico-spacing);
+}

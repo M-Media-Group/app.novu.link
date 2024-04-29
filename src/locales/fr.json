@@ -291,5 +291,9 @@
     "Pricing": "Tarification",
     "Yes": "Oui",
     "Change": "Changer",
-    "Add new card": "Ajouter une nouvelle carte"
+    "Add new card": "Ajouter une nouvelle carte",
+    "Single QR code for breakfast, lunch, and dinner": "Un seul code QR pour le petit-déj', le déjeuner et le dîner",
+    "Magically link to the correct menu with a dynamic QR code that changes destinations with the time of day.": "Liez magiquement au menu correct avec un code QR dynamique qui change de destination en fonction de l'heure de la journée.",
+    "Track property engagement with advanced QR codes": "Suivez l'engagement des biens immobiliers avec des codes QR avancés",
+    "Learn who is interacting with your property listings on display. Get insights into what is working and what isn't.": "Découvrez qui interagit avec vos annonces immobilières sur écran. Obtenez des informations sur ce qui fonctionne et ce qui ne fonctionne pas."
 }

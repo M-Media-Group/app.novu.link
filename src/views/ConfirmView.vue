@@ -2,6 +2,7 @@
 import CardElement from "@/components/CardElement.vue";
 import { defineAsyncComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import image from "@/assets/undraw_selection_re_ycpo.svg";
 
 const route = useRoute();
 const router = useRouter();
@@ -15,7 +16,11 @@ const redirect = () => {
 };
 </script>
 <template>
-  <card-element title="Continue">
-    <component :is="element" @success="redirect"></component>
-  </card-element>
+  <h1>{{ $t("Confirm") }}</h1>
+  <div class="two-column-grid">
+    <card-element title="Continue">
+      <component :is="element" @success="redirect"></component>
+    </card-element>
+    <img :src="image" alt="A person holding a link" />
+  </div>
 </template>
