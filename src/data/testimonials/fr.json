@@ -24,8 +24,20 @@
         "industry": "startup"
     },
     {
+        "name": "Géraldine",
+        "description": "Nos liens magiques sont configurés de sorte que les personnes qui consultent la même propriété plus de 2 fois aboutissent sur une page de contact plus personnalisée et directe. Cela a été un excellent moyen de convertir davantage de véritables prospects en acheteurs, et de filtrer ceux qui ne font que regarder par simple curiosité.",
+        "jobTitle": "Fondatrice de Sans Real Estate",
+        "industry": "real_estate"
+    },
+    {
         "name": "Jenny",
-        "description": "Nous utilisons des liens magiques sur nos annonces immobilières pour fournir plus d'informations sur la propriété. Nous sommes en mesure de suivre combien de personnes sont intéressées par la propriété et quelles informations elles recherchent. Cela a été un excellent moyen de mieux comprendre nos acheteurs potentiels.",
+        "description": "Nous suivons combien de personnes sont intéressées par la propriété et quelles informations elles recherchent en utilisant des liens magiques. Grâce aux données que nous recevons, nous adaptons la position et le langage de nos annonces en vitrine pour mieux répondre aux besoins de nos clients.",
+        "jobTitle": "Agent immobilier",
+        "industry": "real_estate"
+    },
+    {
+        "name": "Nicholas",
+        "description": "Nous vendons des espaces publicitaires aux propriétaires proposant leurs biens avec nous. Maintenant, avec des liens magiques, nous pouvons fournir des retours sur l'efficacité de leurs annonces. Cela nous a aidés à vendre plus d'annonces d'espaces publicitaires en vitrine et à offrir une meilleure valeur à nos clients cherchant à vendre des propriétés.",
         "jobTitle": "Agent immobilier",
         "industry": "real_estate"
     },

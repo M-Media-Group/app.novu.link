@@ -24,8 +24,20 @@
         "industry": "startup"
     },
     {
+        "name": "Geraldine",
+        "description": "Our magic links are setup so that people that scan the same property more than 2 times end up on a more personalised and direct contact page. It's been a great way to convert more real potential leads into buyers, and filter out those that are just curiously looking.",
+        "jobTitle": "Founder of Sans Real Esate",
+        "industry": "real_estate"
+    },
+    {
         "name": "Jenny",
-        "description": "We use magic links on our real estate listings to provide more information about the property. We're able to track how many people are interested in the property and what information they're looking for. It's been a great way to understand our potential buyers better.",
+        "description": "We track how many people are interested in the property and what information they're looking for using magic links. Thanks to the data we get back, we've been tailoring the position and language of our window-display ads to better meet the needs of our customers.",
+        "jobTitle": "Real Estate Agent",
+        "industry": "real_estate"
+    },
+    {
+        "name": "Nicholas",
+        "description": "We sell window-space to those offering their properties with us. Now with magic links, we can provide feedback onh the efectiveness of their ads. This has helped us to sell more window-space ads and provide better value to our customers looking to sell properties.",
         "jobTitle": "Real Estate Agent",
         "industry": "real_estate"
     },
