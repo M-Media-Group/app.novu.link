@@ -97,7 +97,9 @@ const assetUrl = (asset: string, extension = "png") =>
     </hgroup>
     <ul class="three-column-grid">
       <li
-        v-for="testimonial in testimonialData.slice(0, 3)"
+        v-for="testimonial in testimonialData
+          .filter((item) => item.industry === 'food_and_beverage')
+          .slice(0, 3)"
         :key="testimonial.id"
       >
         <hgroup>

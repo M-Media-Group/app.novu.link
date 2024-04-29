@@ -24,6 +24,18 @@
         "industry": "startup"
     },
     {
+        "name": "Benjamin",
+        "description": "Pour inciter les gens à scanner notre lien magique pour notre page Insta, nous offrons une boisson gratuite à chaque 100e personne qui scanne. Avec le lien magique, nous pouvons facilement rediriger chaque 100e scan vers une page qui leur dit qu'ils ont gagné.",
+        "jobTitle": "Propriétaire du Pub O'Learys",
+        "industry": "food_and_beverage"
+    },
+    {
+        "name": "Sophie",
+        "description": "En tant que propriétaire de café, l'utilisation de liens magiques sur nos cartes de fidélité a stimulé l'engagement client. En incitant les scans, nous offrons des récompenses exclusives directement sur les smartphones, favorisant la fidélité et fournissant des informations précieuses pour des expériences sur mesure.",
+        "jobTitle": "Propriétaire de café",
+        "industry": "food_and_beverage"
+    },
+    {
         "name": "Géraldine",
         "description": "Nos liens magiques sont configurés de sorte que les personnes qui consultent la même propriété plus de 2 fois aboutissent sur une page de contact plus personnalisée et directe. Cela a été un excellent moyen de convertir davantage de véritables prospects en acheteurs, et de filtrer ceux qui ne font que regarder par simple curiosité.",
         "jobTitle": "Fondatrice de Sans Real Estate",

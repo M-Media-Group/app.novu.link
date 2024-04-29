@@ -24,6 +24,18 @@
         "industry": "startup"
     },
     {
+        "name": "Benjamin",
+        "description": "To provide people with the insentive to scan our magic link for our Insta page, we offer a free drink for every 100th person that scans. With the magic link we can easily redirect every 100th scan to a page that tells them they've won.",
+        "jobTitle": "O'Learys Pub Owner",
+        "industry": "food_and_beverage"
+    },
+    {
+        "name": "Sophie",
+        "description": "As a café owner, using magic links on our loyalty cards has boosted customer engagement. By incentivizing scans, we offer exclusive rewards directly to smartphones, fostering loyalty and providing valuable insights for tailored experiences.",
+        "jobTitle": "Café Owner",
+        "industry": "food_and_beverage"
+    },
+    {
         "name": "Geraldine",
         "description": "Our magic links are setup so that people that scan the same property more than 2 times end up on a more personalised and direct contact page. It's been a great way to convert more real potential leads into buyers, and filter out those that are just curiously looking.",
         "jobTitle": "Founder of Sans Real Esate",
