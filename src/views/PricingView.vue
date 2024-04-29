@@ -8,12 +8,9 @@ import image from "@/assets/undraw_online_payments_re_y8f2.svg";
 const { locale } = useI18n();
 
 const featureData = ref([] as any[]);
-const testimonialData = ref([] as any[]);
 const faqData = ref([] as any[]);
-const goodPointsData = ref([] as any[]);
-const painPointsData = ref([] as any[]);
+
 const pricingData = ref([] as any[]);
-const featuresByGroupData = ref([] as any[]);
 
 // Load the features from the correct locale
 const loadData = (dataset = "features", localeToUse = locale.value) => {
@@ -26,12 +23,8 @@ watch(
   locale,
   async (newLocale) => {
     featureData.value = await loadData("features", newLocale);
-    testimonialData.value = await loadData("testimonials", newLocale);
     faqData.value = await loadData("faqs", newLocale);
-    goodPointsData.value = await loadData("goodPoints", newLocale);
-    painPointsData.value = await loadData("painPoints", newLocale);
     pricingData.value = await loadData("pricing", newLocale);
-    featuresByGroupData.value = await loadData("featuresByGroup", newLocale);
   },
   {
     immediate: true,
@@ -44,24 +37,6 @@ const scrollToTop = () => {
     behavior: "smooth",
   });
 };
-
-const computeTabOptions = (featuresByGroupData: any[]) => {
-  return featuresByGroupData.map((group) => ({
-    render: group.name,
-    id: group.id,
-  }));
-};
-
-/**
- *
- * @param asset - the asset to get
- */
-const assetUrl = (asset: string, extension = "png") =>
-  new URL(
-    `../assets/${asset}`,
-
-    import.meta.url
-  ).href;
 
 provide("showExpandedFooter", true);
 </script>
