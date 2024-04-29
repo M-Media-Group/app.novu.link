@@ -4,6 +4,7 @@ import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { provide, ref, watch } from "vue";
 import image from "@/assets/undraw_features_overview_re_2w78.svg";
+import { loadData } from "@/helpers/dataLoader";
 
 const { locale } = useI18n();
 
@@ -14,13 +15,6 @@ const goodPointsData = ref([] as any[]);
 const painPointsData = ref([] as any[]);
 const pricingData = ref([] as any[]);
 const featuresByGroupData = ref([] as any[]);
-
-// Load the features from the correct locale
-const loadData = (dataset = "features", localeToUse = locale.value) => {
-  return import(`@/data/${dataset}/${localeToUse}.json`).then(
-    (module) => module.default
-  );
-};
 
 watch(
   locale,
@@ -44,24 +38,6 @@ const scrollToTop = () => {
     behavior: "smooth",
   });
 };
-
-const computeTabOptions = (featuresByGroupData: any[]) => {
-  return featuresByGroupData.map((group) => ({
-    render: group.name,
-    id: group.id,
-  }));
-};
-
-/**
- *
- * @param asset - the asset to get
- */
-const assetUrl = (asset: string, extension = "png") =>
-  new URL(
-    `../assets/${asset}`,
-
-    import.meta.url
-  ).href;
 
 provide("showExpandedFooter", true);
 </script>
@@ -142,8 +118,8 @@ provide("showExpandedFooter", true);
     <!-- For FAQ we will use a details -->
     <div>
       <details v-for="faq in faqData" :key="faq.id">
-        <summary>{{ faq.question }}</summary>
-        <p>{{ faq.answer }}</p>
+        <summary>{{ faq.name }}</summary>
+        <p>{{ faq.description }}</p>
       </details>
     </div>
   </section>

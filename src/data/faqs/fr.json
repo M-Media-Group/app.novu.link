@@ -1,26 +1,26 @@
 [
     {
-        "question": "Qu'est-ce qu'un lien magique?",
-        "answer": "Un lien magique est une URL fixe qui peut être utilisée pour rediriger les utilisateurs vers une page spécifique que vous définissez. Son but est d'avoir une seule URL fixe et non expirante que vous pouvez imprimer en toute sécurité sur vos codes QR, flyers, et plus encore. Ainsi, si vous devez jamais changer la redirection de l'utilisateur ou le lien lui-même, vous pouvez facilement mettre à jour le lien sans avoir à réimprimer (et payer) de nouveaux supports de communication."
+        "name": "Qu'est-ce qu'un lien magique?",
+        "description": "Un lien magique est une URL fixe qui peut être utilisée pour rediriger les utilisateurs vers une page spécifique que vous définissez. Son but est d'avoir une seule URL fixe et non expirante que vous pouvez imprimer en toute sécurité sur vos codes QR, flyers, et plus encore. Ainsi, si vous devez jamais changer la redirection de l'utilisateur ou le lien lui-même, vous pouvez facilement mettre à jour le lien sans avoir à réimprimer (et payer) de nouveaux supports de communication."
     },
     {
-        "question": "Combien de membres d'équipe puis-je avoir?",
-        "answer": "Il n'y a pas de limite au nombre de membres d'équipe que vous pouvez avoir."
+        "name": "Combien de membres d'équipe puis-je avoir?",
+        "description": "Il n'y a pas de limite au nombre de membres d'équipe que vous pouvez avoir."
     },
     {
-        "question": "Quand ai-je besoin du plan Tiny Tinkerer?",
-        "answer": "Le plan Tiny Tinkerer vous permet d'utiliser des liens magiques qui redirigent vers différentes pages en fonction d'un nombre quelconque de règles que vous définissez, comme l'heure actuelle, le pays où se trouve l'utilisateur, et bien plus encore. Sans lui, votre lien magique redirigera toujours uniquement vers une seule page."
+        "name": "Quand ai-je besoin du plan Tiny Tinkerer?",
+        "description": "Le plan Tiny Tinkerer vous permet d'utiliser des liens magiques qui redirigent vers différentes pages en fonction d'un nombre quelconque de règles que vous définissez, comme l'heure actuelle, le pays où se trouve l'utilisateur, et bien plus encore. Sans lui, votre lien magique redirigera toujours uniquement vers une seule page."
     },
     {
-        "question": "Que se passe-t-il avec mes liens magiques si je supprime mon équipe/compte?",
-        "answer": "Rien. Votre lien magique restera actif et continuera de rediriger vers la page par défaut que vous avez définie. Si vous étiez sur le plan Tiny Tinkerer, votre lien magique cessera d'utiliser des règles et redirigera simplement vers la page par défaut que vous avez définie."
+        "name": "Que se passe-t-il avec mes liens magiques si je supprime mon équipe/compte?",
+        "description": "Rien. Votre lien magique restera actif et continuera de rediriger vers la page par défaut que vous avez définie. Si vous étiez sur le plan Tiny Tinkerer, votre lien magique cessera d'utiliser des règles et redirigera simplement vers la page par défaut que vous avez définie."
     },
     {
-        "question": "Si je suis sur le plan Tiny Tinkerer et que je passe ensuite au plan de base, est-ce que mes liens magiques cesseront de fonctionner?",
-        "answer": "Non, le lien magique restera actif mais ne redirigera que vers la page par défaut que vous avez définie."
+        "name": "Si je suis sur le plan Tiny Tinkerer et que je passe ensuite au plan de base, est-ce que mes liens magiques cesseront de fonctionner?",
+        "description": "Non, le lien magique restera actif mais ne redirigera que vers la page par défaut que vous avez définie."
     },
     {
-        "question": "Que se passe-t-il avec mon lien magique si l'URL cesse d'exister?",
-        "answer": "Rien. Votre lien magique continuera de rediriger vers la page que vous avez définie. Vous pouvez toujours changer la redirection de l'utilisateur au sein de votre lien magique."
+        "name": "Que se passe-t-il avec mon lien magique si l'URL cesse d'exister?",
+        "description": "Rien. Votre lien magique continuera de rediriger vers la page que vous avez définie. Vous pouvez toujours changer la redirection de l'utilisateur au sein de votre lien magique."
     }
 ]

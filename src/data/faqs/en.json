@@ -1,26 +1,26 @@
 [
     {
-        "question": "What is a magic link?",
-        "answer": "A magic link is a fixed URL that can be used to redirect users to a specific page that you define. Its purpose is to have a single, fixed, non-expiring URL that you can safely print on your QR codes, flyers, and more. That way, if you ever need to change where the user is redirected to or what the link is, you can easily update the link without having to reprint (and pay for) new communication materials."
+        "name": "What is a magic link?",
+        "description": "A magic link is a fixed URL that can be used to redirect users to a specific page that you define. Its purpose is to have a single, fixed, non-expiring URL that you can safely print on your QR codes, flyers, and more. That way, if you ever need to change where the user is redirected to or what the link is, you can easily update the link without having to reprint (and pay for) new communication materials."
     },
     {
-        "question": "How many team members can I have?",
-        "answer": "There is no limit to the number of team members you can have."
+        "name": "How many team members can I have?",
+        "description": "There is no limit to the number of team members you can have."
     },
     {
-        "question": "When do I need the Tiny Tinkerer plan?",
-        "answer": "The Tiny Tinkerer plan allows you to use magic links that redirect to different pages depending on any number of rules you define, like the current time of day, the country the user is in, and much more. Without it, your magic link will always only redirect to one page."
+        "name": "When do I need the Tiny Tinkerer plan?",
+        "description": "The Tiny Tinkerer plan allows you to use magic links that redirect to different pages depending on any number of rules you define, like the current time of day, the country the user is in, and much more. Without it, your magic link will always only redirect to one page."
     },
     {
-        "question": "What happens to my magic links if I delete my team/account?",
-        "answer": "Nothing. Your magic link will remain active and continue to redirect to the default page you have defined. If you were on the Tiny Tinkerer plan, your magic link will stop using rules and simply redirect to the default page you defined."
+        "name": "What happens to my magic links if I delete my team/account?",
+        "description": "Nothing. Your magic link will remain active and continue to redirect to the default page you have defined. If you were on the Tiny Tinkerer plan, your magic link will stop using rules and simply redirect to the default page you defined."
     },
     {
-        "question": "If I am on the Tiny Tinkerer plan and then switch to the basic one, will my magic links stop working?",
-        "answer": "No, the magic link will still be active but will only redirect to the default page you have defined."
+        "name": "If I am on the Tiny Tinkerer plan and then switch to the basic one, will my magic links stop working?",
+        "description": "No, the magic link will still be active but will only redirect to the default page you have defined."
     },
     {
-        "question": "What happens to my magic link if the URL stops existing?",
-        "answer": "Nothing. Your magic link will continue to redirect to the page you have defined. You can always change where the user is redirected to within your magic link."
+        "name": "What happens to my magic link if the URL stops existing?",
+        "description": "Nothing. Your magic link will continue to redirect to the page you have defined. You can always change where the user is redirected to within your magic link."
     }
 ]

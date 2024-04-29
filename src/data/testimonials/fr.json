@@ -2,67 +2,67 @@
     {
         "name": "Alex",
         "description": "Nous utilisons des liens magiques sur nos menus QR à notre restaurant. Nous sommes en mesure de rediriger nos clients qui scannent les QR codes vers le bon menu (petit déjeuner, déjeuner ou dîner) en fonction de l'heure à laquelle ils scannent le QR code. Cela a vraiment contribué à simplifier les premières expériences de nos clients dans notre restaurant.",
-        "jobTitle": "Gérant de restaurant",
+        "subtitle": "Gérant de restaurant",
         "industry": "food_and_beverage"
     },
     {
         "name": "Loulan",
         "description": "Nous avons été en mesure de générer un seul lien magique qui se trouve sur nos plateformes de médias sociaux, et il redirige automatiquement les utilisateurs vers notre site web correct en fonction de leur emplacement actuel et de la langue du navigateur. En outre, nous avons la possibilité de voir comment nos liens se comportent et de mieux comprendre nos utilisateurs qui les utilisent.",
-        "jobTitle": "Militant social",
+        "subtitle": "Militant social",
         "industry": "nonprofit"
     },
     {
         "name": "Kate",
         "description": "Dans notre maison d'hôtes, nous avons placé des codes QR dans nos chambres d'hôtes pour les saluer et leur fournir des informations pertinentes sur leur séjour. Chaque fois qu'un nouveau client arrive, nous changeons simplement l'endroit où le code QR redirige sans avoir à entrer dans chaque chambre et à changer physiquement le code QR. C'est génial!",
-        "jobTitle": "Fondatrice de la maison d'hôtes florale",
+        "subtitle": "Fondatrice de la maison d'hôtes florale",
         "industry": "hospitality"
     },
     {
         "name": "江西",
         "description": "En tant que start-up, nous ne sommes pas sûrs que même le nom de domaine de notre site web reste le même pour le moment - nous avons donc utilisé cette application pour générer des liens que nous pouvons utiliser sur nos supports de salon. Si nous changeons jamais le nom de domaine, nous pouvons facilement mettre à jour les liens en ligne sans avoir à payer pour tout réimprimer.",
-        "jobTitle": null,
+        "subtitle": null,
         "industry": "startup"
     },
     {
         "name": "Benjamin",
         "description": "Pour inciter les gens à scanner notre lien magique pour notre page Insta, nous offrons une boisson gratuite à chaque 100e personne qui scanne. Avec le lien magique, nous pouvons facilement rediriger chaque 100e scan vers une page qui leur dit qu'ils ont gagné.",
-        "jobTitle": "Propriétaire du Pub O'Learys",
+        "subtitle": "Propriétaire du Pub O'Learys",
         "industry": "food_and_beverage"
     },
     {
         "name": "Sophie",
         "description": "En tant que propriétaire de café, l'utilisation de liens magiques sur nos cartes de fidélité a stimulé l'engagement client. En incitant les scans, nous offrons des récompenses exclusives directement sur les smartphones, favorisant la fidélité et fournissant des informations précieuses pour des expériences sur mesure.",
-        "jobTitle": "Propriétaire de café",
+        "subtitle": "Propriétaire de café",
         "industry": "food_and_beverage"
     },
     {
         "name": "Géraldine",
         "description": "Nos liens magiques sont configurés de sorte que les personnes qui consultent la même propriété plus de 2 fois aboutissent sur une page de contact plus personnalisée et directe. Cela a été un excellent moyen de convertir davantage de véritables prospects en acheteurs, et de filtrer ceux qui ne font que regarder par simple curiosité.",
-        "jobTitle": "Fondatrice de Sans Real Estate",
+        "subtitle": "Fondatrice de Sans Real Estate",
         "industry": "real_estate"
     },
     {
         "name": "Jenny",
         "description": "Nous suivons combien de personnes sont intéressées par la propriété et quelles informations elles recherchent en utilisant des liens magiques. Grâce aux données que nous recevons, nous adaptons la position et le langage de nos annonces en vitrine pour mieux répondre aux besoins de nos clients.",
-        "jobTitle": "Agent immobilier",
+        "subtitle": "Agent immobilier",
         "industry": "real_estate"
     },
     {
         "name": "Nicholas",
         "description": "Nous vendons des espaces publicitaires aux propriétaires proposant leurs biens avec nous. Maintenant, avec des liens magiques, nous pouvons fournir des retours sur l'efficacité de leurs annonces. Cela nous a aidés à vendre plus d'annonces d'espaces publicitaires en vitrine et à offrir une meilleure valeur à nos clients cherchant à vendre des propriétés.",
-        "jobTitle": "Agent immobilier",
+        "subtitle": "Agent immobilier",
         "industry": "real_estate"
     },
     {
         "name": "Marc",
         "description": "J'ai trouvé que l'utilisation de liens magiques dans nos annonces a révolutionné notre approche de la vente de propriétés. Ces liens permettent aux clients d'accéder à des informations détaillées sur les biens immobiliers, ce qui les aide à prendre des décisions éclairées. De plus, le suivi des interactions des clients avec ces liens nous offre des informations précieuses sur leurs préférences et leurs besoins.",
-        "jobTitle": "Agent immobilier",
+        "subtitle": "Agent immobilier",
         "industry": "real_estate"
     },
     {
         "name": "Sophie",
         "description": "L'utilisation de liens magiques dans nos annonces a grandement amélioré notre capacité à communiquer avec nos clients. Ces liens offrent une expérience interactive et personnalisée, permettant aux acheteurs potentiels d'explorer les propriétés à leur propre rythme. De plus, grâce au suivi des interactions, nous sommes en mesure d'adapter nos offres en fonction des besoins spécifiques de chaque client.",
-        "jobTitle": "Agent immobilier",
+        "subtitle": "Agent immobilier",
         "industry": "real_estate"
     }
 ]

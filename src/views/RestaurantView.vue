@@ -5,6 +5,7 @@ import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import TabNav from "@/components/TabNav.vue";
+import { assetUrl, loadData } from "@/helpers/dataLoader";
 
 const { locale } = useI18n();
 
@@ -17,13 +18,6 @@ const pricingData = ref([] as any[]);
 const featuresByGroupData = ref([] as any[]);
 
 const openTabs = ref(["1"]);
-
-// Load the features from the correct locale
-const loadData = (dataset = "features", localeToUse = locale.value) => {
-  return import(`@/data/${dataset}/${localeToUse}.json`).then(
-    (module) => module.default
-  );
-};
 
 watch(
   locale,
@@ -54,17 +48,6 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
     id: group.id,
   }));
 };
-
-/**
- *
- * @param asset - the asset to get
- */
-const assetUrl = (asset: string, extension = "png") =>
-  new URL(
-    `../assets/${asset}`,
-
-    import.meta.url
-  ).href;
 </script>
 
 <template>
@@ -104,7 +87,7 @@ const assetUrl = (asset: string, extension = "png") =>
       >
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
-          <p v-if="testimonial.jobTitle">{{ testimonial.jobTitle }}</p>
+          <p v-if="testimonial.subtitle">{{ testimonial.subtitle }}</p>
         </hgroup>
         <p>{{ testimonial.description }}</p>
       </li>
@@ -201,8 +184,8 @@ const assetUrl = (asset: string, extension = "png") =>
     <!-- For FAQ we will use a details -->
     <div>
       <details v-for="faq in faqData" :key="faq.id">
-        <summary>{{ faq.question }}</summary>
-        <p>{{ faq.answer }}</p>
+        <summary>{{ faq.name }}</summary>
+        <p>{{ faq.description }}</p>
       </details>
     </div>
   </section>

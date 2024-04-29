@@ -2,67 +2,67 @@
     {
         "name": "Alex",
         "description": "We use magic links on our QR code menus at our restaurant. We're able to redirect our guests that scan the QR codes to the right menu (breakfast, lunch, or dinner) based on the time of day that they scan the QR code. It's really helped simplify our guests first experiences at our restaurant.",
-        "jobTitle": "Restaurant Manager",
+        "subtitle": "Restaurant Manager",
         "industry": "food_and_beverage"
     },
     {
         "name": "Loulan",
         "description": "We've been able to generate a single magic link that sits on our social media platforms, and it automatically redirects users to our correct website based on their current location and browser language. As an added benefit, we get to see how our links are performing and understand more about our users that use them.",
-        "jobTitle": "Social activist",
+        "subtitle": "Social activist",
         "industry": "nonprofit"
     },
     {
         "name": "Kate",
         "description": "At our bed and breakfast, we placed QR codes in our guest rooms to greet them and provide relevant information about their stay. Everytime a new guest arrives, we just change where the QR code redirects to without having to go into each room and physically change the QR code. It's great!",
-        "jobTitle": "Floral B&B founder",
+        "subtitle": "Floral B&B founder",
         "industry": "hospitality"
     },
     {
         "name": "江西",
         "description": "As a startup, we're not super sure if even our website domain name will stay the same yet - so we've used this app to generate links that we can use on our tradeshow materials. If we ever do change the domain name, we can easily update the links online without having to pay to re-print everything.",
-        "jobTitle": null,
+        "subtitle": null,
         "industry": "startup"
     },
     {
         "name": "Benjamin",
         "description": "To provide people with the insentive to scan our magic link for our Insta page, we offer a free drink for every 100th person that scans. With the magic link we can easily redirect every 100th scan to a page that tells them they've won.",
-        "jobTitle": "O'Learys Pub Owner",
+        "subtitle": "O'Learys Pub Owner",
         "industry": "food_and_beverage"
     },
     {
         "name": "Sophie",
         "description": "As a café owner, using magic links on our loyalty cards has boosted customer engagement. By incentivizing scans, we offer exclusive rewards directly to smartphones, fostering loyalty and providing valuable insights for tailored experiences.",
-        "jobTitle": "Café Owner",
+        "subtitle": "Café Owner",
         "industry": "food_and_beverage"
     },
     {
         "name": "Geraldine",
         "description": "Our magic links are setup so that people that scan the same property more than 2 times end up on a more personalised and direct contact page. It's been a great way to convert more real potential leads into buyers, and filter out those that are just curiously looking.",
-        "jobTitle": "Founder of Sans Real Esate",
+        "subtitle": "Founder of Sans Real Esate",
         "industry": "real_estate"
     },
     {
         "name": "Jenny",
         "description": "We track how many people are interested in the property and what information they're looking for using magic links. Thanks to the data we get back, we've been tailoring the position and language of our window-display ads to better meet the needs of our customers.",
-        "jobTitle": "Real Estate Agent",
+        "subtitle": "Real Estate Agent",
         "industry": "real_estate"
     },
     {
         "name": "Nicholas",
         "description": "We sell window-space to those offering their properties with us. Now with magic links, we can provide feedback onh the efectiveness of their ads. This has helped us to sell more window-space ads and provide better value to our customers looking to sell properties.",
-        "jobTitle": "Real Estate Agent",
+        "subtitle": "Real Estate Agent",
         "industry": "real_estate"
     },
     {
         "name": "Marc",
         "description": "I've found that using magic links in our listings has revolutionized our approach to selling properties. These links allow clients to access detailed information about the real estate, helping them make informed decisions. Additionally, tracking clients' interactions with these links provides valuable insights into their preferences and needs.",
-        "jobTitle": "Real Estate Agent",
+        "subtitle": "Real Estate Agent",
         "industry": "real_estate"
     },
     {
         "name": "Sophie",
         "description": "The use of magic links in our listings has greatly enhanced our ability to communicate with our clients. These links offer an interactive and personalized experience, allowing potential buyers to explore properties at their own pace. Furthermore, through tracking interactions, we're able to tailor our offerings based on each client's specific needs.",
-        "jobTitle": "Real Estate Agent",
+        "subtitle": "Real Estate Agent",
         "industry": "real_estate"
     }
 ]

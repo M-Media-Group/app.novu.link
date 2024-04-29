@@ -113,8 +113,8 @@ provide("showExpandedFooter", true);
     <!-- For FAQ we will use a details -->
     <div>
       <details v-for="faq in faqData" :key="faq.id">
-        <summary>{{ faq.question }}</summary>
-        <p>{{ faq.answer }}</p>
+        <summary>{{ faq.name }}</summary>
+        <p>{{ faq.description }}</p>
       </details>
     </div>
   </section>

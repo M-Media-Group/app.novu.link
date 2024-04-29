@@ -62,7 +62,7 @@ watch(
       <li v-for="testimonial in testimonialData" :key="testimonial.id">
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
-          <p v-if="testimonial.jobTitle">{{ testimonial.jobTitle }}</p>
+          <p v-if="testimonial.subtitle">{{ testimonial.subtitle }}</p>
         </hgroup>
         <p>{{ testimonial.description }}</p>
       </li>
