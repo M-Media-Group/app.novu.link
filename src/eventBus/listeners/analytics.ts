@@ -1,4 +1,4 @@
-import { event, optIn, optOut, pageview, set } from "vue-gtag";
+import { event, optIn, optOut, set } from "vue-gtag";
 import type { eventTypes } from "../events";
 
 // Define fbq for Facebook Pixel as a function (declare it)
@@ -15,7 +15,7 @@ export default {
     optOut();
   },
   viewed_page: (to: any) => {
-    pageview(to);
+    // pageview(to); // To confirm, seems Google is auto-tracking this
     // fbq("track", "PageView"); // To confirm, it is likely done automatically already by using the history listener
   },
   logged_in: () => {
