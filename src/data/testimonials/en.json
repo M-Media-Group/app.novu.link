@@ -2,20 +2,43 @@
     {
         "name": "Alex",
         "description": "We use magic links on our QR code menus at our restaurant. We're able to redirect our guests that scan the QR codes to the right menu (breakfast, lunch, or dinner) based on the time of day that they scan the QR code. It's really helped simplify our guests first experiences at our restaurant.",
-        "jobTitle": "Restaurant Manager"
+        "jobTitle": "Restaurant Manager",
+        "industry": "food_and_beverage"
     },
     {
         "name": "Loulan",
         "description": "We've been able to generate a single magic link that sits on our social media platforms, and it automatically redirects users to our correct website based on their current location and browser language. As an added benefit, we get to see how our links are performing and understand more about our users that use them.",
-        "jobTitle": "Social activist"
+        "jobTitle": "Social activist",
+        "industry": "nonprofit"
     },
     {
         "name": "Kate",
         "description": "At our bed and breakfast, we placed QR codes in our guest rooms to greet them and provide relevant information about their stay. Everytime a new guest arrives, we just change where the QR code redirects to without having to go into each room and physically change the QR code. It's great!",
-        "jobTitle": "Floral B&B founder"
+        "jobTitle": "Floral B&B founder",
+        "industry": "hospitality"
     },
     {
         "name": "江西",
-        "description": "As a startup, we're not super sure if even our website domain name will stay the same yet - so we've used this app to generate links that we can use on our tradeshow materials. If we ever do change the domain name, we can easily update the links online without having to pay to re-print everything."
+        "description": "As a startup, we're not super sure if even our website domain name will stay the same yet - so we've used this app to generate links that we can use on our tradeshow materials. If we ever do change the domain name, we can easily update the links online without having to pay to re-print everything.",
+        "jobTitle": null,
+        "industry": "startup"
+    },
+    {
+        "name": "Jenny",
+        "description": "We use magic links on our real estate listings to provide more information about the property. We're able to track how many people are interested in the property and what information they're looking for. It's been a great way to understand our potential buyers better.",
+        "jobTitle": "Real Estate Agent",
+        "industry": "real_estate"
+    },
+    {
+        "name": "Marc",
+        "description": "I've found that using magic links in our listings has revolutionized our approach to selling properties. These links allow clients to access detailed information about the real estate, helping them make informed decisions. Additionally, tracking clients' interactions with these links provides valuable insights into their preferences and needs.",
+        "jobTitle": "Real Estate Agent",
+        "industry": "real_estate"
+    },
+    {
+        "name": "Sophie",
+        "description": "The use of magic links in our listings has greatly enhanced our ability to communicate with our clients. These links offer an interactive and personalized experience, allowing potential buyers to explore properties at their own pace. Furthermore, through tracking interactions, we're able to tailor our offerings based on each client's specific needs.",
+        "jobTitle": "Real Estate Agent",
+        "industry": "real_estate"
     }
 ]
