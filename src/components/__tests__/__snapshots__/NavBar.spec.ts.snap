@@ -65,6 +65,8 @@ exports[`NavBar > renders properly when logged out 1`] = `
   <nav data-v-2202255b="" aria-label="Aside">
     <ul data-v-2202255b="">
       <li data-v-2202255b=""><a data-v-2202255b="">Home</a></li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Features</a></li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Pricing</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Login</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Sign up</a></li>
       <li data-v-2202255b=""><a role="button" href="[object Object]">
