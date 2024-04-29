@@ -126,6 +126,11 @@ const blur = () => {
             <router-link to="/" @click="blur()">{{ $t("Home") }}</router-link>
           </li>
           <li>
+            <router-link to="/pricing" @click="blur()">{{
+              $t("Pricing")
+            }}</router-link>
+          </li>
+          <li>
             <router-link to="/login" @click="blur()">{{
               $t("Login")
             }}</router-link>

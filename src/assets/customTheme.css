@@ -54,10 +54,16 @@ article:has(>:first-child:is(.images)) {
     gap: var(--pico-block-spacing-horizontal);
 }
 
+.four-column-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--pico-block-spacing-horizontal);
+}
+
 @media (min-width: 768px) {
 
     .two-column-grid,
-    .three-column-grid {
+    .three-column-grid,
+    .four-column-grid {
         display: grid;
     }
 
