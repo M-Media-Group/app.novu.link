@@ -3,7 +3,7 @@ import CreateRedirect from "@/forms/CreateRedirect.vue";
 import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
-import image from "@/assets/undraw_share_link.svg";
+import image from "@/assets/undraw_intense_feeling_ft-9-s.svg";
 
 const { locale } = useI18n();
 
@@ -30,18 +30,21 @@ watch(
 <template>
   <section id="externalLinks" class="two-column-grid hero-section">
     <hgroup>
-      <h1>{{ $t("Solve QR codes forever") }}</h1>
+      <h1>{{ $t("Customers love us") }}</h1>
       <p>
         {{
           $t(
-            `The hardest thing with QR codes and links is changing them after they're printed. We've fixed that.`
+            "We help people across industries solve a multitude of linking problems in the physical and digital world. Here's what they have to say."
           )
         }}
       </p>
+
+      <label>{{ $t("Try for yourself") }}</label>
       <create-redirect
         :autofocus="false"
         :showNameInput="false"
         :inline="true"
+        :showLabel="false"
       ></create-redirect>
     </hgroup>
 

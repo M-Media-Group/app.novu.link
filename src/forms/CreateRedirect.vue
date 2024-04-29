@@ -67,6 +67,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  /** @todo rethink, maybe should just be "label-text" or something. Currently this isn't too a11y friendly if we disable label here and add a label in the parent */
+  showLabel: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 if (props.prefillName) {
@@ -116,7 +121,9 @@ const submitForm = async () => {
 };
 </script>
 <template>
-  <label for="default_endpoint" v-show="inline"> {{ $t("Go to") }} </label>
+  <label for="default_endpoint" v-show="inline && showLabel">
+    {{ $t("Go to") }}
+  </label>
   <base-form
     :autofocus="autofocus"
     :submitText="
