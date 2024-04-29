@@ -29,6 +29,16 @@ const router = createRouter({
       component: () => import("../views/PricingView.vue"),
     },
     {
+      path: "/features",
+      name: "features",
+      meta: {
+        // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
+        title: "Features",
+        scrollPosition: { top: 0, left: 0 },
+      },
+      component: () => import("../views/FeaturesView.vue"),
+    },
+    {
       path: "/industries/restaurants",
       name: "industries/restaurants",
       meta: {

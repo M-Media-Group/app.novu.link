@@ -3,7 +3,7 @@ import CreateRedirect from "@/forms/CreateRedirect.vue";
 import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { provide, ref, watch } from "vue";
-import image from "@/assets/undraw_online_payments_re_y8f2.svg";
+import image from "@/assets/undraw_features_overview_re_2w78.svg";
 
 const { locale } = useI18n();
 
@@ -69,9 +69,13 @@ provide("showExpandedFooter", true);
 <template>
   <section id="externalLinks" class="two-column-grid hero-section">
     <hgroup>
-      <h1>{{ $t("Pricing that scales with you") }}</h1>
+      <h1>{{ $t("Jam packed with features") }}</h1>
       <p>
-        {{ $t(`Cancel anytime. Start for free, no credit card required.`) }}
+        {{
+          $t(
+            "Across industries, our truly dynamic and automated QR codes are the best way to connect with your audience."
+          )
+        }}
       </p>
       <create-redirect
         :autofocus="false"
@@ -81,6 +85,29 @@ provide("showExpandedFooter", true);
     </hgroup>
 
     <img :src="image" alt="Link shortener" />
+  </section>
+
+  <section id="features">
+    <h2>{{ $t("Features") }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>{{ $t("Feature") }}</th>
+          <th>{{ $t("Basic") }}</th>
+          <th>{{ $t("Tiny Tinkerer") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="feature in featureData" :key="feature.id">
+          <td>
+            {{ feature.name }}
+            <span :data-tooltip="feature.description">?</span>
+          </td>
+          <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
+          <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
   <section id="pricing">
@@ -108,29 +135,6 @@ provide("showExpandedFooter", true);
         </button>
       </card-element>
     </div>
-  </section>
-
-  <section id="features">
-    <h2>{{ $t("Features") }}</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>{{ $t("Feature") }}</th>
-          <th>{{ $t("Basic") }}</th>
-          <th>{{ $t("Tiny Tinkerer") }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="feature in featureData" :key="feature.id">
-          <td>
-            {{ feature.name }}
-            <span :data-tooltip="feature.description">?</span>
-          </td>
-          <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
-          <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
-        </tr>
-      </tbody>
-    </table>
   </section>
 
   <section id="faq" class="two-column-grid">
