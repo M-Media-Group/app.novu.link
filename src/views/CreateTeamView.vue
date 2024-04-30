@@ -2,7 +2,7 @@
 import CardElement from "@/components/CardElement.vue";
 import CreateTeam from "@/forms/CreateTeam.vue";
 import { useRouter } from "vue-router";
-import image from "@/assets/undraw_selecting_team_re_ndkb.svg";
+import image from "@/assets/undraw_team_spirit_re_yl1v.svg";
 
 const router = useRouter();
 
@@ -11,7 +11,7 @@ const handleSuccess = () => {
 };
 </script>
 <template>
-  <h1>{{ $t("New Team") }}</h1>
+  <h1>{{ $t("Create New Team") }}</h1>
   <div class="two-column-grid">
     <card-element :titleHeadingLevel="2" :showTitle="false">
       <create-team @success="handleSuccess"></create-team>
