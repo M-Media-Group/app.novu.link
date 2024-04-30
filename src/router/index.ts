@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import $bus, { eventTypes } from "@/eventBus/events";
 import authRoutes from "./authRoutes";
+
 import { ref } from "vue";
+import { updateOrCreateMetaTag } from "@m-media/vue3-meta-tags/src/metaTagger";
 
 export const navIsLoading = ref(true);
 
@@ -157,6 +159,11 @@ const router = createRouter({
       name: "429",
       component: () => import("../views/429View.vue"),
     },
+    {
+      path: "/sitemap",
+      name: "sitemap",
+      component: () => import("../views/SitemapView.vue"),
+    },
     // Add a catch-all 404 page
     {
       path: "/:pathMatch(.*)*",
@@ -186,6 +193,16 @@ router.afterEach((to, from, failure) => {
       ...to,
       name: document.title,
     });
+
+    updateOrCreateMetaTag(
+      "canonical",
+      // Current URL
+      window.location.href,
+      "link",
+      "rel",
+      "canonical",
+      [{ name: "href", value: window.location.href }]
+    );
   }
 });
 
