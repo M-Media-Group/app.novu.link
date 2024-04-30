@@ -56,24 +56,13 @@ const blur = () => {
     <nav aria-label="Aside">
       <ul>
         <template v-if="user?.isAuthenticated">
-          <li>
-            <router-link to="/dashboard" @click="blur()">{{
-              $t("Dashboard")
-            }}</router-link>
-          </li>
-          <li>
-            <router-link to="/redirects" @click="blur()">{{
-              $t("Magic links")
-            }}</router-link>
-          </li>
-          <li>
-            <router-link to="/analytics" @click="blur()">{{
-              $t("Analytics")
-            }}</router-link>
-          </li>
           <!-- The users team settings -->
           <li :aria-busy="user.isLoading">
-            <details ref="teamDetailsElement" v-show="!user.isLoading" open>
+            <details
+              ref="teamDetailsElement"
+              v-show="!user.isLoading"
+              class="dropdown"
+            >
               <summary :aria-busy="user.isLoading">
                 {{ team.activeTeam?.name }}
               </summary>
@@ -105,8 +94,28 @@ const blur = () => {
               </ul>
             </details>
           </li>
+          <li>
+            <router-link to="/dashboard" @click="blur()">{{
+              $t("Dashboard")
+            }}</router-link>
+          </li>
+          <li>
+            <router-link to="/redirects" @click="blur()">{{
+              $t("Magic links")
+            }}</router-link>
+          </li>
+          <li>
+            <router-link to="/analytics" @click="blur()">{{
+              $t("Analytics")
+            }}</router-link>
+          </li>
+
           <li :aria-busy="user.isLoading">
-            <details ref="detailsElement" v-show="!user.isLoading" open>
+            <details
+              ref="detailsElement"
+              v-show="!user.isLoading"
+              class="dropdown"
+            >
               <summary :aria-busy="user.isLoading">
                 {{ user.user?.name ?? $t("My Account") }}
               </summary>
@@ -178,16 +187,25 @@ aside {
     display: flex;
     flex-direction: column;
 
-    margin-top: 3rem;
+    margin-top: 4rem;
 
     > li {
       width: 100%;
+
+      &:has(details) {
+        padding: 0;
+      }
 
       > details,
       > button,
       [role="button"] {
         width: 100%;
         margin: 0;
+        > summary {
+          margin-bottom: 0;
+          background: transparent;
+          border: none;
+        }
       }
     }
 
@@ -201,5 +219,9 @@ aside {
   position: absolute;
   top: 1rem;
   right: 1rem;
+}
+
+.dropdown summary {
+  margin-bottom: 0;
 }
 </style>
