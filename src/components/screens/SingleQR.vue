@@ -211,6 +211,58 @@ const lineChartData = computed(() => {
   return filledData;
 });
 
+// The barChartData takes the "clicks_by_minute": [
+// 	{
+// 		"matched_endpoint_id": 1054,
+// 		"datetime": "40",
+// 		"click_count": 1
+// 	}
+// ],
+
+// Note that the datetime represents a minute in the hour. We need to compute time-ago and plot 0-30 minutes ago.
+
+const barChartData = computed(() => {
+  if (!props.subscribed || !props.endpoints.length) {
+    return [];
+  }
+  // Each data item has a clicks_by_time_of_day[x].clicks_count array, we need to return it. We can flatten the array with flatMap
+  const flatData = props.endpoints.flatMap(
+    (endpoint) => endpoint.clicks_by_minute
+  );
+
+  // Sum for each datetime, discard the redirect_uuid
+  const groupedData = flatData.reduce((acc, item) => {
+    if (!item) {
+      return acc;
+    }
+    // Her we just have "mm" value. If for example the current time is 13:45, and the datetime is 40, then the click was 5 minutes ago.
+    const date = new Date();
+    // Get how many minutes ago the click was
+    const minutesAgo = date.getMinutes() - parseInt(item.datetime);
+    // The minutesAgo will be out key
+    acc[minutesAgo] = (acc[minutesAgo] || 0) + item.click_count;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Fill in the missing minutes
+  const minutes = Array.from({ length: 30 }, (_, i) => i.toString());
+  const filledData = minutes.map((minute) => {
+    const found = groupedData[minute];
+    if (found) {
+      return {
+        name: minute,
+        count: found,
+      };
+    }
+    return {
+      name: minute,
+      count: 0,
+    };
+  });
+
+  return filledData.reverse();
+});
+
 const lightColor = ref("#ffffff");
 const darkColor = ref("#000000");
 const logoDataUrl = ref<string | null>(null);
@@ -351,6 +403,7 @@ defineExpose({
           :redirectId="redirectId"
           :clicksToday="!authenticated ? undefined : clicksToday"
           :lineChartData="!authenticated ? undefined : lineChartData"
+          :barChartData="!authenticated ? undefined : barChartData"
           :clicksAllTime="!authenticated ? undefined : clicksAllTime"
           :bestEndpoint="!authenticated ? undefined : bestEndpoint"
           :isLoading="isLoading || loading"

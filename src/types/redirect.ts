@@ -25,6 +25,7 @@ export interface Endpoint {
   rule_groups?: any[];
   clicks?: Click[];
   clicks_by_time_of_day?: ClicksByTimeOfDay[];
+  clicks_by_minute?: ClicksByTimeOfDay[];
   last_http_code?: number;
 }
 

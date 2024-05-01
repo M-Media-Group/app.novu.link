@@ -33,6 +33,11 @@ defineProps({
     required: false,
     default: null,
   },
+  barChartData: {
+    type: Array as PropType<Array<{ name: string; count: number }> | null>,
+    required: false,
+    default: null,
+  },
   subscribed: {
     type: Boolean,
     required: false,
@@ -48,34 +53,53 @@ defineProps({
 </script>
 <template>
   <div class="two-column-grid mobile-grid">
-    <card-element :loading="isLoading">
-      <hgroup>
-        <h3>{{ clicksToday ?? "--" }}</h3>
-        <p>{{ $t("Scans today") }}</p>
-      </hgroup>
+    <card-element
+      :loading="isLoading"
+      :title="clicksToday !== null ? `${clicksToday}` : '--'"
+      :subtitle="$t('Scans today')"
+      :loadingOn="['title']"
+    >
     </card-element>
 
-    <card-element :loading="isLoading">
-      <hgroup>
-        <h3>{{ clicksAllTime ?? "--" }}</h3>
-        <p>{{ $t("Scans all time") }}</p>
-      </hgroup>
+    <card-element
+      :loading="isLoading"
+      :title="clicksAllTime !== null ? `${clicksAllTime}` : '--'"
+      :subtitle="$t('Scans all time')"
+      :loadingOn="['title']"
+    >
     </card-element>
   </div>
   <template v-if="subscribed">
-    <card-element v-if="bestEndpoint">
-      <hgroup>
-        <h3 class="gl-animate-skeleton-loader" v-if="isLoading"></h3>
-        <h3 v-else>{{ removeProtocol(bestEndpoint) }}</h3>
-        <p>{{ $t("Best performing destination") }}</p>
-      </hgroup>
+    <card-element
+      :title="$t('Last x minutes', [30])"
+      :subtitle="$t('By scans')"
+    >
+      <div
+        v-if="isLoading"
+        class="placeholder-chart gl-animate-skeleton-loader"
+      ></div>
+      <line-chart
+        v-else-if="barChartData && barChartData.length > 0"
+        :clickData="barChartData"
+      />
+      <div v-else class="placeholder-chart">
+        {{ $t("No data available") }}
+      </div>
     </card-element>
 
-    <card-element>
-      <hgroup>
-        <h2>{{ $t("Scans by time of day") }}</h2>
-        <p>{{ $t("By scans") }}</p>
-      </hgroup>
+    <card-element
+      v-if="bestEndpoint"
+      :title="removeProtocol(bestEndpoint)"
+      :subtitle="$t('Best performing destination')"
+      :loading="isLoading"
+      :loadingOn="['title']"
+    >
+    </card-element>
+
+    <card-element
+      :title="$t('Scans by time of day')"
+      :subtitle="$t('By scans')"
+    >
       <div
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
@@ -119,11 +143,10 @@ defineProps({
       >
     </confirms-gate>
 
-    <card-element>
-      <hgroup>
-        <h2>{{ $t("Scans by time of day") }}</h2>
-        <p>{{ $t("By scans") }}</p>
-      </hgroup>
+    <card-element
+      :title="$t('Last x minutes', [30])"
+      :subtitle="$t('By scans')"
+    >
       <p>
         {{
           $t(
@@ -132,11 +155,20 @@ defineProps({
         }}
       </p>
     </card-element>
-    <card-element>
-      <hgroup>
-        <h3>--</h3>
-        <p>{{ $t("Best performing destination") }}</p>
-      </hgroup>
+
+    <card-element
+      :title="$t('Scans by time of day')"
+      :subtitle="$t('By scans')"
+    >
+      <p>
+        {{
+          $t(
+            "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+          )
+        }}
+      </p>
+    </card-element>
+    <card-element title="--" :subtitle="$t('Best performing destination')">
       <p>
         {{
           $t(
