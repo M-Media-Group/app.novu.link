@@ -48,31 +48,34 @@ const getData = () => {
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
-          return total + endpoint.clicks.length;
+          return (
+            total +
+            endpoint.clicks_by_time_of_day.reduce((sum: any, click: any) => {
+              return sum + click.click_count;
+            }, 0)
+          );
         }, 0);
       };
 
       const bestPerformingEndpoint = () => {
-        return response.data.endpoints.reduce((best: any, endpoint: any) => {
-          return best.clicks.length > endpoint.clicks.length ? best : endpoint;
-        });
+        return response.data.endpoints.reduce(
+          (best: any, endpoint: any) => {
+            const totalClicks = endpoint.clicks_by_time_of_day.reduce(
+              (sum: any, click: any) => {
+                return sum + click.click_count;
+              },
+              0
+            );
+            return totalClicks > best.totalClicks
+              ? { endpoint: endpoint.endpoint, totalClicks }
+              : best;
+          },
+          { endpoint: undefined, totalClicks: 0 }
+        );
       };
 
       // set clicksToday and clicksTodayUnique
-      clicksToday.value = response.data.endpoints.reduce(
-        (total: any, endpoint: any) => {
-          return (
-            total +
-            endpoint.clicks.filter((click: any) => {
-              return (
-                new Date(click.created_at).toDateString() ===
-                new Date().toDateString()
-              );
-            }).length
-          );
-        },
-        0
-      );
+      clicksToday.value = response.data.todays_clicks_count;
 
       clicksAllTime.value = totalClicks();
 
