@@ -21,6 +21,7 @@ const props = defineProps({
 });
 
 const url = ref(props.currentUrl);
+const loading = ref(false);
 
 const baseFormRef = ref();
 
@@ -32,6 +33,7 @@ const submitForm = async () => {
     return;
   }
 
+  loading.value = true;
   const response = await updateRedirectEndpoint(
     props.redirectId,
     `${props.endpointId}`,
@@ -40,6 +42,7 @@ const submitForm = async () => {
     console.error(error);
     return error.response;
   });
+  loading.value = false;
 
   if (response.status === 200) {
     // Emit the updated event with the changed fields
@@ -59,7 +62,7 @@ const debounceAddProtocolIfMissing = debounce(
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm">
+  <base-form ref="baseFormRef" @submit="submitForm" :isLoading="loading">
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 
