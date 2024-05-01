@@ -30,11 +30,16 @@ defineProps({
     type: Array as PropType<{ name: string; count: number }[]>,
     required: true,
   },
+  height: {
+    type: String as PropType<string | undefined>,
+    // undefined
+    default: undefined,
+  },
 });
 </script>
 
 <template>
-  <base-chart :clickData="clickData" :combineData="true">
+  <base-chart :clickData="clickData" :combineData="true" :height="height">
     <template #default="{ data, options, handleClick, style }">
       <Line
         :data="data"

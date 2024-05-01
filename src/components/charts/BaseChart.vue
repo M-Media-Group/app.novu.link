@@ -32,6 +32,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  height: {
+    type: String,
+    default: "47vh",
+  },
 });
 
 const combineDatasets = () => {
@@ -79,6 +83,16 @@ const data = ref({
 
 const options = {
   responsive: true,
+  // Always start at 0
+  scales: {
+    y: {
+      beginAtZero: true,
+      // Minimum step 1
+      ticks: {
+        stepSize: 1,
+      },
+    },
+  },
 };
 
 const handleClick = (event: MouseEvent, items: any[]) => {
@@ -92,6 +106,6 @@ const handleClick = (event: MouseEvent, items: any[]) => {
     v-bind:data="data"
     v-bind:options="options"
     v-bind:handleClick="handleClick"
-    :style="{ width: '100%', height: '47dvh' }"
+    :style="{ width: '100%', height }"
   />
 </template>

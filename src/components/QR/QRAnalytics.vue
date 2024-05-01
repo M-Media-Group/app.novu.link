@@ -81,6 +81,7 @@ defineProps({
       <line-chart
         v-else-if="barChartData && barChartData.length > 0"
         :clickData="barChartData"
+        height="240px"
       />
       <div v-else class="placeholder-chart">
         {{ $t("No data available") }}
