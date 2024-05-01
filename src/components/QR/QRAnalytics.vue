@@ -77,13 +77,14 @@ defineProps({
       <div
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
+        style="height: 240px"
       ></div>
       <line-chart
         v-else-if="barChartData && barChartData.length > 0"
         :clickData="barChartData"
         height="240px"
       />
-      <div v-else class="placeholder-chart">
+      <div v-else class="placeholder-chart" style="height: 240px">
         {{ $t("No data available") }}
       </div>
     </card-element>
