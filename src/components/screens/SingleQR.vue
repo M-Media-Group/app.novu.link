@@ -148,22 +148,29 @@ const lineChartData = computed(() => {
   if (!props.subscribed || !props.endpoints.length) {
     return [];
   }
-  // Each data item has a clicks_by_time_of_day array, we need to return it. We can flatten the array with flatMap
-  const flatData = props.endpoints.flatMap((item) => item.clicks);
+  // Each data item has a clicks_by_time_of_day[x].clicks_count array, we need to return it. We can flatten the array with flatMap
+  const flatData = props.endpoints.flatMap(
+    (endpoint) => endpoint.clicks_by_time_of_day
+  );
+
   // Sum for each datetime, discard the redirect_uuid
   const groupedData = flatData.reduce((acc, item) => {
     if (!item) {
       return acc;
     }
-    // format the key to just hh:mm, Set the minutes to 0 so that we group by hour
-    const key = new Date(item.created_at).toLocaleTimeString(undefined, {
+    // format the key to just hh:mm, Set the minutes to 0 so that we group by hour.
+
+    const date = new Date();
+    // Set hour and minutes to the datetime
+    date.setHours(
+      parseInt(item.datetime.split(":")[0]),
+      parseInt(item.datetime.split(":")[1])
+    );
+    const key = date.toLocaleTimeString(undefined, {
       hour: "numeric",
       hour12: false,
     });
-    if (!acc[key]) {
-      acc[key] = 0;
-    }
-    acc[key] += 1;
+    acc[key] = (acc[key] || 0) + item.click_count;
     return acc;
   }, {} as Record<string, number>);
   const newData = Object.entries(groupedData)

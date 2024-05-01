@@ -8,7 +8,7 @@ import type { Endpoint } from "@/types/redirect";
 import { parseRuleGroup } from "@/useRules";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
-defineProps({
+const props = defineProps({
   redirectId: {
     type: String,
     required: false,
@@ -29,6 +29,31 @@ defineProps({
     default: false,
   },
 });
+
+const computeTotalClicksForEndpoint = (endpoint: Endpoint) => {
+  //   We get clicks_by_time_of_day array from the endpoint object
+  if (!endpoint.clicks_by_time_of_day) return 0;
+  return endpoint.clicks_by_time_of_day.reduce(
+    (acc, curr) => acc + curr.click_count,
+    0
+  );
+};
+
+const computeTotalClicks = (endpoints: Endpoint[]) => {
+  return endpoints.reduce(
+    (acc, curr) => acc + computeTotalClicksForEndpoint(curr),
+    0
+  );
+};
+
+const getClickPercentage = (endpoint: Endpoint) => {
+  if (!props.endpoints) return 0;
+  const totalClicks = computeTotalClicksForEndpoint(endpoint);
+  const totalClicksForAllEndpoints = computeTotalClicks(props.endpoints);
+  return totalClicksForAllEndpoints === 0
+    ? 0
+    : Math.round((totalClicks / totalClicksForAllEndpoints) * 100);
+};
 </script>
 <template>
   <template v-if="isLoading">
@@ -38,7 +63,7 @@ defineProps({
       </hgroup>
     </card-element>
   </template>
-  <template v-else-if="!endpoints || endpoints.length === 0">
+  <template v-else-if="!endpoints || endpoints?.length === 0">
     <card-element
       :loading="isLoading"
       :title="$t('No destinations yet')"
@@ -69,6 +94,20 @@ defineProps({
             : $t('If no rules match')
         "
       >
+        <template
+          v-if="endpoint.last_http_code && endpoint.last_http_code > 400"
+          #headerActions
+        >
+          <base-button class="full-width contrast" style="margin-bottom: 0">
+            {{ $t("Fix now") }}
+          </base-button>
+        </template>
+        <template
+          v-else-if="computeTotalClicksForEndpoint(endpoint) > 0"
+          #headerActions
+        >
+          {{ getClickPercentage(endpoint) }}%
+        </template>
       </card-element>
     </edit-endpoint>
 

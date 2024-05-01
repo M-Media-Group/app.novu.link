@@ -1,3 +1,5 @@
+import type { ClicksByTimeOfDay } from "./analytics";
+
 export interface Redirect {
   uuid: string;
   team_id: number;
@@ -22,6 +24,8 @@ export interface Endpoint {
   updated_at?: Date;
   rule_groups?: any[];
   clicks?: Click[];
+  clicks_by_time_of_day?: ClicksByTimeOfDay[];
+  last_http_code?: number;
 }
 
 export interface Click {

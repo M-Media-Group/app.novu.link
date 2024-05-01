@@ -11,10 +11,15 @@ export function hasProtocol(url: string) {
 /**
  * Removes the protocol from a URL
  *
- * @param {string} url
+ * @param {any} url
  * @returns {string}
  */
-export function removeProtocol(url: string) {
+export function removeProtocol(url: any) {
+  // If the url is not a string, return it as is
+  if (typeof url !== "string") {
+    return url;
+  }
+
   return url.replace("http://", "").replace("https://", "");
 }
 
