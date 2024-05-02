@@ -110,6 +110,7 @@ export const useUserStore = defineStore("user", () => {
       await axios.post("/login", {
         email: email,
         password: password,
+        remember: "on",
       });
       await getUser();
       $bus.$emit(eventTypes.logged_in);
