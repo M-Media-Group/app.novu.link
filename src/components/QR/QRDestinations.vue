@@ -106,7 +106,9 @@ const getClickPercentage = (endpoint: Endpoint) => {
           v-else-if="computeTotalClicksForEndpoint(endpoint) > 0"
           #headerActions
         >
-          {{ getClickPercentage(endpoint) }}%
+          <span :data-tooltip="$t('Percent of your customers that end up here')"
+            >{{ getClickPercentage(endpoint) }}%</span
+          >
         </template>
       </card-element>
     </edit-endpoint>
