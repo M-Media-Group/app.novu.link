@@ -308,7 +308,7 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
       </hgroup>
 
       <bar-chart
-        v-if="clickData[0].count > 0"
+        v-if="clickData[0]?.count > 0"
         :clickData="clickData"
       ></bar-chart>
       <div class="placeholder-chart" v-else>
