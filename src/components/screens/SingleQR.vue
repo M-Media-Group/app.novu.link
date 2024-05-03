@@ -636,7 +636,6 @@ details.dropdown summary::after {
 .qr-dropdown:hover {
   box-shadow: var(--pico-box-shadow);
   animation: bounce 0.2s;
-  scale: 1.02;
 }
 
 /* When the hover starts, show a micro animation to show the user the element is interactable */
@@ -649,10 +648,10 @@ details.dropdown summary::after {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
   100% {
-    transform: scale(1.02);
+    transform: scale(1);
   }
 }
 </style>
