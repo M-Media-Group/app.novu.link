@@ -67,6 +67,13 @@ const props = defineProps({
     default: 0,
   },
 
+  /** The clicks by same time yesterday */
+  clicksSameTimeYesterday: {
+    type: Number as PropType<number | null>,
+    required: false,
+    default: null,
+  },
+
   /** The clicks all time */
   clicksAllTime: {
     type: Number,
@@ -402,6 +409,9 @@ defineExpose({
         <q-r-analytics
           :redirectId="redirectId"
           :clicksToday="!authenticated ? undefined : clicksToday"
+          :clicksSameTimeYesterday="
+            !authenticated ? undefined : clicksSameTimeYesterday ?? undefined
+          "
           :lineChartData="!authenticated ? undefined : lineChartData"
           :barChartData="!authenticated ? undefined : barChartData"
           :clicksAllTime="!authenticated ? undefined : clicksAllTime"

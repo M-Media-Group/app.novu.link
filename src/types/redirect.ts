@@ -9,6 +9,7 @@ export interface Redirect {
   updated_at: Date;
   deleted_at: null;
   todays_clicks_count: number;
+  yesterdays_clicks_up_to_now_count?: number;
   endpoints: Endpoint[];
   subscribed_at: Date | string | null;
 }

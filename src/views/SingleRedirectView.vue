@@ -29,6 +29,7 @@ const redirectName = ref(null as Redirect["name"] | null);
 const subscribedAt = ref(null as Redirect["subscribed_at"]);
 const clicksToday = ref(0);
 const clicksTodayUnique = ref(0);
+const clicksSameTimeYesterday = ref(null as number | null);
 const clicksAllTime = ref(0);
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
 const endpoints = ref([] as Endpoint[]);
@@ -76,6 +77,8 @@ const getData = () => {
 
       // set clicksToday and clicksTodayUnique
       clicksToday.value = response.data.todays_clicks_count;
+      clicksSameTimeYesterday.value =
+        response.data.yesterdays_clicks_up_to_now_count ?? null;
 
       clicksAllTime.value = totalClicks();
 
@@ -173,6 +176,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"
+      :clicksSameTimeYesterday="clicksSameTimeYesterday"
       ref="singleQRElement"
     />
   </div>

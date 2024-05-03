@@ -316,5 +316,6 @@
     "Last x minutes": "Dernières {0} minutes",
     "Percent of your customers that end up here": "Pourcentage de vos clients qui finissent ici",
     "Countries": "Pays",
-    "Languages": "Langues"
+    "Languages": "Langues",
+    "Scans in the last x minutes": "Scans dans les {0} dernières minutes"
 }

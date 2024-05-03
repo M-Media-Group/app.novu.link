@@ -316,5 +316,6 @@
     "Last x minutes": "Last {0} minutes",
     "Percent of your customers that end up here": "Percent of your customers that end up here",
     "Countries": "Countries",
-    "Languages": "Languages"
+    "Languages": "Languages",
+    "Scans in the last x minutes": "Scans in the last {0} minutes"
 }

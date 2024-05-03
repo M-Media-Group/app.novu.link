@@ -3,11 +3,11 @@ import LineChart from "@/components/charts/LineChart.vue";
 import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
-import type { PropType } from "vue";
+import { type PropType, computed } from "vue";
 
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
-defineProps({
+const props = defineProps({
   redirectId: {
     type: String,
     required: true,
@@ -19,6 +19,11 @@ defineProps({
     default: null,
   },
   clicksAllTime: {
+    type: Number,
+    required: false,
+    default: null,
+  },
+  clicksSameTimeYesterday: {
     type: Number,
     required: false,
     default: null,
@@ -50,13 +55,38 @@ defineProps({
     default: false,
   },
 });
+
+const percentChange = computed(() => {
+  if (props.clicksToday === null || props.clicksSameTimeYesterday === null) {
+    return null;
+  }
+  // If both are 0, return 0
+  if (props.clicksToday === 0 && props.clicksSameTimeYesterday === 0) {
+    return 0;
+  } else if (props.clicksSameTimeYesterday === 0) {
+    return 100;
+  } else if (props.clicksToday === 0) {
+    return -100;
+  }
+  return Math.round(
+    ((props.clicksToday - props.clicksSameTimeYesterday) /
+      props.clicksSameTimeYesterday) *
+      100
+  );
+});
 </script>
 <template>
   <div class="two-column-grid mobile-grid">
     <card-element
       :loading="isLoading"
       :title="clicksToday !== null ? `${clicksToday}` : '--'"
-      :subtitle="$t('Scans today')"
+      :subtitle="
+        clicksSameTimeYesterday !== null && percentChange !== null
+          ? `${$t('Scans today')} (${
+              percentChange > 0 ? '+' : ''
+            }${percentChange}%)`
+          : $t('Scans today')
+      "
       :loadingOn="['title']"
     >
     </card-element>
@@ -71,8 +101,14 @@ defineProps({
   </div>
   <template v-if="subscribed">
     <card-element
-      :title="$t('Last x minutes', [30])"
-      :subtitle="$t('By scans')"
+      :loading="isLoading"
+      :loadingOn="['title']"
+      :title="
+        barChartData !== null
+          ? `${barChartData.reduce((sum, item) => sum + item.count, 0)}`
+          : '--'
+      "
+      :subtitle="$t('Scans in the last x minutes', [30])"
     >
       <div
         v-if="isLoading"
@@ -146,8 +182,8 @@ defineProps({
     </confirms-gate>
 
     <card-element
-      :title="$t('Last x minutes', [30])"
-      :subtitle="$t('By scans')"
+      title="--"
+      :subtitle="$t('Scans in the last x minutes', [30])"
     >
       <div class="placeholder-chart" style="height: 240px">
         <p>
