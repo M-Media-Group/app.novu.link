@@ -31,7 +31,9 @@ article:has(>:first-child:is(.images)) {
 
     /** @todo this may also need the "fieldset", but it doesnt look good with the OTP */
     >*,
-    article {
+    >article,
+    >*>article,
+    >.mobile-grid>*>article {
         margin-bottom: 0;
     }
 }
@@ -244,12 +246,16 @@ textarea.unset-width {
     /* Maintains same aspect of lineChart in Chart.js - warning aspect-ratio seems to cause weird bug seen only after compiling all code */
     display: flex;
     width: 100%;
+    flex-direction: column;
 
     /* Align text center */
     justify-content: center;
     align-items: center;
     position: relative;
     height: 47vh;
+
+    padding: var(--pico-spacing);
+    text-align: center;
 }
 
 .placeholder-chart::before {
@@ -263,6 +269,11 @@ textarea.unset-width {
     left: 0;
     right: 0;
     bottom: 0;
+    pointer-events: none;
+}
+
+.placeholder-chart>* {
+    margin: 0;
 }
 
 /** @todo check if this needs to go back to original CSS fix file */

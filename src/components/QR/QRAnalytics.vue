@@ -149,6 +149,18 @@ defineProps({
       :title="$t('Last x minutes', [30])"
       :subtitle="$t('By scans')"
     >
+      <div class="placeholder-chart" style="height: 240px">
+        <p>
+          {{
+            $t(
+              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+            )
+          }}
+        </p>
+      </div>
+    </card-element>
+
+    <card-element title="--" :subtitle="$t('Best performing destination')">
       <p>
         {{
           $t(
@@ -162,22 +174,40 @@ defineProps({
       :title="$t('Scans by time of day')"
       :subtitle="$t('By scans')"
     >
-      <p>
-        {{
-          $t(
-            "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-          )
-        }}
-      </p>
+      <div class="placeholder-chart">
+        <p>
+          {{
+            $t(
+              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+            )
+          }}
+        </p>
+      </div>
     </card-element>
-    <card-element title="--" :subtitle="$t('Best performing destination')">
-      <p>
-        {{
-          $t(
-            "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-          )
-        }}
-      </p>
-    </card-element>
+
+    <div class="two-column-grid">
+      <card-element :title="$t('Languages')" :subtitle="$t('By scans')">
+        <div class="placeholder-chart">
+          <p>
+            {{
+              $t(
+                "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+              )
+            }}
+          </p>
+        </div>
+      </card-element>
+      <card-element :title="$t('Countries')" :subtitle="$t('By scans')">
+        <div class="placeholder-chart">
+          <p>
+            {{
+              $t(
+                "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+              )
+            }}
+          </p>
+        </div>
+      </card-element>
+    </div>
   </template>
 </template>
