@@ -633,6 +633,30 @@ details.dropdown summary::after {
   z-index: 1;
 }
 
+.qr-dropdown[open]::before {
+  transition: all 0.2s;
+  content: "";
+  pointer-events: none;
+}
+
+/* Add a before that covers the entire screen and blurs the background except the QR */
+.qr-dropdown[open]::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+}
+
+.qr-dropdown[open] {
+  z-index: 2;
+}
+
 .qr-dropdown:hover {
   box-shadow: var(--pico-box-shadow);
   animation: bounce 0.2s;
