@@ -306,14 +306,36 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
         <h2>{{ $t("Best performing magic links") }}</h2>
         <p>{{ $t("By scans") }}</p>
       </hgroup>
-      <bar-chart v-if="clickData.length > 0" :clickData="clickData"></bar-chart>
+
+      <bar-chart
+        v-if="clickData[0].count > 0"
+        :clickData="clickData"
+      ></bar-chart>
+      <div class="placeholder-chart" v-else>
+        <p>
+          {{
+            $t(
+              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+            )
+          }}
+        </p>
+      </div>
     </card-element>
     <card-element :loading="loading">
       <hgroup>
         <h2>{{ $t("Scans by time of day") }}</h2>
         <p>{{ $t("By scans") }}</p>
       </hgroup>
-      <line-chart :clickData="lineChartData" />
+      <line-chart v-if="lineChartData.length > 0" :clickData="lineChartData" />
+      <div class="placeholder-chart" v-else>
+        <p>
+          {{
+            $t(
+              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+            )
+          }}
+        </p>
+      </div>
     </card-element>
     <card-element :loading="loading">
       <hgroup>
@@ -324,7 +346,15 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
         v-if="uniqueReferersAndClicks.length > 0"
         :clickData="uniqueReferersAndClicks"
       ></bar-chart>
-      <p v-else>{{ $t("No referers found") }}</p>
+      <div class="placeholder-chart" v-else>
+        <p>
+          {{
+            $t(
+              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+            )
+          }}
+        </p>
+      </div>
     </card-element>
     <div class="two-column-grid">
       <card-element :loading="loading">
@@ -333,10 +363,18 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
           <p>{{ $t("By scans") }}</p>
         </hgroup>
         <pie-chart
-          v-if="uniqueCountries.length > 0"
+          v-if="uniqueCountries.length > 1"
           :clickData="uniqueCountries"
         ></pie-chart>
-        <p v-else>{{ $t("No countries found") }}</p>
+        <div class="placeholder-chart" v-else>
+          <p>
+            {{
+              $t(
+                "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+              )
+            }}
+          </p>
+        </div>
       </card-element>
       <card-element :loading="loading">
         <hgroup>
@@ -347,7 +385,15 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
           v-if="uniqueLanguages.length > 0"
           :clickData="uniqueLanguages"
         ></pie-chart>
-        <p v-else>{{ $t("No countries found") }}</p>
+        <div class="placeholder-chart" v-else>
+          <p>
+            {{
+              $t(
+                "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+              )
+            }}
+          </p>
+        </div>
       </card-element>
     </div>
   </div>
