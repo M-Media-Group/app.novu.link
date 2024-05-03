@@ -5,7 +5,7 @@ import { ref } from "vue";
  * The supported themes. Dark, light, and system.
  *
  */
-export const SUPPORT_THEMES = ["system", "dark", "light"];
+export const SUPPORT_THEMES = ["light", "dark", "system"];
 
 export const getBestGuessTheme = () => {
   return (
