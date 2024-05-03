@@ -326,7 +326,7 @@ defineExpose({
       </hgroup>
 
       <div class="main-grid-display smaller-gap">
-        <details class="dropdown">
+        <details class="dropdown qr-dropdown">
           <summary>
             <q-r-code
               :redirectId="props.redirectId"
@@ -626,5 +626,33 @@ details.dropdown summary::after {
 
 .main-grid-display {
   position: relative;
+}
+.qr-dropdown {
+  animation: none;
+  transition: box-shadow 0.2s;
+  z-index: 1;
+}
+
+.qr-dropdown:hover {
+  box-shadow: var(--pico-box-shadow);
+  animation: bounce 0.2s;
+  scale: 1.02;
+}
+
+/* When the hover starts, show a micro animation to show the user the element is interactable */
+.qr-dropdown summary:hover::after {
+  animation: bounce 0.2s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1.02);
+  }
 }
 </style>
