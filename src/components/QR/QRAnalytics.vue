@@ -82,9 +82,9 @@ const percentChange = computed(() => {
       :title="clicksToday !== null ? `${clicksToday}` : '--'"
       :subtitle="
         clicksSameTimeYesterday !== null && percentChange !== null
-          ? `${$t('Scans today')} (${
-              percentChange > 0 ? '+' : ''
-            }${percentChange}%)`
+          ? `${percentChange > 0 ? '+' : ''}${percentChange}% ${$t(
+              'Scans today'
+            )}`
           : $t('Scans today')
       "
       :loadingOn="['title']"
