@@ -313,11 +313,7 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
       ></bar-chart>
       <div class="placeholder-chart" v-else>
         <p>
-          {{
-            $t(
-              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-            )
-          }}
+          {{ $t("No data available") }}
         </p>
       </div>
     </card-element>
@@ -326,14 +322,13 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
         <h2>{{ $t("Scans by time of day") }}</h2>
         <p>{{ $t("By scans") }}</p>
       </hgroup>
-      <line-chart v-if="lineChartData.length > 0" :clickData="lineChartData" />
+      <line-chart
+        v-if="lineChartData.reduce((acc, item) => acc + item.count, 0) > 0"
+        :clickData="lineChartData"
+      />
       <div class="placeholder-chart" v-else>
         <p>
-          {{
-            $t(
-              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-            )
-          }}
+          {{ $t("No data available") }}
         </p>
       </div>
     </card-element>
@@ -348,11 +343,7 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
       ></bar-chart>
       <div class="placeholder-chart" v-else>
         <p>
-          {{
-            $t(
-              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-            )
-          }}
+          {{ $t("No data available") }}
         </p>
       </div>
     </card-element>
@@ -368,11 +359,7 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
         ></pie-chart>
         <div class="placeholder-chart" v-else>
           <p>
-            {{
-              $t(
-                "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-              )
-            }}
+            {{ $t("No data available") }}
           </p>
         </div>
       </card-element>
@@ -387,11 +374,7 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
         ></pie-chart>
         <div class="placeholder-chart" v-else>
           <p>
-            {{
-              $t(
-                "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
-              )
-            }}
+            {{ $t("No data available") }}
           </p>
         </div>
       </card-element>
