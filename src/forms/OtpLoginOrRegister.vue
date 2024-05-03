@@ -37,6 +37,8 @@ defineProps({
 
 const { t } = useI18n();
 
+const baseFormRef = ref();
+
 const makeOtpRequest = async () => {
   if (!userStore.userEmail && !userStore.userPhone) {
     return;
@@ -57,14 +59,21 @@ const makeOtpRequest = async () => {
     !usePhone.value ? userStore.userEmail : userStore.userPhone
   }`;
 
-  await userStore.requestOtp(
+  const result = await userStore.requestOtp(
     dataToSend,
     usePhone.value ? "phone_number" : "email"
   );
 
+  if (result === true) {
+    isOnOtpPage.value = true;
+    lastRequestTime.value = Date.now();
+  } else {
+    baseFormRef.value.setInputErrors(result.data.errors);
+    // Reset the timer so the user can try again
+    lastRequestTime.value = 0;
+  }
+
   isLoading.value = false;
-  isOnOtpPage.value = true;
-  lastRequestTime.value = Date.now();
 };
 
 const validateOtp = async () => {
@@ -109,6 +118,7 @@ const toggleUsePhone = async () => {
     {{ $t("One-time password") }}
   </label>
   <base-form
+    ref="baseFormRef"
     v-if="isOnOtpPage"
     @submit="validateOtp"
     :isLoading="isLoading"
@@ -151,6 +161,7 @@ const toggleUsePhone = async () => {
   </base-form>
   <base-form
     v-else
+    ref="baseFormRef"
     @submit="makeOtpRequest"
     :isLoading="isLoading"
     :disabled="isLoading"
