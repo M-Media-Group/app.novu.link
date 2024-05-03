@@ -60,6 +60,12 @@
         "min_subscription": 0
     },
     {
+        "name": "API accès",
+        "description": "Accédez, créez et mettez à jour vos liens magiques via notre API",
+        "category": "API",
+        "min_subscription": 0
+    },
+    {
         "name": "Variables dynamiques dans les points d'accès",
         "description": "Utilisez des valeurs de règle dans vos URL pour créer des points d'accès dynamiques, par exemple : http://exemple.com/?date={Date}",
         "category": "Liens magiques",
@@ -102,6 +108,12 @@
         "images": [
             "../../images/analytics/timeOfDays.png"
         ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Vérifications régulières automatiques de la destination",
+        "description": "Nous vérifierons vos destinations et exécuterons une surveillance de l'uptime pour nous assurer régulièrement que vos liens magiques fonctionnent",
+        "category": "Liens magiques",
         "min_subscription": 1
     },
     {

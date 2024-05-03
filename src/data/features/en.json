@@ -60,8 +60,14 @@
         "min_subscription": 0
     },
     {
-        "name": "Dynamic variables in endpoints",
-        "description": "Use rule values in your URLs to create dynamic endpoints, for example: http://example.com/?date={Date}",
+        "name": "API access",
+        "description": "Access, build, and update your magic links through our API",
+        "category": "API",
+        "min_subscription": 0
+    },
+    {
+        "name": "Dynamic variables in destinations",
+        "description": "Use rule values in your URLs to create dynamic destinations, for example: http://example.com/?date={Date}",
         "category": "Magic links",
         "min_subscription": 1
     },
@@ -105,8 +111,14 @@
         "min_subscription": 1
     },
     {
-        "name": "Redirect to multiple endpoints",
-        "description": "Redirect to multiple endpoints based on any rules you choose",
+        "name": "Regular automatic destination checks",
+        "description": "We'll check your destinations and run uptime-monitoring to regularly make sure that your magic links are working",
+        "category": "Magic links",
+        "min_subscription": 1
+    },
+    {
+        "name": "Redirect to multiple destinations",
+        "description": "Redirect to multiple destinations based on any rules you choose",
         "category": "Rules based redirects",
         "images": [
             "../../images/rules.png"
@@ -114,8 +126,8 @@
         "min_subscription": 1
     },
     {
-        "name": "Create any amount of endpoints",
-        "description": "Make unlimited amounts of smart endpoints per each magic link you define",
+        "name": "Create any amount of destinations",
+        "description": "Make unlimited amounts of smart destinations per each magic link you define",
         "category": "Rules based redirects",
         "min_subscription": 1
     },
@@ -132,7 +144,7 @@
         "min_subscription": 1
     },
     {
-        "name": "Run A/B tests by redirecting a subset of users to different endpoints",
+        "name": "Run A/B tests by redirecting a subset of users to different destinations",
         "description": "Rules based redirects",
         "category": "Rules based redirects",
         "min_subscription": 1
