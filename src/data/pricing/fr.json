@@ -1,8 +1,8 @@
 [
     {
-        "name": "Basique",
+        "name": "Gratuit",
         "description": "Pour quand vous avez juste besoin de pouvoir changer une URL fixe parfois.",
-        "price": "Gratuit",
+        "price": "Aucune carte de crédit requise",
         "features": [
             "Jusqu'à 3 000 redirections par mois"
         ]

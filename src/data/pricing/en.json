@@ -1,8 +1,8 @@
 [
     {
-        "name": "Basic",
+        "name": "Free",
         "description": "For when you just need to be able to change a fixed URL sometimes.",
-        "price": "Free",
+        "price": "No credit card required",
         "features": [
             "Up to 3,000 redirects per month"
         ]

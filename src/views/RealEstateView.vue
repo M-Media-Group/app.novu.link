@@ -162,7 +162,7 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
       <thead>
         <tr>
           <th>{{ $t("Feature") }}</th>
-          <th>{{ $t("Basic") }}</th>
+          <th>{{ $t("Free") }}</th>
           <th>{{ $t("Tiny Tinkerer") }}</th>
         </tr>
       </thead>
