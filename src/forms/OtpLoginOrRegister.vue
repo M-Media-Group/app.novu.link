@@ -181,6 +181,7 @@ const toggleUsePhone = async () => {
         ref="phoneInput"
         autocomplete="email"
         :placeholder="$t('Email')"
+        data-hj-allow
       />
     </template>
     <template v-else>
@@ -201,6 +202,7 @@ const toggleUsePhone = async () => {
         maxlength="16"
         :placeholder="$t('Phone number')"
         ref="phoneInput"
+        data-hj-allow
       />
     </template>
     <template #after-submit>

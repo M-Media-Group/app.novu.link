@@ -156,6 +156,7 @@ const goBack = async () => {
         pattern="[^@]+@[^@]+\.[^@]+"
         autofocus
         required
+        data-hj-allow
       />
       <small>{{ $t("We'll never share your email with anyone else.") }}</small>
     </fieldset>
