@@ -1,5 +1,6 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
+import type { FileExtension } from "qr-code-styling";
 
 const t = i18n.global.t;
 </script>
@@ -139,7 +140,7 @@ const downloadQRCode = () => {
   }
   const link = document.createElement("a");
   link.href = qrCodeDataURL.value;
-  link.download = `${props.redirectName}.png`;
+  link.download = `${props.redirectName}.${selectedFileType.value}`;
   link.target = "_blank";
   link.click();
   $bus.$emit(eventTypes.downloaded_redirect_qr_code);
@@ -274,6 +275,7 @@ const lightColor = ref("#ffffff");
 const darkColor = ref("#000000");
 const logoDataUrl = ref<string | null>(null);
 const selectedShape = ref("square" as "square" | "rounded" | "circle");
+const selectedFileType = ref("png" as FileExtension);
 
 const handleLogoUpload = async (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -336,6 +338,7 @@ defineExpose({
               :selectedShape="selectedShape"
               @update="qrCodeDataURL = $event"
               :loading="isLoading || loading"
+              :fileType="selectedFileType"
             />
           </summary>
           <ul>
@@ -476,6 +479,17 @@ defineExpose({
               <option value="square">{{ $t("Square") }}</option>
               <option value="rounded">{{ $t("Rounded") }}</option>
               <option value="circle">{{ $t("Circle") }}</option>
+            </select>
+
+            <label for="type">{{ $t("File type") }}</label>
+            <select
+              name="type"
+              id="type"
+              v-model="selectedFileType"
+              :disabled="!subscribed"
+            >
+              <option value="png">{{ $t("PNG") }}</option>
+              <option value="svg">{{ $t("SVG") }}</option>
             </select>
           </div>
 

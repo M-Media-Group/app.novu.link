@@ -29,6 +29,12 @@ const meta: Meta<typeof QRCode> = {
       table: { category: "Props" },
       description: "The shape of the QR code",
     },
+    fileType: {
+      options: ["png", "svg"],
+      control: { type: "select" },
+      table: { category: "Props" },
+      description: "The file type of the QR code",
+    },
   },
 };
 

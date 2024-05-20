@@ -38,6 +38,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  /** The file type, PNG or SVG */
+  fileType: {
+    type: String as PropType<FileExtension>,
+    default: "png",
+  },
 });
 
 const emit = defineEmits<{
@@ -59,7 +64,7 @@ const compute2 = async (
   logoDataUrl: string | null = null,
   shape = "square" as "square" | "rounded" | "circle",
   dimensions = props.dimensions * 2,
-  fileType = "png" as FileExtension
+  fileType = props.fileType
 ) => {
   qrCode.update({
     width: dimensions * 2,
@@ -114,6 +119,8 @@ watch(
     props.logoDataUrl,
     props.selectedShape,
     props.redirectId,
+    props.dimensions,
+    props.fileType,
   ],
   () => {
     compute2(
@@ -121,7 +128,9 @@ watch(
       props.lightColor,
       props.darkColor,
       props.logoDataUrl,
-      props.selectedShape
+      props.selectedShape,
+      props.dimensions * 2,
+      props.fileType
     );
   },
   {

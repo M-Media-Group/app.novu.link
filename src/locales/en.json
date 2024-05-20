@@ -57,6 +57,7 @@
     "Copy magic link": "Copy magic link",
     "Copied!": "Copied!",
     "Download QR code": "Download QR code",
+    "Download QR code as vector graphic": "Download QR code as vector graphic",
     "Add more destinations to same code": "Add more destinations to same code",
     "There was an error with the payment intent. Please try again.": "There was an error with the payment intent. Please try again.",
     "New magic link": "New magic link",
@@ -317,5 +318,6 @@
     "Percent of your customers that end up here": "Percent of your customers that end up here",
     "Countries": "Countries",
     "Languages": "Languages",
-    "Scans in the last x minutes": "Scans in the last {0} minutes"
+    "Scans in the last x minutes": "Scans in the last {0} minutes",
+    "File type": "File type"
 }
