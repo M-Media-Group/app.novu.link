@@ -481,5 +481,5 @@ nav a[role=button] {
 
 [data-tooltip]::before {
   white-space: pre-wrap;
-  min-width: 20ch;
+  min-width: 11ch;
 }

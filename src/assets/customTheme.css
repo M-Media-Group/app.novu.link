@@ -298,3 +298,7 @@ img {
 .hero-section hgroup>p {
     margin-bottom: var(--pico-spacing);
 }
+
+.no-wrap {
+    white-space: nowrap;
+}

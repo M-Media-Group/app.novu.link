@@ -37,17 +37,38 @@ export const WithDestinations: Story = {
         id: 1,
         redirect_uuid: "https://example.com",
         endpoint: "http://192.168.10.17:8001/redirects/Bs5mOLf",
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 100,
+          },
+        ],
       },
       {
         id: 2,
         redirect_uuid: "https://example.com",
         endpoint:
           "http://localhost:3001/?path=/story/components-qrdestinations--with-destinations",
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 50,
+          },
+        ],
       },
       {
         id: 3,
         redirect_uuid: "https://example.com",
         endpoint: "https://developer.mozilla.org/en-US/docs/Web/CSS/width",
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 75,
+          },
+        ],
       },
     ],
   },
