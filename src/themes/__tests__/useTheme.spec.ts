@@ -37,8 +37,8 @@ describe("Theme functionality", () => {
 
     // Simulate no localStorage or document theme attribute set
     setBestGuessTheme();
-    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
-    expect(localStorage.getItem("theme")).toEqual("system");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(localStorage.getItem("theme")).toEqual("light");
 
     // Simulate localStorage set
     localStorage.setItem("theme", "dark");

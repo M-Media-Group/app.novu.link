@@ -16,11 +16,9 @@ exports[`NavBar > renders properly when logged in 1`] = `
 <aside data-v-2202255b="" class="container" style="display: none;">
   <nav data-v-2202255b="" aria-label="Aside">
     <ul data-v-2202255b="">
-      <li data-v-2202255b=""><a data-v-2202255b="">Dashboard</a></li>
-      <li data-v-2202255b=""><a data-v-2202255b="">Magic links</a></li>
-      <li data-v-2202255b=""><a data-v-2202255b="">Analytics</a></li><!-- The users team settings -->
+      <!-- The users team settings -->
       <li data-v-2202255b="" aria-busy="false">
-        <details data-v-2202255b="" open="">
+        <details data-v-2202255b="" class="dropdown">
           <summary data-v-2202255b="" aria-busy="false"></summary>
           <ul data-v-2202255b="">
             <li data-v-2202255b=""><a data-v-2202255b="">Team Settings</a></li>
@@ -31,8 +29,11 @@ exports[`NavBar > renders properly when logged in 1`] = `
           </ul>
         </details>
       </li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Dashboard</a></li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Magic links</a></li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Analytics</a></li>
       <li data-v-2202255b="" aria-busy="false">
-        <details data-v-2202255b="" open="">
+        <details data-v-2202255b="" class="dropdown">
           <summary data-v-2202255b="" aria-busy="false">My Account</summary>
           <ul data-v-2202255b="">
             <li data-v-2202255b=""><a data-v-2202255b="">Settings</a></li>
