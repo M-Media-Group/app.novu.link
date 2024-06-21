@@ -33,6 +33,7 @@ article:has(>:first-child:is(.images)) {
     >*,
     >article,
     >*>article,
+    >* article,
     >.mobile-grid>*>article {
         margin-bottom: 0;
     }
@@ -301,4 +302,13 @@ img {
 
 .no-wrap {
     white-space: nowrap;
+}
+
+.delete {
+    --pico-color: var(--pico-del-color);
+    --pico-border-color: var(--pico-del-color);
+}
+
+a.delete {
+    --pico-underline: var(--pico-color);
 }

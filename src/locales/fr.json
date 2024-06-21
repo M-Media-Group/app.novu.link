@@ -321,5 +321,8 @@
     "Countries": "Pays",
     "Languages": "Langues",
     "Scans in the last x minutes": "Scans dans les {0} dernières minutes",
-    "File type": "Type de fichier"
+    "File type": "Type de fichier",
+    "true": "oui",
+    "false": "non",
+    "Delete destination": "Supprimer la destination"
 }

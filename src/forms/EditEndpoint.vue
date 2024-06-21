@@ -3,7 +3,10 @@ import { type PropType, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { debounce } from "@/helpers/debounce";
 import { formatUrl } from "@/helpers/urlFormatter";
-import { updateRedirectEndpoint } from "@/useRedirects";
+import { deleteRedirectEndpoint, updateRedirectEndpoint } from "@/useRedirects";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps({
   redirectId: {
@@ -59,6 +62,26 @@ const debounceAddProtocolIfMissing = debounce(
   500,
   true
 );
+
+const deleteEndpoint = async () => {
+  loading.value = true;
+
+  const response = await deleteRedirectEndpoint(
+    props.redirectId,
+    `${props.endpointId}`
+  ).catch((error) => {
+    console.error(error);
+    return error.response;
+  });
+
+  if (response.status === 200) {
+    emit("success");
+  } else {
+    alert(t("An error occurred. Please try again later."));
+  }
+
+  loading.value = false;
+};
 </script>
 
 <template>
@@ -85,5 +108,11 @@ const debounceAddProtocolIfMissing = debounce(
       "
     />
     <!-- </TransitionGroup> -->
+    <template #after-submit>
+      <!-- Delete endpoint a tag -->
+      <a href="#" @click.prevent="deleteEndpoint" class="delete">
+        {{ $t("Delete destination") }}
+      </a>
+    </template>
   </base-form>
 </template>
