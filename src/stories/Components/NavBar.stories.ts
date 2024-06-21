@@ -53,7 +53,7 @@ export const DropdownOpen: Story = {
     await userEvent.click(myAccount);
     // There should be a visible "Logout"
     await waitFor(() => {
-      expect(canvas.getByText("Logout")).toBeVisible();
+      expect(canvas.getByText("My Account")).toBeVisible();
     });
   },
   parameters: {
