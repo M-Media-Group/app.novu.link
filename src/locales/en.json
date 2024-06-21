@@ -77,15 +77,13 @@
     "multiple_of": "Multiple of",
     "contains": "Contains",
     "not_contains": "Does not contain",
-    "DayOfWeekValue": {
-        "1": "Monday",
-        "2": "Tuesday",
-        "3": "Wednesday",
-        "4": "Thursday",
-        "5": "Friday",
-        "6": "Saturday",
-        "7": "Sunday"
-    },
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday",
     "DayOfWeek": "Day of the week",
     "Rule": "Rule",
     "Operator": "Operator",
@@ -166,6 +164,10 @@
         "moon_phase": {
             "Name": "Moon Phase",
             "Description": "The current phase of the moon."
+        },
+        "percent_chance": {
+            "Name": "Percent Chance",
+            "Description": "A random percent chance. For example, if you want a 50% chance of something happening, you would set the value to 50."
         }
     },
     "Solve QR codes forever": "Solve QR codes forever",

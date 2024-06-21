@@ -102,12 +102,12 @@ const formatAllowedValues = (
   }
 
   if (Array.isArray(allowedValues)) {
-    return allowedValues.map((value) => ({ key: value, value }));
+    return allowedValues.map((value) => ({ key: value, value: t(value) }));
   }
 
   return Object.entries(allowedValues).map(([key, value]) => ({
     key,
-    value: value as string,
+    value: t(value),
   }));
 };
 

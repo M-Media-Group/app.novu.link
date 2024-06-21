@@ -77,15 +77,13 @@
     "multiple_of": "Multiple de",
     "contains": "Contient",
     "not_contains": "Ne contient pas",
-    "DayOfWeekValue": {
-        "1": "Lundi",
-        "2": "Mardi",
-        "3": "Mercredi",
-        "4": "Jeudi",
-        "5": "Vendredi",
-        "6": "Samedi",
-        "7": "Dimanche"
-    },
+    "Monday": "Lundi",
+    "Tuesday": "Mardi",
+    "Wednesday": "Mercredi",
+    "Thursday": "Jeudi",
+    "Friday": "Vendredi",
+    "Saturday": "Samedi",
+    "Sunday": "Dimanche",
     "DayOfWeek": "Jour de la semaine",
     "Rule": "Règle",
     "Operator": "Opérateur",
@@ -166,6 +164,10 @@
         "moon_phase": {
             "Name": "Phase de la lune",
             "Description": "La phase de la lune actuelle. Les phases de la lune sont Nouvelle lune, Premier croissant, Premier quartier, Gibbeuse croissante, Pleine lune, Gibbeuse décroissante, Dernier quartier et Dernier croissant."
+        },
+        "percent_chance": {
+            "Name": "Pourcentage de chance",
+            "Description": "Un pourcentage de chance. Par exemple, si vous voulez que quelque chose se produise 30 % du temps, vous pouvez utiliser cette règle avec une valeur de 30."
         }
     },
     "Solve QR codes forever": "Résoudre les codes QR pour toujours",
