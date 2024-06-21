@@ -242,7 +242,7 @@ const setupDropdownList = () => {
 const searchInput = ref<HTMLInputElement | null>(null);
 
 /** A dunction to handle the opening of the results. If the search is present, we autofocus the search input. Note, there is a `ToggleEvent` type that should work but doesnt pass the TS linting with `TS2304: Cannot find name 'ToggleEvent'.`. */
-const openResults = async (value: { newState: string }) => {
+const openResults = async (value: any) => {
   if (!value) return;
 
   // If the value is not the same as the current value, emit the event

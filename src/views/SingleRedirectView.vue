@@ -100,6 +100,10 @@ const getData = () => {
     });
 };
 
+const redirectToCreate = () => {
+  router.push("/redirects/create");
+};
+
 onMounted(() => {
   if (!teamStore.activeTeam) {
     isLoading.value = false;
@@ -113,6 +117,8 @@ onMounted(() => {
   $bus.$on(eventTypes.unsubscribed, getData);
   $bus.$on(eventTypes.updated_redirect, getData);
   $bus.$on(eventTypes.updated_endpoint, getData);
+  $bus.$on(eventTypes.deleted_endpoint, getData);
+  $bus.$on(eventTypes.deleted_redirect, redirectToCreate);
   $bus.$on(eventTypes.set_active_team, getData);
 });
 
@@ -121,6 +127,8 @@ onUnmounted(() => {
   $bus.$off(eventTypes.unsubscribed, getData);
   $bus.$off(eventTypes.updated_redirect, getData);
   $bus.$off(eventTypes.updated_endpoint, getData);
+  $bus.$off(eventTypes.deleted_endpoint, getData);
+  $bus.$off(eventTypes.deleted_redirect, redirectToCreate);
   $bus.$off(eventTypes.set_active_team, getData);
 });
 

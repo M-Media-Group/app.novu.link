@@ -30,7 +30,12 @@ export const updateRedirect = async (redirectId: string, data: any) => {
 };
 
 export const deleteRedirect = async (redirectId: string) => {
-  await axios.delete(`/api/v1/redirects/${redirectId}`);
+  return await axios
+    .delete(`/api/v1/redirects/${redirectId}`)
+    .then((response) => {
+      $bus.$emit(eventTypes.deleted_redirect, redirectId);
+      return response;
+    });
 };
 
 export const getRedirectQrCodeUrl = (redirectId: string) => {
@@ -65,6 +70,22 @@ export const updateRedirectEndpoint = async (
   // If the results are successful, emit an event to let the app know that the endpoint was updated
   if (results.status === 200) {
     $bus.$emit(eventTypes.updated_endpoint, endpointId);
+  }
+
+  return results;
+};
+
+export const deleteRedirectEndpoint = async (
+  redirectId: string,
+  endpointId: string
+) => {
+  const results = await axios.delete(
+    `/api/v1/redirects/${redirectId}/endpoints/${endpointId}`
+  );
+
+  // If the results are successful, emit an event to let the app know that the endpoint was deleted
+  if (results.status === 200) {
+    $bus.$emit(eventTypes.deleted_endpoint, endpointId);
   }
 
   return results;
