@@ -19,7 +19,7 @@ import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
-import { getRedirectUrl } from "@/useRedirects";
+import { deleteRedirect, getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
 
 const $bus = useEventsBus();
@@ -316,6 +316,22 @@ const triggerSuccess = () => {
 defineExpose({
   triggerSuccess,
 });
+
+const deleteCurrentRedirect = async () => {
+  isLoading.value = true;
+  const response = await deleteRedirect(props.redirectId).catch((error) => {
+    alert(
+      t("An error occurred. Please try again later.") +
+        " " +
+        error.response.data.message
+    );
+    return error.response;
+  });
+  isLoading.value = false;
+  if (response.status === 200) {
+    $bus.$emit(eventTypes.deleted_redirect);
+  }
+};
 </script>
 
 <template>
@@ -591,7 +607,7 @@ defineExpose({
               )
             }}
           </p>
-          <base-button v-else class="outline">{{
+          <base-button v-else class="outline" @click="deleteCurrentRedirect">{{
             $t("Delete forever")
           }}</base-button>
         </card-element>
