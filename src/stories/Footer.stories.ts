@@ -32,7 +32,7 @@ export const OpenSelect: Story = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
     // Get the dropdown by name dark-mode
-    const dropdown = canvas.getByDisplayValue("Auto");
+    const dropdown = canvas.getByDisplayValue("Light");
     await userEvent.click(dropdown);
   },
 };
