@@ -1,67 +1,67 @@
 [
     {
         "name": "Alex",
-        "description": "W naszym restauracyjnym menu QR używamy magicznych linków. Dzięki nim możemy przekierować naszych gości, którzy skanują kody QR, na odpowiednie menu (śniadanie, lunch lub kolację) w zależności od pory dnia. To naprawdę uprościło pierwsze doświadczenia naszych gości w restauracji.",
+        "description": "W naszej restauracji wykorzystujemy magiczne linki w menu QR. Dzięki nim goście, którzy skanują kody QR, są automatycznie przekierowywani do odpowiedniego menu (śniadanie, lunch lub kolacja), zależnie od pory dnia. To znacznie ułatwia pierwsze doświadczenia naszych klientów w restauracji.",
         "subtitle": "Kierownik restauracji",
         "industry": "gastronomia"
     },
     {
         "name": "Loulan",
-        "description": "Udało nam się wygenerować pojedynczy magiczny link, który umieszczamy na naszych platformach społecznościowych, i automatycznie przekierowuje użytkowników na naszą stronę internetową w zależności od ich lokalizacji i języka przeglądarki. Dodatkowo możemy monitorować, jak nasze linki działają, i lepiej zrozumieć, kim są nasi użytkownicy.",
+        "description": "Stworzyliśmy jeden magiczny link, który umieszczamy na naszych profilach społecznościowych. Automatycznie przekierowuje on użytkowników na naszą stronę internetową w zależności od ich lokalizacji i języka przeglądarki. Dodatkowo, możemy monitorować działanie linków i lepiej poznać naszych odbiorców.",
         "subtitle": "Działacz społeczny",
         "industry": "organizacja non-profit"
     },
     {
         "name": "Kate",
-        "description": "W naszym pensjonacie umieściliśmy kody QR w pokojach gościnnych, aby przywitać gości i dostarczyć im istotne informacje na temat ich pobytu. Za każdym razem, gdy pojawia się nowy gość, po prostu zmieniamy miejsce, do którego kieruje kod QR, bez konieczności fizycznej zmiany kodu w każdym pokoju. To świetne rozwiązanie!",
+        "description": "W naszym pensjonacie umieściliśmy kody QR w pokojach, aby powitać gości i przekazać im kluczowe informacje o pobycie. Gdy przyjeżdża nowy gość, zmieniamy tylko docelowy link w kodzie QR, bez potrzeby fizycznej wymiany kodów w każdym pokoju. To bardzo wygodne rozwiązanie!",
         "subtitle": "Założycielka Floral B&B",
         "industry": "hotelarstwo"
     },
     {
         "name": "江西",
-        "description": "Jako startup nie jesteśmy jeszcze pewni, czy nawet nazwa naszej domeny internetowej pozostanie taka sama, więc korzystamy z tej aplikacji do generowania linków, które możemy używać na naszych materiałach targowych. Jeśli kiedykolwiek zmienimy nazwę domeny, łatwo zaktualizujemy linki online bez konieczności płacenia za ponowny druk.",
+        "description": "Jako startup nie jesteśmy pewni, czy nasza domena internetowa pozostanie bez zmian, więc korzystamy z aplikacji do generowania linków, które umieszczamy na materiałach promocyjnych. Jeśli zmienimy nazwę domeny, łatwo zaktualizujemy linki online bez kosztów ponownego druku.",
         "subtitle": null,
         "industry": "startup"
     },
     {
         "name": "Benjamin",
-        "description": "Aby zachęcić ludzi do zeskanowania naszego magicznego linku prowadzącego na naszą stronę na Instagramie, oferujemy darmowy napój co setnej osobie, która zeskanuje kod. Dzięki magicznemu linkowi możemy łatwo przekierować każdą setną osobę na stronę, która informuje ich o wygranej.",
+        "description": "Aby zachęcić ludzi do zeskanowania naszego magicznego linku prowadzącego do naszego profilu na Instagramie, oferujemy darmowy napój co setnej osobie, która zeskanuje kod. Dzięki magicznemu linkowi łatwo przekierowujemy każdą setną osobę na stronę informującą o nagrodzie.",
         "subtitle": "Właściciel pubu O'Learys",
         "industry": "gastronomia"
     },
     {
         "name": "Sophie",
-        "description": "Jako właścicielka kawiarni, użycie magicznych linków na naszych kartach lojalnościowych zwiększyło zaangażowanie klientów. Dzięki zachętom do skanowania oferujemy ekskluzywne nagrody bezpośrednio na smartfony, co wzmacnia lojalność i dostarcza cennych informacji do dostosowywania oferty.",
+        "description": "Jako właścicielka kawiarni, wykorzystanie magicznych linków na naszych kartach lojalnościowych znacząco zwiększyło zaangażowanie klientów. Oferując ekskluzywne nagrody bezpośrednio na smartfony, wzmacniamy lojalność i zbieramy cenne dane do dostosowywania naszej oferty.",
         "subtitle": "Właścicielka kawiarni",
         "industry": "gastronomia"
     },
     {
         "name": "Geraldine",
-        "description": "Nasze magiczne linki są skonfigurowane w taki sposób, że osoby, które skanują tę samą nieruchomość więcej niż dwa razy, trafiają na bardziej spersonalizowaną i bezpośrednią stronę kontaktową. To świetny sposób na przekształcenie większej liczby realnych potencjalnych klientów w nabywców i odfiltrowanie tych, którzy są tylko ciekawi.",
+        "description": "Nasze magiczne linki są skonfigurowane tak, że osoby, które skanują ten sam link więcej niż dwa razy, trafiają na bardziej spersonalizowaną stronę kontaktową. To doskonały sposób na przekształcanie potencjalnych klientów w realnych nabywców i eliminowanie tych, którzy są tylko ciekawi.",
         "subtitle": "Założycielka Sans Real Estate",
         "industry": "nieruchomości"
     },
     {
         "name": "Jenny",
-        "description": "Śledzimy, ile osób jest zainteresowanych nieruchomością i jakich informacji szukają, korzystając z magicznych linków. Dzięki danym, które otrzymujemy, dostosowujemy pozycję i język naszych reklam w witrynach, aby lepiej spełniały potrzeby naszych klientów.",
+        "description": "Śledzimy zainteresowanie nieruchomościami i rodzaj poszukiwanych informacji za pomocą magicznych linków. Dzięki tym danym dostosowujemy nasze reklamy na stronach internetowych, aby lepiej odpowiadały potrzebom naszych klientów.",
         "subtitle": "Agentka nieruchomości",
         "industry": "nieruchomości"
     },
     {
         "name": "Nicholas",
-        "description": "Sprzedajemy przestrzeń okienną tym, którzy oferują swoje nieruchomości u nas. Teraz dzięki magicznym linkom możemy dostarczać informacje zwrotne na temat skuteczności ich reklam. Pomogło nam to sprzedać więcej reklam w witrynach i dostarczać większą wartość naszym klientom, którzy chcą sprzedać nieruchomości.",
+        "description": "Sprzedajemy powierzchnie reklamowe w oknach wystawowych. Teraz, dzięki magicznym linkom, możemy dostarczać informacje zwrotne na temat skuteczności reklam. Pomogło nam to zwiększyć sprzedaż reklam w witrynach i dostarczać większą wartość naszym klientom sprzedającym nieruchomości.",
         "subtitle": "Agent nieruchomości",
         "industry": "nieruchomości"
     },
     {
         "name": "Marc",
-        "description": "Stwierdziłem, że użycie magicznych linków w naszych ogłoszeniach zrewolucjonizowało nasze podejście do sprzedaży nieruchomości. Te linki pozwalają klientom na dostęp do szczegółowych informacji o nieruchomościach, co pomaga im w podejmowaniu świadomych decyzji. Dodatkowo, śledzenie interakcji klientów z tymi linkami dostarcza cennych informacji na temat ich preferencji i potrzeb.",
+        "description": "Odkryłem, że zastosowanie magicznych linków w ogłoszeniach rewolucjonizuje nasze podejście do sprzedaży nieruchomości. Linki te umożliwiają klientom dostęp do szczegółowych informacji o nieruchomościach, co ułatwia im podejmowanie decyzji. Dodatkowo, śledzenie interakcji klientów z linkami dostarcza cennych informacji o ich preferencjach.",
         "subtitle": "Agent nieruchomości",
         "industry": "nieruchomości"
     },
     {
         "name": "Sophie",
-        "description": "Użycie magicznych linków w naszych ogłoszeniach znacznie poprawiło naszą zdolność do komunikacji z klientami. Te linki oferują interaktywne i spersonalizowane doświadczenie, pozwalając potencjalnym nabywcom na eksplorację nieruchomości w ich własnym tempie. Ponadto, dzięki śledzeniu interakcji, możemy dostosować nasze oferty do specyficznych potrzeb każdego klienta.",
+        "description": "Użycie magicznych linków w naszych ogłoszeniach znacznie poprawiło naszą komunikację z klientami. Linki te oferują interaktywne i spersonalizowane doświadczenie, pozwalając potencjalnym nabywcom na swobodne eksplorowanie nieruchomości. Dodatkowo, dzięki śledzeniu interakcji, możemy dostosować nasze oferty do specyficznych potrzeb każdego klienta.",
         "subtitle": "Agentka nieruchomości",
         "industry": "nieruchomości"
     }
