@@ -330,5 +330,8 @@
     "true": "yes",
     "false": "no",
     "Delete destination": "Delete destination",
-    "All links": "All links"
+    "All links": "All links",
+    "Square": "Square",
+    "Rounded": "Rounded",
+    "Circle": "Circle"
 }

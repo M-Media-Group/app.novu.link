@@ -330,5 +330,8 @@
     "true": "oui",
     "false": "non",
     "Delete destination": "Supprimer la destination",
-    "All links": "Tous les liens"
+    "All links": "Tous les liens",
+    "Square": "Carré",
+    "Rounded": "Arrondi",
+    "Circle": "Cercle"
 }

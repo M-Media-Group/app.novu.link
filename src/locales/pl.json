@@ -330,5 +330,8 @@
     "true": "tak",
     "false": "nie",
     "Delete destination": "Usuń destynację",
-    "All links": "Wszystkie linki"
+    "All links": "Wszystkie linki",
+    "Square": "Kwadrat",
+    "Rounded": "Zaokrąglony",
+    "Circle": "Koło"
 }
