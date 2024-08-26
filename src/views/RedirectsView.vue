@@ -33,7 +33,7 @@ const defaultEndpoint = (redirect: Redirect) => {
 <template>
   <hgroup>
     <h1>{{ $t("Magic links") }}</h1>
-    <p>All links</p>
+    <p>{{ $t("All links") }}</p>
   </hgroup>
   <div>
     <card-element

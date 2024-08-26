@@ -325,5 +325,6 @@
     "File type": "Type de fichier",
     "true": "oui",
     "false": "non",
-    "Delete destination": "Supprimer la destination"
+    "Delete destination": "Supprimer la destination",
+    "All links": "Tous les liens"
 }
