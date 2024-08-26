@@ -169,6 +169,10 @@
         "percent_chance": {
             "Name": "Pourcentage de chance",
             "Description": "Un pourcentage de chance. Par exemple, si vous voulez que quelque chose se produise 30 % du temps, vous pouvez utiliser cette règle avec une valeur de 30."
+        },
+        "operating_system": {
+            "Name": "Système d'exploitation",
+            "Description": "Le système d'exploitation de l'utilisateur."
         }
     },
     "Solve QR codes forever": "Résoudre les codes QR pour toujours",

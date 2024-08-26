@@ -169,6 +169,10 @@
         "percent_chance": {
             "Name": "Percent Chance",
             "Description": "A random percent chance. For example, if you want a 50% chance of something happening, you would set the value to 50."
+        },
+        "operating_system": {
+            "Name": "Operating System",
+            "Description": "The users operating system."
         }
     },
     "Solve QR codes forever": "Solve QR codes forever",

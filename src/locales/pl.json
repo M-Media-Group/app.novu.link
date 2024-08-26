@@ -169,6 +169,10 @@
         "percent_chance": {
             "Name": "Procent szans",
             "Description": "Procentowa szansa. Na przykład, jeśli chcesz, aby coś wydarzyło się w 30% przypadków, możesz użyć tej reguły z wartością 30."
+        },
+        "operating_system": {
+            "Name": "System operacyjny",
+            "Description": "System operacyjny użytkownika."
         }
     },
     "Solve QR codes forever": "Rozwiązuj kody QR na zawsze",
