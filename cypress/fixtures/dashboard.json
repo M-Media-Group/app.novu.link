@@ -7,7 +7,7 @@
         "uuid": "QeXM0Y6",
         "team_id": 75,
         "name": "strawberry",
-        "enable_analytics": 1,
+        "enable_analytics": true,
         "created_at": "2024-04-20T10:03:12.000000Z",
         "updated_at": "2024-04-20T10:03:26.000000Z",
         "deleted_at": null,

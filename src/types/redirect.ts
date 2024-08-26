@@ -4,7 +4,7 @@ export interface Redirect {
   uuid: string;
   team_id: number;
   name: string;
-  enable_analytics: number;
+  enable_analytics: boolean;
   created_at: Date;
   updated_at: Date;
   deleted_at: null;
@@ -12,6 +12,7 @@ export interface Redirect {
   yesterdays_clicks_up_to_now_count?: number;
   endpoints: Endpoint[];
   subscribed_at: Date | string | null;
+  remaining_scans: number;
 }
 
 export interface Endpoint {

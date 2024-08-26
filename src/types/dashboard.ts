@@ -9,7 +9,7 @@ export interface BestRedirect {
   uuid: string;
   team_id: number;
   name: string;
-  enable_analytics: number;
+  enable_analytics: boolean;
   created_at: Date;
   updated_at: Date;
   deleted_at: null;

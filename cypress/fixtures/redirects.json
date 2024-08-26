@@ -3,7 +3,7 @@
         "uuid": "FxL2sgL",
         "team_id": 67,
         "name": "eight",
-        "enable_analytics": 1,
+        "enable_analytics": true,
         "created_at": "2024-04-18T20:51:16.000000Z",
         "updated_at": "2024-04-18T20:51:16.000000Z",
         "deleted_at": null,
