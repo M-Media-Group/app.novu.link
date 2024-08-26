@@ -33,6 +33,7 @@ const clicksSameTimeYesterday = ref(null as number | null);
 const clicksAllTime = ref(0);
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
 const endpoints = ref([] as Endpoint[]);
+const remainingClicks = ref(0);
 
 const getData = () => {
   if (teamStore.activeTeam === null) {
@@ -46,6 +47,7 @@ const getData = () => {
       // From the response, we need to pass as props the redirect name, the redirect URL, and the redirect ID
       redirectName.value = response.data.name;
       subscribedAt.value = response.data.subscribed_at;
+      remainingClicks.value = response.data.remaining_clicks;
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -185,6 +187,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"
       :clicksSameTimeYesterday="clicksSameTimeYesterday"
+      :remainingClicks="remainingClicks"
       ref="singleQRElement"
     />
   </div>

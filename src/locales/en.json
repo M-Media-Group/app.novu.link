@@ -333,5 +333,7 @@
     "All links": "All links",
     "Square": "Square",
     "Rounded": "Rounded",
-    "Circle": "Circle"
+    "Circle": "Circle",
+    "You have reached your limit of clicks and scans. Subscribe to re-enable your QR code.": "You have reached your limit of clicks and scans. Subscribe to re-enable your QR code.",
+    "Add redirect credits": "Add redirect credits"
 }

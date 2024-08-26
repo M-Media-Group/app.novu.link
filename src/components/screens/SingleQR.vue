@@ -109,6 +109,12 @@ const props = defineProps({
     required: false,
     default: false,
   },
+
+  /** The remaining clicks in the users subscription */
+  remainingClicks: {
+    type: Number,
+    required: false,
+  },
 });
 
 const isLoading = ref(false);
@@ -395,6 +401,43 @@ const deleteCurrentRedirect = async () => {
             :submitText="$t('Claim link')"
           />
         </card-element>
+
+        <template
+          v-else-if="remainingClicks !== undefined && remainingClicks <= 0"
+        >
+          <p>
+            {{
+              $t(
+                "You have reached your limit of clicks and scans. Subscribe to re-enable your QR code."
+              )
+            }}
+          </p>
+          <confirms-gate
+            :title="$t('Add redirect credits')"
+            :description="
+              $t(
+                'Additional destinations and design changes are free after you subscribe.'
+              )
+            "
+            :allowBackgroundClickToClose="false"
+            :gate="[
+              'confirmedEmailOrPhone',
+              {
+                name: 'subscribedRedirect',
+                options: {
+                  redirectId,
+                  title: $t('Add redirect credits'),
+                  submitText: $t('Add redirect credits'),
+                },
+              },
+            ]"
+          >
+            <base-button class="full-width">
+              {{ $t("Add redirect credits") }}</base-button
+            >
+          </confirms-gate>
+        </template>
+
         <base-button
           v-else
           :to="{
