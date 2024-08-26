@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Mówisz po francusku? Tędy, proszę -->",
+        "description": "Przekieruj swoich klientów na strony i linki odpowiednie dla nich, w językach, które rozumieją. Działa to w każdym języku, swoją drogą."
+    },
+    {
+        "name": "Spójrz na zegar!",
+        "description": "Potrzebujesz pokazać inny link w zależności od pory dnia? Żaden problem. Najtrudniejszy wybór to czy ma być według twojego czasu czy ich (oczywiście możesz wybrać)."
+    },
+    {
+        "name": "Przepraszamy, nie rozmawiamy z tobą.",
+        "description": "Ograniczasz zasięg swoich linków na podstawie kraju? Wybierz, czy zaprosić, czy zbanować pewnych użytkowników na podstawie krajów, z których pochodzą."
+    },
+    {
+        "name": "iOS? Do App Store!",
+        "description": "Przekieruj użytkowników na podstawie ich urządzenia, przeglądarki i wszystkiego, co znajdziesz w user-agencie."
+    }
+]

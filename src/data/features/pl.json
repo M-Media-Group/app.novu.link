@@ -1,0 +1,194 @@
+[
+    {
+        "name": "Nieograniczone magiczne linki na całe życie",
+        "description": "Twórz dowolną ilość magicznych linków, bez żadnych ograniczeń.",
+        "category": "Magiczne linki",
+        "min_subscription": 0
+    },
+    {
+        "name": "Nieograniczone zmiany przekierowań",
+        "description": "Zmieniać miejsca docelowe przekierowań magicznych linków dowolną ilość razy, bez żadnych ograniczeń.",
+        "category": "Magiczne linki",
+        "min_subscription": 0
+    },
+    {
+        "name": "Przekazywanie zmiennych",
+        "description": "Każda zmienna dołączona do magicznego linku zostanie automatycznie przekazana po kliknięciu.",
+        "category": "Magiczne linki",
+        "min_subscription": 0
+    },
+    {
+        "name": "Śledzenie, gdzie link jest używany",
+        "description": "Dodaj 'źródła' do swoich linków, aby zapamiętać, gdzie są używane. Miejsca mogą być fizyczne i wirtualne. Automatycznie dodamy również źródła, gdy je znajdziemy.",
+        "category": "Analiza",
+        "min_subscription": 0
+    },
+    {
+        "name": "Nieograniczona liczba członków zespołu",
+        "description": "Dodaj tyle członków zespołu, ile potrzebujesz.",
+        "category": "Zespoły",
+        "min_subscription": 0
+    },
+    {
+        "name": "Analiza magicznych linków",
+        "description": "Śledź, ile razy interakcja z twoim magicznym linkiem miała miejsce.",
+        "category": "Analiza",
+        "min_subscription": 0
+    },
+    {
+        "name": "Kod QR",
+        "description": "Uzyskaj darmowy kod QR z każdym darmowym magicznym linkiem.",
+        "category": "Magiczne linki",
+        "min_subscription": 0
+    },
+    {
+        "name": "Brak reklam podczas przekierowań",
+        "description": "Nie wyświetlaj reklam swoim użytkownikom podczas przekierowań.",
+        "category": "Magiczne linki",
+        "min_subscription": 0
+    },
+    {
+        "name": "Różne poziomy uprawnień dla członków zespołu",
+        "description": "Każdy członek zespołu może mieć własny poziom uprawnień.",
+        "category": "Zespoły",
+        "min_subscription": 0
+    },
+    {
+        "name": "Uwierzytelnianie dwuskładnikowe (2FA)",
+        "description": "Dodaj drugi czynnik do swojego konta, aby chronić swoje konto przed przejęciem.",
+        "category": "Zespoły",
+        "min_subscription": 0
+    },
+    {
+        "name": "Dostęp do API",
+        "description": "Uzyskaj dostęp, buduj i aktualizuj swoje magiczne linki za pomocą naszego API.",
+        "category": "API",
+        "min_subscription": 0
+    },
+    {
+        "name": "Dynamiczne zmienne w miejscach docelowych",
+        "description": "Używaj wartości zmiennych w swoich adresach URL, aby tworzyć dynamiczne miejsca docelowe, na przykład: http://example.com/?date={Date}",
+        "category": "Magiczne linki",
+        "min_subscription": 1
+    },
+    {
+        "name": "Centralny hub analityczny",
+        "description": "Zobacz przegląd wyników swojego magicznego linku w pięknym panelu analitycznym.",
+        "category": "Analiza",
+        "min_subscription": 1
+    },
+    {
+        "name": "Unikalne liczniki kliknięć",
+        "description": "Śledź, ile unikalnych osób kliknęło w twój dynamiczny magiczny link.",
+        "category": "Analiza",
+        "images": [
+            "../../images/analytics/uniqueClicks.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Rozbicie źródeł kliknięć",
+        "description": "Zobacz wszystkich odsyłaczy swoich kliknięć.",
+        "category": "Analiza",
+        "min_subscription": 1
+    },
+    {
+        "name": "Rozbicie najczęstszych krajów, z których pochodzą kliknięcia",
+        "description": "Zobacz wszystkie kraje, w których miały miejsce twoje kliknięcia.",
+        "category": "Analiza",
+        "images": [
+            "../../images/analytics/countries.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Zobacz najlepszy czas na kliknięcia",
+        "description": "Uzyskaj szczegółowe wykresy pokazujące, kiedy twoje linki są najczęściej klikane lub skanowane.",
+        "category": "Analiza",
+        "images": [
+            "../../images/analytics/timeOfDays.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Regularne automatyczne sprawdzanie miejsc docelowych",
+        "description": "Sprawdzimy twoje miejsca docelowe i będziemy regularnie monitorować ich dostępność, aby upewnić się, że twoje magiczne linki działają.",
+        "category": "Magiczne linki",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie do wielu miejsc docelowych",
+        "description": "Przekierowanie do wielu miejsc docelowych na podstawie dowolnych wybranych reguł.",
+        "category": "Przekierowania oparte na regułach",
+        "images": [
+            "../../images/rules.png"
+        ],
+        "min_subscription": 1
+    },
+    {
+        "name": "Tworzenie dowolnej ilości miejsc docelowych",
+        "description": "Twórz nieograniczoną ilość inteligentnych miejsc docelowych dla każdego zdefiniowanego magicznego linku.",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od pory dnia",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od kraju użytkownika",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przeprowadzanie testów A/B przez przekierowanie części użytkowników do różnych miejsc docelowych",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od języka użytkownika",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od daty",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od adresu IP użytkownika",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od zmiennych w linku",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od miejsca, z którego przyszedł użytkownik",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Przekierowanie w zależności od user-agent przeglądarki",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    },
+    {
+        "name": "Inne przekierowania oparte na regułach magiczne",
+        "description": "Przekierowania oparte na regułach",
+        "category": "Przekierowania oparte na regułach",
+        "min_subscription": 1
+    }
+]

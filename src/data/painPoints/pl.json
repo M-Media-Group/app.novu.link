@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Wysłano masowo link z literówką",
+        "description": "Gdybyś używał Novu.Link, mógłbyś zaktualizować docelowy adres URL nawet po jego wysłaniu."
+    },
+    {
+        "name": "Wydrukowano 100 000 ulotek ze starą (niepoprawną) stroną internetową",
+        "description": "Łatwy sposób na podwojenie kosztów i stworzenie niezręcznych dyskusji z interesariuszami. Lub nie, po prostu drukując kod QR wygenerowany z Novu.Link - możesz je zmieniać nawet po ich wydrukowaniu."
+    },
+    {
+        "name": "Zapomniałeś ponownie wykupić swoją domenę",
+        "description": "Cóż, bądźmy szczerzy - to ogromne niedopatrzenie. Na szczęście osoby z Twoim Novu.Link mogą być tymczasowo przekierowane na Twoją stronę Facebooka, podczas gdy Ty, eee, „rozwiążesz pewne nieprzewidziane problemy techniczne”."
+    },
+    {
+        "name": "Link za długi do wysłania w WhatsAppie",
+        "description": "Tak, WhatsApp ma ograniczenia dotyczące długości linków, szczególnie gdy są one działaniami w przyciskach. Ponieważ używasz magicznych linków Novu.Link, nie masz tego problemu."
+    }
+]

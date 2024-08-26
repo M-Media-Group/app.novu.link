@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Darmowy",
+        "description": "Gdy potrzebujesz tylko czasami zmienić stały URL.",
+        "price": "Nie wymaga karty kredytowej",
+        "features": [
+            "Do 3 000 przekierowań miesięcznie"
+        ]
+    },
+    {
+        "name": "Mały Majsterkowicz",
+        "description": "Super naładowane linki z ponad 300 kombinacjami reguł do przekierowania w dowolne miejsce.",
+        "price": "3 € / link / miesiąc",
+        "features": [
+            "Do 30 000 przekierowań miesięcznie"
+        ]
+    },
+    {
+        "name": "Enterprise",
+        "description": "Indywidualnie dopasowane rozwiązania linkowania dla Twojej firmy.",
+        "price": "Skontaktuj się z działem sprzedaży",
+        "features": [
+            "Skalowalne według potrzeb"
+        ]
+    }
+]

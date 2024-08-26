@@ -8,7 +8,7 @@ import $bus, { eventTypes } from "@/eventBus/events";
 /**
  * The supported locales in the app. Note that the first locale in this array is the default locale.
  */
-export const SUPPORT_LOCALES = ["en", "fr"];
+export const SUPPORT_LOCALES = ["en", "fr", "pl"];
 
 /**
  * The best guess locale. Will first try to get it from the localStorage, then from the navigator, and if those fail, will use the first supported locale

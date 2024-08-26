@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Czym jest magiczny link?",
+        "description": "Magiczny link to stały URL, który może być użyty do przekierowania użytkowników na określoną stronę, którą definiujesz. Jego celem jest posiadanie jednego, stałego, nie wygasającego URL, który można bezpiecznie wydrukować na kodach QR, ulotkach i innych materiałach. W ten sposób, jeśli kiedykolwiek będziesz musiał zmienić miejsce, do którego użytkownik jest przekierowywany, lub zmienić sam link, możesz łatwo zaktualizować link bez konieczności ponownego drukowania (i płacenia za) nowych materiałów komunikacyjnych."
+    },
+    {
+        "name": "Ilu członków zespołu mogę mieć?",
+        "description": "Nie ma ograniczeń co do liczby członków zespołu."
+    },
+    {
+        "name": "Kiedy potrzebuję planu Tiny Tinkerer?",
+        "description": "Plan Tiny Tinkerer pozwala na korzystanie z magicznych linków, które przekierowują na różne strony w zależności od dowolnych zasad, które zdefiniujesz, takich jak aktualny czas dnia, kraj, w którym znajduje się użytkownik, i wiele więcej. Bez niego, Twój magiczny link zawsze będzie przekierowywał tylko na jedną stronę."
+    },
+    {
+        "name": "Co się stanie z moimi magicznymi linkami, jeśli usunę mój zespół/konto?",
+        "description": "Nic. Twój magiczny link pozostanie aktywny i będzie nadal przekierowywać na domyślną stronę, którą zdefiniowałeś. Jeśli korzystałeś z planu Tiny Tinkerer, Twój magiczny link przestanie używać zasad i będzie po prostu przekierowywać na domyślną stronę, którą zdefiniowałeś."
+    },
+    {
+        "name": "Co się stanie z moimi magicznymi linkami, jeśli przejdę z planu Tiny Tinkerer na podstawowy? Czy linki przestaną działać?",
+        "description": "Nie, magiczny link będzie nadal aktywny, ale będzie przekierowywał tylko na domyślną stronę, którą zdefiniowałeś."
+    },
+    {
+        "name": "Co się stanie z moim magicznym linkiem, jeśli URL przestanie istnieć?",
+        "description": "Nic. Twój magiczny link będzie nadal przekierowywać na stronę, którą zdefiniowałeś. Zawsze możesz zmienić miejsce, do którego użytkownik jest przekierowywany, w ramach swojego magicznego linku."
+    }
+]
