@@ -20,6 +20,10 @@
         "description": "No, the magic link will still be active but will only redirect to the default page you have defined."
     },
     {
+        "name": "What happens if I run out of redirect credits?",
+        "description": "If you run out of redirect credits, your magic link will stop working until you purchase more credits."
+    },
+    {
         "name": "What happens to my magic link if the URL stops existing?",
         "description": "Nothing. Your magic link will continue to redirect to the page you have defined. You can always change where the user is redirected to within your magic link."
     }

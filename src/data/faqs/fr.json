@@ -20,6 +20,10 @@
         "description": "Non, le lien magique restera actif mais ne redirigera que vers la page par défaut que vous avez définie."
     },
     {
+        "name": "Que se passe-t-il si je n'ai plus de crédits de redirection?",
+        "description": "Si vous n'avez plus de crédits de redirection, votre lien magique cessera de fonctionner jusqu'à ce que vous achetiez plus de crédits."
+    },
+    {
         "name": "Que se passe-t-il avec mon lien magique si l'URL cesse d'exister?",
         "description": "Rien. Votre lien magique continuera de rediriger vers la page que vous avez définie. Vous pouvez toujours changer la redirection de l'utilisateur au sein de votre lien magique."
     }

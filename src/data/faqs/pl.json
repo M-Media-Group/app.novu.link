@@ -20,6 +20,10 @@
         "description": "Nie, magiczny link będzie nadal aktywny, ale będzie przekierowywał tylko na domyślną stronę, którą zdefiniowałeś."
     },
     {
+        "name": "Co się stanie, jeśli skończą mi się kredyty przekierowań?",
+        "description": "Jeśli skończą Ci się kredyty przekierowań, Twój magiczny link przestanie działać, dopóki nie zakupisz dodatkowych kredytów."
+    },
+    {
         "name": "Co się stanie z moim magicznym linkiem, jeśli URL przestanie istnieć?",
         "description": "Nic. Twój magiczny link będzie nadal przekierowywać na stronę, którą zdefiniowałeś. Zawsze możesz zmienić miejsce, do którego użytkownik jest przekierowywany, w ramach swojego magicznego linku."
     }
