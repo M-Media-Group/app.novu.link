@@ -403,7 +403,9 @@ const deleteCurrentRedirect = async () => {
         </card-element>
 
         <template
-          v-else-if="remainingClicks !== undefined && remainingClicks <= 0"
+          v-else-if="
+            !loading && remainingClicks !== undefined && remainingClicks <= 0
+          "
         >
           <p>
             {{
