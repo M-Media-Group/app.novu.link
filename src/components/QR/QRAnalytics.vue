@@ -184,6 +184,7 @@ const percentChange = computed(() => {
     <card-element
       title="--"
       :subtitle="$t('Scans in the last x minutes', [30])"
+      :badges="[$t('Pro')]"
     >
       <div class="placeholder-chart" style="height: 240px">
         <p>
@@ -196,7 +197,11 @@ const percentChange = computed(() => {
       </div>
     </card-element>
 
-    <card-element title="--" :subtitle="$t('Best performing destination')">
+    <card-element
+      title="--"
+      :subtitle="$t('Best performing destination')"
+      :badges="[$t('Pro')]"
+    >
       <p>
         {{
           $t(
@@ -209,6 +214,7 @@ const percentChange = computed(() => {
     <card-element
       :title="$t('Scans by time of day')"
       :subtitle="$t('By scans')"
+      :badges="[$t('Pro')]"
     >
       <div class="placeholder-chart">
         <p>
@@ -222,7 +228,11 @@ const percentChange = computed(() => {
     </card-element>
 
     <div class="two-column-grid">
-      <card-element :title="$t('Languages')" :subtitle="$t('By scans')">
+      <card-element
+        :title="$t('Languages')"
+        :subtitle="$t('By scans')"
+        :badges="[$t('Pro')]"
+      >
         <div class="placeholder-chart">
           <p>
             {{
@@ -233,7 +243,11 @@ const percentChange = computed(() => {
           </p>
         </div>
       </card-element>
-      <card-element :title="$t('Countries')" :subtitle="$t('By scans')">
+      <card-element
+        :title="$t('Countries')"
+        :subtitle="$t('By scans')"
+        :badges="[$t('Pro')]"
+      >
         <div class="placeholder-chart">
           <p>
             {{

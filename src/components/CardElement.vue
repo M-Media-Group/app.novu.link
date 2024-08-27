@@ -37,6 +37,11 @@ defineProps({
     required: false,
     default: false,
   },
+  /** An array of badges to display next to the title */
+  badges: {
+    type: Array as PropType<string[]>,
+    required: false,
+  },
 });
 </script>
 
@@ -60,9 +65,14 @@ defineProps({
       <header v-if="title || subtitle || $slots.headerActions || $slots.header">
         <slot name="header">
           <hgroup>
-            <component :is="`h${titleHeadingLevel}`" v-if="title">{{
-              title
-            }}</component>
+            <component :is="`h${titleHeadingLevel}`" v-if="title"
+              >{{ title }}
+              <template v-if="badges && badges.length">
+                <span v-for="badge in badges" :key="badge" class="badge">{{
+                  badge
+                }}</span>
+              </template>
+            </component>
             <p v-if="subtitle">{{ subtitle }}</p>
           </hgroup>
           <div class="actions" v-if="$slots.headerActions">

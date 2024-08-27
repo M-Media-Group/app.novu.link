@@ -516,6 +516,7 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
           :loading="isLoading || loading"
           :title="$t('Code design')"
           :subtitle="$t('Customise the look of your magic link')"
+          :badges="!subscribed ? [$t('Pro')] : []"
         >
           <div :class="{ disabled: !subscribed }">
             <div class="two-column-grid mobile-grid">
