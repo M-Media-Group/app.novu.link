@@ -345,5 +345,6 @@
     "x clicks remaining": "{0} clicks remaining",
     "Smart Magic Link": "Smart Magic Link",
     "Link disabled": "Link disabled",
-    "This link has been disabled because its creator did not subscribe to the service.": "This link has been disabled because its creator did not subscribe to the service."
+    "This link has been disabled because its creator did not subscribe to the service.": "This link has been disabled because its creator did not subscribe to the service.",
+    "Go to the homepage": "Go to the homepage"
 }
