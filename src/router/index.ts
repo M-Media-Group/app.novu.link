@@ -160,6 +160,11 @@ const router = createRouter({
       component: () => import("../views/429View.vue"),
     },
     {
+      path: "/errors/link-disabled/payment-required",
+      name: "link-disabled",
+      component: () => import("../views/DisabledRedirectView.vue"),
+    },
+    {
       path: "/sitemap",
       name: "sitemap",
       component: () => import("../views/SitemapView.vue"),
