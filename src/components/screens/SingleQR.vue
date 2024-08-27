@@ -445,8 +445,8 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
               },
             ]"
           >
-            <base-button class="full-width">
-              {{ $t("Add redirect credits") }}</base-button
+            <base-button class="full-width contrast">
+              {{ $t("Re-enable magic link") }}</base-button
             >
           </confirms-gate>
         </template>
