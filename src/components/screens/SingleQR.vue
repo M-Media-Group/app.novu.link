@@ -338,6 +338,14 @@ const deleteCurrentRedirect = async () => {
     $bus.$emit(eventTypes.deleted_redirect);
   }
 };
+
+const toggleQRCodeDropdown = (event: MouseEvent) => {
+  const target = event.target as HTMLElement;
+  const dropdown = target.closest("details");
+  if (dropdown) {
+    dropdown.toggleAttribute("open");
+  }
+};
 </script>
 
 <template>
@@ -350,7 +358,10 @@ const deleteCurrentRedirect = async () => {
       </hgroup>
 
       <div class="main-grid-display smaller-gap">
-        <details class="dropdown qr-dropdown">
+        <details
+          class="dropdown qr-dropdown"
+          @contextmenu.prevent="toggleQRCodeDropdown"
+        >
           <summary>
             <q-r-code
               :redirectId="props.redirectId"
