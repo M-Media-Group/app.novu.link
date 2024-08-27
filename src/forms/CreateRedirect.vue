@@ -145,7 +145,7 @@ const submitForm = async () => {
       inputmode="url"
       minlength="10"
       autocapitalize="none"
-      placeholder=""
+      placeholder=" "
       data-hj-allow=""
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
       required
