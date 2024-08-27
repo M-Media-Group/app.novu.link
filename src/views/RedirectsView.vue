@@ -5,9 +5,12 @@ import CardElement from "@/components/CardElement.vue";
 import { getRedirectQrCodeUrl, getRedirects } from "@/useRedirects";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
+import { useI18n } from "vue-i18n";
 
 const redirects = ref([] as Redirect[]);
 const isLoading = ref(true);
+
+const { t } = useI18n();
 
 getRedirects().then((response) => {
   redirects.value = response.data;
@@ -28,6 +31,17 @@ const defaultEndpoint = (redirect: Redirect) => {
     return removeProtocol(redirect.endpoints[0].endpoint);
   }
   return removeProtocol(defaultEndpoint);
+};
+
+const redirectBadges = (redirect: Redirect) => {
+  const badges = [];
+  if (redirect.remaining_clicks < 5) {
+    badges.push(t("x clicks remaining", [redirect.remaining_clicks]));
+  }
+  if (redirect.subscribed_at) {
+    badges.push(t("Smart Magic Link"));
+  }
+  return badges;
 };
 </script>
 <template>
@@ -58,6 +72,7 @@ const defaultEndpoint = (redirect: Redirect) => {
           ? ' + ' + (redirect.endpoints.length - 1) + ' ' + $t('more')
           : '')
       "
+      :badges="redirectBadges(redirect)"
     >
       <template #headerActions>
         <img

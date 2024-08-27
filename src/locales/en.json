@@ -65,7 +65,7 @@
     "Magic links": "Magic links",
     "Magic link": "Magic link",
     "If": "If",
-    "Go to": "Enter your URL destination",
+    "Go to": "Your URL destination",
     "Your value is": "Your value is: {0}",
     "Else fallback to": "Else fallback to {0}",
     "Country": "Country",
@@ -341,5 +341,7 @@
     "Pro": "Pro feature",
     "Re-enable magic link": "Re-enable magic link",
     "Example": "Example",
-    "E.g.": "E.g."
+    "E.g.": "E.g.",
+    "x clicks remaining": "{0} clicks remaining",
+    "Smart Magic Link": "Smart Magic Link"
 }

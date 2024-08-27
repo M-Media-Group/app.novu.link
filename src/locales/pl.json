@@ -341,5 +341,7 @@
     "Pro": "Funkcja Pro",
     "Re-enable magic link": "Ponownie włącz magiczny link",
     "Example": "Przykład",
-    "E.g.": "Np."
+    "E.g.": "Np.",
+    "x clicks remaining": "pozostało {0} kliknięć",
+    "Smart Magic Link": "Inteligentny magiczny link"
 }
