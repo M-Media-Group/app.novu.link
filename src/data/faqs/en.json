@@ -24,6 +24,14 @@
         "description": "If you run out of redirect credits, your magic link will stop working until you purchase more credits."
     },
     {
+        "name": "How many redirect credits do I get?",
+        "description": "You get 300 total redirect credits for free. When you subscribe to the Tiny Tinkerer plan, you get 30,000 redirect credits on a 30 day rolling basis."
+    },
+    {
+        "name": "What i a redirect credit worth?",
+        "description": "A redirect credit is worth one redirect. If you have 300 redirect credits, you can redirect 300 users to your defined page. Known bots and crawlers are not counted against your redirect credits."
+    },
+    {
         "name": "What happens to my magic link if the URL stops existing?",
         "description": "Nothing. Your magic link will continue to redirect to the page you have defined. You can always change where the user is redirected to within your magic link."
     }

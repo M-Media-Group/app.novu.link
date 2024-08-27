@@ -255,6 +255,8 @@ textarea.unset-width {
     position: relative;
     height: 47vh;
 
+    min-height: fit-content;
+
     padding: var(--pico-spacing);
     text-align: center;
 }

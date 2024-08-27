@@ -24,6 +24,14 @@
         "description": "Jeśli skończą Ci się kredyty przekierowań, Twój magiczny link przestanie działać, dopóki nie zakupisz dodatkowych kredytów."
     },
     {
+        "name": "Ile kredytów na przekierowania otrzymam?",
+        "description": "Otrzymujesz 300 kredytów na przekierowania za darmo. Po subskrypcji planu Tiny Tinkerer, otrzymujesz 30 000 kredytów na przekierowania na podstawie 30-dniowego okresu rozliczeniowego."
+    },
+    {
+        "name": "Co jest warte jeden kredyt na przekierowanie?",
+        "description": "Jeden kredyt na przekierowanie jest wart jednego przekierowania. Jeśli masz 300 kredytów na przekierowania, możesz przekierować 300 użytkowników na określoną stronę. Znane boty i indeksatory nie są liczone w ramach twoich kredytów na przekierowania."
+    },
+    {
         "name": "Co się stanie z moim magicznym linkiem, jeśli URL przestanie istnieć?",
         "description": "Nic. Twój magiczny link będzie nadal przekierowywać na stronę, którą zdefiniowałeś. Zawsze możesz zmienić miejsce, do którego użytkownik jest przekierowywany, w ramach swojego magicznego linku."
     }
