@@ -25,10 +25,10 @@
     },
     {
         "name": "How many redirect credits do I get?",
-        "description": "You get 300 total redirect credits for free. When you subscribe to the Tiny Tinkerer plan, you get 30,000 redirect credits on a 30 day rolling basis."
+        "description": "You get 300 total redirect credits for free, per link. When you subscribe to the Tiny Tinkerer plan, you get 30,000 redirect credits on a 30 day rolling basis."
     },
     {
-        "name": "What i a redirect credit worth?",
+        "name": "What is a redirect credit worth?",
         "description": "A redirect credit is worth one redirect. If you have 300 redirect credits, you can redirect 300 users to your defined page. Known bots and crawlers are not counted against your redirect credits."
     },
     {
