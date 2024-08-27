@@ -2,6 +2,10 @@
 @import "./form.css";
 @import "./customTheme.css";
 
+:root {
+  --required-text: "* Required";
+}
+
 body {
   min-height: 100vh;
   text-rendering: optimizeLegibility;
@@ -169,7 +173,8 @@ label:has(+select:required)::after,
 /* If label has child checkbox, the text will be after the child input */
 label:has(>input[type="checkbox"]:required)::after,
 label:has(>input[type="radio"]:required)::after {
-  content: "*";
+  content: var(--required-text, "* Required");
+  font-size: small;
   color: var(--pico-del-color);
   margin-left: calc(var(--pico-nav-link-spacing-vertical) / 2);
 }

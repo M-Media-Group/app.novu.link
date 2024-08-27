@@ -81,6 +81,14 @@ export async function setI18nLanguage(
     setLocaleToUse(locale);
     setMetaAttributes(to, from);
   }
+
+  // Set the root CSS variable --required-text to the text from the new locale file
+  document.documentElement.style.setProperty(
+    "--required-text",
+    `"* ${i18n.global.t("Required")}"`,
+    "important"
+  );
+
   // Emit an event to let the app know that the language has changed, if the emit param is true
   if (emit) {
     $bus.$emit(eventTypes.changed_locale, locale);
