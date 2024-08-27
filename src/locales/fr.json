@@ -65,7 +65,7 @@
     "Magic links": "Liens magiques",
     "Magic link": "Lien magique",
     "If": "Si",
-    "Go to": "Aller à",
+    "Go to": "Entrez l'URL de destination",
     "Your value is": "Votre valeur est : {0}",
     "Else fallback to": "Sinon retourner à {0}",
     "Country": "Pays",
@@ -339,5 +339,6 @@
     "Please select a rule": "Veuillez sélectionner une règle",
     "Required": "Requis",
     "Pro": "Fonctionnalité Pro",
-    "Re-enable magic link": "Réactiver le lien magique"
+    "Re-enable magic link": "Réactiver le lien magique",
+    "Example": "Exemple"
 }

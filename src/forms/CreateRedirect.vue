@@ -160,6 +160,7 @@ const submitForm = async () => {
     <template #after-submit>
       <small v-show="inline">
         {{ $t("This is where your magic link will redirect to by default.") }}
+        {{ $t("Example") }}: <code>example.com</code>.
       </small>
     </template>
   </base-form>
