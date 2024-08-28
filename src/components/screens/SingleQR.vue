@@ -346,6 +346,8 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
     dropdown.toggleAttribute("open");
   }
 };
+
+const testClicks = ref(0);
 </script>
 
 <template>
@@ -390,7 +392,9 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
               <a href="#" v-else>{{ $t("Copied!") }}</a>
             </li>
             <li v-if="magicLink">
-              <a :href="magicLink" target="_blank">{{ $t("Test link") }}</a>
+              <a :href="magicLink" target="_blank" @click="testClicks++">{{
+                $t("Test link")
+              }}</a>
             </li>
             <li>
               <!-- Print button -->
@@ -417,10 +421,16 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
         </card-element>
 
         <!-- Add a test button if the link has never been clicked -->
-        <template v-else-if="!loading && !clicksAllTime && !clicksToday">
-          <base-button :href="magicLink" target="_blank" class="full-width">{{
-            $t("Test link")
-          }}</base-button>
+        <template
+          v-else-if="!loading && !clicksAllTime && !clicksToday && !testClicks"
+        >
+          <base-button
+            :href="magicLink"
+            target="_blank"
+            class="full-width"
+            @click="testClicks++"
+            >{{ $t("Test link") }}</base-button
+          >
         </template>
 
         <template
