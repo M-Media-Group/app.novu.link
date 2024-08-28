@@ -389,6 +389,9 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
               >
               <a href="#" v-else>{{ $t("Copied!") }}</a>
             </li>
+            <li v-if="magicLink">
+              <a :href="magicLink" target="_blank">{{ $t("Test link") }}</a>
+            </li>
             <li>
               <!-- Print button -->
               <a href="#" @click.prevent="printMagicLink">{{ $t("Print") }}</a>
