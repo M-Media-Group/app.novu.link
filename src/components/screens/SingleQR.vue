@@ -416,6 +416,13 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
           />
         </card-element>
 
+        <!-- Add a test button if the link has never been clicked -->
+        <template v-else-if="!loading && !clicksAllTime && !clicksToday">
+          <base-button :href="magicLink" target="_blank" class="full-width">{{
+            $t("Test link")
+          }}</base-button>
+        </template>
+
         <template
           v-else-if="
             !loading && remainingClicks !== undefined && remainingClicks <= 0
