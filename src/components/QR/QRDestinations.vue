@@ -92,7 +92,9 @@ const getClickPercentage = (endpoint: Endpoint) => {
           endpoint.rule_groups?.[0]
             ? $t('If') + ' ' + parseRuleGroup(endpoint.rule_groups[0])[0]
             : $t('Default destination') +
-              (endpoints.length > 1 ? '' : ' (' + $t('If no rules match') + ')')
+              (endpoints.length <= 1
+                ? ''
+                : ' (' + $t('If no rules match') + ')')
         "
       >
         <template
