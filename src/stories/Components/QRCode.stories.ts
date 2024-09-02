@@ -42,3 +42,10 @@ export default meta;
 type Story = StoryObj<typeof QRCode>;
 
 export const Default: Story = {};
+
+export const Loading: Story = {
+  args: {
+    redirectId: "1234",
+    loading: true,
+  },
+};

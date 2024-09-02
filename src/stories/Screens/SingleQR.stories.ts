@@ -36,3 +36,65 @@ Default.decorators = [
     },
   ]),
 ];
+
+export const Authenticated: Story = {
+  args: {
+    redirectId: "123",
+    redirectName: "Test Redirect",
+    subscribed: false,
+    authenticated: true,
+  },
+};
+
+Authenticated.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
+
+export const AuthenticatedAndSubscribed: Story = {
+  args: {
+    redirectId: "123",
+    redirectName: "Test Redirect",
+    subscribed: true,
+    authenticated: true,
+  },
+};
+
+AuthenticatedAndSubscribed.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
+
+export const AuthAndSubAndData: Story = {
+  args: {
+    redirectId: "123",
+    redirectName: "Test Redirect",
+    subscribed: true,
+    authenticated: true,
+    clicksToday: 15,
+    clicksSameTimeYesterday: 10,
+    clicksAllTime: 25,
+    bestEndpoint: "https://app.novu.link",
+    remainingClicks: 15,
+  },
+};
+
+AuthAndSubAndData.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];

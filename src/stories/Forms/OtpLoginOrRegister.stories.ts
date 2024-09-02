@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
 import OtpLoginOrRegister from "@/forms/OtpLoginOrRegister.vue";
+import { within } from "@storybook/test";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof OtpLoginOrRegister> = {
@@ -18,3 +19,12 @@ type Story = StoryObj<typeof OtpLoginOrRegister>;
  * to learn how to use render functions.
  */
 export const Default: Story = {};
+
+export const Email: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Click on "Use email instead"
+    const emailButton = canvas.getByText("Use email instead");
+    emailButton.click();
+  },
+};

@@ -18,3 +18,10 @@ type Story = StoryObj<typeof CreateRedirect>;
  * to learn how to use render functions.
  */
 export const Default: Story = {};
+
+export const Inline: Story = {
+  args: {
+    inline: true,
+    showNameInput: false,
+  },
+};

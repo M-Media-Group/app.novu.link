@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 
 import QRDestinations from "@/components/QR/QRDestinations.vue";
 import { vueRouter } from "storybook-vue3-router";
+import { within } from "@storybook/test";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof QRDestinations> = {
@@ -36,7 +37,7 @@ export const WithDestinations: Story = {
       {
         id: 1,
         redirect_uuid: "https://example.com",
-        endpoint: "http://192.168.10.17:8001/redirects/Bs5mOLf",
+        endpoint: "http://example.com/my/path",
         clicks_by_time_of_day: [
           {
             redirect_uuid: "xxx",
@@ -75,6 +76,77 @@ export const WithDestinations: Story = {
 };
 
 WithDestinations.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
+
+export const WithSingleDestination: Story = {
+  args: {
+    redirectId: "1234",
+
+    endpoints: [
+      {
+        id: 1,
+        redirect_uuid: "https://example.com",
+        endpoint: "http://example.com/my/path",
+
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 100,
+          },
+        ],
+      },
+    ],
+  },
+};
+
+WithSingleDestination.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
+
+export const WithSingleDestinationEditModalOpen: Story = {
+  args: {
+    redirectId: "1234",
+
+    endpoints: [
+      {
+        id: 1,
+        redirect_uuid: "https://example.com",
+        endpoint: "http://example.com/my/path",
+
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 100,
+          },
+        ],
+      },
+    ],
+  },
+
+  // Click action
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const editButton = canvas.getByText("example.com/my/path");
+    await editButton.click();
+  },
+};
+
+WithSingleDestinationEditModalOpen.decorators = [
   vueRouter([
     {
       path: "/",
