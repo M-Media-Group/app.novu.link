@@ -347,5 +347,6 @@
     "Link disabled": "Lien désactivé",
     "This link has been disabled because its creator did not subscribe to the service.": "Ce lien a été désactivé car son créateur n'a pas souscrit au service.",
     "Go to the homepage": "Aller à la page d'accueil",
-    "Test link": "Testez lien"
+    "Test link": "Testez lien",
+    "API Documentation": "Documentation de l'API"
 }

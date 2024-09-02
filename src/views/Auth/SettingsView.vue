@@ -54,5 +54,8 @@ const handleDeleteToken = (id: string) => {
     </template>
     <p v-else>{{ $t("You have no API access tokens.") }}</p>
     <personal-access-tokens @created="handleCreatedToken" :autofocus="false" />
+    <a href="https://blog.novu.link/developers/" target="_blank">
+      {{ $t("API Documentation") }}
+    </a>
   </card-element>
 </template>
