@@ -167,7 +167,7 @@ const router = createRouter({
     {
       path: "/errors/link-disabled/unsafe",
       name: "link-disabled",
-      component: () => import("../views/DisabledRedirectView.vue"),
+      component: () => import("../views/UnsafeRedirectView.vue"),
     },
     {
       path: "/sitemap",
