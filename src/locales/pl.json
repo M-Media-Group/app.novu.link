@@ -349,5 +349,6 @@
     "Go to the homepage": "Przejdź do strony głównej",
     "Test link": "Testuj link",
     "API Documentation": "Dokumentacja API",
-    "Default destination": "Domyślna destynacja"
+    "Default destination": "Domyślna destynacja",
+    "This link has been disabled for your safety because it has been detected as phishing, malware, spyware, ransomware, or adware.": "Ten link został wyłączony dla Twojego bezpieczeństwa, ponieważ został wykryty jako phishing, malware, spyware, ransomware lub adware."
 }
