@@ -161,12 +161,12 @@ const router = createRouter({
     },
     {
       path: "/errors/link-disabled/payment-required",
-      name: "link-disabled",
+      name: "link-disabled-payment-required",
       component: () => import("../views/DisabledRedirectView.vue"),
     },
     {
       path: "/errors/link-disabled/unsafe",
-      name: "link-disabled",
+      name: "link-disabled-unsafe",
       component: () => import("../views/UnsafeRedirectView.vue"),
     },
     {
