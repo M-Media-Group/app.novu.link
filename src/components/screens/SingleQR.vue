@@ -372,7 +372,7 @@ const testClicks = ref(0);
               :logoDataUrl="logoDataUrl"
               :selectedShape="selectedShape"
               @update="qrCodeDataURL = $event"
-              :loading="isLoading || loading"
+              :loading="(isLoading || loading) && !props.redirectId"
               :fileType="selectedFileType"
             />
           </summary>
