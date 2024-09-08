@@ -10,7 +10,7 @@ import image from "@/assets/undraw_team_spirit_re_yl1v.svg";
       <p>This page can't be found.</p>
     </hgroup>
     <div class="two-column-grid">
-      <card-element title="Lets start again">
+      <card-element :title="$t('Go to the homepage')">
         <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
       </card-element>
       <img :src="image" alt="A person holding a link" />

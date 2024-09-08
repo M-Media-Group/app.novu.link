@@ -18,7 +18,7 @@ const redirect = () => {
 <template>
   <h1>{{ $t("Confirm") }}</h1>
   <div class="two-column-grid">
-    <card-element title="Continue">
+    <card-element :title="$t('Continue')">
       <component :is="element" @success="redirect"></component>
     </card-element>
     <img :src="image" alt="A person holding a link" />

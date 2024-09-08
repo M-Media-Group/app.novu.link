@@ -19,7 +19,7 @@ setFollow(false);
       </p>
     </hgroup>
     <div class="two-column-grid">
-      <card-element title="Go to the homepage">
+      <card-element :title="$t('Go to the homepage')">
         <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
       </card-element>
       <img :src="image" alt="A person holding a link" />

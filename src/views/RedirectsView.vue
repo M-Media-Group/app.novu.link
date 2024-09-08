@@ -50,12 +50,15 @@ const redirectBadges = (redirect: Redirect) => {
     <p>{{ $t("All links") }}</p>
   </hgroup>
   <div>
-    <card-element
-      v-if="isLoading"
-      :title="$t('Magic links')"
-      :subtitle="$t('Magic links')"
-      :loading="true"
-    ></card-element>
+    <template v-if="isLoading">
+      <card-element
+        v-for="index in 5"
+        :title="$t('Magic links')"
+        :subtitle="$t('Magic links')"
+        :loading="true"
+        :key="index"
+      ></card-element>
+    </template>
     <card-element
       v-for="redirect in redirects"
       :key="redirect.uuid"
