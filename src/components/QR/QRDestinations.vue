@@ -98,7 +98,12 @@ const getClickPercentage = (endpoint: Endpoint) => {
         "
       >
         <template
-          v-if="endpoint.last_http_code && endpoint.last_http_code > 400"
+          v-if="
+            endpoint.last_http_code &&
+            (endpoint.last_http_code > 403 ||
+              endpoint.last_http_code < 200 ||
+              endpoint.last_http_code === 401)
+          "
           #headerActions
         >
           <base-button class="full-width contrast" style="margin-bottom: 0">
