@@ -145,7 +145,7 @@ const submitForm = async () => {
       inputmode="url"
       minlength="10"
       autocapitalize="none"
-      :placeholder="`${$t('E.g.')} example.com`"
+      :placeholder="`${$t('E.g.')} https://example.com`"
       data-hj-allow=""
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
       required
@@ -156,12 +156,12 @@ const submitForm = async () => {
     />
     <small v-show="!inline">
       {{ $t("This is where your magic link will redirect to by default.") }}
-      {{ $t("Example") }}: <code>example.com</code>.
+      {{ $t("Example") }}: <code>https://example.com</code>.
     </small>
     <template #after-submit>
       <small v-show="inline">
         {{ $t("This is where your magic link will redirect to by default.") }}
-        {{ $t("Example") }}: <code>example.com</code>.
+        {{ $t("Example") }}: <code>https://example.com</code>.
       </small>
     </template>
   </base-form>

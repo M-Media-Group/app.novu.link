@@ -67,7 +67,7 @@
     },
     {
         "name": "Dynamiczne zmienne w miejscach docelowych",
-        "description": "Używaj wartości zmiennych w swoich adresach URL, aby tworzyć dynamiczne miejsca docelowe, na przykład: http://example.com/?date={Date}",
+        "description": "Używaj wartości zmiennych w swoich adresach URL, aby tworzyć dynamiczne miejsca docelowe, na przykład: https://example.com/?date={Date}",
         "category": "Magiczne linki",
         "min_subscription": 1
     },
