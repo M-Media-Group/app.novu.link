@@ -19,7 +19,7 @@ exports[`NavBar > renders properly when logged in 1`] = `
       <!-- The users team settings -->
       <li data-v-2202255b="" aria-busy="false">
         <details data-v-2202255b="" class="dropdown">
-          <summary data-v-2202255b="" aria-busy="false"></summary>
+          <summary data-v-2202255b="" aria-busy="false">Your Team</summary>
           <ul data-v-2202255b="">
             <li data-v-2202255b=""><a data-v-2202255b="">Team Settings</a></li>
             <li data-v-2202255b=""><a data-v-2202255b="">Create New Team</a></li><!-- Divider -->
