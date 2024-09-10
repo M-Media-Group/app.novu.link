@@ -72,6 +72,20 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+
+  // The below needs testing via unit tests
+
+  /** An optional value to fill the defaultEndpoint with */
+  defaultEndpointValue: {
+    type: String,
+    default: "",
+    required: false,
+  },
+  /** If the form should auto-submit. Only works if defaultEndpointValue is also passed */
+  autoSubmit: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 if (props.prefillName) {
@@ -119,6 +133,15 @@ const submitForm = async () => {
 
   isLoading.value = false;
 };
+
+// If we have a default endpoint value, set it and trigger the debounce
+if (props.defaultEndpointValue !== "") {
+  defaultEndpoint.value = props.defaultEndpointValue;
+  debounceAddProtocolIfMissing(defaultEndpoint.value);
+  if (props.autoSubmit) {
+    submitForm();
+  }
+}
 </script>
 <template>
   <label for="default_endpoint" v-show="inline && showLabel">

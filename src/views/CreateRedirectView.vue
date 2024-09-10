@@ -2,12 +2,18 @@
 import CreateRedirect from "@/forms/CreateRedirect.vue";
 import CardElement from "@/components/CardElement.vue";
 import image from "@/assets/undraw_connection.svg";
+
+// It may be possible that a user fills the url with a query string, so we need to check and send it to create-redirect form
+const url = new URLSearchParams(window.location.search).get("url");
 </script>
 <template>
   <h1>{{ $t("New magic link") }}</h1>
   <div class="two-column-grid">
     <card-element>
-      <create-redirect></create-redirect>
+      <create-redirect
+        :defaultEndpointValue="url ?? ''"
+        :autoSubmit="url !== null"
+      ></create-redirect>
     </card-element>
     <img :src="image" alt="A person holding a link" />
   </div>
