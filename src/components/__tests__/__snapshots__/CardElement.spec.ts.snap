@@ -7,7 +7,9 @@ exports[`Card element > renders properly without footer 1`] = `
     <div class="images overflow-auto" tabindex="0"><img src="https://picsum.photos/200/300" alt="alt"></div>
     <header>
       <hgroup>
-        <h3>Hello</h3>
+        <h3>Hello
+          <!--v-if-->
+        </h3>
         <p>subtitle</p>
       </hgroup>
       <!--v-if-->

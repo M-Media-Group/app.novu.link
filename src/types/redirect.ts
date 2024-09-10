@@ -7,7 +7,7 @@ export interface Redirect {
   enable_analytics: boolean;
   created_at: Date;
   updated_at: Date;
-  deleted_at: null;
+  deleted_at: Date | null;
   todays_clicks_count: number;
   yesterdays_clicks_up_to_now_count?: number;
   endpoints: Endpoint[];
@@ -35,7 +35,7 @@ export interface Click {
   id: number;
   redirect_uuid: string;
   matched_endpoint_id: number;
-  referer: null;
+  referer: string | null;
   ip: string;
   user_agent: string;
   language: string;
@@ -50,7 +50,7 @@ export interface Data {
 }
 
 export interface RuleData {
-  country: null;
+  country: string | null;
   scanned_qr_code: boolean;
   source_query_string: string;
 }

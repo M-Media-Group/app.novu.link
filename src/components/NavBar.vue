@@ -64,7 +64,7 @@ const blur = () => {
               class="dropdown"
             >
               <summary :aria-busy="user.isLoading">
-                {{ team.activeTeam?.name }}
+                {{ team.activeTeam?.name ?? $t("Your Team") }}
               </summary>
               <ul @click="blur()">
                 <li>
@@ -85,7 +85,7 @@ const blur = () => {
 
                 <li v-for="singleTeam in team.teams" :key="singleTeam.id">
                   <a href="#" @click.prevent="team.switchTeam(singleTeam.id)"
-                    >{{ singleTeam.name }}
+                    >{{ singleTeam.name ?? $t("Your Team") }}
                     {{
                       singleTeam.id === team.activeTeam?.id ? " (Active)" : ""
                     }}
