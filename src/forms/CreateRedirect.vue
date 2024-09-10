@@ -147,7 +147,7 @@ const submitForm = async () => {
       autocapitalize="none"
       :placeholder="`${$t('E.g.')} https://example.com`"
       data-hj-allow=""
-      pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
+      pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?(\?.*)?(#.*)?"
       required
       v-model="defaultEndpoint"
       @input="
