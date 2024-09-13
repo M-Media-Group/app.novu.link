@@ -54,6 +54,14 @@ defineProps({
       :subtitle="
         $t('Last confirmed') + ' ' + relativeTime(placement.last_confirmed_at)
       "
+      :badges="
+        [
+          placement.is_physical ? 'Physical placement' : undefined,
+          !placement.can_scrape && !placement.is_physical
+            ? 'Unable to confirm'
+            : undefined,
+        ].filter(Boolean) as string[]
+      "
     >
       {{ placement.description }}
     </card-element>
