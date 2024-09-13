@@ -4,5 +4,11 @@
  * @returns
  */
 export const isError = (code: number) => {
-  return code && (code > 403 || code < 200 || code === 401 || code === 400);
+  return (
+    code &&
+    // These are errors
+    (code >= 400 || code < 200) &&
+    // These are not errors that the user should be concerned about
+    !(code === 429 || code === 401 || code === 204)
+  );
 };
