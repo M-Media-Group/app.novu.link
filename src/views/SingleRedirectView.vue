@@ -5,7 +5,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
 import { getRedirect } from "@/useRedirects";
-import type { Endpoint, Redirect } from "@/types/redirect";
+import type { Endpoint, Placement, Redirect } from "@/types/redirect";
 
 const $bus = useEventsBus();
 const router = useRouter();
@@ -32,6 +32,7 @@ const clicksTodayUnique = ref(0);
 const clicksSameTimeYesterday = ref(null as number | null);
 const clicksAllTime = ref(0);
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
+const placements = ref([] as Placement[]);
 const endpoints = ref([] as Endpoint[]);
 const remainingClicks = ref(0);
 
@@ -48,6 +49,7 @@ const getData = () => {
       redirectName.value = response.data.name;
       subscribedAt.value = response.data.subscribed_at;
       remainingClicks.value = response.data.remaining_clicks;
+      placements.value = response.data.sources ?? [];
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -183,6 +185,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :clicksAllTime="clicksAllTime"
       :bestEndpoint="bestEndpoint"
       :endpoints="endpoints"
+      :placements="placements"
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"

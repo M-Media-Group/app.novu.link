@@ -355,5 +355,7 @@
     "Error": "Error",
     "Learn more": "Learn more",
     "Your single QR code can take customers to multiple destinations based on rules you choose, like time of day or location.": "Your single QR code can take customers to multiple destinations based on rules you choose, like time of day or location.",
-    "Add multiple destinations": "Add multiple destinations"
+    "Add multiple destinations": "Add multiple destinations",
+    "Last confirmed": "Last confirmed",
+    "Placements": "Placements"
 }

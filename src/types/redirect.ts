@@ -11,6 +11,7 @@ export interface Redirect {
   todays_clicks_count: number;
   yesterdays_clicks_up_to_now_count?: number;
   endpoints: Endpoint[];
+  sources?: Placement[];
   subscribed_at: Date | string | null;
   remaining_clicks: number;
 }
@@ -53,4 +54,18 @@ export interface RuleData {
   country: string | null;
   scanned_qr_code: boolean;
   source_query_string: string;
+}
+
+export interface Placement {
+  id: number;
+  description: any;
+  redirect_uuid: string;
+  created_by_user_id: any;
+  url: string;
+  is_physical: boolean;
+  should_scrape: boolean;
+  last_confirmed_at: string;
+  can_scrape: boolean;
+  created_at: string;
+  updated_at: string;
 }

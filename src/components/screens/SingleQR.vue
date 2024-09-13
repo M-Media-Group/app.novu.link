@@ -9,11 +9,13 @@ import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, computed, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
-import type { Endpoint } from "@/types/redirect";
+import type { Endpoint, Placement } from "@/types/redirect";
+import type { selectOption } from "@/types/listItem";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
+import QRPlacements from "@/components/QR/QRPlacements.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
@@ -87,6 +89,13 @@ const props = defineProps({
     type: String,
     required: false,
     default: "",
+  },
+
+  /** All the placements */
+  placements: {
+    type: Array as PropType<Placement[]>,
+    required: false,
+    default: () => [],
   },
 
   /** All endpoints */
@@ -487,25 +496,29 @@ const testClicks = ref(0);
     </div>
     <div class="main-grid-display">
       <tab-nav
-        :options="[
-          { render: $t('Analytics'), id: '1' },
-          {
-            render: $t('Destinations'),
-            id: '2',
-            badge:
-              props.endpoints.filter(
-                (endpoint) =>
-                  endpoint.last_http_code &&
-                  (endpoint.last_http_code > 403 ||
-                    endpoint.last_http_code < 200 ||
-                    endpoint.last_http_code === 401)
-              ).length > 0
-                ? true
-                : undefined,
-          },
-          // { render: 'Design', id: '3' },
-          { render: $t('Settings'), id: '4' },
-        ]"
+        :options="
+          [
+            { render: $t('Analytics'), id: '1' },
+            {
+              render: $t('Destinations'),
+              id: '2',
+              badge:
+                props.endpoints.filter(
+                  (endpoint) =>
+                    endpoint.last_http_code &&
+                    (endpoint.last_http_code > 403 ||
+                      endpoint.last_http_code < 200 ||
+                      endpoint.last_http_code === 401)
+                ).length > 0
+                  ? true
+                  : undefined,
+            },
+            placements.length > 1
+              ? { render: $t('Placements'), id: '3' }
+              : undefined,
+            { render: $t('Settings'), id: '4' },
+          ].filter(Boolean) as selectOption[]
+        "
         v-model="openTabs"
         @click="scrollUp($event.target)"
       >
@@ -536,6 +549,18 @@ const testClicks = ref(0);
         <q-r-destinations
           :redirectId="redirectId"
           :endpoints="endpoints"
+          :isLoading="isLoading || loading"
+          :subscribed="subscribed"
+        />
+      </div>
+
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('3')"
+      >
+        <q-r-placements
+          :redirectId="redirectId"
+          :placements="placements"
           :isLoading="isLoading || loading"
           :subscribed="subscribed"
         />
