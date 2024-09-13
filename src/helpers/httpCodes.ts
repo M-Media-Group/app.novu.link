@@ -1,0 +1,8 @@
+/**
+ * Determine if the status code is an error that should be displayed to the user as an error, commonly with a "Fix now" message.
+ * @param code
+ * @returns
+ */
+export const isError = (code: number) => {
+  return code && (code > 403 || code < 200 || code === 401 || code === 400);
+};

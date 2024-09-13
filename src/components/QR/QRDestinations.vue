@@ -7,6 +7,7 @@ import type { PropType } from "vue";
 import type { Endpoint } from "@/types/redirect";
 import { parseRuleGroup } from "@/useRules";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+import { isError } from "@/helpers/httpCodes";
 
 const props = defineProps({
   redirectId: {
@@ -53,15 +54,6 @@ const getClickPercentage = (endpoint: Endpoint) => {
   return totalClicksForAllEndpoints === 0
     ? 0
     : Math.round((totalClicks / totalClicksForAllEndpoints) * 100);
-};
-
-const isError = (endpoint: Endpoint) => {
-  return (
-    endpoint.last_http_code &&
-    (endpoint.last_http_code > 403 ||
-      endpoint.last_http_code < 200 ||
-      endpoint.last_http_code === 401)
-  );
 };
 </script>
 <template>
@@ -113,10 +105,15 @@ const isError = (endpoint: Endpoint) => {
                 : ' (' + $t('If no rules match') + ')')
         "
         :badges="
-          isError(endpoint) ? [$t('Error') + ' ' + endpoint.last_http_code] : []
+          endpoint.last_http_code && isError(endpoint.last_http_code)
+            ? [$t('Error') + ' ' + endpoint.last_http_code]
+            : []
         "
       >
-        <template v-if="isError(endpoint)" #headerActions>
+        <template
+          v-if="endpoint.last_http_code && isError(endpoint.last_http_code)"
+          #headerActions
+        >
           <a
             href="https://blog.novu.link/fix-now-qr-code-destination/"
             style="margin-bottom: 0"

@@ -1,6 +1,7 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
 import type { FileExtension } from "qr-code-styling";
+import { isError } from "@/helpers/httpCodes";
 
 const t = i18n.global.t;
 </script>
@@ -506,9 +507,7 @@ const testClicks = ref(0);
                 props.endpoints.filter(
                   (endpoint) =>
                     endpoint.last_http_code &&
-                    (endpoint.last_http_code > 403 ||
-                      endpoint.last_http_code < 200 ||
-                      endpoint.last_http_code === 401)
+                    isError(endpoint.last_http_code)
                 ).length > 0
                   ? true
                   : undefined,
