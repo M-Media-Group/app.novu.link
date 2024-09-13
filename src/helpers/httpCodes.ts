@@ -9,6 +9,6 @@ export const isError = (code: number) => {
     // These are errors
     (code >= 400 || code < 200) &&
     // These are not errors that the user should be concerned about
-    !(code === 429 || code === 401 || code === 204)
+    !(code === 429 || code === 401 || code === 204 || code === 403)
   );
 };
