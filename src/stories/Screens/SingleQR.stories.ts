@@ -86,10 +86,66 @@ export const AuthAndSubAndData: Story = {
     clicksAllTime: 25,
     bestEndpoint: "https://app.novu.link",
     remainingClicks: 15,
+    endpoints: [
+      {
+        id: 1,
+        redirect_uuid: "https://example.com",
+        endpoint: "http://example.com/my/path",
+        last_http_code: 200,
+
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 100,
+          },
+        ],
+      },
+    ],
   },
 };
 
 AuthAndSubAndData.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
+
+export const AuthAndSubAndErrorData: Story = {
+  args: {
+    redirectId: "123",
+    redirectName: "Test Redirect",
+    subscribed: true,
+    authenticated: true,
+    clicksToday: 15,
+    clicksSameTimeYesterday: 10,
+    clicksAllTime: 25,
+    bestEndpoint: "https://app.novu.link",
+    remainingClicks: 15,
+    endpoints: [
+      {
+        id: 1,
+        redirect_uuid: "https://example.com",
+        endpoint: "http://example.com/my/path",
+        last_http_code: 500,
+
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 100,
+          },
+        ],
+      },
+    ],
+  },
+};
+
+AuthAndSubAndErrorData.decorators = [
   vueRouter([
     {
       path: "/",

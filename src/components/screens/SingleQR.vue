@@ -489,7 +489,20 @@ const testClicks = ref(0);
       <tab-nav
         :options="[
           { render: $t('Analytics'), id: '1' },
-          { render: $t('Destinations'), id: '2' },
+          {
+            render: $t('Destinations'),
+            id: '2',
+            badge:
+              props.endpoints.filter(
+                (endpoint) =>
+                  endpoint.last_http_code &&
+                  (endpoint.last_http_code > 403 ||
+                    endpoint.last_http_code < 200 ||
+                    endpoint.last_http_code === 401)
+              ).length > 0
+                ? true
+                : undefined,
+          },
           // { render: 'Design', id: '3' },
           { render: $t('Settings'), id: '4' },
         ]"

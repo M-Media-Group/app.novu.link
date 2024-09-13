@@ -54,6 +54,15 @@ const getClickPercentage = (endpoint: Endpoint) => {
     ? 0
     : Math.round((totalClicks / totalClicksForAllEndpoints) * 100);
 };
+
+const isError = (endpoint: Endpoint) => {
+  return (
+    endpoint.last_http_code &&
+    (endpoint.last_http_code > 403 ||
+      endpoint.last_http_code < 200 ||
+      endpoint.last_http_code === 401)
+  );
+};
 </script>
 <template>
   <template v-if="isLoading">
@@ -66,12 +75,19 @@ const getClickPercentage = (endpoint: Endpoint) => {
   <template v-else-if="!endpoints || endpoints?.length === 0">
     <card-element
       :loading="isLoading"
-      :title="$t('No destinations yet')"
+      :title="$t('Add multiple destinations')"
       :subtitle="
         subscribed
           ? $t('Add free destinations')
-          : $t('Add more destinations to same code')
+          : $t(
+              'Your single QR code can take customers to multiple destinations based on rules you choose, like time of day or location.'
+            )
       "
+      :to="{
+        name: 'add-endpoint',
+        params: { redirectId: redirectId },
+      }"
+      :badges="subscribed ? undefined : [$t('Pro')]"
     >
     </card-element>
   </template>
@@ -96,17 +112,20 @@ const getClickPercentage = (endpoint: Endpoint) => {
                 ? ''
                 : ' (' + $t('If no rules match') + ')')
         "
+        :badges="
+          isError(endpoint) ? [$t('Error') + ' ' + endpoint.last_http_code] : []
+        "
       >
-        <template
-          v-if="
-            endpoint.last_http_code &&
-            (endpoint.last_http_code > 403 ||
-              endpoint.last_http_code < 200 ||
-              endpoint.last_http_code === 401)
-          "
-          #headerActions
-        >
-          <base-button class="full-width contrast" style="margin-bottom: 0">
+        <template v-if="isError(endpoint)" #headerActions>
+          <a
+            href="https://blog.novu.link/fix-now-qr-code-destination/"
+            style="margin-bottom: 0"
+            target="_blank"
+            @click.stop
+          >
+            {{ $t("Learn more") }}
+          </a>
+          <base-button class="contrast" style="margin-bottom: 0">
             {{ $t("Fix now") }}
           </base-button>
         </template>

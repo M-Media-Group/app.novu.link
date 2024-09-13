@@ -46,6 +46,7 @@ defineProps({
         :options="options"
         @click="handleClick"
         :style="style"
+        aria-label="Chart"
       />
     </template>
   </base-chart>

@@ -85,6 +85,39 @@ WithDestinations.decorators = [
   ]),
 ];
 
+export const RequiresFixing: Story = {
+  args: {
+    redirectId: "1234",
+
+    endpoints: [
+      {
+        id: 1,
+        redirect_uuid: "https://example.com",
+        endpoint: "http://example.com/my/path",
+        last_http_code: 500,
+
+        clicks_by_time_of_day: [
+          {
+            redirect_uuid: "xxx",
+            datetime: "2024-01-12T00:00:00",
+            click_count: 100,
+          },
+        ],
+      },
+    ],
+  },
+};
+
+RequiresFixing.decorators = [
+  vueRouter([
+    {
+      path: "/",
+      name: "add-endpoint",
+      redirect: "/add-endpoint",
+    },
+  ]),
+];
+
 export const WithSingleDestination: Story = {
   args: {
     redirectId: "1234",

@@ -314,3 +314,13 @@ img {
 a.delete {
     --pico-underline: var(--pico-color);
 }
+
+.actions {
+    display: flex;
+    gap: var(--pico-spacing);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Allow wrapping in reverse order */
+    flex-wrap: wrap-reverse;
+}

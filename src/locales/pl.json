@@ -351,5 +351,9 @@
     "API Documentation": "Dokumentacja API",
     "Default destination": "Domyślna destynacja",
     "This link has been disabled for your safety because it has been detected as phishing, malware, spyware, ransomware, or adware.": "Ten link został wyłączony dla Twojego bezpieczeństwa, ponieważ został wykryty jako phishing, malware, spyware, ransomware lub adware.",
-    "Your Team": "Twój zespół"
+    "Your Team": "Twój zespół",
+    "Error": "Błąd",
+    "Learn more": "Dowiedz się więcej",
+    "Your single QR code can take customers to multiple destinations based on rules you choose, like time of day or location.": "Twój pojedynczy kod QR może kierować klientów do wielu destynacji na podstawie wybranych przez Ciebie reguł, takich jak pora dnia lub lokalizacja.",
+    "Add multiple destinations": "Dodaj wiele destynacji"
 }
