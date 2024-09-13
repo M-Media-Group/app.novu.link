@@ -412,6 +412,7 @@ article {
   border-top: none;
   border-left: none;
   border-right: none;
+  border-bottom: calc(var(--pico-border-width)*2) solid;
 
   /* We keep the bottom border so we don't get layout shifts on active and non-active tabs */
   border-color: transparent;
@@ -431,7 +432,6 @@ article {
 .tab-nav button.active {
   color: var(--pico-text-color);
   border-color: var(--pico-border-color);
-  border-bottom: var(--pico-border-width) solid var(--pico-border-color);
 }
 
 /** Fix for dropdown input helptext inconsistent with other inputs */
@@ -489,16 +489,133 @@ nav a[role=button] {
   min-width: 11ch;
 }
 
-.badge {
+[role=status] {
   display: inline-block;
-  padding: 0.25em 0.5em;
-  border-radius: var(--pico-border-radius);
-  font-size: small;
-  line-height: 1;
-  font-weight: 600;
+
+  padding: calc(var(--pico-form-element-spacing-vertical) / 5) calc(var(--pico-form-element-spacing-horizontal) / 3);
+
   text-align: center;
-  vertical-align: middle;
+  vertical-align: text-top;
   white-space: nowrap;
-  background-color: var(--pico-primary-background);
-  color: var(--pico-primary-inverse);
+
+  --pico-background-color: var(--pico-primary-background);
+  --pico-border-color: var(--pico-primary-border);
+  --pico-color: var(--pico-primary-inverse);
+  --pico-box-shadow: var(--pico-button-box-shadow, 0 0 0 rgba(0, 0, 0, 0));
+  --pico-line-height: 1;
+  --pico-font-size: 13px;
+
+  font-size: var(--pico-font-size);
+
+  line-height: var(--pico-line-height);
+
+  border: var(--pico-border-width) solid var(--pico-border-color);
+  border-radius: calc(var(--pico-border-radius) * 3);
+  outline: 0;
+  background-color: var(--pico-background-color);
+  box-shadow: var(--pico-box-shadow);
+  color: var(--pico-color);
+  font-weight: var(--pico-font-weight);
+
+  margin-left: 0.5ch;
+
+  /* Set max width to 4 letters */
+  max-width: 15ch;
+
+  /* When overflowing, the ellipses should be a + */
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Max one line */
+  line-clamp: 1;
+  word-break: break-all;
+}
+
+[role=status] svg {
+  height: var(--pico-font-size);
+  width: var(--pico-font-size);
+  vertical-align: bottom;
+}
+
+/* On load the role=status should pop animate in to draw attention */
+[role=status]:not([aria-busy=true]) {
+  animation: pop 0.2s ease-in-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.5);
+  }
+
+  80% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+[role=status][aria-busy=true] {
+  white-space: nowrap;
+}
+
+[role=status][aria-busy=true]::before {
+  height: var(--pico-font-size);
+  width: var(--pico-font-size);
+  vertical-align: bottom;
+}
+
+[role=status].secondary {
+  --pico-background-color: var(--pico-secondary-background);
+  --pico-border-color: var(--pico-secondary-border);
+  --pico-color: var(--pico-secondary-inverse);
+}
+
+[role=status].contrast {
+  --pico-background-color: var(--pico-contrast-background);
+  --pico-border-color: var(--pico-contrast-border);
+  --pico-color: var(--pico-contrast-inverse);
+}
+
+[role=status].notification {
+  --pico-background-color: var(--pico-del-color);
+  --pico-border-color: var(--pico-del-color);
+  --pico-color: var(--pico-contrast-inverse);
+}
+
+[role=status].outline {
+  --pico-background-color: transparent;
+  --pico-color: var(--pico-primary);
+}
+
+[role=status].outline.secondary {
+  --pico-color: var(--pico-secondary);
+}
+
+[role=status].outline.contrast {
+  --pico-color: var(--pico-contrast);
+}
+
+[role=status].outline.notification {
+  --pico-color: var(--pico-del-color);
+}
+
+[role=status][aria-busy=true]:not(.outline)::before {
+  /* Set the bg color to white */
+  filter: brightness(0) invert(1);
+}
+
+/* If the badge is empty, make it a circle */
+[role=status]:empty {
+  border-radius: 50%;
+  height: 0.5rem;
+  width: 0.5rem;
+  padding: 0;
+}
+
+[role=status]:empty[aria-busy=true]::before {
+  height: 0.5rem;
+  width: 0.5rem;
+  vertical-align: bottom;
 }

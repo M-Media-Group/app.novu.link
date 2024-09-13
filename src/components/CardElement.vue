@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
 import type { RouteLocationRaw } from "vue-router";
+import BaseBadge from "./BaseBadge.vue";
 
 defineProps({
   /** The title of the card */
@@ -68,9 +69,9 @@ defineProps({
             <component :is="`h${titleHeadingLevel}`" v-if="title"
               >{{ title }}
               <template v-if="badges && badges.length">
-                <span v-for="badge in badges" :key="badge" class="badge">{{
+                <base-badge v-for="badge in badges" :key="badge">{{
                   badge
-                }}</span>
+                }}</base-badge>
               </template>
             </component>
             <p v-if="subtitle">{{ subtitle }}</p>

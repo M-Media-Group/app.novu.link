@@ -11,6 +11,8 @@ import {
 } from "@/helpers/normaliseOptions";
 import { useMultiselect } from "@/composables/useMultiselect";
 import type { selectOption } from "@/types/listItem";
+import BaseBadge from "./BaseBadge.vue";
+
 import { type PropType, computed, nextTick, onMounted, ref, watch } from "vue";
 
 const props = defineProps({
@@ -418,6 +420,9 @@ defineExpose({ focus, setCustomValidity, setAttribute });
               tabindex="0"
             />
             {{ getLabel(option) }}
+            <base-badge v-if="option.badge !== undefined">{{
+              option.badge === true ? "" : option.badge
+            }}</base-badge>
           </label>
         </slot>
       </li>
