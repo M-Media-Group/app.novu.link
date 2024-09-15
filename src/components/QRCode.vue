@@ -5,6 +5,7 @@ import LinkReady from "@/assets/linkReady.png";
 import QRCodeStyling, { type FileExtension } from "qr-code-styling";
 import type { PropType } from "vue";
 import { getRedirectQrCodeDataUrl } from "@/useRedirects";
+import type { QRDesign } from "@/types/qrDesign";
 
 const props = defineProps({
   /** The UUID of the redirect */
@@ -13,15 +14,15 @@ const props = defineProps({
     required: true,
   },
   lightColor: {
-    type: String,
+    type: String as PropType<QRDesign["color"]>,
     default: "#ffffff",
   },
   darkColor: {
-    type: String,
+    type: String as PropType<QRDesign["background_color"]>,
     default: "#000000",
   },
   logoDataUrl: {
-    type: String as PropType<string | null>,
+    type: String as PropType<QRDesign["logo"]>,
     default: null,
   },
   selectedShape: {
@@ -29,7 +30,7 @@ const props = defineProps({
     default: "square",
   },
   dimensions: {
-    type: Number,
+    type: Number as PropType<QRDesign["size"]>,
     default: 240,
   },
   /** If the card should render as a skeleton loader */

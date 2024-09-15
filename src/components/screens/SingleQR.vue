@@ -1,13 +1,11 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
-import type { FileExtension } from "qr-code-styling";
-import { isError } from "@/helpers/httpCodes";
 
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
-import { type PropType, computed, ref } from "vue";
+import { type PropType, type Ref, computed, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Endpoint, Placement } from "@/types/redirect";
@@ -19,6 +17,10 @@ import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import QRPlacements from "@/components/QR/QRPlacements.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+
+import type { FileExtension } from "qr-code-styling";
+import { isError } from "@/helpers/httpCodes";
+import type { HexColor } from "@/types/qrDesign";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
@@ -287,8 +289,8 @@ const barChartData = computed(() => {
   return filledData.reverse();
 });
 
-const lightColor = ref("#ffffff");
-const darkColor = ref("#000000");
+const lightColor = ref("#ffffff") as Ref<HexColor>;
+const darkColor = ref("#000000") as Ref<HexColor>;
 const logoDataUrl = ref<string | null>(null);
 const selectedShape = ref("square" as "square" | "rounded" | "circle");
 const selectedFileType = ref("png" as FileExtension);
@@ -515,7 +517,8 @@ const testClicks = ref(0);
             placements.length > 1
               ? { render: $t('Placements'), id: '3' }
               : undefined,
-            { render: $t('Settings'), id: '4' },
+              { render: $t('Designs'), id: '4' },
+            { render: $t('Settings'), id: '5' },
           ].filter(Boolean) as selectOption[]
         "
         v-model="openTabs"
@@ -649,6 +652,11 @@ const testClicks = ref(0);
             >
           </confirms-gate>
         </card-element>
+      </div>
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('5')"
+      >
         <card-element :loading="isLoading || loading">
           <hgroup>
             <h3>{{ $t("Link settings") }}</h3>
