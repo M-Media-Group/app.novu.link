@@ -1,3 +1,6 @@
+import type { Team } from "./team";
+import type { User } from "./user";
+
 export type HexColor = `#${string}`;
 
 export interface QRDesign {
@@ -53,4 +56,7 @@ export interface QRDesign {
   // Timestamps
   created_at: Date; // ISO string format for date
   updated_at: Date; // ISO string format for date
+
+  team?: Team;
+  user?: User;
 }

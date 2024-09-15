@@ -25,9 +25,21 @@ const props = defineProps({
     type: String as PropType<QRDesign["logo"]>,
     default: null,
   },
-  selectedShape: {
-    type: String as PropType<"square" | "rounded" | "circle">,
+  blockShape: {
+    type: String as PropType<QRDesign["block_shape"]>,
     default: "square",
+  },
+  cornerDotShape: {
+    type: String as PropType<QRDesign["corner_dot_shape"]>,
+    default: "square",
+  },
+  cornerShape: {
+    type: String as PropType<QRDesign["corner_shape"]>,
+    default: "square",
+  },
+  errorCorrectionLevel: {
+    type: String as PropType<QRDesign["error_correction_level"]>,
+    default: "medium",
   },
   dimensions: {
     type: Number as PropType<QRDesign["size"]>,
@@ -63,9 +75,12 @@ const compute2 = async (
   lighColor = "#ffffff",
   darkColor = "#000000",
   logoDataUrl: string | null = null,
-  shape = "square" as "square" | "rounded" | "circle",
+  blockShape = "square" as QRDesign["block_shape"],
+  cornerShape = "square" as QRDesign["corner_shape"],
+  cornerDotShape = "square" as QRDesign["corner_dot_shape"],
   dimensions = props.dimensions * 2,
-  fileType = props.fileType
+  fileType = props.fileType,
+  errorCorrectionLevel = "medium" as QRDesign["error_correction_level"]
 ) => {
   qrCode.update({
     width: dimensions * 2,
@@ -75,25 +90,34 @@ const compute2 = async (
     margin: 2,
     dotsOptions: {
       color: darkColor,
-      type: shape === "circle" ? "rounded" : shape,
+      type: blockShape === "circle" ? "dots" : blockShape,
     },
     backgroundOptions: {
       color: lighColor,
     },
     cornersSquareOptions: {
       color: darkColor,
-      // type: shape === "rounded" ? "square" : shape,
+      type:
+        cornerShape === "circle"
+          ? "dot"
+          : cornerShape === "rounded"
+          ? "extra-rounded"
+          : cornerShape,
     },
     cornersDotOptions: {
       color: darkColor,
-      // type: shape === "rounded" ? "dot" : shape,
+      type: cornerDotShape === "circle" ? "dot" : cornerDotShape,
     },
     imageOptions: {
       crossOrigin: "anonymous",
       margin: 2,
     },
     qrOptions: {
-      errorCorrectionLevel: "L",
+      errorCorrectionLevel: errorCorrectionLevel.charAt(0).toUpperCase() as
+        | "L"
+        | "M"
+        | "Q"
+        | "H",
     },
   });
 
@@ -118,10 +142,13 @@ watch(
     props.lightColor,
     props.darkColor,
     props.logoDataUrl,
-    props.selectedShape,
+    props.blockShape,
+    props.cornerShape,
+    props.cornerDotShape,
     props.redirectId,
     props.dimensions,
     props.fileType,
+    props.errorCorrectionLevel,
   ],
   () => {
     compute2(
@@ -129,9 +156,12 @@ watch(
       props.lightColor,
       props.darkColor,
       props.logoDataUrl,
-      props.selectedShape,
+      props.blockShape,
+      props.cornerShape,
+      props.cornerDotShape,
       props.dimensions * 2,
-      props.fileType
+      props.fileType,
+      props.errorCorrectionLevel
     );
   },
   {
