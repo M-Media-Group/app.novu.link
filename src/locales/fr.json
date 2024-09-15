@@ -358,5 +358,21 @@
     "Add multiple destinations": "Ajouter plusieurs destinations",
     "Last confirmed": "Dernière confirmation",
     "Placements": "Placements",
-    "Designs": "Designs"
+    "Designs": "Designs",
+    "Coming soon": "Bientôt disponible",
+    "Save designs for reuse across all your magic links": "Enregistrez les designs pour les réutiliser sur tous vos liens magiques",
+    "Advanced": "Avancé",
+    "Error correction level": "Niveau de correction d'erreur",
+    "Extra Rounded": "Extra Arrondi",
+    "Classy": "Classique",
+    "Classy Rounded": "Classique Arrondi",
+    "Low": "Faible",
+    "Medium": "Moyen",
+    "Quartile": "Quartile",
+    "High": "Élevé",
+    "Margin": "Marge",
+    "Enlarge": "Agrandir",
+    "Shrink": "Rétrécir",
+    "None": "Aucun",
+    "Round block size mode": "Mode de taille de bloc rond"
 }
