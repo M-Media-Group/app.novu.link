@@ -12,7 +12,7 @@ export interface Redirect {
   yesterdays_clicks_up_to_now_count?: number;
   endpoints: Endpoint[];
   sources?: Placement[];
-  subscribed_at: Date | string | null;
+  subscribed_at: Date | null;
   remaining_clicks: number;
 }
 

@@ -514,10 +514,10 @@ const testClicks = ref(0);
                   ? true
                   : undefined,
             },
+            { render: $t('Designs'), id: '4' },
             placements.length > 1
               ? { render: $t('Placements'), id: '3' }
               : undefined,
-              { render: $t('Designs'), id: '4' },
             { render: $t('Settings'), id: '5' },
           ].filter(Boolean) as selectOption[]
         "
