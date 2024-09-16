@@ -23,6 +23,14 @@ const meta: Meta<typeof QRCode> = {
 
   // The argType for selectedShape should be square, rounded, or circle
   argTypes: {
+    lightColor: {
+      control: { type: "color" },
+      description: "The light color of the QR code",
+    },
+    darkColor: {
+      control: { type: "color" },
+      description: "The dark color of the QR code",
+    },
     fileType: {
       options: ["png", "svg"],
       control: { type: "select" },

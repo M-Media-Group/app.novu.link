@@ -376,5 +376,9 @@
     "None": "None",
     "Round block size mode": "Round block size mode",
     "The contrast ratio is too low. The QR code may not be scannable.": "The contrast ratio is too low. The QR code may not be scannable.",
-    "Create and save designs for your magic links. You can use them across all your magic links in your team.": "Create and save designs for your magic links. You can use them across all your magic links in your team."
+    "Create and save designs for your magic links. You can use them across all your magic links in your team.": "Create and save designs for your magic links. You can use them across all your magic links in your team.",
+    "Your designs": "Your designs",
+    "Last updated": "Last updated",
+    "Default": "Default",
+    "Logo": "Logo"
 }

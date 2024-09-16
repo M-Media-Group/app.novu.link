@@ -41,6 +41,10 @@ const props = defineProps({
     type: String as PropType<QRDesign["error_correction_level"]>,
     default: "medium",
   },
+  logoPunchout: {
+    type: Boolean as PropType<QRDesign["logo_punchout_background"]>,
+    default: true,
+  },
   dimensions: {
     type: Number as PropType<QRDesign["size"]>,
     default: 240,
@@ -70,6 +74,37 @@ const reader = new FileReader();
 
 const qrCode = new QRCodeStyling();
 
+/**
+ * This function fetches the logo (if its a resource path) and converts it to a data URL
+ *
+ * @param logoDataUrl The logo data URL or resource path
+ * @returns The logo data URL
+ * @todo - rethink when/how this is called as it causes delays in rendering. It should ideally render the QR code first and then fetch the logo, then re-render
+ */
+const fetchLogo = async (logoDataUrl: string | null) => {
+  if (!logoDataUrl) return null;
+
+  if (logoDataUrl.startsWith("data:")) return logoDataUrl;
+
+  const response = await fetch(logoDataUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response;
+    })
+    .catch(() => null);
+  if (!response) return null;
+  const blob = await response.blob();
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  return new Promise<string>((resolve) => {
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+  });
+};
+
 const compute2 = async (
   urlToEncode = "",
   lighColor = "#ffffff",
@@ -80,8 +115,12 @@ const compute2 = async (
   cornerDotShape = "square" as QRDesign["corner_dot_shape"],
   dimensions = props.dimensions ? props.dimensions * 2 : 240,
   fileType = props.fileType,
-  errorCorrectionLevel = "medium" as QRDesign["error_correction_level"]
+  errorCorrectionLevel = "medium" as QRDesign["error_correction_level"],
+  logoPunchout = props.logoPunchout
 ) => {
+  if (logoDataUrl) {
+    logoDataUrl = await fetchLogo(logoDataUrl).catch(() => null);
+  }
   qrCode.update({
     width: dimensions * 2,
     height: dimensions * 2,
@@ -109,6 +148,7 @@ const compute2 = async (
       type: cornerDotShape === "circle" ? "dot" : cornerDotShape,
     },
     imageOptions: {
+      hideBackgroundDots: logoPunchout,
       crossOrigin: "anonymous",
       margin: 2,
     },
@@ -149,6 +189,7 @@ watch(
     props.dimensions,
     props.fileType,
     props.errorCorrectionLevel,
+    props.logoPunchout,
   ],
   () => {
     compute2(
@@ -161,7 +202,8 @@ watch(
       props.cornerDotShape,
       props.dimensions ? props.dimensions * 2 : 240,
       props.fileType,
-      props.errorCorrectionLevel
+      props.errorCorrectionLevel,
+      props.logoPunchout
     );
   },
   {

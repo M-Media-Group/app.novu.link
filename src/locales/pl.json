@@ -376,5 +376,9 @@
     "None": "Brak",
     "Round block size mode": "Tryb zaokrąglania rozmiaru bloku",
     "The contrast ratio is too low. The QR code may not be scannable.": "Stosunek kontrastu jest zbyt niski. Kod QR może nie być skanowalny.",
-    "Create and save designs for your magic links. You can use them across all your magic links in your team.": "Twórz i zapisuj projekty dla swoich magicznych linków. Możesz używać ich we wszystkich swoich magicznych linkach w swoim zespole."
+    "Create and save designs for your magic links. You can use them across all your magic links in your team.": "Twórz i zapisuj projekty dla swoich magicznych linków. Możesz używać ich we wszystkich swoich magicznych linkach w swoim zespole.",
+    "Your designs": "Twoje projekty",
+    "Last updated": "Ostatnio zaktualizowany",
+    "Default": "Domyślny",
+    "Logo": "Logo"
 }
