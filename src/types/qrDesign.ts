@@ -4,11 +4,11 @@ import type { User } from "./user";
 export type HexColor = `#${string}`;
 
 export interface QRDesign {
-  id: number;
+  id?: number;
 
   // Foreign keys
-  team_id: number;
-  user_id: number | null;
+  team_id?: number;
+  user_id?: number | null;
 
   // The name of the design
   name: string | null;
@@ -21,8 +21,8 @@ export interface QRDesign {
   error_correction_level: "low" | "medium" | "quartile" | "high";
 
   // Size and margin
-  size: number;
-  margin: number;
+  size?: number;
+  margin?: number;
 
   // Round block size mode
   round_block_size_mode: "enlarge" | "margin" | "shrink" | "none";
@@ -43,20 +43,24 @@ export interface QRDesign {
   corner_shape: "square" | "rounded" | "circle";
 
   // Logo details
-  logo: string | null;
-  logo_size: number | null;
-  logo_punchout_background: boolean;
+  logo?: string | null;
+  logo_size?: number | null;
+  logo_punchout_background?: boolean;
 
   // Scan check details
-  last_scan_check_at: Date | null; // ISO string format for date
-  is_scanable: boolean | null;
+  last_scan_check_at?: Date | null; // ISO string format for date
+  is_scanable?: boolean | null;
 
-  was_automatically_generated: boolean;
+  was_automatically_generated?: boolean;
 
   // Timestamps
-  created_at: Date; // ISO string format for date
-  updated_at: Date; // ISO string format for date
+  created_at?: Date; // ISO string format for date
+  updated_at?: Date; // ISO string format for date
 
   team?: Team;
   user?: User;
+
+  pivot?: {
+    is_default: boolean;
+  };
 }

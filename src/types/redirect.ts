@@ -1,4 +1,5 @@
 import type { ClicksByTimeOfDay } from "./analytics";
+import type { QRDesign } from "./qrDesign";
 
 export interface Redirect {
   uuid: string;
@@ -12,6 +13,7 @@ export interface Redirect {
   yesterdays_clicks_up_to_now_count?: number;
   endpoints: Endpoint[];
   sources?: Placement[];
+  qr_designs?: QRDesign[];
   subscribed_at: Date | null;
   remaining_clicks: number;
 }

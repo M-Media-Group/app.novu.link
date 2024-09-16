@@ -374,5 +374,7 @@
     "Enlarge": "Agrandir",
     "Shrink": "Rétrécir",
     "None": "Aucun",
-    "Round block size mode": "Mode de taille de bloc rond"
+    "Round block size mode": "Mode de taille de bloc rond",
+    "The contrast ratio is too low. The QR code may not be scannable.": "Le taux de contraste est trop faible. Le code QR risque de ne pas être scannable.",
+    "Create and save designs for your magic links. You can use them across all your magic links in your team.": "Créez et enregistrez des designs pour vos liens magiques. Vous pouvez les utiliser sur tous vos liens magiques dans votre équipe."
 }

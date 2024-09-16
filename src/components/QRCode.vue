@@ -78,7 +78,7 @@ const compute2 = async (
   blockShape = "square" as QRDesign["block_shape"],
   cornerShape = "square" as QRDesign["corner_shape"],
   cornerDotShape = "square" as QRDesign["corner_dot_shape"],
-  dimensions = props.dimensions * 2,
+  dimensions = props.dimensions ? props.dimensions * 2 : 240,
   fileType = props.fileType,
   errorCorrectionLevel = "medium" as QRDesign["error_correction_level"]
 ) => {
@@ -159,7 +159,7 @@ watch(
       props.blockShape,
       props.cornerShape,
       props.cornerDotShape,
-      props.dimensions * 2,
+      props.dimensions ? props.dimensions * 2 : 240,
       props.fileType,
       props.errorCorrectionLevel
     );
