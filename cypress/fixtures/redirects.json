@@ -61,6 +61,92 @@
                 "updated_at": "2024-04-18T20:51:16.000000Z",
                 "rule_groups": []
             }
+        ],
+        "qr_designs": [
+            {
+                "id": 3,
+                "team_id": 67,
+                "user_id": 1,
+                "name": "Extra rounded red",
+                "color": "#e32400",
+                "background_color": "#ffffff",
+                "error_correction_level": "medium",
+                "size": 300,
+                "margin": 10,
+                "round_block_size_mode": "margin",
+                "block_shape": "extra-rounded",
+                "corner_dot_shape": "circle",
+                "corner_shape": "circle",
+                "logo": null,
+                "logo_size": 100,
+                "logo_punchout_background": true,
+                "last_scan_check_at": "2024-09-17T13:23:09.000000Z",
+                "is_scannable": true,
+                "was_automatically_generated": false,
+                "created_at": "2024-09-17T13:23:09.000000Z",
+                "updated_at": "2024-09-17T13:23:09.000000Z",
+                "pivot": {
+                    "redirect_uuid": "FxL2sgL",
+                    "q_r_design_id": 3,
+                    "is_default": 0
+                }
+            },
+            {
+                "id": 4,
+                "team_id": 67,
+                "user_id": 1,
+                "name": "Red and Green",
+                "color": "#000000",
+                "background_color": "#ff6251",
+                "error_correction_level": "medium",
+                "size": 300,
+                "margin": 10,
+                "round_block_size_mode": "margin",
+                "block_shape": "square",
+                "corner_dot_shape": "square",
+                "corner_shape": "square",
+                "logo": null,
+                "logo_size": 100,
+                "logo_punchout_background": true,
+                "last_scan_check_at": "2024-09-17T15:31:37.000000Z",
+                "is_scannable": true,
+                "was_automatically_generated": false,
+                "created_at": "2024-09-17T15:31:37.000000Z",
+                "updated_at": "2024-09-17T15:31:37.000000Z",
+                "pivot": {
+                    "redirect_uuid": "FxL2sgL",
+                    "q_r_design_id": 4,
+                    "is_default": 0
+                }
+            },
+            {
+                "id": 5,
+                "team_id": 67,
+                "user_id": 1,
+                "name": "LargeDots",
+                "color": "#ffffff",
+                "background_color": "#2c1376",
+                "error_correction_level": "high",
+                "size": 300,
+                "margin": 10,
+                "round_block_size_mode": "margin",
+                "block_shape": "circle",
+                "corner_dot_shape": "circle",
+                "corner_shape": "circle",
+                "logo": null,
+                "logo_size": 100,
+                "logo_punchout_background": true,
+                "last_scan_check_at": "2024-09-17T15:34:11.000000Z",
+                "is_scannable": false,
+                "was_automatically_generated": false,
+                "created_at": "2024-09-17T15:34:11.000000Z",
+                "updated_at": "2024-09-17T15:34:11.000000Z",
+                "pivot": {
+                    "redirect_uuid": "FxL2sgL",
+                    "q_r_design_id": 5,
+                    "is_default": 1
+                }
+            }
         ]
     }
 ]
