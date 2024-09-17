@@ -6,6 +6,7 @@ import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import type { PersonalAccessToken } from "@/types/user";
 import { ref } from "vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const userStore = useUserStore();
 
@@ -55,7 +56,16 @@ const handleDeleteToken = (id: string) => {
     <p v-else>{{ $t("You have no API access tokens.") }}</p>
     <personal-access-tokens @created="handleCreatedToken" :autofocus="false" />
     <a href="https://blog.novu.link/developers/" target="_blank">
-      {{ $t("API Documentation") }}
+      {{ $t("API Documentation") }} ({{ $t("en") }})
     </a>
+  </card-element>
+
+  <card-element :titleHeadingLevel="2" :title="$t('Payment methods')">
+    <p>
+      {{ $t("Manage your payment methods in your team's settings.") }}
+    </p>
+    <base-button :to="{ path: '/team/settings' }" type="button">
+      {{ $t("Go to team settings") }}
+    </base-button>
   </card-element>
 </template>
