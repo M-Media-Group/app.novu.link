@@ -324,3 +324,16 @@ a.delete {
     /* Allow wrapping in reverse order */
     flex-wrap: wrap-reverse;
 }
+
+nav.qr-design-nav>ul>li {
+    padding-top: 0;
+    padding-bottom: var(--pico-nav-element-spacing-vertical);
+}
+
+.input {
+    min-height: fit-content;
+}
+
+.design-card header {
+    margin-bottom: 0;
+}
