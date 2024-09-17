@@ -14,6 +14,7 @@ export interface Redirect {
   endpoints: Endpoint[];
   sources?: Placement[];
   qr_designs?: QRDesign[];
+  default_qr_design?: QRDesign;
   subscribed_at: Date | null;
   remaining_clicks: number;
 }

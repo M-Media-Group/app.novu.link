@@ -65,4 +65,7 @@ export default {
     event("create_endpoint");
     fbq("trackCustom", "CreateEndpoint");
   },
+  created_qr_design: () => {
+    event("create_qr_design");
+  },
 } as Record<eventTypes, any>;

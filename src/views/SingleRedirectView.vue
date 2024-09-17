@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
 import { getRedirect } from "@/useRedirects";
 import type { Endpoint, Placement, Redirect } from "@/types/redirect";
+import type { QRDesign } from "@/types/qrDesign";
 
 const $bus = useEventsBus();
 const router = useRouter();
@@ -28,12 +29,12 @@ const singleQRElement = ref();
 const redirectName = ref(null as Redirect["name"] | null);
 const subscribedAt = ref(null as Redirect["subscribed_at"]);
 const clicksToday = ref(0);
-const clicksTodayUnique = ref(0);
 const clicksSameTimeYesterday = ref(null as number | null);
 const clicksAllTime = ref(0);
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
 const placements = ref([] as Placement[]);
 const endpoints = ref([] as Endpoint[]);
+const designs = ref([] as QRDesign[]);
 const remainingClicks = ref(0);
 
 const getData = () => {
@@ -50,6 +51,7 @@ const getData = () => {
       subscribedAt.value = response.data.subscribed_at;
       remainingClicks.value = response.data.remaining_clicks;
       placements.value = response.data.sources ?? [];
+      designs.value = response.data.qr_designs ?? [];
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -124,6 +126,7 @@ onMounted(() => {
   $bus.$on(eventTypes.deleted_endpoint, getData);
   $bus.$on(eventTypes.deleted_redirect, redirectToCreate);
   $bus.$on(eventTypes.set_active_team, getData);
+  $bus.$on(eventTypes.created_qr_design, getData);
 });
 
 onUnmounted(() => {
@@ -134,6 +137,7 @@ onUnmounted(() => {
   $bus.$off(eventTypes.deleted_endpoint, getData);
   $bus.$off(eventTypes.deleted_redirect, redirectToCreate);
   $bus.$off(eventTypes.set_active_team, getData);
+  $bus.$off(eventTypes.created_qr_design, getData);
 });
 
 const timerLength = 60 * 3;
@@ -181,11 +185,11 @@ const convertSecondsToMinutes = (seconds: number) => {
       :subscribed="teamStore.activeTeam?.is_billing_exempt || !!subscribedAt"
       v-bind="$props"
       :clicksToday="clicksToday"
-      :clicksTodayUnique="clicksTodayUnique"
       :clicksAllTime="clicksAllTime"
       :bestEndpoint="bestEndpoint"
       :endpoints="endpoints"
       :placements="placements"
+      :designs="designs"
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"

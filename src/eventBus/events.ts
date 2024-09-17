@@ -34,6 +34,9 @@ export enum eventTypes {
   downloaded_redirect_qr_code = "downloaded_redirect_qr_code",
   sent_otp = "sent_otp",
   confirmed_otp = "confirmed_otp",
+  created_qr_design = "created_qr_design",
+  updated_qr_design = "updated_qr_design",
+  deleted_qr_design = "deleted_qr_design",
 }
 
 type EventsObject = { [P in eventTypes]?: any };
