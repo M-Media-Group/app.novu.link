@@ -123,7 +123,7 @@ const getClickPercentage = (endpoint: Endpoint) => {
             {{ $t("Learn more") }}
           </a>
           <base-button class="contrast" style="margin-bottom: 0">
-            {{ $t("Fix now") }}
+            {{ $t("Edit URL") }}
           </base-button>
         </template>
         <template
