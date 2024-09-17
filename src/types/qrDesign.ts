@@ -49,7 +49,7 @@ export interface QRDesign {
 
   // Scan check details
   last_scan_check_at?: Date | null; // ISO string format for date
-  is_scanable?: boolean | null;
+  is_scannable?: boolean | null;
 
   was_automatically_generated?: boolean;
 
