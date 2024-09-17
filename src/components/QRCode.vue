@@ -8,18 +8,22 @@ import { getRedirectQrCodeDataUrl } from "@/useRedirects";
 import type { QRDesign } from "@/types/qrDesign";
 
 const props = defineProps({
-  /** The UUID of the redirect */
+  /** The UUID of the redirect. If not passed, the rendered data will be to the SPA URL */
   redirectId: {
     type: String,
-    required: true,
+    required: false,
   },
-  lightColor: {
+  designId: {
+    type: Number as PropType<QRDesign["id"]>,
+    required: false,
+  },
+  color: {
     type: String as PropType<QRDesign["color"]>,
-    default: "#ffffff",
-  },
-  darkColor: {
-    type: String as PropType<QRDesign["background_color"]>,
     default: "#000000",
+  },
+  backgroundColor: {
+    type: String as PropType<QRDesign["background_color"]>,
+    default: "#ffffff",
   },
   logoDataUrl: {
     type: String as PropType<QRDesign["logo"]>,
@@ -70,45 +74,34 @@ const isReady = ref(false);
 
 const qrCodeDataURL = ref<string | null>(null);
 
-const reader = new FileReader();
-
 const qrCode = new QRCodeStyling();
 
-/**
- * This function fetches the logo (if its a resource path) and converts it to a data URL
- *
- * @param logoDataUrl The logo data URL or resource path
- * @returns The logo data URL
- * @todo - rethink when/how this is called as it causes delays in rendering. It should ideally render the QR code first and then fetch the logo, then re-render
- */
 const fetchLogo = async (logoDataUrl: string | null) => {
   if (!logoDataUrl) return null;
 
+  // If it's already a data URL, return it immediately
   if (logoDataUrl.startsWith("data:")) return logoDataUrl;
 
-  const response = await fetch(logoDataUrl)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response;
-    })
-    .catch(() => null);
-  if (!response) return null;
-  const blob = await response.blob();
-  const reader = new FileReader();
-  reader.readAsDataURL(blob);
-  return new Promise<string>((resolve) => {
-    reader.onload = () => {
-      resolve(reader.result as string);
-    };
-  });
+  try {
+    const response = await fetch(logoDataUrl);
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+
+    return new Promise<string>((resolve) => {
+      reader.onload = () => resolve(reader.result as string);
+    });
+  } catch (error) {
+    return null;
+  }
 };
 
-const compute2 = async (
+const updateQrCode = async (
   urlToEncode = "",
-  lighColor = "#ffffff",
-  darkColor = "#000000",
+  color = "#000000",
+  backgroundColor = "#ffffff",
   logoDataUrl: string | null = null,
   blockShape = "square" as QRDesign["block_shape"],
   cornerShape = "square" as QRDesign["corner_shape"],
@@ -116,26 +109,24 @@ const compute2 = async (
   dimensions = props.dimensions ? props.dimensions * 2 : 240,
   fileType = props.fileType,
   errorCorrectionLevel = "medium" as QRDesign["error_correction_level"],
-  logoPunchout = props.logoPunchout
+  logoPunchout = props.logoPunchout,
+  isLogoUpdate = false // flag to check if this is a logo update
 ) => {
-  if (logoDataUrl) {
-    logoDataUrl = await fetchLogo(logoDataUrl).catch(() => null);
-  }
   qrCode.update({
     width: dimensions * 2,
     height: dimensions * 2,
     data: urlToEncode,
-    image: logoDataUrl ?? undefined,
+    image: isLogoUpdate ? logoDataUrl ?? undefined : undefined, // Render logo only on update
     margin: 2,
     dotsOptions: {
-      color: darkColor,
+      color: color,
       type: blockShape === "circle" ? "dots" : blockShape,
     },
     backgroundOptions: {
-      color: lighColor,
+      color: backgroundColor,
     },
     cornersSquareOptions: {
-      color: darkColor,
+      color: color,
       type:
         cornerShape === "circle"
           ? "dot"
@@ -144,7 +135,7 @@ const compute2 = async (
           : cornerShape,
     },
     cornersDotOptions: {
-      color: darkColor,
+      color: color,
       type: cornerDotShape === "circle" ? "dot" : cornerDotShape,
     },
     imageOptions: {
@@ -162,25 +153,77 @@ const compute2 = async (
   });
 
   const data = (await qrCode.getRawData(fileType)) as Blob;
-  // The above is a blob, we need to convert it to a data URL
+  const reader = new FileReader();
   reader.readAsDataURL(data);
   reader.onload = () => {
     qrCodeDataURL.value = reader.result as string;
     emit("update", qrCodeDataURL.value);
 
-    // set isReady to true and make it non-reactive
+    // Set isReady to true and make it non-reactive
     isReady.value = true;
   };
   return reader.result as string;
 };
 
+const compute2 = async (
+  urlToEncode = "",
+  color = "#ffffff",
+  backgroundColor = "#000000",
+  logoDataUrl: string | null = null,
+  blockShape = "square" as QRDesign["block_shape"],
+  cornerShape = "square" as QRDesign["corner_shape"],
+  cornerDotShape = "square" as QRDesign["corner_dot_shape"],
+  dimensions = props.dimensions ? props.dimensions * 2 : 240,
+  fileType = props.fileType,
+  errorCorrectionLevel = "medium" as QRDesign["error_correction_level"],
+  logoPunchout = props.logoPunchout
+) => {
+  // Render the QR code first without the logo
+  await updateQrCode(
+    urlToEncode,
+    color,
+    backgroundColor,
+    null, // No logo initially
+    blockShape,
+    cornerShape,
+    cornerDotShape,
+    dimensions,
+    fileType,
+    errorCorrectionLevel,
+    false // punchout needs to be false initially - some weird rendering bug otherwise
+  );
+
+  if (logoDataUrl) {
+    const fetchedLogo = await fetchLogo(logoDataUrl).catch(() => null);
+    // Re-render with the fetched logo
+    if (fetchedLogo) {
+      await updateQrCode(
+        urlToEncode,
+        color,
+        backgroundColor,
+        fetchedLogo, // Fetched logo
+        blockShape,
+        cornerShape,
+        cornerDotShape,
+        dimensions,
+        fileType,
+        errorCorrectionLevel,
+        logoPunchout,
+        true // Logo update flag
+      );
+    }
+  }
+};
+
 const imgSrc = ref<string | null>(null);
+
+const appUrl = window.location.href;
 
 // Watch for all prop changes
 watch(
   () => [
-    props.lightColor,
-    props.darkColor,
+    props.color,
+    props.backgroundColor,
     props.logoDataUrl,
     props.blockShape,
     props.cornerShape,
@@ -193,9 +236,11 @@ watch(
   ],
   () => {
     compute2(
-      getRedirectQrCodeDataUrl(props.redirectId),
-      props.lightColor,
-      props.darkColor,
+      props.redirectId
+        ? getRedirectQrCodeDataUrl(props.redirectId, props.designId)
+        : appUrl,
+      props.color,
+      props.backgroundColor,
       props.logoDataUrl,
       props.blockShape,
       props.cornerShape,

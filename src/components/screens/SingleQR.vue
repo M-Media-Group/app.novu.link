@@ -15,12 +15,13 @@ import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import QRPlacements from "@/components/QR/QRPlacements.vue";
+import QRDesigns from "@/components/QR/QRDesigns.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 import type { FileExtension } from "qr-code-styling";
 import { isError } from "@/helpers/httpCodes";
-import type { HexColor } from "@/types/qrDesign";
+import type { HexColor, QRDesign } from "@/types/qrDesign";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
@@ -104,6 +105,13 @@ const props = defineProps({
   /** All endpoints */
   endpoints: {
     type: Array as PropType<Endpoint[]>,
+    required: false,
+    default: () => [],
+  },
+
+  /** All designs */
+  designs: {
+    type: Array as PropType<QRDesign[]>,
     required: false,
     default: () => [],
   },
@@ -289,31 +297,60 @@ const barChartData = computed(() => {
   return filledData.reverse();
 });
 
-const lightColor = ref("#ffffff") as Ref<HexColor>;
-const darkColor = ref("#000000") as Ref<HexColor>;
+const color = ref("#000000") as Ref<HexColor>;
+const backgroundColor = ref("#ffffff") as Ref<HexColor>;
 const logoDataUrl = ref<string | null>(null);
-const selectedShape = ref("square" as "square" | "rounded" | "circle");
+const logoPunchout = ref(true) as Ref<QRDesign["logo_punchout_background"]>;
+const blockShape = ref("square") as Ref<QRDesign["block_shape"]>;
+const cornerDotShape = ref("square") as Ref<QRDesign["corner_dot_shape"]>;
+const cornerShape = ref("square") as Ref<QRDesign["corner_shape"]>;
 const selectedFileType = ref("png" as FileExtension);
+const errorCorrectionLevel = ref("medium") as Ref<
+  QRDesign["error_correction_level"]
+>;
 
-const handleLogoUpload = async (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (!target.files || !target.files[0]) {
-    return;
+// Watch for props.designs changes
+watch(
+  () => props.designs,
+  (designs) => {
+    if (designs.length) {
+      const defaultDesign = designs.find((design) => design.pivot?.is_default);
+      if (defaultDesign) {
+        selectedDesignId.value = defaultDesign.id;
+        color.value = defaultDesign.color;
+        backgroundColor.value = defaultDesign.background_color;
+        blockShape.value = defaultDesign.block_shape;
+        cornerDotShape.value = defaultDesign.corner_dot_shape;
+        cornerShape.value = defaultDesign.corner_shape;
+        errorCorrectionLevel.value = defaultDesign.error_correction_level;
+        logoDataUrl.value = defaultDesign.logo ?? null;
+        logoPunchout.value = defaultDesign.logo_punchout_background;
+      }
+    }
   }
-  const file = target.files[0];
-  // Set the local url to the logo
-  logoDataUrl.value = file ? URL.createObjectURL(file) : null;
-};
+);
 
 const scrollUp = (element: HTMLElement) => {
   // Scroll so that the element is at the top of the screen
   element.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
-watch([lightColor, darkColor, logoDataUrl, selectedShape], async () => {
-  // Scroll up so we can see the QR code
-  scrollUp(document.querySelector(".main-grid-display") as HTMLElement);
-});
+watch(
+  [
+    color,
+    backgroundColor,
+    logoDataUrl,
+    blockShape,
+    cornerShape,
+    cornerDotShape,
+    errorCorrectionLevel,
+    logoPunchout,
+  ],
+  async () => {
+    // Scroll up so we can see the QR code
+    scrollUp(document.querySelector(".main-grid-display") as HTMLElement);
+  }
+);
 
 const magicLink = getRedirectUrl(props.redirectId);
 
@@ -360,6 +397,46 @@ const toggleQRCodeDropdown = (event: MouseEvent) => {
 };
 
 const testClicks = ref(0);
+
+const selectedDesignId = ref<number | undefined>(undefined);
+
+const handleInputUpdated = (data: QRDesign) => {
+  if (data.id !== undefined) {
+    selectedDesignId.value = data.id;
+  }
+
+  if (data.color) {
+    color.value = data.color;
+  }
+
+  if (data.background_color) {
+    backgroundColor.value = data.background_color;
+  }
+
+  if (data.block_shape) {
+    blockShape.value = data.block_shape;
+  }
+
+  if (data.corner_dot_shape) {
+    cornerDotShape.value = data.corner_dot_shape;
+  }
+
+  if (data.corner_shape) {
+    cornerShape.value = data.corner_shape;
+  }
+
+  if (data.error_correction_level) {
+    errorCorrectionLevel.value = data.error_correction_level;
+  }
+
+  if (data.logo !== undefined) {
+    logoDataUrl.value = data.logo;
+  }
+
+  if (data.logo_punchout_background !== undefined) {
+    logoPunchout.value = data.logo_punchout_background;
+  }
+};
 </script>
 
 <template>
@@ -379,10 +456,15 @@ const testClicks = ref(0);
           <summary>
             <q-r-code
               :redirectId="props.redirectId"
-              :lightColor="lightColor"
-              :darkColor="darkColor"
+              :designId="selectedDesignId"
+              :color="color"
+              :backgroundColor="backgroundColor"
               :logoDataUrl="logoDataUrl"
-              :selectedShape="selectedShape"
+              :logoPunchout="logoPunchout"
+              :blockShape="blockShape"
+              :cornerShape="cornerShape"
+              :cornerDotShape="cornerDotShape"
+              :errorCorrectionLevel="errorCorrectionLevel"
               @update="qrCodeDataURL = $event"
               :loading="(isLoading || loading) && !props.redirectId"
               :fileType="selectedFileType"
@@ -572,86 +654,13 @@ const testClicks = ref(0);
         class="main-grid-display smaller-gap"
         v-show="openTabs.includes('4')"
       >
-        <card-element
-          :loading="isLoading || loading"
-          :title="$t('Code design')"
-          :subtitle="$t('Customise the look of your magic link')"
-          :badges="!subscribed ? [$t('Pro')] : []"
-        >
-          <div :class="{ disabled: !subscribed }">
-            <div class="two-column-grid mobile-grid">
-              <div>
-                <label for="darkColor">{{ $t("Color") }}</label>
-                <input
-                  id="darkColor"
-                  type="color"
-                  v-model="darkColor"
-                  name="darkColor"
-                  :disabled="!subscribed"
-                />
-              </div>
-              <div>
-                <label for="lightColor">{{ $t("Background color") }}</label>
-                <input
-                  id="lightColor"
-                  type="color"
-                  v-model="lightColor"
-                  name="lightColor"
-                  :disabled="!subscribed"
-                />
-              </div>
-            </div>
-
-            <label for="shape">{{ $t("Shape") }}</label>
-            <select
-              name="shape"
-              id="shape"
-              v-model="selectedShape"
-              :disabled="!subscribed"
-            >
-              <option value="square">{{ $t("Square") }}</option>
-              <option value="rounded">{{ $t("Rounded") }}</option>
-              <option value="circle">{{ $t("Circle") }}</option>
-            </select>
-
-            <label for="type">{{ $t("File type") }}</label>
-            <select
-              name="type"
-              id="type"
-              v-model="selectedFileType"
-              :disabled="!subscribed"
-            >
-              <option value="png">{{ $t("PNG") }}</option>
-              <option value="svg">{{ $t("SVG") }}</option>
-            </select>
-          </div>
-
-          <confirms-gate
-            :title="$t('Enable custom designs')"
-            v-if="!subscribed"
-            :description="
-              $t(
-                'Additional destinations and design changes are free after you subscribe.'
-              )
-            "
-            :allowBackgroundClickToClose="false"
-            :gate="[
-              'confirmedEmailOrPhone',
-              {
-                name: 'subscribedRedirect',
-                options: {
-                  redirectId,
-                  title: $t('Enable custom designs'),
-                  submitText: $t('Enable custom designs'),
-                },
-              },
-            ]"
-          >
-            <base-button class="full-width">
-              {{ $t("Enable custom designs") }}</base-button
-            >
-          </confirms-gate>
-        </card-element>
+        <q-r-designs
+          :redirectId="redirectId"
+          :designs="designs"
+          :isLoading="isLoading || loading"
+          :subscribed="subscribed"
+          @input_updated="handleInputUpdated"
+        />
       </div>
       <div
         class="main-grid-display smaller-gap"

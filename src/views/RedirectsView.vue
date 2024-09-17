@@ -2,10 +2,11 @@
 import { ref } from "vue";
 import type { Redirect } from "@/types/redirect";
 import CardElement from "@/components/CardElement.vue";
-import { getRedirectQrCodeUrl, getRedirects } from "@/useRedirects";
+import { getRedirects } from "@/useRedirects";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
+import QRCode from "@/components/QRCode.vue";
 
 const redirects = ref([] as Redirect[]);
 const isLoading = ref(true);
@@ -78,11 +79,24 @@ const redirectBadges = (redirect: Redirect) => {
       :badges="redirectBadges(redirect)"
     >
       <template #headerActions>
-        <img
-          height="64"
-          width="64"
-          :src="getRedirectQrCodeUrl(redirect.uuid)"
-          alt="QR code"
+        <q-r-code
+          class="design-preview__qr"
+          :redirectId="redirect.uuid"
+          :designId="redirect.default_qr_design?.id"
+          :dimensions="64"
+          :errorCorrectionLevel="
+            redirect.default_qr_design?.error_correction_level
+          "
+          :blockShape="redirect.default_qr_design?.block_shape"
+          :cornerDotShape="redirect.default_qr_design?.corner_dot_shape"
+          :cornerShape="redirect.default_qr_design?.corner_shape"
+          :roundBlockSizeMode="
+            redirect.default_qr_design?.round_block_size_mode
+          "
+          :logoPunchout="redirect.default_qr_design?.logo_punchout_background"
+          :backgroundColor="redirect.default_qr_design?.background_color"
+          :color="redirect.default_qr_design?.color"
+          :logoDataUrl="redirect.default_qr_design?.logo"
         />
       </template>
     </card-element>
