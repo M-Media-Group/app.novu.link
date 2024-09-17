@@ -70,6 +70,12 @@ const deleteEndpoint = (event: Event) => {
           <h4>
             {{ design.name || $t("Untitled design") }}
             <base-badge
+              v-if="design.is_scannable === false"
+              aria-label="Design is not scannable"
+            >
+              {{ $t("Not scannable") }}
+            </base-badge>
+            <base-badge
               v-if="design.pivot?.is_default"
               aria-label="Default design"
             >
