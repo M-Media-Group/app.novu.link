@@ -76,28 +76,6 @@ const qrCodeDataURL = ref<string | null>(null);
 
 const qrCode = new QRCodeStyling();
 
-const fetchLogo = async (logoDataUrl: string | null) => {
-  if (!logoDataUrl) return null;
-
-  // If it's already a data URL, return it immediately
-  if (logoDataUrl.startsWith("data:")) return logoDataUrl;
-
-  try {
-    const response = await fetch(logoDataUrl);
-    if (!response.ok) throw new Error("Network response was not ok");
-
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-
-    return new Promise<string>((resolve) => {
-      reader.onload = () => resolve(reader.result as string);
-    });
-  } catch (error) {
-    return null;
-  }
-};
-
 const updateQrCode = async (
   urlToEncode = "",
   color = "#000000",
@@ -194,24 +172,21 @@ const compute2 = async (
   );
 
   if (logoDataUrl) {
-    const fetchedLogo = await fetchLogo(logoDataUrl).catch(() => null);
     // Re-render with the fetched logo
-    if (fetchedLogo) {
-      await updateQrCode(
-        urlToEncode,
-        color,
-        backgroundColor,
-        fetchedLogo, // Fetched logo
-        blockShape,
-        cornerShape,
-        cornerDotShape,
-        dimensions,
-        fileType,
-        errorCorrectionLevel,
-        logoPunchout,
-        true // Logo update flag
-      );
-    }
+    await updateQrCode(
+      urlToEncode,
+      color,
+      backgroundColor,
+      logoDataUrl, // Fetched logo
+      blockShape,
+      cornerShape,
+      cornerDotShape,
+      dimensions,
+      fileType,
+      errorCorrectionLevel,
+      logoPunchout,
+      true // Logo update flag
+    );
   }
 };
 
