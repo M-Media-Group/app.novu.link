@@ -42,8 +42,13 @@ export const getRedirectQrCodeUrl = (redirectId: string) => {
   return `${baseUrl}/api/v1/redirects/${redirectId}/qr`;
 };
 
-export const getRedirectQrCodeDataUrl = (redirectId: string) => {
-  return `${baseUrl}/l/${redirectId}?utm_medium=novu_link_qr_code`;
+export const getRedirectQrCodeDataUrl = (
+  redirectId: string,
+  designId?: string | number
+) => {
+  return `${baseUrl}/l/${redirectId}?utm_medium=novu_link_qr_code${
+    designId ? `&utm_content=design_${designId}` : ""
+  }`;
 };
 
 export const getRedirectUrl = (redirectId: string) => {
