@@ -46,8 +46,8 @@ export const getRedirectQrCodeDataUrl = (
   redirectId: string,
   designId?: string | number
 ) => {
-  return `${baseUrl}/l/${redirectId}?utm_medium=novu_link_qr_code${
-    designId ? `&utm_content=design_${designId}` : ""
+  return `${baseUrl}/l/${redirectId}?nl_qr${
+    designId ? `&nl_d=${designId}` : ""
   }`;
 };
 
