@@ -138,7 +138,7 @@ watch(
 );
 
 const hasSufficientContranstRatio = computed(() => {
-  return getContrastRatio(color.value, backgroundColor.value) >= 4.5;
+  return getContrastRatio(color.value, backgroundColor.value) >= 3;
 });
 
 const getContrastRatio = (color1: HexColor, color2: HexColor) => {
