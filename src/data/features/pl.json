@@ -190,5 +190,11 @@
         "description": "Przekierowania oparte na regułach",
         "category": "Przekierowania oparte na regułach",
         "min_subscription": 1
+    },
+    {
+        "name": "Webhooks",
+        "description": "Wyślij krytyczne zdarzenia do swojego serwera",
+        "category": "API",
+        "min_subscription": 1
     }
 ]

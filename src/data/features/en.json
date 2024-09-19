@@ -190,5 +190,11 @@
         "description": "Rules based redirects",
         "category": "Rules based redirects",
         "min_subscription": 1
+    },
+    {
+        "name": "Webhooks",
+        "description": "Send critical events to your server",
+        "category": "API",
+        "min_subscription": 1
     }
 ]
