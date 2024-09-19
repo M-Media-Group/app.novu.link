@@ -5,7 +5,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
 import { getRedirect } from "@/useRedirects";
-import type { Endpoint, Placement, Redirect } from "@/types/redirect";
+import type { Endpoint, Placement, Redirect, Webhook } from "@/types/redirect";
 import type { QRDesign } from "@/types/qrDesign";
 
 const $bus = useEventsBus();
@@ -35,6 +35,7 @@ const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
 const placements = ref([] as Placement[]);
 const endpoints = ref([] as Endpoint[]);
 const designs = ref([] as QRDesign[]);
+const webhooks = ref([] as Webhook[]);
 const remainingClicks = ref(0);
 
 const getData = () => {
@@ -52,6 +53,7 @@ const getData = () => {
       remainingClicks.value = response.data.remaining_clicks;
       placements.value = response.data.sources ?? [];
       designs.value = response.data.qr_designs ?? [];
+      webhooks.value = response.data.webhooks ?? [];
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -127,6 +129,7 @@ onMounted(() => {
   $bus.$on(eventTypes.deleted_redirect, redirectToCreate);
   $bus.$on(eventTypes.set_active_team, getData);
   $bus.$on(eventTypes.created_qr_design, getData);
+  $bus.$on(eventTypes.created_webhook, getData);
 });
 
 onUnmounted(() => {
@@ -138,6 +141,7 @@ onUnmounted(() => {
   $bus.$off(eventTypes.deleted_redirect, redirectToCreate);
   $bus.$off(eventTypes.set_active_team, getData);
   $bus.$off(eventTypes.created_qr_design, getData);
+  $bus.$off(eventTypes.created_webhook, getData);
 });
 
 const timerLength = 60 * 3;
@@ -190,6 +194,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :endpoints="endpoints"
       :placements="placements"
       :designs="designs"
+      :webhooks="webhooks"
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"

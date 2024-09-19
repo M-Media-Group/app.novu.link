@@ -8,7 +8,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, type Ref, computed, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
-import type { Endpoint, Placement } from "@/types/redirect";
+import type { Endpoint, Placement, Webhook } from "@/types/redirect";
 import type { selectOption } from "@/types/listItem";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
@@ -27,6 +27,8 @@ import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
 import { deleteRedirect, getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
+
+import QRIntegrations from "../QR/QRIntegrations.vue";
 
 const $bus = useEventsBus();
 
@@ -105,6 +107,12 @@ const props = defineProps({
   /** All endpoints */
   endpoints: {
     type: Array as PropType<Endpoint[]>,
+    required: false,
+    default: () => [],
+  },
+
+  webhooks: {
+    type: Array as PropType<Webhook[]>,
     required: false,
     default: () => [],
   },
@@ -600,6 +608,7 @@ const handleInputUpdated = (data: QRDesign) => {
             placements.length > 1
               ? { render: $t('Placements'), id: '3' }
               : undefined,
+            { render: $t('Integrations'), id: '6' },
             { render: $t('Settings'), id: '5' },
           ].filter(Boolean) as selectOption[]
         "
@@ -649,7 +658,6 @@ const handleInputUpdated = (data: QRDesign) => {
           :subscribed="subscribed"
         />
       </div>
-
       <div
         class="main-grid-display smaller-gap"
         v-show="openTabs.includes('4')"
@@ -660,6 +668,17 @@ const handleInputUpdated = (data: QRDesign) => {
           :isLoading="isLoading || loading"
           :subscribed="subscribed"
           @input_updated="handleInputUpdated"
+        />
+      </div>
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('6')"
+      >
+        <q-r-integrations
+          :redirectId="redirectId"
+          :isLoading="isLoading || loading"
+          :subscribed="subscribed"
+          :webhooks="webhooks"
         />
       </div>
       <div

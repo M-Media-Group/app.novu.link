@@ -337,3 +337,7 @@ nav.qr-design-nav>ul>li {
 .design-card header {
     margin-bottom: 0;
 }
+
+nav.tab-nav li {
+    text-wrap: nowrap;
+}

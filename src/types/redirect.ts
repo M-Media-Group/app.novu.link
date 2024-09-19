@@ -15,6 +15,7 @@ export interface Redirect {
   sources?: Placement[];
   qr_designs?: QRDesign[];
   default_qr_design?: QRDesign;
+  webhooks?: Webhook[];
   subscribed_at: Date | null;
   remaining_clicks: number;
 }
@@ -71,4 +72,16 @@ export interface Placement {
   can_scrape: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface Webhook {
+  id: number;
+  redirect_uuid: string;
+  user_id: number;
+  url: string;
+  secret: string;
+  event_types: string[];
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
 }

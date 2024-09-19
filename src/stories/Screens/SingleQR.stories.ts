@@ -14,6 +14,19 @@ const meta: Meta<typeof SingleQR> = {
     redirectId: "123",
     redirectName: "Test Redirect",
   },
+
+  parameters: {
+    mockData: [
+      {
+        url: "/api/v1/webhooks/events",
+        method: "GET",
+        status: 200,
+        response: {
+          data: ["test"],
+        },
+      },
+    ],
+  },
 };
 
 export default meta;

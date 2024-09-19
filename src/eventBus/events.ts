@@ -37,6 +37,9 @@ export enum eventTypes {
   created_qr_design = "created_qr_design",
   updated_qr_design = "updated_qr_design",
   deleted_qr_design = "deleted_qr_design",
+  created_webhook = "created_webhook",
+  updated_webhook = "updated_webhook",
+  deleted_webhook = "deleted_webhook",
 }
 
 type EventsObject = { [P in eventTypes]?: any };

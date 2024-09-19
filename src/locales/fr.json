@@ -387,5 +387,14 @@
     "Updated": "Mis à jour",
     "Delete design": "Supprimer le design",
     "Not scannable": "Non scannable",
-    "Edit URL": "Modifier l'URL"
+    "Edit URL": "Modifier l'URL",
+    "Integrations": "Intégrations",
+    "Enable integrations": "Activer les intégrations",
+    "Webhooks": "Webhooks",
+    "Your webhooks": "Vos webhooks",
+    "Send data to your server when a QR code is scanned": "Envoyez des données à votre serveur lorsqu'un code QR est scanné",
+    "View details": "Voir les détails",
+    "Secret": "Secret",
+    "Events": "Événements",
+    "Webhook URL": "URL du webhook"
 }
