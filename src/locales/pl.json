@@ -396,5 +396,12 @@
     "View details": "Zobacz szczegóły",
     "Secret": "Sekret",
     "Events": "Zdarzenia",
-    "Webhook URL": "URL webhooka"
+    "Webhook URL": "URL webhooka",
+    "Dangerous link": "Link niebezpieczny",
+    "This link is dangerous.": "Ten link jest niebezpieczny.",
+    "Link Not Safe for Work": "Link niebezpieczny dla pracy",
+    "This link contains porn, nudity, violence, or other NSFW content.": "Ten link zawiera pornografię, nagie zdjęcia, przemoc lub inne treści NSFW.",
+    "NSFW link": "Link NSFW",
+    "You can continue to the link at your own risk, or go back to safety.": "Możesz kontynuować do linku na własne ryzyko lub wrócić do bezpieczeństwa.",
+    "Continue to the link": "Kontynuuj do linku"
 }

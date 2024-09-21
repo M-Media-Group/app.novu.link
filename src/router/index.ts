@@ -170,6 +170,19 @@ const router = createRouter({
       component: () => import("../views/UnsafeRedirectView.vue"),
     },
     {
+      path: "/warnings/link-nsfw",
+      name: "nsfw-redirect",
+      component: () => import("../views/NsfwRedirectView.vue"),
+      // This path requires a redirectTo query parameter. If it is not present, redirect to the home page.
+      beforeEnter(to: any, from: any, next: any) {
+        if (to.query.redirectTo) {
+          next();
+        } else {
+          next({ name: "home" });
+        }
+      },
+    },
+    {
       path: "/sitemap",
       name: "sitemap",
       component: () => import("../views/SitemapView.vue"),
@@ -190,10 +203,6 @@ const router = createRouter({
       return { top: 72 };
     }
   },
-});
-
-router.beforeEach(() => {
-  navIsLoading.value = true;
 });
 
 router.afterEach((to, from, failure) => {

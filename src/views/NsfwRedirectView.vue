@@ -5,21 +5,35 @@ import image from "@/assets/undraw_team_spirit_re_yl1v.svg";
 import { setFollow } from "@m-media/vue3-meta-tags";
 
 setFollow(false);
+
+// Get the redirectTo query parameter
+const redirectTo = new URLSearchParams(window.location.search).get(
+  "redirectTo"
+);
+
+// If no redirectTo query parameter is present, redirect to the homepage
+if (!redirectTo) {
+  window.location.href = "/";
+}
 </script>
 <template>
   <div>
     <hgroup>
-      <h1>{{ $t("Link disabled") }}</h1>
+      <h1>{{ $t("Link Not Safe for Work") }}</h1>
       <p>
-        {{ $t("This link is dangerous.") }}
+        {{
+          $t(
+            "This link contains porn, nudity, violence, or other NSFW content."
+          )
+        }}
       </p>
     </hgroup>
     <div class="two-column-grid">
-      <card-element :title="$t('Dangerous link')">
+      <card-element :title="$t('NSFW link')" :subtitle="redirectTo ?? ''">
         <p>
           {{
             $t(
-              "This link has been disabled for your safety because it has been detected as phishing, malware, spyware, ransomware, or adware."
+              "You can continue to the link at your own risk, or go back to safety."
             )
           }}
         </p>
@@ -27,9 +41,9 @@ setFollow(false);
           <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
           <base-button
             class="secondary"
-            href="https://blog.novu.link/disabled-links-for-safety/"
-            target="_blank"
-            >{{ $t("Learn more") }}</base-button
+            :href="redirectTo"
+            rel="noopener noreferrer"
+            >{{ $t("Continue to the link") }}</base-button
           >
         </div>
       </card-element>
