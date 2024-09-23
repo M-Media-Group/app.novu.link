@@ -9,7 +9,7 @@ const isOnOtpPage = ref(false);
 
 const otpCode = ref("");
 const isLoading = ref(false);
-const usePhone = ref(true);
+const usePhone = ref(false);
 
 /** The number of seconds to wait before the user can request a new OTP */
 const secondsBetweenOtpRequests = 35;

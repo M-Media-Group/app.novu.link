@@ -4,6 +4,9 @@ import router from "@/router";
 import { ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import LinkReady from "@/assets/linkReady.png";
+import { loadData } from "@/helpers/dataLoader";
+import { watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const redirect = () => {
   // Redirect to the home page
@@ -35,29 +38,68 @@ const convertSecondsToMinutes = (seconds: number) => {
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
+
+const { locale } = useI18n();
+
+const featureData = ref([] as any[]);
+
+watch(
+  locale,
+  async (newLocale) => {
+    featureData.value = await loadData("features", newLocale);
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 <template>
   <div class="main-grid-display">
     <img height="240" width="240" :src="LinkReady" alt="Link Ready" />
-    <h1>
-      {{
-        $t("Link ready to use. time left to claim it.", {
-          time: convertSecondsToMinutes(timer),
-        })
-      }}
-    </h1>
+    <hgroup>
+      <h1>
+        {{
+          $t("Link ready to use. Sign up free in time to claim it.", {
+            time: convertSecondsToMinutes(timer),
+          })
+        }}
+      </h1>
+      <p>
+        {{
+          $t(
+            "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now."
+          )
+        }}
+      </p>
+    </hgroup>
     <progress :value="timer" :max="timerLength" />
 
-    <p>
-      {{
-        $t(
-          "To change where your magic link goes to, add more endpoints, and customise the design, confirm your contact now."
-        )
-      }}
-    </p>
     <card-element :titleHeadingLevel="2">
       <otp-login-or-register @success="redirect" />
     </card-element>
+
+    <section>
+      <hgroup>
+        <h2>{{ $t("Jam packed with features") }}</h2>
+        <p>
+          {{
+            $t(
+              "Across industries, our truly dynamic and automated QR codes are the best way to connect with your audience."
+            )
+          }}
+        </p>
+      </hgroup>
+      <div class="three-column-grid">
+        <card-element
+          v-for="feature in featureData"
+          :key="feature.id"
+          :title="feature.name"
+          :subtitle="feature.description"
+          :badges="feature.min_subscription === 0 ? [$t('Free')] : []"
+          class="height-100"
+        />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -71,5 +113,9 @@ img {
   margin: 0 auto;
 
   border-radius: var(--pico-border-radius);
+}
+
+section {
+  margin-top: calc(var(--pico-spacing) * 3);
 }
 </style>
