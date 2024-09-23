@@ -7,6 +7,7 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { formatUrl } from "@/helpers/urlFormatter";
 import { debounce } from "@/helpers/debounce";
+import { useTeamStore } from "@/stores/team";
 
 const $bus = useEventsBus();
 
@@ -48,6 +49,10 @@ const randomName = () => {
 };
 
 randomName();
+
+const teamStore = useTeamStore();
+
+const isAuthenticated = !!teamStore.activeTeam;
 
 const props = defineProps({
   /** If the form should autofocus */
@@ -123,6 +128,10 @@ const submitForm = async () => {
     });
 
   if (response.status === 201) {
+    // If the redirect was created when we were not logged in - set a 5 minute cookie
+    if (!isAuthenticated) {
+      document.cookie = `created_when_not_logged_in=${response.data.uuid}; max-age=300`;
+    }
     baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_redirect);
 

@@ -138,6 +138,9 @@ const router = createRouter({
       component: () => import("../views/SingleRedirectView.vue"),
       // Pass the props to the component
       props: true,
+      meta: {
+        gates: ["auth"],
+      },
     },
     {
       path: "/redirects/:redirectId/endpoints/add",

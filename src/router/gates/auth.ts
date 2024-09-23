@@ -16,8 +16,10 @@ export default class extends baseGate {
 
   route(): false | RouteLocationRaw {
     // If the route was supposed to be login-otp, we should redirect to login-otp, else just login
+    // If we have a cookie created_when_not_logged_in and the user is not authenticated, we should redirect to login-otp
+    const hasCookie = document.cookie.includes("created_when_not_logged_in");
     return {
-      name: "login-otp",
+      name: hasCookie ? "login-otp" : "login",
     };
   }
 }
