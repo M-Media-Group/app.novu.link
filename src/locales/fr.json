@@ -405,5 +405,7 @@
     "You can continue to the link at your own risk, or go back to safety.": "Vous pouvez continuer vers le lien à vos propres risques, ou revenir à la sécurité.",
     "Continue to the link": "Continuer vers le lien",
     "Link ready to use. Sign up free in time to claim it.": "Lien prêt à être utilisé. Inscrivez-vous gratuitement dans {time} pour le récupérer.",
-    "Free": "Gratuite"
+    "Free": "Gratuite",
+    "Magic link deleted successfully.": "Le lien magique a été supprimé avec succès.",
+    "Destination deleted successfully.": "La destination a été supprimée avec succès."
 }

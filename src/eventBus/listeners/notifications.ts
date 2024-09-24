@@ -197,10 +197,26 @@ export default {
       5000
     ).show();
   },
+  [eventTypes.deleted_redirect]: () => {
+    new CustomNotification(
+      "success",
+      t("Magic link deleted successfully."),
+      ["browser"],
+      5000
+    ).show();
+  },
   [eventTypes.created_endpoint]: () => {
     new CustomNotification(
       "success",
       t("Destination added successfully."),
+      ["browser"],
+      5000
+    ).show();
+  },
+  [eventTypes.deleted_endpoint]: () => {
+    new CustomNotification(
+      "success",
+      t("Destination deleted successfully."),
       ["browser"],
       5000
     ).show();

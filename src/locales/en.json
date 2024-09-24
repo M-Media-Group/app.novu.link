@@ -405,5 +405,7 @@
     "You can continue to the link at your own risk, or go back to safety.": "You can continue to the link at your own risk, or go back to safety.",
     "Continue to the link": "Continue to the link",
     "Link ready to use. Sign up free in time to claim it.": "Link ready to use. Sign up free in {time} to claim it.",
-    "Free": "Free"
+    "Free": "Free",
+    "Magic link deleted successfully.": "Magic link deleted successfully.",
+    "Destination deleted successfully.": "Destination deleted successfully."
 }
