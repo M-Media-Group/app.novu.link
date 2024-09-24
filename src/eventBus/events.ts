@@ -30,6 +30,7 @@ export enum eventTypes {
   updated_redirect = "updated_redirect",
   updated_endpoint = "updated_endpoint",
   copied_redirect = "copied_redirect",
+  tested_redirect = "tested_redirect",
   deleted_redirect = "deleted_redirect",
   downloaded_redirect_qr_code = "downloaded_redirect_qr_code",
   sent_otp = "sent_otp",

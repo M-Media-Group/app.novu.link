@@ -445,6 +445,11 @@ const handleInputUpdated = (data: QRDesign) => {
     logoPunchout.value = data.logo_punchout_background;
   }
 };
+
+const testLink = () => {
+  testClicks.value++;
+  $bus.$emit(eventTypes.tested_redirect);
+};
 </script>
 
 <template>
@@ -494,7 +499,7 @@ const handleInputUpdated = (data: QRDesign) => {
               <a href="#" v-else>{{ $t("Copied!") }}</a>
             </li>
             <li v-if="magicLink">
-              <a :href="magicLink" target="_blank" @click="testClicks++">{{
+              <a :href="magicLink" target="_blank" @click="testLink">{{
                 $t("Test link")
               }}</a>
             </li>
@@ -530,7 +535,7 @@ const handleInputUpdated = (data: QRDesign) => {
             :href="magicLink"
             target="_blank"
             class="full-width"
-            @click="testClicks++"
+            @click="testLink"
             >{{ $t("Test link") }}</base-button
           >
         </template>

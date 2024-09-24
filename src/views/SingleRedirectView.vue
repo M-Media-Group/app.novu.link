@@ -112,6 +112,11 @@ const redirectToCreate = () => {
   router.push("/redirects/create");
 };
 
+const incrementClicks = () => {
+  clicksToday.value += 1;
+  clicksAllTime.value += 1;
+};
+
 onMounted(() => {
   if (!teamStore.activeTeam) {
     isLoading.value = false;
@@ -130,6 +135,7 @@ onMounted(() => {
   $bus.$on(eventTypes.set_active_team, getData);
   $bus.$on(eventTypes.created_qr_design, getData);
   $bus.$on(eventTypes.created_webhook, getData);
+  $bus.$on(eventTypes.tested_redirect, incrementClicks);
 });
 
 onUnmounted(() => {
@@ -142,6 +148,7 @@ onUnmounted(() => {
   $bus.$off(eventTypes.set_active_team, getData);
   $bus.$off(eventTypes.created_qr_design, getData);
   $bus.$off(eventTypes.created_webhook, getData);
+  $bus.$off(eventTypes.tested_redirect, incrementClicks);
 });
 
 const timerLength = 60 * 3;
