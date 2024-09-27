@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BaseForm from "@/forms/BaseForm.vue";
-import { ref } from "vue";
+import { type PropType, ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
@@ -91,6 +91,12 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+
+  /** Any additional classes to apply to the button */
+  buttonClasses: {
+    type: Array as PropType<string[] | null>,
+    default: null,
+  },
 });
 
 if (props.prefillName) {
@@ -165,6 +171,7 @@ if (props.defaultEndpointValue !== "") {
     ref="baseFormRef"
     :isLoading="isLoading"
     :inline="inline"
+    :submitButtonClasses="buttonClasses"
   >
     <template v-if="showNameInput">
       <label for="name" v-show="!inline">{{ $t("Magic link name") }}</label

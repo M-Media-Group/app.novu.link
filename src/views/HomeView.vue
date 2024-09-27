@@ -2,10 +2,12 @@
 import CreateRedirect from "@/forms/CreateRedirect.vue";
 import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
-import { provide, ref, watch } from "vue";
+import { onMounted, provide, ref, watch } from "vue";
 import image from "@/assets/undraw_share_link.svg";
 import TabNav from "@/components/TabNav.vue";
 import { assetUrl, loadData } from "@/helpers/dataLoader";
+import axios from "axios";
+import type { QRDesign } from "@/types/qrDesign";
 
 const { locale } = useI18n();
 
@@ -49,14 +51,34 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
   }));
 };
 
+const logos = ref([] as QRDesign[]);
+
+const getLogos = async () => {
+  const results = await axios.get("/qr-designs/logos").catch((error) => {
+    console.error(error);
+  });
+
+  if (results) {
+    return results.data;
+  }
+};
+
+onMounted(async () => {
+  logos.value = await getLogos();
+});
+
 provide("showExpandedFooter", true);
 </script>
 
 <template>
-  <section id="externalLinks" class="two-column-grid hero-section">
+  <section
+    id="externalLinks"
+    class="two-column-grid hero-section hero-b fulscreen-width-container"
+    data-theme="light"
+  >
     <hgroup>
-      <h1>{{ $t("Solve QR codes forever") }}</h1>
-      <p>
+      <h1 data-theme="dark">{{ $t("Solve QR codes forever") }}</h1>
+      <p data-theme="dark">
         {{
           $t(
             `The hardest thing with QR codes and links is changing them after they're printed. We've fixed that.`
@@ -67,10 +89,23 @@ provide("showExpandedFooter", true);
         :autofocus="false"
         :showNameInput="false"
         :inline="true"
+        :buttonClasses="['contrast']"
       ></create-redirect>
     </hgroup>
 
     <img :src="image" alt="Link shortener" />
+    <div>
+      <small>🔐 {{ $t("Trusted to link to:") }}</small>
+      <div class="image-scroller">
+        <img
+          v-for="logo in logos"
+          :key="logo.id"
+          :src="logo.logo!"
+          alt="Logo"
+          loading="lazy"
+        />
+      </div>
+    </div>
   </section>
 
   <section id="testimonials">
@@ -94,7 +129,7 @@ provide("showExpandedFooter", true);
     </ul>
   </section>
 
-  <section id="goodPoints">
+  <section id="goodPoints" class="fulscreen-width-container" data-theme="light">
     <hgroup>
       <h2>{{ $t("How Novu.Link does even more") }}</h2>
       <p>
@@ -156,7 +191,7 @@ provide("showExpandedFooter", true);
     </div>
   </section>
 
-  <section id="features">
+  <section id="features" class="fulscreen-width-container">
     <h2>{{ $t("Features") }}</h2>
     <table>
       <thead>
@@ -170,7 +205,8 @@ provide("showExpandedFooter", true);
         <tr v-for="feature in featureData" :key="feature.id">
           <td>
             {{ feature.name }}
-            <span :data-tooltip="feature.description">?</span>
+            <br />
+            <small class="muted">{{ feature.description }}</small>
           </td>
           <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
           <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
@@ -191,7 +227,7 @@ provide("showExpandedFooter", true);
   </section>
 
   <!-- Get started section -->
-  <section id="getStarted">
+  <section id="getStarted" class="fulscreen-width-container" data-theme="dark">
     <hgroup>
       <h2>{{ $t("Get started") }}</h2>
       <p>
@@ -270,5 +306,93 @@ img {
   border-top-color: var(--pico-primary-color);
   border-top: calc(var(--pico-border-width) * 4) solid var(--pico-primary);
   border-radius: var(--pico-border-radius);
+}
+
+div.image-scroller {
+  overflow-x: auto;
+  display: flex;
+  height: 40px;
+
+  gap: var(--pico-spacing);
+  > img {
+    flex: 1;
+    height: 40px;
+    object-fit: contain;
+    aspect-ratio: 1;
+    margin: 0 auto;
+  }
+}
+
+.hero-b {
+  /* margin-left: calc(var(--pico-spacing) * -1);
+  padding-left: 3rem;
+  padding-right: 3rem; */
+  background-color: var(--pico-primary);
+  margin-top: -1rem;
+
+  --pico-color: var(--pico-primary-inverse);
+  --pico-muted-color: var(--pico-color);
+
+  & [data-theme="dark"] {
+    --pico-color: var(--pico-primary-inverse);
+    --pico-muted-color: var(--pico-color);
+  }
+
+  & small {
+    color: var(--pico-muted-color);
+  }
+}
+
+#testimonials {
+  & li {
+    margin-bottom: 0;
+  }
+}
+
+section {
+  padding-top: calc(
+    var(--pico-block-spacing-vertical) * 3 + var(--pico-spacing)
+  );
+}
+
+#faq,
+#pricing {
+  padding-top: 0;
+}
+
+#features {
+  background-color: var(--pico-contrast);
+  color: var(--pico-contrast-inverse);
+  & *:not(input, button, code, small) {
+    color: var(--pico-contrast-inverse);
+  }
+
+  & table,
+  td,
+  th {
+    background-color: var(--pico-contrast);
+  }
+}
+
+#goodPoints,
+#getStarted {
+  background: var(--pico-mark-background-color);
+}
+
+#features,
+#getStarted {
+  padding-bottom: calc(var(--pico-spacing) * 3);
+}
+
+#goodPoints {
+  --pico-muted-color: var(--pico-contrast);
+}
+
+#getStarted {
+  margin-bottom: 0;
+
+  & p {
+    color: var(--pico-h2-color);
+  }
 }
 </style>

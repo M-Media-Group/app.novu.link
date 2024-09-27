@@ -54,8 +54,8 @@ watch(
 );
 </script>
 <template>
-  <div class="main-grid-display">
-    <img height="240" width="240" :src="LinkReady" alt="Link Ready" />
+  <section class="main-grid-display smaller-gap">
+    <img height="200" width="200" :src="LinkReady" alt="Link Ready" />
     <hgroup>
       <h1>
         {{
@@ -77,45 +77,40 @@ watch(
     <card-element :titleHeadingLevel="2">
       <otp-login-or-register @success="redirect" />
     </card-element>
-
-    <section>
-      <hgroup>
-        <h2>{{ $t("Jam packed with features") }}</h2>
-        <p>
-          {{
-            $t(
-              "Across industries, our truly dynamic and automated QR codes are the best way to connect with your audience."
-            )
-          }}
-        </p>
-      </hgroup>
-      <div class="three-column-grid">
-        <card-element
-          v-for="feature in featureData"
-          :key="feature.id"
-          :title="feature.name"
-          :subtitle="feature.description"
-          :badges="feature.min_subscription === 0 ? [$t('Free')] : []"
-          class="height-100"
-        />
-      </div>
-    </section>
-  </div>
+  </section>
+  <section>
+    <hgroup>
+      <h2>{{ $t("Jam packed with features") }}</h2>
+      <p>
+        {{
+          $t(
+            "Across industries, our truly dynamic and automated QR codes are the best way to connect with your audience."
+          )
+        }}
+      </p>
+    </hgroup>
+    <div class="three-column-grid">
+      <card-element
+        v-for="feature in featureData"
+        :key="feature.id"
+        :title="feature.name"
+        :subtitle="feature.description"
+        :badges="feature.min_subscription === 0 ? [$t('Free')] : []"
+        class="height-100"
+      />
+    </div>
+  </section>
 </template>
 
 <style scoped>
 /* The image should be 100% to a maximum of 400px */
 img {
-  min-height: 240px;
+  min-height: 200px;
   max-height: 40dvh;
   aspect-ratio: 1;
 
   margin: 0 auto;
 
   border-radius: var(--pico-border-radius);
-}
-
-section {
-  margin-top: calc(var(--pico-spacing) * 3);
 }
 </style>

@@ -345,3 +345,11 @@ nav.qr-design-nav>ul>li {
 nav.tab-nav li {
     text-wrap: nowrap;
 }
+
+.fulscreen-width-container {
+    width: 100vw;
+
+    margin-left: calc((100vw - 100%) / -2);
+    padding-left: calc((100vw - 100%) / 2);
+    padding-right: calc((100vw - 100%) / 2);
+}
