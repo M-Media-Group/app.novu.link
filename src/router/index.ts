@@ -17,6 +17,7 @@ const router = createRouter({
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Home",
         scrollPosition: { top: 0, left: 0 },
+        expandedFooter: true,
       },
       component: () => import("../views/HomeView.vue"),
     },
@@ -27,6 +28,7 @@ const router = createRouter({
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Pricing",
         scrollPosition: { top: 0, left: 0 },
+        expandedFooter: true,
       },
       component: () => import("../views/PricingView.vue"),
     },
@@ -37,6 +39,7 @@ const router = createRouter({
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Features",
         scrollPosition: { top: 0, left: 0 },
+        expandedFooter: true,
       },
       component: () => import("../views/FeaturesView.vue"),
     },
@@ -47,6 +50,7 @@ const router = createRouter({
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Testimonials",
         scrollPosition: { top: 0, left: 0 },
+        expandedFooter: true,
       },
       component: () => import("../views/TestimonialsView.vue"),
     },
@@ -57,6 +61,7 @@ const router = createRouter({
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Restaurants",
         scrollPosition: { top: 0, left: 0 },
+        expandedFooter: true,
       },
       component: () => import("../views/RestaurantView.vue"),
     },
@@ -67,6 +72,7 @@ const router = createRouter({
         // Notice how we pass the translation key rather than the actual string. This is because Vue Router will cache our meta, so if we just passed the translated string it would not update on language change.
         title: "Real Estate",
         scrollPosition: { top: 0, left: 0 },
+        expandedFooter: true,
       },
       component: () => import("../views/RealEstateView.vue"),
     },

@@ -21,6 +21,13 @@ const props = defineProps({
     type: String,
     required: false,
   },
+  /**
+   * Wether to show the delete button or not
+   */
+  showDelete: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const url = ref(props.currentUrl);
@@ -102,13 +109,13 @@ const deleteEndpoint = async () => {
       data-hj-allow=""
       v-model="url"
       required
-      pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
+      pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?(\?.*)?(#.*)?"
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "
     />
     <!-- </TransitionGroup> -->
-    <template #after-submit>
+    <template #after-submit v-if="showDelete">
       <!-- Delete endpoint a tag -->
       <a href="#" @click.prevent="deleteEndpoint" class="delete">
         {{ $t("Delete destination") }}

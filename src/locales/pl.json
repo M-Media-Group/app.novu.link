@@ -408,5 +408,6 @@
     "Free": "Darmowy",
     "Magic link deleted successfully.": "Magiczny link został pomyślnie usunięty.",
     "Destination deleted successfully.": "Destynacja została pomyślnie usunięta.",
-    "Trusted to link to:": "Zaufany do linkowania do:"
+    "Trusted to link to:": "Zaufany do linkowania do:",
+    "Are you sure you want to delete this magic link?": "Czy na pewno chcesz usunąć ten magiczny link?"
 }

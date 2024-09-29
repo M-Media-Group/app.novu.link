@@ -69,3 +69,15 @@ export const OpenWithOverflow: Story = {
     // expectTextNotOverflowing(summary);
   },
 };
+
+export const AccordionInAccordion: Story = {
+  args: {
+    title: "Parent Accordion",
+    optionText: "This is a parent accordion",
+  },
+  render: ({ title, open, optionText }) => ({
+    template: `<details ${
+      open ? "open" : ""
+    }><summary>${title}</summary><details><summary>Child Accordion</summary><p>${optionText}</p></details><details><summary>Child Accordion 2</summary><p>${optionText}</p></details></details>`,
+  }),
+};

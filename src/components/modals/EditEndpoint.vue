@@ -18,6 +18,10 @@ defineProps({
     type: String,
     required: false,
   },
+  showDelete: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const modal = ref();
@@ -52,6 +56,7 @@ const handleConfirmed = () => {
         :endpointId="endpointId"
         :currentUrl="currentUrl"
         @success="handleConfirmed"
+        :showDelete="showDelete"
       />
     </base-modal>
   </span>

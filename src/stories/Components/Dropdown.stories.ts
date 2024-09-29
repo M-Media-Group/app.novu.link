@@ -184,3 +184,167 @@ export const WithCheckboxes: Story = {
     });
   },
 };
+
+export const DropdownInDropdown: Story = {
+  render: ({ optionText }) => ({
+    template: `
+  <summary>
+    Select a phase of matter...
+  </summary>
+  <ul>
+    <li>
+      <label>
+        <input type="radio" name="phase" value="solid" />
+        Solid
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="radio" name="phase" value="liquid" />
+        Liquid
+      </label>
+    </li>
+    <li>
+      <details>
+        <summary>
+          ${optionText}
+        </summary>
+        <ul>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="gas" />
+              Gas
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="plasma" />
+              Plasma
+            </label>
+          </li>
+        </ul>
+      </details>
+    </li>
+        <li>
+      <details>
+        <summary>
+          ${optionText} 2
+        </summary>
+        <ul>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="gas" />
+              Gas
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="plasma" />
+              Plasma
+            </label>
+          </li>
+        </ul>
+      </details>
+    </li>
+  </ul>`,
+  }),
+};
+
+export const DropdownInDropdownDirectChildren: Story = {
+  render: ({ optionText }) => ({
+    template: `
+  <summary>
+    Select a phase of matter...
+  </summary>
+
+      <details>
+        <summary>
+          ${optionText}
+        </summary>
+        <ul>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="gas" />
+              Gas
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="plasma" />
+              Plasma
+            </label>
+          </li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>
+          ${optionText} 2
+        </summary>
+        <ul>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="gas" />
+              Gas
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="plasma" />
+              Plasma
+            </label>
+          </li>
+        </ul>
+      </details>`,
+  }),
+};
+
+export const DropdownAndAccordion: Story = {
+  render: ({ optionText }) => ({
+    template: `
+  <summary>
+    Select a phase of matter...
+  </summary>
+  <ul>
+    <li>
+      <label>
+        <input type="radio" name="phase" value="solid" />
+        Solid
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="radio" name="phase" value="liquid" />
+        Liquid
+      </label>
+    </li>
+    <li>
+      <details>
+        <summary>
+          ${optionText}
+        </summary>
+        <ul>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="gas" />
+              Gas
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="phase" value="plasma" />
+              Plasma
+            </label>
+          </li>
+        </ul>
+      </details>
+    </li>
+  </ul>
+  <details>
+    <summary>
+      Accordion
+    </summary>
+    <p>Accordion content</p>
+  </details>`,
+  }),
+};
