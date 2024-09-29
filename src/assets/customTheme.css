@@ -315,6 +315,17 @@ img {
     --pico-border-color: var(--pico-del-color);
 }
 
+button.delete {
+    --pico-color: var(--pico-del-color);
+    --pico-background-color: transparent;
+
+    &:hover {
+        --pico-color: white;
+        --pico-background-color: var(--pico-del-color);
+        --pico-border-color: var(--pico-del-color);
+    }
+}
+
 a.delete {
     --pico-underline: var(--pico-color);
 }

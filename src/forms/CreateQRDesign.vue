@@ -94,7 +94,7 @@ const submitForm = async () => {
       return error.response;
     });
 
-  if (response.status === 201) {
+  if (response?.status === 201) {
     // Emit the updated event with the changed fields
     emit("success");
     baseFormRef.value.setSuccessOnInputs();

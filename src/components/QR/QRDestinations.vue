@@ -55,6 +55,14 @@ const getClickPercentage = (endpoint: Endpoint) => {
     ? 0
     : Math.round((totalClicks / totalClicksForAllEndpoints) * 100);
 };
+
+const isDefaultEndpoint = (endpoint: Endpoint) => {
+  return (
+    !endpoint.rule_groups ||
+    endpoint.rule_groups.length === 0 ||
+    !endpoint.rule_groups[0]
+  );
+};
 </script>
 <template>
   <template v-if="isLoading">
@@ -89,6 +97,7 @@ const getClickPercentage = (endpoint: Endpoint) => {
       :redirectId="endpoint.redirect_uuid"
       :endpointId="endpoint.id"
       :currentUrl="endpoint.endpoint"
+      :showDelete="!isDefaultEndpoint(endpoint)"
     >
       <card-element
         :loading="isLoading"

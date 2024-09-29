@@ -409,5 +409,6 @@
     "Magic link deleted successfully.": "Le lien magique a été supprimé avec succès.",
     "Destination deleted successfully.": "La destination a été supprimée avec succès.",
     "Trusted to link to:": "Digne de confiance pour lier à :",
-    "Are you sure you want to delete this magic link?": "Etes-vous sûr de vouloir supprimer ce lien magique ?"
+    "Are you sure you want to delete this magic link?": "Etes-vous sûr de vouloir supprimer ce lien magique ?",
+    "This action cannot be undone.": "Cette action ne peut pas être annulée."
 }

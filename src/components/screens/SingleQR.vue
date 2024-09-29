@@ -19,6 +19,8 @@ import QRDesigns from "@/components/QR/QRDesigns.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
+import BaseModal from "@/components/modals/BaseModal.vue";
+
 import type { FileExtension } from "qr-code-styling";
 import { isError } from "@/helpers/httpCodes";
 import type { HexColor, QRDesign } from "@/types/qrDesign";
@@ -762,9 +764,22 @@ const testLink = () => {
               )
             }}
           </p>
-          <base-button v-else class="outline" @click="deleteCurrentRedirect">{{
-            $t("Delete forever")
-          }}</base-button>
+          <base-modal
+            v-else
+            :title="$t('Delete Magic Link')"
+            :description="
+              $t('Are you sure you want to delete this magic link?')
+            "
+            :triggerClasses="['delete']"
+          >
+            <p>{{ $t("This action cannot be undone.") }}</p>
+            <template #footer="{ closeModal }">
+              <base-button @click="closeModal">{{ $t("Cancel") }}</base-button>
+              <base-button class="delete" @click="deleteCurrentRedirect">{{
+                $t("Delete forever")
+              }}</base-button>
+            </template>
+          </base-modal>
         </card-element>
       </div>
     </div>
