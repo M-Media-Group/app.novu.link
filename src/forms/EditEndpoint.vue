@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, ref } from "vue";
+import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { debounce } from "@/helpers/debounce";
 import { formatUrl } from "@/helpers/urlFormatter";
@@ -14,7 +14,7 @@ const props = defineProps({
     required: true,
   },
   endpointId: {
-    type: String as PropType<string | number>,
+    type: Number,
     required: true,
   },
   currentUrl: {

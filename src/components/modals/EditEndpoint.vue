@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, ref } from "vue";
+import { ref } from "vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import EditEndpoint from "@/forms/EditEndpoint.vue";
 
@@ -11,7 +11,7 @@ defineProps({
     required: true,
   },
   endpointId: {
-    type: String as PropType<string | number>,
+    type: Number,
     required: true,
   },
   currentUrl: {
