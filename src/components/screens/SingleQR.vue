@@ -766,10 +766,8 @@ const testLink = () => {
           </p>
           <base-modal
             v-else
-            :title="$t('Delete Magic Link')"
-            :description="
-              $t('Are you sure you want to delete this magic link?')
-            "
+            :triggerText="$t('Delete Magic Link')"
+            :title="$t('Are you sure you want to delete this magic link?')"
             :triggerClasses="['delete']"
           >
             <p>{{ $t("This action cannot be undone.") }}</p>
