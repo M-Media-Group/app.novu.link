@@ -433,5 +433,6 @@
     "total": "total",
     "Triggered": "Déclenché",
     "pending": "en attente",
-    "resolved": "résolu"
+    "resolved": "résolu",
+    "Enable alerts": "Activer les alertes"
 }

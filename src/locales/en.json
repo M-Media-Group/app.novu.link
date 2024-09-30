@@ -435,5 +435,6 @@
     "total": "total",
     "Triggered": "Triggered",
     "pending": "pending",
-    "resolved": "resolved"
+    "resolved": "resolved",
+    "Enable alerts": "Enable alerts"
 }

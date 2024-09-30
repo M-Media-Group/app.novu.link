@@ -5,6 +5,8 @@ import BaseForm from "./BaseForm.vue";
 import axios from "axios";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { formatMinutes } from "@/helpers/relativeTime";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const props = defineProps({
   /** If the form should autofocus */
@@ -158,7 +160,38 @@ const localeTime = computed(() => {
         )
       }}
     </small>
-
+    <template #submit="{ disabled, isLoading, submitText }">
+      <confirms-gate
+        :title="$t('Enable alerts')"
+        @confirmed="submitForm"
+        :description="
+          $t(
+            'Additional destinations and design changes are free after you subscribe.'
+          )
+        "
+        :allowBackgroundClickToClose="false"
+        :gate="[
+          'confirmedEmailOrPhone',
+          {
+            name: 'subscribedRedirect',
+            options: {
+              redirectId,
+              title: $t('Enable alerts'),
+              submitText: $t('Enable alerts'),
+            },
+          },
+        ]"
+      >
+        <base-button
+          class="full-width"
+          :disabled="disabled"
+          :aria-busy="isLoading"
+          type="submit"
+        >
+          {{ $t(submitText) }}</base-button
+        >
+      </confirms-gate>
+    </template>
     <!-- </TransitionGroup> -->
   </base-form>
 </template>
