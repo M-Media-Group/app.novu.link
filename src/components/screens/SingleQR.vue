@@ -8,7 +8,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, type Ref, computed, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
-import type { Endpoint, Placement, Webhook } from "@/types/redirect";
+import type { Alert, Endpoint, Placement, Webhook } from "@/types/redirect";
 import type { selectOption } from "@/types/listItem";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
@@ -16,6 +16,7 @@ import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import QRPlacements from "@/components/QR/QRPlacements.vue";
 import QRDesigns from "@/components/QR/QRDesigns.vue";
+import QRAlerts from "@/components/QR/QRAlerts.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
@@ -115,6 +116,12 @@ const props = defineProps({
 
   webhooks: {
     type: Array as PropType<Webhook[]>,
+    required: false,
+    default: () => [],
+  },
+
+  alerts: {
+    type: Array as PropType<Alert[]>,
     required: false,
     default: () => [],
   },
@@ -612,6 +619,7 @@ const testLink = () => {
                   : undefined,
             },
             { render: $t('Designs'), id: '4' },
+            { render: $t('Alerts'), id: '7' },
             placements.length > 1
               ? { render: $t('Placements'), id: '3' }
               : undefined,
@@ -665,6 +673,7 @@ const testLink = () => {
           :subscribed="subscribed"
         />
       </div>
+
       <div
         class="main-grid-display smaller-gap"
         v-show="openTabs.includes('4')"
@@ -677,6 +686,7 @@ const testLink = () => {
           @input_updated="handleInputUpdated"
         />
       </div>
+
       <div
         class="main-grid-display smaller-gap"
         v-show="openTabs.includes('6')"
@@ -688,6 +698,7 @@ const testLink = () => {
           :webhooks="webhooks"
         />
       </div>
+
       <div
         class="main-grid-display smaller-gap"
         v-show="openTabs.includes('5')"
@@ -779,6 +790,18 @@ const testLink = () => {
             </template>
           </base-modal>
         </card-element>
+      </div>
+
+      <div
+        class="main-grid-display smaller-gap"
+        v-show="openTabs.includes('7')"
+      >
+        <q-r-alerts
+          :alerts="alerts"
+          :redirectId="redirectId"
+          :isLoading="isLoading || loading"
+          :subscribed="subscribed"
+        />
       </div>
     </div>
   </div>

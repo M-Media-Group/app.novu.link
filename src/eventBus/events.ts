@@ -41,6 +41,9 @@ export enum eventTypes {
   created_webhook = "created_webhook",
   updated_webhook = "updated_webhook",
   deleted_webhook = "deleted_webhook",
+  created_alert = "created_alert",
+  updated_alert = "updated_alert",
+  deleted_alert = "deleted_alert",
 }
 
 type EventsObject = { [P in eventTypes]?: any };

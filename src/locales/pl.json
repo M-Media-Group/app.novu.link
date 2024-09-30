@@ -431,5 +431,7 @@
     "failed": "nieudane",
     "all": "wszystkie",
     "total": "łącznie",
-    "Triggered": "Wywołany"
+    "Triggered": "Wywołany",
+    "pending": "oczekujący",
+    "resolved": "rozwiązany"
 }

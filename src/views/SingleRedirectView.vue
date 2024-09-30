@@ -5,7 +5,13 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
 import { getRedirect } from "@/useRedirects";
-import type { Endpoint, Placement, Redirect, Webhook } from "@/types/redirect";
+import type {
+  Alert,
+  Endpoint,
+  Placement,
+  Redirect,
+  Webhook,
+} from "@/types/redirect";
 import type { QRDesign } from "@/types/qrDesign";
 
 const $bus = useEventsBus();
@@ -36,6 +42,7 @@ const placements = ref([] as Placement[]);
 const endpoints = ref([] as Endpoint[]);
 const designs = ref([] as QRDesign[]);
 const webhooks = ref([] as Webhook[]);
+const alerts = ref([] as Alert[]);
 const remainingClicks = ref(0);
 
 const getData = () => {
@@ -54,6 +61,7 @@ const getData = () => {
       placements.value = response.data.sources ?? [];
       designs.value = response.data.qr_designs ?? [];
       webhooks.value = response.data.webhooks ?? [];
+      alerts.value = response.data.alerts ?? [];
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -135,6 +143,7 @@ onMounted(() => {
   $bus.$on(eventTypes.set_active_team, getData);
   $bus.$on(eventTypes.created_qr_design, getData);
   $bus.$on(eventTypes.created_webhook, getData);
+  $bus.$on(eventTypes.created_alert, getData);
   $bus.$on(eventTypes.tested_redirect, incrementClicks);
 });
 
@@ -148,6 +157,7 @@ onUnmounted(() => {
   $bus.$off(eventTypes.set_active_team, getData);
   $bus.$off(eventTypes.created_qr_design, getData);
   $bus.$off(eventTypes.created_webhook, getData);
+  $bus.$off(eventTypes.created_alert, getData);
   $bus.$off(eventTypes.tested_redirect, incrementClicks);
 });
 
@@ -202,6 +212,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :placements="placements"
       :designs="designs"
       :webhooks="webhooks"
+      :alerts="alerts"
       :loading="isLoading"
       :authenticated="!!teamStore.activeTeam"
       :description="teamStore.activeTeam ? undefined : ''"

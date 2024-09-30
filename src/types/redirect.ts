@@ -16,6 +16,7 @@ export interface Redirect {
   qr_designs?: QRDesign[];
   default_qr_design?: QRDesign;
   webhooks?: Webhook[];
+  alerts?: Alert[];
   subscribed_at: Date | null;
   remaining_clicks: number;
 }
@@ -84,4 +85,31 @@ export interface Webhook {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
+}
+
+export interface Alert {
+  id: number;
+  redirect_uuid: string;
+  user_id: any;
+  type: string;
+  condition: string;
+  target: number;
+  time_window: number;
+  created_at: string;
+  updated_at: string;
+  logs: AlertLog[];
+}
+
+export interface AlertLog {
+  id: number;
+  redirect_alert_id: number;
+  click_count: number;
+  triggered_at: string;
+  type: string;
+  condition: string;
+  target: number;
+  time_window: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
 }

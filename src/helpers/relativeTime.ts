@@ -49,3 +49,44 @@ export const relativeTime = (date: Date | string): string => {
   // Else it should be in months
   return rtf.format(months, "month");
 };
+
+export const selectBestUnit = (minutes: number): string => {
+  if (minutes % 10080 === 0) {
+    return "week";
+  } else if (minutes % 1440 === 0) {
+    return "day";
+  } else if (minutes % 60 === 0) {
+    return "hour";
+  } else {
+    return "minute";
+  }
+};
+
+export const computeMinutesToUnit = (minutes: number, unit: string): number => {
+  switch (unit) {
+    case "hour":
+      return minutes / 60;
+    case "day":
+      return minutes / 1440;
+    case "week":
+      return minutes / 10080;
+    default:
+      return minutes;
+  }
+};
+
+/**
+ * Uses Intl.NumberFormat to format a number with the current locale and, if provided with unit, appends the unit to the number. It will automatically determine the units to use based on the number. If it is divisible by 60, it will return an hour, if it is divisible by 24, it will return a day, and so on.
+ *
+ * @param minutes
+ * @returns A string representing the number of minutes in a human-readable format
+ */
+export const formatMinutes = (minutes: number): string => {
+  const unit = selectBestUnit(minutes);
+
+  return new Intl.NumberFormat(i18n.global.locale.value, {
+    style: "unit",
+    unit,
+    unitDisplay: "long",
+  }).format(computeMinutesToUnit(minutes, unit));
+};

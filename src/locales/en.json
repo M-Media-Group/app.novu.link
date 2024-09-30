@@ -433,5 +433,7 @@
     "failed": "failed",
     "all": "all",
     "total": "total",
-    "Triggered": "Triggered"
+    "Triggered": "Triggered",
+    "pending": "pending",
+    "resolved": "resolved"
 }

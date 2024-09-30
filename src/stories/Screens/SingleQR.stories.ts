@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 
 import SingleQR from "@/components/screens/SingleQR.vue";
 import { vueRouter } from "storybook-vue3-router";
+import redirectsFixture from "../../../cypress/fixtures/redirects.json";
+import type { Alert, Endpoint, Webhook } from "@/types/redirect";
+import type { QRDesign } from "@/types/qrDesign";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof SingleQR> = {
@@ -99,22 +102,10 @@ export const AuthAndSubAndData: Story = {
     clicksAllTime: 25,
     bestEndpoint: "https://app.novu.link",
     remainingClicks: 15,
-    endpoints: [
-      {
-        id: 1,
-        redirect_uuid: "https://example.com",
-        endpoint: "http://example.com/my/path",
-        last_http_code: 200,
-
-        clicks_by_time_of_day: [
-          {
-            redirect_uuid: "xxx",
-            datetime: "2024-01-12T00:00:00",
-            click_count: 100,
-          },
-        ],
-      },
-    ],
+    endpoints: redirectsFixture[0].endpoints as unknown as Endpoint[],
+    designs: redirectsFixture[0].qr_designs as unknown as QRDesign[],
+    webhooks: redirectsFixture[0].webhooks as unknown as Webhook[],
+    alerts: redirectsFixture[0].alerts as unknown as Alert[],
   },
 };
 
