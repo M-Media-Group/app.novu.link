@@ -3,8 +3,6 @@ import CardElement from "@/components/CardElement.vue";
 import type { PropType } from "vue";
 import type { Webhook } from "@/types/redirect";
 import CreateWebhook from "@/forms/CreateWebhook.vue";
-import BaseButton from "@/components/BaseButton.vue";
-import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 defineProps({
   redirectId: {
@@ -41,12 +39,14 @@ defineProps({
       :loading="isLoading"
       :title="$t('Your webhooks')"
       :subtitle="$t('Send data to your server when a QR code is scanned')"
+      :badges="!subscribed ? [$t('Pro')] : []"
       v-if="webhooks && webhooks.length > 0"
     >
       <section
         v-for="webhook in webhooks"
         :key="webhook.id"
         aria-labelledby="webhook-{{ webhook.id }}"
+        :class="{ disabled: !subscribed }"
       >
         <h4 id="webhook-{{ webhook.id }}">{{ webhook.url }}</h4>
         <details>
@@ -73,37 +73,6 @@ defineProps({
     :subtitle="$t('Send data to your server when a QR code is scanned')"
     :badges="!subscribed ? [$t('Pro')] : []"
   >
-    <create-webhook
-      :redirectId="redirectId"
-      :showSubmitButton="subscribed"
-      :class="{
-        disabled: !subscribed,
-      }"
-    />
-    <confirms-gate
-      :title="$t('Enable custom designs')"
-      v-if="!subscribed"
-      :description="
-        $t(
-          'Additional destinations and design changes are free after you subscribe.'
-        )
-      "
-      :allowBackgroundClickToClose="false"
-      :gate="[
-        'confirmedEmailOrPhone',
-        {
-          name: 'subscribedRedirect',
-          options: {
-            redirectId,
-            title: $t('Enable integrations'),
-            submitText: $t('Enable integrations'),
-          },
-        },
-      ]"
-    >
-      <base-button class="full-width">
-        {{ $t("Enable integrations") }}</base-button
-      >
-    </confirms-gate>
+    <create-webhook :redirectId="redirectId" />
   </card-element>
 </template>

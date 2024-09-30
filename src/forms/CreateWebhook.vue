@@ -9,19 +9,14 @@ import type { Ref } from "vue";
 import { debounce } from "@/helpers/debounce";
 import { formatUrl } from "@/helpers/urlFormatter";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
+import BaseButton from "@/components/BaseButton.vue";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
   redirectId: {
     type: String,
     required: true,
-  },
-
-  /** If we should show the submit button */
-  showSubmitButton: {
-    type: Boolean,
-    required: false,
-    default: true,
   },
 });
 
@@ -54,6 +49,7 @@ const $bus = useEventsBus();
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
+  console.log("submitForm");
   if (!url.value) {
     return;
   }
@@ -97,11 +93,7 @@ const debounceAddProtocolIfMissing = debounce(
 </script>
 
 <template>
-  <base-form
-    ref="baseFormRef"
-    @submit="submitForm"
-    :showSubmitButton="showSubmitButton"
-  >
+  <base-form ref="baseFormRef" :disabled="events.length === 0">
     <label for="webhook-url">{{ $t("Webhook URL") }}</label>
     <input
       type="url"
@@ -127,5 +119,37 @@ const debounceAddProtocolIfMissing = debounce(
       name="event_types"
     >
     </dropdown-select>
+    <template #submit="{ disabled, isLoading, submitText }">
+      <confirms-gate
+        :title="$t('Enable custom designs')"
+        @confirmed="submitForm"
+        :description="
+          $t(
+            'Additional destinations and design changes are free after you subscribe.'
+          )
+        "
+        :allowBackgroundClickToClose="false"
+        :gate="[
+          'confirmedEmailOrPhone',
+          {
+            name: 'subscribedRedirect',
+            options: {
+              redirectId,
+              title: $t('Enable integrations'),
+              submitText: $t('Enable integrations'),
+            },
+          },
+        ]"
+      >
+        <base-button
+          class="full-width"
+          :disabled="disabled"
+          :aria-busy="isLoading"
+          type="submit"
+        >
+          {{ $t(submitText) }}</base-button
+        >
+      </confirms-gate>
+    </template>
   </base-form>
 </template>
