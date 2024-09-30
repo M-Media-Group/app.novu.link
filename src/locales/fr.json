@@ -434,5 +434,6 @@
     "Triggered": "Déclenché",
     "pending": "en attente",
     "resolved": "résolu",
-    "Enable alerts": "Activer les alertes"
+    "Enable alerts": "Activer les alertes",
+    "Create a new alert": "Créer une nouvelle alerte"
 }

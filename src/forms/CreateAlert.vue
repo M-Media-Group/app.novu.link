@@ -7,12 +7,13 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { formatMinutes } from "@/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
 
 const props = defineProps({
   /** If the form should autofocus */
   redirectId: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 
@@ -50,7 +51,7 @@ const submitForm = async () => {
 
   const response = await axios
     .post("/api/v1/alerts", {
-      redirect_uuid: props.redirectId,
+      redirect_uuid: activeRedirectId.value,
       type: scanType.value,
       condition: condition.value,
       target: targetNumber.value,
@@ -82,12 +83,26 @@ const submitForm = async () => {
 const localeTime = computed(() => {
   return formatMinutes(timeDurationInMinutes.value);
 });
+
+const { RedirectSelector, activeRedirectId } =
+  useOptionalRedirectSelector(props);
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm">
+  <base-form
+    ref="baseFormRef"
+    @submit="submitForm"
+    :disabled="!activeRedirectId"
+  >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
+    <template v-if="!redirectId">
+      <label for="redirect_id">{{ $t("Magic link") }}</label>
+      <redirect-selector
+        :modelValue="activeRedirectId ? [activeRedirectId] : []"
+        @update:modelValue="$event[0] ? (activeRedirectId = $event[0]) : null"
+      ></redirect-selector>
+    </template>
 
     <!-- Choose Scan Type -->
     <label for="scan_type">{{ $t("Scan Type") }}</label>
@@ -174,7 +189,7 @@ const localeTime = computed(() => {
           {
             name: 'subscribedRedirect',
             options: {
-              redirectId,
+              redirectId: activeRedirectId,
               title: $t('Enable alerts'),
               submitText: $t('Enable alerts'),
             },

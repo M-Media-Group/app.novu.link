@@ -208,5 +208,531 @@
                 ]
             }
         ]
+    },
+    {
+        "uuid": "0ak6TNN",
+        "team_id": 1,
+        "name": "pear",
+        "enable_analytics": true,
+        "created_at": "2024-04-21T23:32:39.000000Z",
+        "updated_at": "2024-09-15T19:47:31.000000Z",
+        "deleted_at": null,
+        "subscribed_at": "2024-09-15T19:47:31.000000Z",
+        "todays_clicks_count": 0,
+        "remaining_clicks": 30000,
+        "endpoints": [
+            {
+                "id": 435,
+                "endpoint": "https://quik.fr",
+                "is_default": true,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0ak6TNN",
+                "order": 1,
+                "created_at": "2024-04-21T23:32:39.000000Z",
+                "updated_at": "2024-05-01T13:10:09.000000Z",
+                "last_scraped_at": "2024-05-01 13:10:09",
+                "last_http_code": 200,
+                "rule_groups": []
+            }
+        ],
+        "default_qr_design": null
+    },
+    {
+        "uuid": "0c75Xti",
+        "team_id": 1,
+        "name": "mango",
+        "enable_analytics": true,
+        "created_at": "2024-04-21T22:44:17.000000Z",
+        "updated_at": "2024-04-23T08:21:29.000000Z",
+        "deleted_at": null,
+        "subscribed_at": "2024-04-23T08:21:29.000000Z",
+        "todays_clicks_count": 0,
+        "remaining_clicks": 30000,
+        "endpoints": [
+            {
+                "id": 424,
+                "endpoint": "https://allstars.com",
+                "is_default": true,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 1,
+                "created_at": "2024-04-21T22:44:17.000000Z",
+                "updated_at": "2024-05-01T13:07:01.000000Z",
+                "last_scraped_at": "2024-05-01 13:07:01",
+                "last_http_code": 404,
+                "rule_groups": []
+            },
+            {
+                "id": 438,
+                "endpoint": "https://engl.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 2,
+                "created_at": "2024-04-22T08:22:17.000000Z",
+                "updated_at": "2024-05-01T13:10:14.000000Z",
+                "last_scraped_at": "2024-05-01 13:10:14",
+                "last_http_code": 404,
+                "rule_groups": [
+                    {
+                        "id": 192,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 438,
+                        "created_at": "2024-04-22T08:22:17.000000Z",
+                        "updated_at": "2024-04-22T08:22:17.000000Z",
+                        "rules": [
+                            {
+                                "id": 192,
+                                "rule_group_id": 192,
+                                "rule": "browser_language",
+                                "operator": "contains",
+                                "value": "af",
+                                "created_at": "2024-04-22T08:22:17.000000Z",
+                                "updated_at": "2024-04-22T08:22:17.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 439,
+                "endpoint": "https://asd.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 3,
+                "created_at": "2024-04-22T08:24:25.000000Z",
+                "updated_at": "2024-05-01T12:36:33.000000Z",
+                "last_scraped_at": "2024-05-01 12:36:33",
+                "last_http_code": 404,
+                "rule_groups": [
+                    {
+                        "id": 193,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 439,
+                        "created_at": "2024-04-22T08:24:25.000000Z",
+                        "updated_at": "2024-04-22T08:24:25.000000Z",
+                        "rules": [
+                            {
+                                "id": 193,
+                                "rule_group_id": 193,
+                                "rule": "browser_language",
+                                "operator": "contains",
+                                "value": "af-ZA",
+                                "created_at": "2024-04-22T08:24:25.000000Z",
+                                "updated_at": "2024-04-22T08:24:25.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 762,
+                "endpoint": "https://fred.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 4,
+                "created_at": "2024-04-24T00:14:20.000000Z",
+                "updated_at": "2024-05-01T13:16:13.000000Z",
+                "last_scraped_at": "2024-05-01 13:16:13",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 345,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 762,
+                        "created_at": "2024-04-24T00:14:20.000000Z",
+                        "updated_at": "2024-04-24T00:14:20.000000Z",
+                        "rules": [
+                            {
+                                "id": 345,
+                                "rule_group_id": 345,
+                                "rule": "browser_language",
+                                "operator": "contains",
+                                "value": "af",
+                                "created_at": "2024-04-24T00:14:20.000000Z",
+                                "updated_at": "2024-04-24T00:14:20.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 763,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 5,
+                "created_at": "2024-04-24T00:16:42.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 346,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 763,
+                        "created_at": "2024-04-24T00:16:42.000000Z",
+                        "updated_at": "2024-04-24T00:16:42.000000Z",
+                        "rules": [
+                            {
+                                "id": 346,
+                                "rule_group_id": 346,
+                                "rule": "moon_phase",
+                                "operator": "=",
+                                "value": "9",
+                                "created_at": "2024-04-24T00:16:42.000000Z",
+                                "updated_at": "2024-04-24T00:16:42.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 764,
+                "endpoint": "https://ok.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 6,
+                "created_at": "2024-04-24T08:11:26.000000Z",
+                "updated_at": "2024-09-09T16:12:33.000000Z",
+                "last_scraped_at": "2024-09-09 16:12:33",
+                "last_http_code": 404,
+                "rule_groups": [
+                    {
+                        "id": 347,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 764,
+                        "created_at": "2024-04-24T08:11:26.000000Z",
+                        "updated_at": "2024-04-24T08:11:26.000000Z",
+                        "rules": [
+                            {
+                                "id": 347,
+                                "rule_group_id": 347,
+                                "rule": "day_of_week",
+                                "operator": ">",
+                                "value": "2",
+                                "created_at": "2024-04-24T08:11:26.000000Z",
+                                "updated_at": "2024-04-24T08:11:26.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 995,
+                "endpoint": "https://play.pl",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0c75Xti",
+                "order": 7,
+                "created_at": "2024-04-28T17:51:34.000000Z",
+                "updated_at": "2024-05-01T12:31:23.000000Z",
+                "last_scraped_at": null,
+                "last_http_code": null,
+                "rule_groups": [
+                    {
+                        "id": 382,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 995,
+                        "created_at": "2024-04-28T17:51:34.000000Z",
+                        "updated_at": "2024-04-28T17:51:34.000000Z",
+                        "rules": [
+                            {
+                                "id": 382,
+                                "rule_group_id": 382,
+                                "rule": "browser_language",
+                                "operator": "contains",
+                                "value": "af",
+                                "created_at": "2024-04-28T17:51:34.000000Z",
+                                "updated_at": "2024-04-28T17:51:34.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "default_qr_design": {
+            "id": 92,
+            "team_id": 1,
+            "user_id": null,
+            "name": "Google",
+            "color": "#33a752",
+            "background_color": "#ffffff",
+            "error_correction_level": "medium",
+            "size": 300,
+            "margin": 10,
+            "round_block_size_mode": "margin",
+            "block_shape": "rounded",
+            "corner_dot_shape": "square",
+            "corner_shape": "square",
+            "logo": "http://192.168.10.17/qr-designs/92/logo",
+            "logo_size": 70,
+            "logo_punchout_background": true,
+            "last_scan_check_at": "2024-09-24T18:38:30.000000Z",
+            "is_scannable": true,
+            "was_automatically_generated": true,
+            "created_at": "2024-09-24T18:38:30.000000Z",
+            "updated_at": "2024-09-24T18:38:30.000000Z",
+            "laravel_through_key": "0c75Xti"
+        }
+    },
+    {
+        "uuid": "0XQOAI9",
+        "team_id": 1,
+        "name": "apple",
+        "enable_analytics": true,
+        "created_at": "2024-04-23T23:47:01.000000Z",
+        "updated_at": "2024-04-23T23:47:27.000000Z",
+        "deleted_at": null,
+        "subscribed_at": "2024-04-23T23:47:27.000000Z",
+        "todays_clicks_count": 0,
+        "remaining_clicks": 30000,
+        "endpoints": [
+            {
+                "id": 755,
+                "endpoint": "https://google.com",
+                "is_default": true,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 1,
+                "created_at": "2024-04-23T23:47:01.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": []
+            },
+            {
+                "id": 756,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 2,
+                "created_at": "2024-04-23T23:49:15.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 339,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 756,
+                        "created_at": "2024-04-23T23:49:15.000000Z",
+                        "updated_at": "2024-04-23T23:49:15.000000Z",
+                        "rules": [
+                            {
+                                "id": 339,
+                                "rule_group_id": 339,
+                                "rule": "day_of_week",
+                                "operator": ">",
+                                "value": "7",
+                                "created_at": "2024-04-23T23:49:15.000000Z",
+                                "updated_at": "2024-04-23T23:49:15.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 757,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 3,
+                "created_at": "2024-04-23T23:51:32.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 340,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 757,
+                        "created_at": "2024-04-23T23:51:32.000000Z",
+                        "updated_at": "2024-04-23T23:51:32.000000Z",
+                        "rules": [
+                            {
+                                "id": 340,
+                                "rule_group_id": 340,
+                                "rule": "country",
+                                "operator": "=",
+                                "value": "France",
+                                "created_at": "2024-04-23T23:51:32.000000Z",
+                                "updated_at": "2024-04-23T23:51:32.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 758,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 4,
+                "created_at": "2024-04-23T23:55:33.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 341,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 758,
+                        "created_at": "2024-04-23T23:55:33.000000Z",
+                        "updated_at": "2024-04-23T23:55:33.000000Z",
+                        "rules": [
+                            {
+                                "id": 341,
+                                "rule_group_id": 341,
+                                "rule": "i_p",
+                                "operator": "contains",
+                                "value": "2",
+                                "created_at": "2024-04-23T23:55:33.000000Z",
+                                "updated_at": "2024-04-23T23:55:33.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 759,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 5,
+                "created_at": "2024-04-23T23:58:34.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 342,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 759,
+                        "created_at": "2024-04-23T23:58:34.000000Z",
+                        "updated_at": "2024-04-23T23:58:34.000000Z",
+                        "rules": [
+                            {
+                                "id": 342,
+                                "rule_group_id": 342,
+                                "rule": "browser_language",
+                                "operator": "=",
+                                "value": "Australia",
+                                "created_at": "2024-04-23T23:58:34.000000Z",
+                                "updated_at": "2024-04-23T23:58:34.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 760,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 6,
+                "created_at": "2024-04-24T00:01:11.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 343,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 760,
+                        "created_at": "2024-04-24T00:01:11.000000Z",
+                        "updated_at": "2024-04-24T00:01:11.000000Z",
+                        "rules": [
+                            {
+                                "id": 343,
+                                "rule_group_id": 343,
+                                "rule": "browser_language",
+                                "operator": "=",
+                                "value": "12xxx",
+                                "created_at": "2024-04-24T00:01:11.000000Z",
+                                "updated_at": "2024-04-24T00:01:11.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 761,
+                "endpoint": "https://google.com",
+                "is_default": false,
+                "preserve_query_parameters": true,
+                "redirect_uuid": "0XQOAI9",
+                "order": 7,
+                "created_at": "2024-04-24T00:06:11.000000Z",
+                "updated_at": "2024-09-09T16:11:18.000000Z",
+                "last_scraped_at": "2024-09-09 16:11:18",
+                "last_http_code": 200,
+                "rule_groups": [
+                    {
+                        "id": 344,
+                        "name": null,
+                        "match_all": 0,
+                        "endpoint_id": 761,
+                        "created_at": "2024-04-24T00:06:11.000000Z",
+                        "updated_at": "2024-04-24T00:06:11.000000Z",
+                        "rules": [
+                            {
+                                "id": 344,
+                                "rule_group_id": 344,
+                                "rule": "country",
+                                "operator": "=",
+                                "value": "af-ZA",
+                                "created_at": "2024-04-24T00:06:11.000000Z",
+                                "updated_at": "2024-04-24T00:06:11.000000Z"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "default_qr_design": {
+            "id": 92,
+            "team_id": 1,
+            "user_id": null,
+            "name": "Google",
+            "color": "#33a752",
+            "background_color": "#ffffff",
+            "error_correction_level": "medium",
+            "size": 300,
+            "margin": 10,
+            "round_block_size_mode": "margin",
+            "block_shape": "rounded",
+            "corner_dot_shape": "square",
+            "corner_shape": "square",
+            "logo": "http://192.168.10.17/qr-designs/92/logo",
+            "logo_size": 70,
+            "logo_punchout_background": true,
+            "last_scan_check_at": "2024-09-24T18:38:30.000000Z",
+            "is_scannable": true,
+            "was_automatically_generated": true,
+            "created_at": "2024-09-24T18:38:30.000000Z",
+            "updated_at": "2024-09-24T18:38:30.000000Z",
+            "laravel_through_key": "0XQOAI9"
+        }
     }
 ]

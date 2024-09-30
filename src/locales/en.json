@@ -436,5 +436,6 @@
     "Triggered": "Triggered",
     "pending": "pending",
     "resolved": "resolved",
-    "Enable alerts": "Enable alerts"
+    "Enable alerts": "Enable alerts",
+    "Create a new alert": "Create a new alert"
 }

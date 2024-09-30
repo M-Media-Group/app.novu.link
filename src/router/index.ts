@@ -156,6 +156,11 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/alerts/create",
+      name: "create-alert",
+      component: () => import("../views/CreateAlertView.vue"),
+    },
+    {
       path: "/analytics",
       name: "analytics",
       meta: {

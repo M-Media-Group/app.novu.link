@@ -13,6 +13,16 @@ const meta: Meta<typeof CreateAlert> = {
   args: {
     redirectId: redirectsFixture[0].uuid,
   },
+  parameters: {
+    mockData: [
+      {
+        url: "/api/v1/redirects",
+        method: "GET",
+        status: 200,
+        response: redirectsFixture,
+      },
+    ],
+  },
 };
 
 export default meta;
