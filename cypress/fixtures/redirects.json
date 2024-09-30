@@ -166,6 +166,47 @@
                 "updated_at": "2024-09-19T13:51:55.000000Z",
                 "deleted_at": null
             }
+        ],
+        "alerts": [
+            {
+                "id": 3,
+                "redirect_uuid": "xcSazsj",
+                "user_id": null,
+                "type": "successful",
+                "condition": ">",
+                "target": 10,
+                "time_window": 60,
+                "created_at": "2024-09-30T13:14:01.000000Z",
+                "updated_at": "2024-09-30T13:14:01.000000Z",
+                "logs": [
+                    {
+                        "id": 2,
+                        "redirect_alert_id": 3,
+                        "click_count": 11,
+                        "triggered_at": "2024-09-30T13:41:49.000000Z",
+                        "type": "successful",
+                        "condition": ">",
+                        "target": 10,
+                        "time_window": 60,
+                        "status": "pending",
+                        "created_at": "2024-09-30T13:41:49.000000Z",
+                        "updated_at": "2024-09-30T13:41:49.000000Z"
+                    },
+                    {
+                        "id": 1,
+                        "redirect_alert_id": 3,
+                        "click_count": 11,
+                        "triggered_at": "2024-09-20T13:41:49.000000Z",
+                        "type": "successful",
+                        "condition": ">",
+                        "target": 10,
+                        "time_window": 60,
+                        "status": "resolved",
+                        "created_at": "2024-09-20T13:41:49.000000Z",
+                        "updated_at": "2024-09-20T13:41:49.000000Z"
+                    }
+                ]
+            }
         ]
     }
 ]
