@@ -32,11 +32,6 @@ defineProps({
     default: false,
   },
 });
-
-const deleteEndpoint = (event: Event) => {
-  // @todo: Implement delete endpoint
-  event.preventDefault();
-};
 </script>
 <template>
   <li
