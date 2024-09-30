@@ -123,7 +123,6 @@ const localeTime = computed(() => {
         id="time_duration"
         name="time_duration"
         required
-        placeholder="{{ $t('Enter duration') }}"
         aria-describedby="time_window_helper"
         v-model="timeDuration"
         min="1"
