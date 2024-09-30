@@ -144,15 +144,14 @@ const { RedirectSelector, activeRedirectId } =
       />
 
       <!-- Choose Time Unit -->
-      <label for="time_unit" style="display: none">{{
-        $t("Unit of Time")
-      }}</label>
+      <label for="time_unit" style="display: none">{{}}</label>
       <select
         id="time_unit"
         name="time_unit"
         required
         aria-describedby="time_window_helper"
         v-model="timeUnit"
+        :aria-label="$t('Unit of Time')"
       >
         <option value="minutes">{{ $t("Minutes") }}</option>
         <option value="hours">{{ $t("Hours") }}</option>

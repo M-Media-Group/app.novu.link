@@ -33,3 +33,9 @@ type Story = StoryObj<typeof CreateAlert>;
  * to learn how to use render functions.
  */
 export const Default: Story = {};
+
+export const WithoutRedirectId: Story = {
+  args: {
+    redirectId: "",
+  },
+};
