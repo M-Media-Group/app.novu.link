@@ -5,7 +5,7 @@ const t = i18n.global.t;
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { startSubscription, unsubscribe } from "@/useRedirects";
+import { startSubscription } from "@/useRedirects";
 import { useTeamStore } from "@/stores/team";
 import BaseButton from "@/components/BaseButton.vue";
 
@@ -33,34 +33,16 @@ const showAddForm = ref(typeof teamStore.activeTeam?.pm_type !== "string");
 
 const baseFormRef = ref();
 
-// The submit function. If there is just the password, check if the password is valid. If it is not, set the register mode. If it is, set the login mode.
-const submitForm = async () => {
-  isLoading.value = true;
-  try {
-    const response = await unsubscribe(props.redirectId);
-    isLoading.value = false;
-
-    if (response === true) {
-      success.value = response;
-    } else if (typeof response === "object") {
-      return false;
-    }
-    return success.value;
-  } catch (error) {
-    console.error(error);
-    isLoading.value = false;
-    return false;
-  }
-};
-
 const AddPaymentMethod = defineAsyncComponent(
   () => import("@/forms/AddPaymentMethod.vue")
 );
 
 const startSubscriptionForRedirect = async () => {
   if (!props.redirectId) {
+    alert("No Magic Link ID provided");
     return;
   }
+
   isLoading.value = true;
 
   startSubscription(props.redirectId)
@@ -85,7 +67,7 @@ const handleConfirmedWithPaymentMethod = () => {
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @submit="startSubscriptionForRedirect"
     :disabled="isLoading || success"
     :isLoading="isLoading"
     :showTrigger="false"
@@ -114,7 +96,6 @@ const handleConfirmedWithPaymentMethod = () => {
 
     <template #submit v-if="!showAddForm">
       <base-button
-        @click="startSubscriptionForRedirect"
         type="submit"
         ref="confirmSubButton"
         :disabled="isLoading"
