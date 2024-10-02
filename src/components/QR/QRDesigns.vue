@@ -3,8 +3,6 @@ import CardElement from "@/components/CardElement.vue";
 import { type PropType } from "vue";
 import type { QRDesign } from "@/types/qrDesign";
 import CreateQRDesign from "@/forms/CreateQRDesign.vue";
-import BaseButton from "@/components/BaseButton.vue";
-import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import DesignItem from "../DesignItem.vue";
 
 defineProps({
@@ -72,43 +70,13 @@ const defaultDesign = {
     :loading="isLoading"
     :title="$t('Code design')"
     :subtitle="$t('Customise the look of your magic link')"
-    :badges="!subscribed ? [$t('Pro')] : []"
     class="design-card"
   >
     <create-q-r-design
       :redirectId="redirectId"
       :includePages="['color', 'shape', 'advanced']"
       @input_updated="emit('input_updated', $event)"
-      :showSubmitButton="subscribed"
-      :class="{
-        disabled: !subscribed,
-      }"
     ></create-q-r-design>
-    <confirms-gate
-      :title="$t('Enable custom designs')"
-      v-if="!subscribed"
-      :description="
-        $t(
-          'Additional destinations and design changes are free after you subscribe.'
-        )
-      "
-      :allowBackgroundClickToClose="false"
-      :gate="[
-        'confirmedEmailOrPhone',
-        {
-          name: 'subscribedRedirect',
-          options: {
-            redirectId,
-            title: $t('Enable custom designs'),
-            submitText: $t('Enable custom designs'),
-          },
-        },
-      ]"
-    >
-      <base-button class="full-width">
-        {{ $t("Enable custom designs") }}</base-button
-      >
-    </confirms-gate>
   </card-element>
   <template v-if="isLoading">
     <card-element :loading="isLoading">
@@ -126,7 +94,6 @@ const defaultDesign = {
           'Create and save designs for your magic links. You can use them across all your magic links in your team.'
         )
       "
-      :badges="!subscribed ? [$t('Pro')] : []"
     >
     </card-element>
   </template>

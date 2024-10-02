@@ -72,6 +72,12 @@
         "min_subscription": 0
     },
     {
+        "name": "Własne projekty",
+        "description": "Stwórz własne projekty dla swoich magicznych linków",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
         "name": "Dynamiczne zmienne w miejscach docelowych",
         "description": "Używaj wartości zmiennych w swoich adresach URL, aby tworzyć dynamiczne miejsca docelowe, na przykład: https://example.com/?date={Date}",
         "category": "Magiczne linki",

@@ -8,6 +8,7 @@ import axios from "axios";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
+import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
 const props = defineProps({
   /** The redirect uuid */
@@ -383,6 +384,7 @@ const handleLogoFile = (event: Event) => {
         required
       />
     </fieldset>
+
     <!-- </TransitionGroup> -->
     <template #submit v-if="showSubmitButton">
       <base-modal title="Create design" ref="modal" class="full-width">
@@ -407,9 +409,21 @@ const handleLogoFile = (event: Event) => {
           />
         </fieldset>
         <template #footer>
-          <base-button :disabled="!name || isLoading" type="submit">{{
-            $t("Create design")
-          }}</base-button>
+          <confirms-gate
+            :title="$t('Enable custom designs')"
+            :description="
+              $t(
+                'Additional destinations and design changes are free after you subscribe.'
+              )
+            "
+            :allowBackgroundClickToClose="false"
+            :gate="['confirmedEmailOrPhone']"
+            @confirmed="submitForm"
+          >
+            <base-button :disabled="!name || isLoading" type="submit">{{
+              $t("Create design")
+            }}</base-button>
+          </confirms-gate>
         </template>
       </base-modal>
     </template>

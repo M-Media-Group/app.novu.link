@@ -72,6 +72,12 @@
         "min_subscription": 0
     },
     {
+        "name": "Custom Designs",
+        "description": "Create your own custom designs for your magic links",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
         "name": "Dynamic variables in destinations",
         "description": "Use rule values in your URLs to create dynamic destinations, for example: https://example.com/?date={Date}",
         "category": "Magic links",

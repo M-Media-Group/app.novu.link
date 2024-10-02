@@ -72,9 +72,21 @@
         "min_subscription": 0
     },
     {
+        "name": "Custom Designs",
+        "description": "Create your own custom designs for your magic links",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
+        "name": "Conceptions personnalisées",
+        "description": "Créez vos propres conceptions personnalisées pour vos liens magiques",
+        "category": "Magic links",
+        "min_subscription": 0
+    },
+    {
         "name": "Variables dynamiques dans les points d'accès",
         "description": "Utilisez des valeurs de règle dans vos URL pour créer des points d'accès dynamiques, par exemple : http://exemple.com/?date={Date}",
-        "category": "Liens magiques",
+        "category": "Magic links",
         "min_subscription": 1
     },
     {
