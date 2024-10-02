@@ -3,7 +3,7 @@
         "id": 1,
         "name": "Analytics",
         "title": "Advanced Analytics and Reporting on your connections",
-        "description": "Get detailed insights on your connections and their activities. Understand how your connections are engaging with your content and how you can improve your engagement with them.",
+        "description": "Get detailed insights on your connections and their activities. Understand how your connections are engaging with your content and how you can improve your engagement with them.\n\nOptionally integrate with your favorite analytics tools like Google Analytics, Facebook Pixel, and more.",
         "image": "undraw_connected_world_wuay.svg"
     },
     {
@@ -26,5 +26,12 @@
         "title": "Design beautiful codes",
         "description": "Design beautiful codes with our easy-to-use editor. Customize the colors, fonts, and layout of your codes to match your brand and increase your conversion rates.",
         "image": "undraw_designer_re_5v95.svg"
+    },
+    {
+        "id": 5,
+        "name": "Alerts",
+        "title": "Get alerts on key events",
+        "description": "Setup alerts and get notified whenever your QR code scan rates reach a certain level, fall below a target, or start showing some errors.",
+        "image": "undraw_mobile_inbox_re_ciwq.svg"
     }
 ]

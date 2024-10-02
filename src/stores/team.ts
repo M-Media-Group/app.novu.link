@@ -164,6 +164,26 @@ export const useTeamStore = defineStore("team", () => {
     }
   };
 
+  const getAnalyticsIntegrations = async () => {
+    try {
+      const response = await axios.get("/api/v1/analytics/integrations");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteAnalyticsIntegration = async (integrationId: string | number) => {
+    try {
+      const response = await axios.delete(
+        `/api/v1/analytics/integrations/${integrationId}`
+      );
+      return response.status === 204;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     activeTeam,
     teams,
@@ -174,5 +194,7 @@ export const useTeamStore = defineStore("team", () => {
     getPaymentMethods,
     switchTeam,
     createTeam,
+    getAnalyticsIntegrations,
+    deleteAnalyticsIntegration,
   };
 });

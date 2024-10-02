@@ -3,7 +3,7 @@
         "id": 1,
         "name": "Analityka",
         "title": "Zaawansowana analityka i raportowanie na temat twoich połączeń",
-        "description": "Uzyskaj szczegółowe informacje na temat twoich połączeń i ich aktywności. Zrozum, jak twoje połączenia angażują się w twoje treści i jak możesz poprawić zaangażowanie z nimi.",
+        "description": "Uzyskaj szczegółowe informacje na temat twoich połączeń i ich aktywności. Zrozum, jak twoje połączenia angażują się w twoje treści i jak możesz poprawić zaangażowanie z nimi.\n\nOpcjonalnie zintegruj się z ulubionymi narzędziami analitycznymi, takimi jak Google Analytics, Facebook Pixel i innymi.",
         "image": "undraw_connected_world_wuay.svg"
     },
     {
@@ -26,5 +26,12 @@
         "title": "Projektuj piękne kody",
         "description": "Projektuj piękne kody za pomocą naszego łatwego w obsłudze edytora. Dostosuj kolory, czcionki i układ swoich kodów do swojej marki i zwiększaj współczynniki konwersji.",
         "image": "undraw_designer_re_5v95.svg"
+    },
+    {
+        "id": 5,
+        "name": "Powiadomienia",
+        "title": "Otrzymuj powiadomienia o kluczowych zdarzeniach",
+        "description": "Skonfiguruj powiadomienia i otrzymuj powiadomienia, kiedy wskaźniki skanowania kodów QR osiągną określony poziom, spadną poniżej celu lub zaczną pokazywać błędy.",
+        "image": "undraw_mobile_inbox_re_ciwq.svg"
     }
 ]

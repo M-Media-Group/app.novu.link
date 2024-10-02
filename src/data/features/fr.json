@@ -208,5 +208,11 @@
         "description": "Suivez vos liens magiques dans vos propres outils d'analyse comme Google Analytics ou Meta's Pixel",
         "category": "Analytique",
         "min_subscription": 1
+    },
+    {
+        "name": "Alertes personnalisées",
+        "description": "Configurez des alertes personnalisées pour être averti lorsque vos liens magiques atteignent un certain nombre de clics, ou lorsqu'ils commencent à afficher des erreurs",
+        "category": "Alertes",
+        "min_subscription": 1
     }
 ]

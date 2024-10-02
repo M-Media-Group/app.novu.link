@@ -208,5 +208,11 @@
         "description": "Track your magic links in your own analytics tools like Google Analytics or Meta's Pixel",
         "category": "Analytics",
         "min_subscription": 1
+    },
+    {
+        "name": "Custom Alerts",
+        "description": "Setup custom alerts to get notified when your magic links reach a certain number of clicks, or when they start showing errors",
+        "category": "Alerts",
+        "min_subscription": 1
     }
 ]

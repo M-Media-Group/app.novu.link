@@ -3,7 +3,7 @@
         "id": 1,
         "name": "Analytique",
         "title": "Analyses avancées et rapports sur vos connexions",
-        "description": "Obtenez des informations détaillées sur vos connexions et leurs activités. Comprenez comment vos connexions interagissent avec votre contenu et comment vous pouvez améliorer votre engagement avec eux.",
+        "description": "Obtenez des informations détaillées sur vos connexions et leurs activités. Comprenez comment vos connexions interagissent avec votre contenu et comment vous pouvez améliorer votre engagement avec eux.\n\nIntégrez en option vos outils d'analyse préférés comme Google Analytics, Facebook Pixel et plus encore.",
         "image": "undraw_connected_world_wuay.svg"
     },
     {
@@ -26,5 +26,12 @@
         "title": "Concevez de magnifiques codes",
         "description": "Concevez de magnifiques codes avec notre éditeur facile à utiliser. Personnalisez les couleurs, les polices et la mise en page de vos codes pour correspondre à votre marque et augmenter vos taux de conversion.",
         "image": "undraw_designer_re_5v95.svg"
+    },
+    {
+        "id": 5,
+        "name": "Alertes",
+        "title": "Recevez des alertes sur les événements clés",
+        "description": "Configurez des alertes et soyez informé chaque fois que vos taux de numérisation de code QR atteignent un certain niveau, tombent en dessous d'un objectif ou commencent à afficher des erreurs.",
+        "image": "undraw_mobile_inbox_re_ciwq.svg"
     }
 ]
