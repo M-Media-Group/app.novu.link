@@ -69,7 +69,6 @@ defineProps({
   </template>
 
   <card-element
-    :titleHeadingLevel="2"
     :title="$t('Analytics Integrations')"
     :subtitle="$t('Integrations with analytics services')"
   >
