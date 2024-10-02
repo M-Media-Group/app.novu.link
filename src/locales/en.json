@@ -442,7 +442,7 @@
     "Enable debug mode in the analytics service": "Enable debug mode in the analytics service",
     "Need help? Read the analytics service docs": "Need help? Read the analytics service docs",
     "Analytics Integrations": "Analytics Integrations",
-    "Integrations with analytics services": "Integrations with analytics services",
+    "Integrations with analytics services": "Integrations with external analytics services",
     "Add a new integration": "Add a new integration",
     "Service": "Service",
     "Debug": "Debug",

@@ -440,7 +440,7 @@
     "Enable debug mode in the analytics service": "Activer le mode de débogage dans le service d'analyse",
     "Need help? Read the analytics service docs": "Besoin d'aide ? Lisez la documentation du service d'analyse",
     "Analytics Integrations": "Intégrations d'analyse",
-    "Integrations with analytics services": "Intégrations avec des services d'analyse",
+    "Integrations with analytics services": "Intégrations avec des services d'analyse externes",
     "Add a new integration": "Ajouter une nouvelle intégration",
     "Service": "Service",
     "Debug": "Débogage",
