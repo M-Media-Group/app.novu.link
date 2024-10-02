@@ -73,12 +73,11 @@ provide("showExpandedFooter", true);
 <template>
   <section
     id="externalLinks"
-    class="two-column-grid hero-section hero-b fulscreen-width-container"
-    data-theme="light"
+    class="two-column-grid hero-section fulscreen-width-container"
   >
     <hgroup>
-      <h1 data-theme="dark">{{ $t("Solve QR codes forever") }}</h1>
-      <p data-theme="dark">
+      <h1>{{ $t("Solve QR codes forever") }}</h1>
+      <p>
         {{
           $t(
             `The hardest thing with QR codes and links is changing them after they're printed. We've fixed that.`
@@ -320,6 +319,10 @@ div.image-scroller {
     object-fit: contain;
     aspect-ratio: 1;
     margin: 0 auto;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 
@@ -394,5 +397,10 @@ section {
   & p {
     color: var(--pico-h2-color);
   }
+}
+
+/* The first section */
+section:first-of-type {
+  padding-top: var(--pico-block-spacing-vertical);
 }
 </style>
