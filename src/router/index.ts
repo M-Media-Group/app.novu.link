@@ -156,9 +156,20 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/alerts",
+      name: "alerts",
+      component: () => import("../views/AlertsView.vue"),
+      meta: {
+        gates: ["auth"],
+      },
+    },
+    {
       path: "/alerts/create",
       name: "create-alert",
       component: () => import("../views/CreateAlertView.vue"),
+      meta: {
+        gates: ["auth"],
+      },
     },
     {
       path: "/analytics",

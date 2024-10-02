@@ -202,5 +202,11 @@
         "description": "Wyślij krytyczne zdarzenia do swojego serwera",
         "category": "API",
         "min_subscription": 1
+    },
+    {
+        "name": "Analiza zewnętrzna",
+        "description": "Śledź swoje magiczne linki w swoich własnych narzędziach analitycznych, takich jak Google Analytics lub Pixel Meta",
+        "category": "Analiza",
+        "min_subscription": 1
     }
 ]

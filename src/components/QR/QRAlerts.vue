@@ -64,11 +64,15 @@ defineProps({
               )
             }}
             <base-badge
-              v-if="alert.logs.length > 0 && alert.logs[0].status === 'pending'"
+              v-if="
+                alert.logs &&
+                alert.logs.length > 0 &&
+                alert.logs[0].status === 'pending'
+              "
               >{{ $t("Triggered") }}</base-badge
             >
           </summary>
-          <ul v-if="alert.logs.length">
+          <ul v-if="alert.logs && alert.logs.length">
             <li v-for="log in alert.logs" :key="log.id">
               {{ $t("Triggered") }} {{ relativeTime(log.triggered_at) }}:
               {{ $t(log.status) }} {{ relativeTime(log.updated_at) }}

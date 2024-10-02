@@ -202,5 +202,11 @@
         "description": "Send critical events to your server",
         "category": "API",
         "min_subscription": 1
+    },
+    {
+        "name": "External Analytics",
+        "description": "Track your magic links in your own analytics tools like Google Analytics or Meta's Pixel",
+        "category": "Analytics",
+        "min_subscription": 1
     }
 ]

@@ -97,7 +97,8 @@ export interface Alert {
   time_window: number;
   created_at: string;
   updated_at: string;
-  logs: AlertLog[];
+  logs?: AlertLog[];
+  redirect?: Redirect;
 }
 
 export interface AlertLog {
