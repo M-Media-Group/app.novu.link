@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 
-import NeoNavBar from "@/components/NeoNavBar.vue";
+import NavBar from "@/components/NavBar.vue";
 
 import { useUserStore } from "@/stores/user";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
-const meta: Meta<typeof NeoNavBar> = {
-  title: "Components/NeoNavBar",
-  component: NeoNavBar,
+const meta: Meta<typeof NavBar> = {
+  title: "Components/NavBar",
+  component: NavBar,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   //  Set the router "user.isAuthenticated" to true. We will useUserStore to set the user to authenticated
 };
 
 export default meta;
-type Story = StoryObj<typeof NeoNavBar>;
+type Story = StoryObj<typeof NavBar>;
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
  * See https://storybook.js.org/docs/api/csf
@@ -23,23 +23,23 @@ type Story = StoryObj<typeof NeoNavBar>;
  */
 export const LoggedIn: Story = {
   render: () => ({
-    components: { NeoNavBar },
+    components: { NavBar },
     setup() {
       const user = useUserStore();
       user.isAuthenticated = true;
     },
-    template: "<NeoNavBar />",
+    template: "<NavBar />",
   }),
 };
 
 export const DropdownOpen: Story = {
   render: () => ({
-    components: { NeoNavBar },
+    components: { NavBar },
     setup() {
       const user = useUserStore();
       user.isAuthenticated = true;
     },
-    template: "<NeoNavBar />",
+    template: "<NavBar />",
   }),
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
@@ -75,13 +75,13 @@ export const DropdownOpen: Story = {
 
 export const Loading: Story = {
   render: () => ({
-    components: { NeoNavBar },
+    components: { NavBar },
     setup() {
       const user = useUserStore();
       user.isAuthenticated = true;
       user.isLoading = true;
     },
-    template: "<NeoNavBar />",
+    template: "<NavBar />",
   }),
 };
 
