@@ -3,6 +3,7 @@ import CardElement from "@/components/CardElement.vue";
 import type { PropType } from "vue";
 import type { Webhook } from "@/types/redirect";
 import CreateWebhook from "@/forms/CreateWebhook.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 defineProps({
   redirectId: {
@@ -66,6 +67,16 @@ defineProps({
       </section>
     </card-element>
   </template>
+
+  <card-element
+    :titleHeadingLevel="2"
+    :title="$t('Analytics Integrations')"
+    :subtitle="$t('Integrations with analytics services')"
+  >
+    <base-button to="/team/settings">
+      {{ $t("Go to team settings") }}
+    </base-button>
+  </card-element>
 
   <card-element
     :loading="isLoading"

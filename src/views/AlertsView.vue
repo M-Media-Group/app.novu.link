@@ -29,9 +29,21 @@ getAlerts();
 </script>
 <template>
   <div class="two-column-grid">
-    <hgroup>
-      <h1>{{ $t("Alerts") }}</h1>
-    </hgroup>
+    <div>
+      <nav aria-label="breadcrumb">
+        <ul>
+          <li>
+            <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+          </li>
+          <li>
+            {{ $t("Alerts") }}
+          </li>
+        </ul>
+      </nav>
+      <hgroup>
+        <h1>{{ $t("Alerts") }}</h1>
+      </hgroup>
+    </div>
     <base-button to="/alerts/create" class="full-width">{{
       $t("Create a new alert")
     }}</base-button>

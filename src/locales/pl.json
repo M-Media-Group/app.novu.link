@@ -435,5 +435,14 @@
     "pending": "oczekujący",
     "resolved": "rozwiązany",
     "Enable alerts": "Włącz alerty",
-    "Create a new alert": "Utwórz nowy alert"
+    "Create a new alert": "Utwórz nowy alert",
+    "Optional name to help you identify this integration. E.g. 'My BusinessName Facebook Pixel'": "Opcjonalna nazwa, która pomoże Ci zidentyfikować tę integrację. Np. 'Mój Facebook Pixel dla BusinessName'",
+    "Enable debug mode in the analytics service": "Włącz tryb debugowania w usłudze analityki",
+    "Need help? Read the analytics service docs": "Potrzebujesz pomocy? Przeczytaj dokumentację usługi analityki",
+    "Analytics Integrations": "Integracje analityki",
+    "Integrations with analytics services": "Integracje z usługami analityki",
+    "Add a new integration": "Dodaj nową integrację",
+    "Service": "Usługa",
+    "Debug": "Debugowanie",
+    "Delete": "Usuń"
 }

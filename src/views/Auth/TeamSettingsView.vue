@@ -5,7 +5,11 @@ import TeamSettings from "@/forms/TeamSettings.vue";
 import { useTeamStore } from "@/stores/team";
 import { useUserStore } from "@/stores/user";
 import type { PersonalAccessToken } from "@/types/user";
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import CreateAnalyticsIntegration from "@/forms/CreateAnalyticsIntegration.vue";
+import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import BaseButton from "@/components/BaseButton.vue";
+import { eventTypes, useEventsBus } from "@/eventBus/events";
 
 const userStore = useUserStore();
 const teamStore = useTeamStore();
@@ -19,6 +23,40 @@ const accessTokens = ref<PersonalAccessToken[]>([]);
 userStore
   .getPersonalAccessTokens()
   .then((tokens) => (accessTokens.value = tokens));
+
+const analyticsIntegrations = ref([] as AnalyticsIntegration[]);
+
+const getCurrentIntegration = async () => {
+  const response = await teamStore.getAnalyticsIntegrations();
+  if (response) {
+    analyticsIntegrations.value = response;
+  } else if (typeof response === "object") {
+    // Show the fields with errors
+    // baseFormRef.value.setInputErrors(response.data.errors);
+  }
+};
+
+const deleteAnalyticsIntegration = async (id: number) => {
+  const response = await teamStore.deleteAnalyticsIntegration(id);
+  if (response) {
+    getCurrentIntegration();
+  } else if (typeof response === "object") {
+    // Show the fields with errors
+    // baseFormRef.value.setInputErrors(response.data.errors);
+  }
+};
+
+const $bus = useEventsBus();
+
+onMounted(() => {
+  getCurrentIntegration();
+
+  $bus.$on(eventTypes.created_analytics_integration, getCurrentIntegration);
+});
+
+onUnmounted(() => {
+  $bus.$off(eventTypes.created_analytics_integration, getCurrentIntegration);
+});
 </script>
 <template>
   <h1>{{ $t("My Team") }}</h1>
@@ -51,5 +89,52 @@ userStore
     >
       {{ $t("Add a payment method") }}
     </button>
+  </card-element>
+  <card-element
+    :titleHeadingLevel="2"
+    :title="$t('Analytics Integrations')"
+    :subtitle="$t('Integrations with analytics services')"
+  >
+    <table v-if="analyticsIntegrations.length">
+      <thead>
+        <tr>
+          <th>{{ $t("Name") }}</th>
+          <th>{{ $t("Service") }}</th>
+          <th>{{ $t("ID") }}</th>
+          <th>{{ $t("Debug") }}</th>
+          <th>{{ $t("Actions") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="integration in analyticsIntegrations" :key="integration.id">
+          <td>{{ integration.name ?? "-" }}</td>
+          <td>{{ integration.type }}</td>
+          <td>{{ integration.external_id }}</td>
+
+          <td>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-label="switch"
+              :checked="integration.debug"
+            />
+          </td>
+
+          <td>
+            <base-button
+              class="delete"
+              type="button"
+              @click="deleteAnalyticsIntegration(integration.id)"
+            >
+              {{ $t("Delete") }}
+            </base-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 v-if="analyticsIntegrations.length">
+      {{ $t("Add a new integration") }}
+    </h3>
+    <create-analytics-integration></create-analytics-integration>
   </card-element>
 </template>
