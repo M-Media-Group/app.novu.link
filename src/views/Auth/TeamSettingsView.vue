@@ -95,43 +95,48 @@ onUnmounted(() => {
     :title="$t('Analytics Integrations')"
     :subtitle="$t('Integrations with analytics services')"
   >
-    <table v-if="analyticsIntegrations.length">
-      <thead>
-        <tr>
-          <th>{{ $t("Name") }}</th>
-          <th>{{ $t("Service") }}</th>
-          <th>{{ $t("ID") }}</th>
-          <th>{{ $t("Debug") }}</th>
-          <th>{{ $t("Actions") }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="integration in analyticsIntegrations" :key="integration.id">
-          <td>{{ integration.name ?? "-" }}</td>
-          <td>{{ integration.type }}</td>
-          <td>{{ integration.external_id }}</td>
+    <div class="overflow-auto">
+      <table v-if="analyticsIntegrations.length">
+        <thead>
+          <tr>
+            <th>{{ $t("Name") }}</th>
+            <th>{{ $t("Service") }}</th>
+            <th>{{ $t("ID") }}</th>
+            <th>{{ $t("Debug") }}</th>
+            <th>{{ $t("Actions") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="integration in analyticsIntegrations"
+            :key="integration.id"
+          >
+            <td>{{ integration.name ?? "-" }}</td>
+            <td>{{ integration.type }}</td>
+            <td>{{ integration.external_id }}</td>
 
-          <td>
-            <input
-              type="checkbox"
-              role="switch"
-              aria-label="switch"
-              :checked="integration.debug"
-            />
-          </td>
+            <td>
+              <input
+                type="checkbox"
+                role="switch"
+                aria-label="switch"
+                :checked="integration.debug"
+              />
+            </td>
 
-          <td>
-            <base-button
-              class="delete"
-              type="button"
-              @click="deleteAnalyticsIntegration(integration.id)"
-            >
-              {{ $t("Delete") }}
-            </base-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <td>
+              <base-button
+                class="delete"
+                type="button"
+                @click="deleteAnalyticsIntegration(integration.id)"
+              >
+                {{ $t("Delete") }}
+              </base-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <h3 v-if="analyticsIntegrations.length">
       {{ $t("Add a new integration") }}
     </h3>

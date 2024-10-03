@@ -364,3 +364,30 @@ nav.tab-nav li {
     padding-left: calc((100vw - 100%) / 2);
     padding-right: calc((100vw - 100%) / 2);
 }
+
+@media (max-width: 768px) {
+
+    /* Truncate to only keep the last 2 LI in breadcrumb */
+    nav[aria-label=breadcrumb] ul li {
+        display: none;
+
+
+        &:nth-last-child(-n+2) {
+            display: block;
+        }
+
+        /* Only second to last should have margin-left: 0; */
+        &:nth-last-child(2) {
+            margin-left: 0;
+        }
+
+    }
+}
+
+.overflow-auto>table {
+    overflow-wrap: break-word;
+}
+
+table>tr>th {
+    white-space: nowrap;
+}
