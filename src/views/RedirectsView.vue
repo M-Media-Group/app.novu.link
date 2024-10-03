@@ -46,10 +46,22 @@ const redirectBadges = (redirect: Redirect) => {
 };
 </script>
 <template>
-  <hgroup>
-    <h1>{{ $t("Magic links") }}</h1>
-    <p>{{ $t("All links") }}</p>
-  </hgroup>
+  <div>
+    <nav aria-label="breadcrumb">
+      <ul>
+        <li>
+          <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+        </li>
+        <li>
+          {{ $t("Magic links") }}
+        </li>
+      </ul>
+    </nav>
+    <hgroup>
+      <h1>{{ $t("Magic links") }}</h1>
+      <p>{{ $t("All links") }}</p>
+    </hgroup>
+  </div>
   <div>
     <template v-if="isLoading">
       <card-element

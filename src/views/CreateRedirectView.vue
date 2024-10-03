@@ -16,9 +16,9 @@ const shouldSubmit = searchParams.has("url") && searchParams.has("submit");
           <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
         </li>
         <li>
-          <router-link to="/alerts">{{ $t("Alerts") }}</router-link>
+          <router-link to="/redirects">{{ $t("Magic links") }}</router-link>
         </li>
-        <li>{{ $t("Create a new alert") }}</li>
+        <li>{{ $t("New magic link") }}</li>
       </ul>
     </nav>
     <h1>{{ $t("New magic link") }}</h1>

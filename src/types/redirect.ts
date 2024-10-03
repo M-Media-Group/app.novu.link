@@ -1,9 +1,11 @@
 import type { ClicksByTimeOfDay } from "./analytics";
+import type { AnalyticsIntegration } from "./analyticsIntegrations";
 import type { QRDesign } from "./qrDesign";
+import type { Team } from "./team";
 
 export interface Redirect {
   uuid: string;
-  team_id: number;
+  team_id: Team["id"];
   name: string;
   enable_analytics: boolean;
   created_at: Date;
@@ -17,6 +19,7 @@ export interface Redirect {
   default_qr_design?: QRDesign;
   webhooks?: Webhook[];
   alerts?: Alert[];
+  analytics_integrations?: AnalyticsIntegration[];
   subscribed_at: Date | null;
   remaining_clicks: number;
 }

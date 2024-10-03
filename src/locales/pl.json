@@ -444,5 +444,7 @@
     "Add a new integration": "Dodaj nową integrację",
     "Service": "Usługa",
     "Debug": "Debugowanie",
-    "Delete": "Usuń"
+    "Delete": "Usuń",
+    "Add external analytics integrations to track your QR code scans with Google Analytics, Facebook Pixels, and more.": "Dodaj zewnętrzne integracje analityki, aby śledzić skany kodów QR za pomocą Google Analytics, Facebook Pixels i innych.",
+    "Enabled": "Włączony"
 }

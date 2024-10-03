@@ -15,6 +15,7 @@ const secret = ref("" as string);
 const isOpenAnalyticsServiceDropdown = ref(false);
 const debug = ref(false as AnalyticsIntegration["debug"]);
 const name = ref("" as AnalyticsIntegration["name"]);
+const debugCode = ref("" as string);
 
 const baseFormRef = ref();
 
@@ -68,6 +69,22 @@ const helpLink = computed(() => {
     ?.raw?.url;
 });
 
+const debugCodeLabel = computed(() => {
+  if (!selectedOption.value) {
+    return "Select an integration";
+  }
+  return allOptions.value.find((option) => option.id === selectedOption.value)
+    ?.raw?.fields?.debug_code;
+});
+
+const debugCodeHelpLink = computed(() => {
+  if (!selectedOption.value) {
+    return "";
+  }
+  return allOptions.value.find((option) => option.id === selectedOption.value)
+    ?.raw?.debug_url;
+});
+
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
   if (!selectedOption.value || !id.value || !secret.value) {
@@ -81,6 +98,7 @@ const submitForm = async () => {
       external_secret: secret.value,
       debug: debug.value,
       name: name.value,
+      debug_code: debug.value ? debugCode.value : null,
     })
     .catch((error) => {
       if (!error.response || error.response.status !== 422) {
@@ -171,6 +189,30 @@ const submitForm = async () => {
           >{{ $t("Learn more") }}</a
         ></label
       >
+
+      <template v-if="debug && debugCodeLabel">
+        <label for="debugCode">{{ $t(debugCodeLabel) }}</label>
+        <input
+          type="text"
+          id="debugCode"
+          name="debugCode"
+          v-model="debugCode"
+          minlength="5"
+          pattern=".{5,}"
+          required
+        />
+        <small>
+          {{ $t("Need help? Read the analytics service docs") }}
+          <a
+            v-if="debugCodeHelpLink"
+            :href="debugCodeHelpLink"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ debugCodeHelpLink }}
+          </a>
+        </small>
+      </template>
 
       <label for="name">{{ $t("Name") }}</label>
       <input type="text" id="name" name="name" v-model="name" />
