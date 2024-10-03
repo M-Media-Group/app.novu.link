@@ -8,6 +8,8 @@ import axios from "axios";
 import { ref } from "vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 
+import ToggleAnalyticsIntegration from "@/forms/ToggleAnalyticsIntegration.vue";
+
 defineProps({
   redirectId: {
     type: String,
@@ -55,13 +57,10 @@ getIntegrations();
       <tr v-for="integration in analyticsIntegrations" :key="integration.id">
         <td>{{ integration.name ?? "-" }} ({{ integration.type }})</td>
         <td>
-          <input
-            type="checkbox"
-            role="switch"
-            aria-label="switch"
-            :checked="
-              !!integration.redirects?.find((r) => r.uuid === redirectId)
-            "
+          <toggle-analytics-integration
+            :redirectId="redirectId"
+            :integration="integration"
+            @success="getIntegrations"
           />
         </td>
       </tr>
