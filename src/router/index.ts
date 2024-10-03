@@ -208,6 +208,16 @@ const router = createRouter({
       },
     },
     {
+      path: "/privacy-policy",
+      name: "privacy-policy",
+      component: () => import("../views/PrivacyPolicyView.vue"),
+    },
+    {
+      path: "/terms-of-service",
+      name: "terms-of-service",
+      component: () => import("../views/PrivacyPolicyView.vue"),
+    },
+    {
       path: "/sitemap",
       name: "sitemap",
       component: () => import("../views/SitemapView.vue"),
