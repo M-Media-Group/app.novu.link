@@ -100,7 +100,7 @@ export const startSubscription = async (redirectId: string) => {
   $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
 
   const response = await axios.post(
-    `/api/v1/redirects/${redirectId}/subscribe`
+    `/api/v1/redirects/${redirectId}/subscription`
   );
 
   if (response.status === 200) {
@@ -119,8 +119,8 @@ export const startSubscription = async (redirectId: string) => {
 };
 
 export const unsubscribe = async (redirectId: string) => {
-  const response = await axios.post(
-    `/api/v1/redirects/${redirectId}/unsubscribe`
+  const response = await axios.delete(
+    `/api/v1/redirects/${redirectId}/subscription`
   );
 
   if (response.status === 200) {
