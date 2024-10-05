@@ -24,6 +24,13 @@ const props = defineProps({
     required: false,
     default: false,
   },
+
+  /** If multiple options can be selected */
+  multiple: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const isLoading = ref(false);
@@ -82,5 +89,6 @@ const emit = defineEmits<{
     @update:modelValue="handleSelect"
     :required="required"
     :autofocus="true"
+    :multiple="multiple"
   />
 </template>

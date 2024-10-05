@@ -47,6 +47,7 @@ export enum eventTypes {
   created_analytics_integration = "created_analytics_integration",
   updated_analytics_integration = "updated_analytics_integration",
   deleted_analytics_integration = "deleted_analytics_integration",
+  created_product_order = "created_product_order",
 }
 
 type EventsObject = { [P in eventTypes]?: any };

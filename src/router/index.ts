@@ -208,6 +208,11 @@ const router = createRouter({
       },
     },
     {
+      path: "/products",
+      name: "products",
+      component: () => import("../views/ProductsView.vue"),
+    },
+    {
       path: "/privacy-policy",
       name: "privacy-policy",
       component: () => import("../views/PrivacyPolicyView.vue"),

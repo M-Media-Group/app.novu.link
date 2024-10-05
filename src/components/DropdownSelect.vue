@@ -188,7 +188,13 @@ const filteredOptions = computed(() => {
 
   if (!props.searchLocally) return normalisedOptions.value;
 
-  return filterOptions(normalisedOptions.value, props.search);
+  const data = filterOptions(normalisedOptions.value, props.search);
+
+  if (data.length < 2) {
+    reachedEndOfListDebounced();
+  }
+
+  return data;
 });
 
 const orderedOptions = computed(() => {
@@ -410,6 +416,8 @@ defineExpose({ focus, setCustomValidity, setAttribute });
           :modelValue="props.modelValue"
           :index="index"
           :value="option[modelKey]"
+          :multiple="props.multiple"
+          :label="getLabel(option)"
         >
           <label>
             <input

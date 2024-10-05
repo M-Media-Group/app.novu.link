@@ -277,4 +277,14 @@ export default {
       5000
     ).show();
   },
+  [eventTypes.created_product_order]: () => {
+    new CustomNotification(
+      "success",
+      t(
+        "Order created successfully. We'll reach out to you shortly on your email. You have not yet been charged for the product."
+      ),
+      ["browser"],
+      5000
+    ).show();
+  },
 } as Record<eventTypes, any>;
