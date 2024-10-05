@@ -19,6 +19,7 @@ import QRDesigns from "@/components/QR/QRDesigns.vue";
 import QRAlerts from "@/components/QR/QRAlerts.vue";
 import CardElement from "@/components/CardElement.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+import BaseBadge from "@/components/BaseBadge.vue";
 
 import BaseModal from "@/components/modals/BaseModal.vue";
 
@@ -511,6 +512,13 @@ const testLink = () => {
               <a :href="magicLink" target="_blank" @click="testLink">{{
                 $t("Test link")
               }}</a>
+            </li>
+            <li>
+              <!-- Print button -->
+              <router-link to="/products"
+                >{{ $t("Order and print on cups, t-shirts, and more") }}
+                <base-badge>{{ $t("New") }}</base-badge>
+              </router-link>
             </li>
             <li>
               <!-- Print button -->
