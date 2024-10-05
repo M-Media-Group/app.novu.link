@@ -365,6 +365,7 @@ defineExpose({ focus, setCustomValidity, setAttribute });
       :aria-invalid="props.ariaInvalid"
       :aria-busy="props.ariaBusy"
       :data-has-value="props.modelValue.length > 0"
+      :aria-required="props.required"
     >
       {{ props.modelValue.length > 0 ? getSummaryText() : props.placeholder }}
     </summary>

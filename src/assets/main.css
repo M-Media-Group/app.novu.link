@@ -170,6 +170,7 @@ nav form {
 label:has(+input:required)::after,
 label:has(+textarea:required)::after,
 label:has(+select:required)::after,
+label:has(+details>summary[aria-required=true])::after,
 /* If label has child checkbox, the text will be after the child input */
 label:has(>input[type="checkbox"]:required)::after,
 label:has(>input[type="radio"]:required)::after {
@@ -520,7 +521,7 @@ nav a[role=button] {
   margin-left: 0.5ch;
 
   /* Set max width to 4 letters */
-  max-width: 15ch;
+  max-width: 20ch;
 
   /* When overflowing, the ellipses should be a + */
   overflow: hidden;
