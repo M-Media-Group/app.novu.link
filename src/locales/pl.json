@@ -446,5 +446,7 @@
     "Debug": "Debugowanie",
     "Delete": "Usuń",
     "Add external analytics integrations to track your QR code scans with Google Analytics, Facebook Pixels, and more.": "Dodaj zewnętrzne integracje analityki, aby śledzić skany kodów QR za pomocą Google Analytics, Facebook Pixels i innych.",
-    "Enabled": "Włączony"
+    "Enabled": "Włączony",
+    "Order and print on cups, t-shirts, and more": "Zamów i wydrukuj na kubkach, koszulkach i innych",
+    "Print your QR code on anything": "Wydrukuj swój kod QR na czymkolwiek"
 }

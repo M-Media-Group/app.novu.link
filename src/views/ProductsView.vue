@@ -4,7 +4,6 @@ import { computed, onMounted, ref } from "vue";
 import CreateProductOrder from "@/forms/CreateProductOrder.vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
-import OpenStreetDropdown from "@/components/examples/OpenStreetDropdown.vue";
 import { useProducts } from "@/composables/useProducts";
 import type { Product } from "@/types/product";
 
@@ -70,12 +69,13 @@ const showBuyNow = ref(false);
 <template>
   <div>
     <hgroup>
-      <h1>Print your QR code on anything</h1>
+      <h1>{{ $t("Print your QR code on anything") }}</h1>
       <p>Shirts, mugs, stickers, and more</p>
     </hgroup>
     <section
       v-if="products.length > 0"
       class="fulscreen-width-container hero-section"
+      data-theme="light"
     >
       <div class="two-column-grid">
         <img
@@ -114,11 +114,6 @@ const showBuyNow = ref(false);
               :productIds="[products[featuredIndex].id]"
               @success="showBuyNow = false"
             />
-            <small
-              >{{ products[featuredIndex].prices.formattedPrice + " incl. VAT"
-              }}<br />+ 3 EUR / month (billed annually) Magic Link<br />+ 15 EUR
-              Pro Consulting</small
-            >
           </template>
           <hr />
           <small>
@@ -137,7 +132,6 @@ const showBuyNow = ref(false);
           <h2>All products</h2>
           <p>Our most popular products</p>
         </hgroup>
-        <open-street-dropdown />
       </div>
       <card-element
         :title="product.name"

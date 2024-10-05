@@ -214,6 +214,22 @@ watch(
         >
       </confirms-gate>
     </template>
+    <template #after-submit v-if="loadedProduct?.prices?.formattedPrice">
+      <small
+        >{{ loadedProduct.prices.formattedPrice + " incl. VAT" }} x
+        {{ quantity }}
+        <template v-if="loadedProduct.prices.formattedShipping">
+          <br />+ {{ loadedProduct.prices.formattedShipping }} worldwide
+          shipping
+        </template>
+        <template v-if="includeQrCodeSubscription">
+          <br />+ €3 / month (billed annually) Magic Link
+        </template>
+        <template v-if="includeConsultation">
+          <br />+ €15 Pro Consulting
+        </template>
+      </small>
+    </template>
     <!-- </TransitionGroup> -->
   </base-form>
 </template>
