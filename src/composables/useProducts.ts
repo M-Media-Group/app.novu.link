@@ -222,6 +222,8 @@ export const useProducts = () => {
 
   const selectedAttributes = ref([] as Attribute[]);
 
+  const minProductsToTriggerLoadMore = ref(0);
+
   const loadProduct = async (id: Product["id"]) => {
     if (isLoadingProduct.value) {
       return;
@@ -337,7 +339,7 @@ export const useProducts = () => {
   const filteredProducts = computed(() => {
     let filteredProducts = products.value;
     // if there is a search term, filter by it
-    if (searchTerm.value) {
+    if (searchTerm.value.length > 2) {
       filteredProducts = products.value.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.value.toLowerCase())
       );
@@ -362,12 +364,13 @@ export const useProducts = () => {
 
   //   Watch the filteredProducts. If less than 3 products are left, load more products
   watch(filteredProducts, (newProducts) => {
-    if (newProducts.length < 3) {
+    if (newProducts.length <= minProductsToTriggerLoadMore.value) {
       debounceLoadMoreProducts();
     }
   });
 
   return {
+    minProductsToTriggerLoadMore,
     products,
     loadedProduct,
     loadMoreProducts,

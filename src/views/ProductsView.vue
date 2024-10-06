@@ -22,7 +22,10 @@ const {
   handleSelectedAttribute,
   selectedAttributes,
   searchTerm,
+  minProductsToTriggerLoadMore,
 } = useProducts();
+
+minProductsToTriggerLoadMore.value = 3;
 
 onMounted(async () => {
   await loadMoreProducts();

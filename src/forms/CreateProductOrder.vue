@@ -107,7 +107,10 @@ watch(
 
 watch(
   () => props.productIds,
-  async (value) => {
+  async (value, oldValue) => {
+    if (value?.[0] === oldValue?.[0]) {
+      return;
+    }
     if (value && value.length > 0) {
       await loadProduct(value[0]);
     }
