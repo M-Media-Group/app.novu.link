@@ -6,11 +6,24 @@ import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
 import { useProducts } from "@/composables/useProducts";
 import type { Product } from "@/types/product";
+import BaseBadge from "@/components/BaseBadge.vue";
 
-const { products, loadMoreProducts, isLoading } = useProducts();
+const {
+  products,
+  loadMoreProducts,
+  isLoading,
+  formatPrice,
+  getAllImages,
+  loadedProduct,
+} = useProducts();
 
 onMounted(async () => {
   await loadMoreProducts();
+
+  // Load a random product
+  handleProductSelect(
+    products.value[Math.floor(Math.random() * products.value.length)]
+  );
 });
 
 const displayAbleProducts = computed(() => {
@@ -26,12 +39,14 @@ const displayAbleProducts = computed(() => {
             merchant: "Novu.Link",
             description:
               "We offer your QR Code to be printed on any of our products for free",
-            shortDescription:
+            short_description:
               "We offer your QR Code to be printed on any of our products for free",
             prices: {
-              formattedPrice: "Free",
+              min: 0,
+              max: 0,
               currency: "EUR",
             },
+            attributes: {},
           },
           product,
         ]
@@ -54,13 +69,10 @@ window.onscroll = async () => {
   }
 };
 
-// Random number 0 - 20
-const featuredIndex = ref(Math.floor(Math.random() * 20));
-
 const primaryProductHeading = ref();
 
 const handleProductSelect = (product: Product) => {
-  featuredIndex.value = products.value.indexOf(product);
+  loadedProduct.value = product;
   primaryProductHeading.value.scrollIntoView();
 };
 
@@ -73,25 +85,58 @@ const showBuyNow = ref(false);
       <p>Shirts, mugs, stickers, and more</p>
     </hgroup>
     <section
-      v-if="products.length > 0"
+      v-if="loadedProduct && loadedProduct !== null"
       class="fulscreen-width-container hero-section"
       data-theme="light"
     >
       <div class="two-column-grid">
-        <img
-          :src="products[featuredIndex].image"
-          class="full-width"
-          alt="A product"
-        />
+        <div
+          class="images overflow-auto"
+          style="
+            height: 100%;
+            max-height: 70dvh;
+            border-radius: var(--pico-border-radius);
+            margin-bottom: var(--pico-spacing);
+          "
+          v-if="loadedProduct"
+        >
+          <img
+            v-for="img in getAllImages(loadedProduct).map((image) => ({
+              src: image,
+              alt: loadedProduct?.name ?? 'Product image',
+            }))"
+            :key="img.src"
+            :src="img.src"
+            class="full-width"
+            :alt="img.alt"
+          />
+        </div>
+
         <div>
           <hgroup>
             <h2 ref="primaryProductHeading">
-              {{ products[featuredIndex].name }} With Custom QR Code
+              {{ loadedProduct.name }} With Custom QR Code
             </h2>
             <p>
-              {{ products[featuredIndex].prices.formattedPrice + " incl. VAT" }}
-              + {{ products[featuredIndex].prices.formattedShipping }} worldwide
-              shipping
+              <template
+                v-if="loadedProduct.prices.min !== loadedProduct.prices.max"
+              >
+                {{ $t("From") }}
+              </template>
+              {{
+                formatPrice(
+                  loadedProduct.prices.min,
+                  loadedProduct.prices.currency
+                ) + " incl. VAT"
+              }}
+              +
+              {{
+                formatPrice(
+                  loadedProduct.prices.shipping,
+                  loadedProduct.prices.currency
+                )
+              }}
+              worldwide shipping
             </p>
           </hgroup>
           <template v-if="!showBuyNow">
@@ -99,10 +144,15 @@ const showBuyNow = ref(false);
               >Buy now</base-button
             >
             <p style="white-space: pre-line">
-              {{ products[featuredIndex].description }}<br />• Advanced
-              Novu.Link QR Code printed in high quality<br />• Changeable
-              destinations even after print, for free
+              {{ loadedProduct.description }}<br />• Advanced Novu.Link QR Code
+              printed in high quality<br />• Changeable destinations even after
+              print, for free
             </p>
+            <small>
+              <base-badge>{{
+                loadedProduct.is_in_stock ? "In stock" : "Out of stock"
+              }}</base-badge>
+            </small>
           </template>
           <template v-else>
             <p>
@@ -111,7 +161,7 @@ const showBuyNow = ref(false);
               >
             </p>
             <create-product-order
-              :productIds="[products[featuredIndex].id]"
+              :productIds="[loadedProduct.id]"
               @success="showBuyNow = false"
             />
           </template>
@@ -120,7 +170,7 @@ const showBuyNow = ref(false);
             Fulfilled by
             <a
               href="https://www.printful.com/print-on-demand/a/583122:ccf515ea17b07bdf388ebbff9f76827b"
-              >{{ products[featuredIndex].merchant }}</a
+              >{{ loadedProduct.merchant }}</a
             >
           </small>
         </div>
@@ -135,10 +185,16 @@ const showBuyNow = ref(false);
       </div>
       <card-element
         :title="product.name"
-        :images="[{ src: product.image, alt: 'Product image' }]"
+        :images="[
+          {
+            src: product.image,
+            alt: 'A product',
+          },
+        ]"
         :subtitle="
-          product.prices.formattedPrice !== 'Free'
-            ? product.prices.formattedPrice + ' incl. VAT'
+          product.prices.min !== 0
+            ? formatPrice(product.prices.min, product.prices.currency) +
+              ' incl. VAT'
             : 'Free'
         "
         v-for="product in displayAbleProducts"
@@ -152,7 +208,17 @@ const showBuyNow = ref(false);
         "
         style="height: 100%"
       >
-        <p>{{ product.shortDescription }}</p>
+        <p>{{ product.short_description }}</p>
+
+        <small v-if="Object.keys(product.attributes).length > 0">
+          Customise:
+          <base-badge
+            v-for="attribute in Object.keys(product.attributes)"
+            :key="attribute"
+          >
+            {{ attribute }}
+          </base-badge>
+        </small>
       </card-element>
 
       <template v-if="isLoading">

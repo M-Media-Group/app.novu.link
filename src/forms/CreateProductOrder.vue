@@ -37,7 +37,15 @@ const $bus = useEventsBus();
 
 const emit = defineEmits(["success"]);
 
-const { loadedProduct, loadProduct, isLoadingProduct } = useProducts();
+const {
+  loadedProduct,
+  loadProduct,
+  isLoadingProduct,
+  handleSelectedAttribute,
+  selectedVariant,
+  selectedAttributes,
+  formatPrice,
+} = useProducts();
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
@@ -50,11 +58,11 @@ const submitForm = async () => {
   const response = await axios
     .post(`/api/v1/products/${props.productIds}/orders`, {
       redirect_uuid: localRedirectIds.value[0],
-      size: size.value,
       quantity: quantity.value,
       merchant: "Printful",
       include_qr_code_subscription: includeQrCodeSubscription.value,
       include_consultation: includeConsultation.value,
+      attributes: selectedAttributes.value,
     })
     .catch((error) => {
       console.error(error);
@@ -77,7 +85,7 @@ const submitForm = async () => {
 const isLoading = ref(false);
 
 const localRedirectIds = ref(props.redirectIds ?? []);
-const size = ref();
+
 const quantity = ref(1);
 const includeQrCodeSubscription = ref(true);
 const includeConsultation = ref(true);
@@ -92,8 +100,8 @@ watch(
     if (!value) {
       return;
     }
+    selectedAttributes.value = [];
     loadedProduct.value = value;
-    size.value = value.sizes[0];
   }
 );
 
@@ -102,9 +110,6 @@ watch(
   async (value) => {
     if (value && value.length > 0) {
       await loadProduct(value[0]);
-      if (loadedProduct.value && loadedProduct.value.sizes) {
-        size.value = loadedProduct.value.sizes[0];
-      }
     }
   },
   { immediate: true }
@@ -131,17 +136,25 @@ watch(
       ref="productSelectorElement"
       required
     />
-    <template v-if="loadedProduct?.sizes && loadedProduct.sizes.length > 0">
-      <label for="size">Size</label>
-      <select name="size" required v-model="size" :aria-busy="isLoadingProduct">
-        <option
-          v-for="option in loadedProduct.sizes"
-          :value="option"
-          :key="option"
+    <template v-if="loadedProduct?.attributes">
+      <template v-for="(options, key) in loadedProduct.attributes" :key="key">
+        <label for="size">{{ key }}</label>
+        <select
+          name="size"
+          required
+          @change="
+            handleSelectedAttribute(
+              `${key}`,
+              ($event.target as HTMLSelectElement).value
+            )
+          "
+          :aria-busy="isLoadingProduct"
         >
-          {{ option }}
-        </option>
-      </select>
+          <option v-for="option in options" :value="option" :key="option">
+            {{ option }}
+          </option>
+        </select>
+      </template>
     </template>
 
     <label for="quantity">Quantity</label>
@@ -182,7 +195,6 @@ watch(
         )
       }}
     </label>
-
     <template #submit="{ disabled, isLoading, submitText }">
       <confirms-gate
         :title="$t('Enable alerts')"
@@ -214,13 +226,25 @@ watch(
         >
       </confirms-gate>
     </template>
-    <template #after-submit v-if="loadedProduct?.prices?.formattedPrice">
+    <template #after-submit v-if="selectedVariant?.prices[0].priceWithTax">
       <small
-        >{{ loadedProduct.prices.formattedPrice + " incl. VAT" }} x
+        >{{
+          formatPrice(
+            selectedVariant?.prices[0].priceWithTax,
+            selectedVariant?.prices[0].currencyCode
+          ) + " incl. VAT"
+        }}
+        {{ selectedVariant?.name }} x
         {{ quantity }}
-        <template v-if="loadedProduct.prices.formattedShipping">
-          <br />+ {{ loadedProduct.prices.formattedShipping }} worldwide
-          shipping
+        <template v-if="loadedProduct?.prices.shipping">
+          <br />+
+          {{
+            formatPrice(
+              loadedProduct.prices.shipping,
+              loadedProduct.prices.currency
+            )
+          }}
+          worldwide shipping
         </template>
         <template v-if="includeQrCodeSubscription">
           <br />+ €3 / month (billed annually) Magic Link

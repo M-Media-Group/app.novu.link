@@ -37,7 +37,7 @@ const isOpenValueSelector = ref(false);
 
 const searchTerm = ref("");
 
-const { products, loadMoreProducts, isLoading } = useProducts();
+const { products, loadMoreProducts, isLoading, formatPrice } = useProducts();
 
 const productOptions = computed((): selectOptionObject[] =>
   products.value.map(
@@ -48,8 +48,8 @@ const productOptions = computed((): selectOptionObject[] =>
         raw: {
           ...product,
           image: product.image,
-          description: product.shortDescription,
-          price: product.prices.formattedPrice,
+          description: product.short_description,
+          price: formatPrice(product.prices.min, product.prices.currency),
         },
       } as selectOptionObject)
   )

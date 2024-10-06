@@ -60,6 +60,7 @@ defineProps({
           :src="image.src"
           :alt="image.alt"
           :key="image.alt"
+          loading="lazy"
         />
       </div>
 
