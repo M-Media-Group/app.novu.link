@@ -52,3 +52,21 @@ export default meta;
 type Story = StoryObj<typeof RedirectSelector>;
 
 export const Default: Story = {};
+
+export const Unauthenticated: Story = {
+  args: {
+    modelValue: [],
+  },
+  parameters: {
+    mockData: [
+      {
+        url: "/api/v1/redirects",
+        method: "GET",
+        status: 401,
+        response: {
+          message: "You are not authenticated",
+        },
+      },
+    ],
+  },
+};

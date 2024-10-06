@@ -4,6 +4,7 @@ import { type PropType, onMounted, ref } from "vue";
 import axios from "axios";
 import type { Redirect } from "@/types/redirect";
 import type { selectOptionObject } from "@/types/listItem";
+import CreateRedirect from "@/forms/CreateRedirect.vue";
 
 const props = defineProps({
   modelValue: {
@@ -44,9 +45,12 @@ const getTeamRedirects = async (): Promise<selectOptionObject[]> => {
   isLoading.value = true;
   let data: selectOptionObject[] = [];
 
-  const response = await axios.get("/api/v1/redirects");
+  const response = await axios.get("/api/v1/redirects").catch((error) => {
+    console.error(error);
+    isLoading.value = false;
+  });
 
-  if (response.status === 200) {
+  if (response && response.status === 200) {
     data = response.data.map(
       (redirect: Redirect) =>
         ({
@@ -77,7 +81,11 @@ const emit = defineEmits<{
 }>();
 </script>
 <template>
+  <template v-if="!isLoading && redirectOptions.length === 0">
+    <create-redirect :inline="true" :showNameInput="false" :showLabel="false" />
+  </template>
   <dropdown-select
+    v-else
     name="redirect"
     :options="redirectOptions"
     :aria-busy="isLoading"
