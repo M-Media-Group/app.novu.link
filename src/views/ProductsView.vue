@@ -146,7 +146,7 @@ const showBuyNow = ref(false);
               worldwide shipping
             </p>
           </hgroup>
-          <template v-if="!showBuyNow">
+          <div v-show="!showBuyNow">
             <base-button @click="showBuyNow = true" class="full-width"
               >Buy now</base-button
             >
@@ -160,8 +160,8 @@ const showBuyNow = ref(false);
                 loadedProduct.is_in_stock ? "In stock" : "Out of stock"
               }}</base-badge>
             </small>
-          </template>
-          <template v-else>
+          </div>
+          <div v-show="showBuyNow">
             <p>
               <a @click="showBuyNow = false" class="back-link"
                 >← Back to product</a
@@ -171,7 +171,7 @@ const showBuyNow = ref(false);
               :productIds="[loadedProduct.id]"
               @success="showBuyNow = false"
             />
-          </template>
+          </div>
           <hr />
           <small>
             Fulfilled by
