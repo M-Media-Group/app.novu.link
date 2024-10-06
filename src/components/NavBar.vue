@@ -110,6 +110,12 @@ const blur = () => {
             }}</router-link>
           </li>
 
+          <li>
+            <router-link to="/products" @click="blur()">{{
+              $t("Shop QR Products")
+            }}</router-link>
+          </li>
+
           <li :aria-busy="user.isLoading">
             <details
               ref="detailsElement"
@@ -142,6 +148,11 @@ const blur = () => {
           <li>
             <router-link to="/pricing" @click="blur()">{{
               $t("Pricing")
+            }}</router-link>
+          </li>
+          <li>
+            <router-link to="/products" @click="blur()">{{
+              $t("Shop QR Products")
             }}</router-link>
           </li>
           <li>
