@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, ref } from "vue";
+import { type PropType, computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RedirectSelector from "@/components/RedirectSelector.vue";
 import ProductSelector from "@/components/ProductSelector.vue";
@@ -11,6 +11,7 @@ import type { Redirect } from "@/types/redirect";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
+import type { Gate } from "@m-media/vue3-gate-keeper";
 
 const props = defineProps({
   /** The redirect ids. If passed, the selector will be hidden */
@@ -117,6 +118,24 @@ watch(
   },
   { immediate: true }
 );
+
+const gates = computed(() => {
+  const gatesArray = ["confirmedEmailOrPhone", "hasPaymentMethod"] as (
+    | Gate
+    | string
+  )[];
+
+  if (includeQrCodeSubscription.value) {
+    gatesArray.push({
+      name: "subscribedRedirect",
+      options: {
+        redirectId: localRedirectIds.value[0],
+      },
+    });
+  }
+
+  return gatesArray;
+});
 </script>
 
 <template>
@@ -200,7 +219,7 @@ watch(
     </label>
     <template #submit="{ disabled, isLoading, submitText }">
       <confirms-gate
-        :title="$t('Enable alerts')"
+        :title="$t('Subscribe')"
         @confirmed="submitForm"
         :description="
           $t(
@@ -208,16 +227,7 @@ watch(
           )
         "
         :allowBackgroundClickToClose="false"
-        :gate="[
-          'confirmedEmailOrPhone',
-          'hasPaymentMethod',
-          {
-            name: 'subscribedRedirect',
-            options: {
-              redirectId: localRedirectIds[0],
-            },
-          },
-        ]"
+        :gate="gates"
       >
         <base-button
           class="full-width"
