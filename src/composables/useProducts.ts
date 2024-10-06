@@ -1,6 +1,12 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import axios from "axios";
 import type { Attribute, Attributes, Product, Variant } from "@/types/product";
+import { debounce } from "@/helpers/debounce";
+
+const products = ref([] as Product[]);
+const currentPage = ref(1);
+const hasMoreProducts = ref(true);
+const isLoading = ref(false);
 
 const getProducts = async (page = 1): Promise<Product[]> => {
   const response = await axios.get("/api/v1/products?page=" + page);
@@ -160,6 +166,8 @@ const loadMoreProducts = async () => {
   products.value = [...products.value, ...newProducts];
 };
 
+const debounceLoadMoreProducts = debounce(loadMoreProducts);
+
 /**
  * Get all the images
  *
@@ -179,10 +187,32 @@ function getAllImages(product: {
   return [...new Set([product.image, ...variantImages])];
 }
 
-const products = ref([] as Product[]);
-const currentPage = ref(1);
-const hasMoreProducts = ref(true);
-const isLoading = ref(false);
+/**
+ * All the attributes across all products
+ *
+ * This computed property will return all the attributes across all products.
+ *
+ * @returns An object with all the attributes and their values
+ */
+const allAttributes = computed(() => {
+  const attributes: Attributes = {};
+
+  products.value.forEach((product) => {
+    Object.keys(product.attributes).forEach((attributeName) => {
+      if (!attributes[attributeName]) {
+        attributes[attributeName] = [];
+      }
+
+      product.attributes[attributeName].forEach((attributeValue) => {
+        if (!attributes[attributeName].includes(attributeValue)) {
+          attributes[attributeName].push(attributeValue);
+        }
+      });
+    });
+  });
+
+  return attributes;
+});
 
 export const useProducts = () => {
   const loadedProduct = ref(null as Product | null);
@@ -297,6 +327,46 @@ export const useProducts = () => {
     return allowedValues;
   });
 
+  const searchTerm = ref("");
+
+  /**
+   * Products filtered by selected attributes
+   *
+   * This computed property will return all products that match the selected attributes.
+   */
+  const filteredProducts = computed(() => {
+    let filteredProducts = products.value;
+    // if there is a search term, filter by it
+    if (searchTerm.value) {
+      filteredProducts = products.value.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+      );
+    }
+
+    if (!selectedAttributes.value.length) {
+      return filteredProducts;
+    }
+
+    return filteredProducts.filter((product) =>
+      selectedAttributes.value.every((selectedAttr) =>
+        product.variants.some((variant) =>
+          variant.attributes.some(
+            (attr) =>
+              attr.name === selectedAttr.name &&
+              attr.value === selectedAttr.value
+          )
+        )
+      )
+    );
+  });
+
+  //   Watch the filteredProducts. If less than 3 products are left, load more products
+  watch(filteredProducts, (newProducts) => {
+    if (newProducts.length < 3) {
+      debounceLoadMoreProducts();
+    }
+  });
+
   return {
     products,
     loadedProduct,
@@ -314,5 +384,8 @@ export const useProducts = () => {
     allowedAttributeValues,
     formatPrice,
     getAllImages,
+    filteredProducts,
+    allAttributes,
+    searchTerm,
   };
 };

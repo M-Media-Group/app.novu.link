@@ -7,6 +7,8 @@ import BaseButton from "@/components/BaseButton.vue";
 import { useProducts } from "@/composables/useProducts";
 import type { Product } from "@/types/product";
 import BaseBadge from "@/components/BaseBadge.vue";
+import ProductCardElement from "@/components/ProductCardElement.vue";
+import DropdownSelect from "@/components/DropdownSelect.vue";
 
 const {
   products,
@@ -15,6 +17,11 @@ const {
   formatPrice,
   getAllImages,
   loadedProduct,
+  filteredProducts,
+  allAttributes,
+  handleSelectedAttribute,
+  selectedAttributes,
+  searchTerm,
 } = useProducts();
 
 onMounted(async () => {
@@ -73,7 +80,7 @@ const primaryProductHeading = ref();
 
 const handleProductSelect = (product: Product) => {
   loadedProduct.value = product;
-  primaryProductHeading.value.scrollIntoView();
+  primaryProductHeading.value?.scrollIntoView();
 };
 
 const showBuyNow = ref(false);
@@ -182,22 +189,37 @@ const showBuyNow = ref(false);
           <h2>All products</h2>
           <p>Our most popular products</p>
         </hgroup>
+        <input
+          type="search"
+          v-model="searchTerm"
+          placeholder="Search products"
+        />
+        <details>
+          <summary>
+            Filters {{ selectedAttributes.map((x) => x.value).join(", ") }}
+          </summary>
+          <div v-if="allAttributes">
+            <template v-for="(options, key) in allAttributes" :key="key">
+              <label for="size">{{ key }}</label>
+              <dropdown-select
+                :modelValue="
+                  selectedAttributes.find((x) => x.name === key)?.value
+                    ? [selectedAttributes.find((x) => x.name === key)!.value]
+                    : []
+                "
+                @update:modelValue="
+                  handleSelectedAttribute(`${key}`, $event?.[0] as string)
+                "
+                :options="options"
+                :visibleLimit="100"
+              />
+            </template>
+          </div>
+        </details>
       </div>
-      <card-element
-        :title="product.name"
-        :images="[
-          {
-            src: product.image,
-            alt: 'A product',
-          },
-        ]"
-        :subtitle="
-          product.prices.min !== 0
-            ? formatPrice(product.prices.min, product.prices.currency) +
-              ' incl. VAT'
-            : 'Free'
-        "
-        v-for="product in displayAbleProducts"
+      <product-card-element
+        v-for="product in filteredProducts"
+        :product="product"
         :key="product.id"
         @click="
           handleProductSelect(product as Product);
@@ -206,20 +228,8 @@ const showBuyNow = ref(false);
             block: 'start',
           });
         "
-        style="height: 100%"
-      >
-        <p>{{ product.short_description }}</p>
-
-        <small v-if="Object.keys(product.attributes).length > 0">
-          Customise:
-          <base-badge
-            v-for="attribute in Object.keys(product.attributes)"
-            :key="attribute"
-          >
-            {{ attribute }}
-          </base-badge>
-        </small>
-      </card-element>
+        :inline="false"
+      />
 
       <template v-if="isLoading">
         <card-element
@@ -239,6 +249,18 @@ const showBuyNow = ref(false);
           Loading...
         </card-element>
       </template>
+      <card-element
+        v-if="filteredProducts.length === 0 && !isLoading"
+        :title="'No products found'"
+        :subtitle="'Try a different search term or change the filters'"
+        :images="[
+          {
+            src: image,
+            alt: 'Placeholder image',
+          },
+        ]"
+        style="height: 100%"
+      />
       <card-element
         v-if="!hasMoreProducts"
         :title="'No more products'"
