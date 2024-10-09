@@ -1,11 +1,32 @@
 <script setup lang="ts">
-import { useTeamStore } from "@/stores/team";
-import { useUserStore } from "@/stores/user";
-import { ref } from "vue";
+import { type PropType, ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
+import type { User } from "@/types/user";
+import type { Team } from "@/types/team";
 
-const user = useUserStore();
-const team = useTeamStore();
+defineProps({
+  isLoading: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  user: {
+    type: Object as PropType<User | null>,
+    required: false,
+    default: null,
+  },
+  team: {
+    type: Object as PropType<Team | null>,
+    required: false,
+    default: null,
+  },
+  /** The teams the user belongs to */
+  teams: {
+    type: Array as PropType<Team[]>,
+    required: false,
+    default: () => [],
+  },
+});
 
 const detailsElement = ref();
 const teamDetailsElement = ref();
@@ -13,6 +34,10 @@ const teamDetailsElement = ref();
 const isOpen = ref(false);
 
 const appName = import.meta.env.VITE_APP_NAME;
+
+const emit = defineEmits<{
+  "switch-team": [number];
+}>();
 
 const blur = () => {
   isOpen.value = false;
@@ -25,7 +50,7 @@ const blur = () => {
     <ul>
       <li>
         <router-link
-          :to="user?.isAuthenticated ? '/dashboard' : '/'"
+          :to="!!user ? '/dashboard' : '/'"
           aria-roledescription="logo"
           aria-label="Click the logo to go home"
           ><strong>{{ appName }}</strong></router-link
@@ -38,7 +63,7 @@ const blur = () => {
           {{ $t("New magic link") }}
         </base-button>
       </li>
-      <li v-if="!user?.isAuthenticated">
+      <li v-if="!!!user">
         <router-link to="/login">{{ $t("Login") }}</router-link>
       </li>
       <li>
@@ -55,16 +80,16 @@ const blur = () => {
   <aside v-show="isOpen" class="container">
     <nav aria-label="Aside">
       <ul>
-        <template v-if="user?.isAuthenticated">
+        <template v-if="!!user">
           <!-- The users team settings -->
-          <li :aria-busy="user.isLoading">
+          <li :aria-busy="isLoading">
             <details
               ref="teamDetailsElement"
-              v-show="!user.isLoading"
+              v-show="!isLoading"
               class="dropdown"
             >
-              <summary :aria-busy="user.isLoading">
-                {{ team.activeTeam?.name ?? $t("Your Team") }}
+              <summary :aria-busy="isLoading">
+                {{ team?.name ?? $t("Your Team") }}
               </summary>
               <ul @click="blur()">
                 <li>
@@ -83,12 +108,12 @@ const blur = () => {
                 </li>
                 <!-- Switch teams section -->
 
-                <li v-for="singleTeam in team.teams" :key="singleTeam.id">
-                  <a href="#" @click.prevent="team.switchTeam(singleTeam.id)"
+                <li v-for="singleTeam in teams" :key="singleTeam.id">
+                  <a
+                    href="#"
+                    @click.prevent="emit('switch-team', singleTeam.id)"
                     >{{ singleTeam.name ?? $t("Your Team") }}
-                    {{
-                      singleTeam.id === team.activeTeam?.id ? " (Active)" : ""
-                    }}
+                    {{ singleTeam.id === team?.id ? " (Active)" : "" }}
                   </a>
                 </li>
               </ul>
@@ -116,14 +141,10 @@ const blur = () => {
             }}</router-link>
           </li>
 
-          <li :aria-busy="user.isLoading">
-            <details
-              ref="detailsElement"
-              v-show="!user.isLoading"
-              class="dropdown"
-            >
-              <summary :aria-busy="user.isLoading">
-                {{ user.user?.name ?? $t("My Account") }}
+          <li :aria-busy="isLoading">
+            <details ref="detailsElement" v-show="!isLoading" class="dropdown">
+              <summary :aria-busy="isLoading">
+                {{ user.name ?? $t("My Account") }}
               </summary>
               <ul @click="blur()">
                 <li>
