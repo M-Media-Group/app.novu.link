@@ -124,7 +124,11 @@ const showBuyNow = ref(false);
           <!-- An image caption saying its not the actual product -->
 
           <!-- A div grid for all images - small thumbnails -->
-          <div class="images overflow-auto" style="height: 100%">
+          <div
+            v-if="getAllImages(loadedProduct).length > 1"
+            class="images overflow-auto"
+            style="height: min-content"
+          >
             <img
               v-for="img in getAllImages(loadedProduct).map((image) => ({
                 src: image,
