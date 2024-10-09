@@ -25,12 +25,6 @@ const props = defineProps({
     type: Array as PropType<Product["id"][]>,
     required: false,
   },
-
-  /** The size options. If not provided, will fetch via API */
-  sizeOptions: {
-    type: Array as PropType<{ id: string; render: string }[]>,
-    required: false,
-  },
 });
 
 const baseFormRef = ref();
@@ -50,17 +44,17 @@ const {
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  if (!localRedirectIds.value) {
+  if (!localRedirectIds.value || !loadedProduct.value) {
     return;
   }
 
   isLoading.value = true;
 
   const response = await axios
-    .post(`/api/v1/products/${props.productIds}/orders`, {
+    .post(`/api/v1/products/${loadedProduct.value.id}/orders`, {
       redirect_uuid: localRedirectIds.value[0],
       quantity: quantity.value,
-      merchant: "Printful",
+      merchant: loadedProduct.value.merchant,
       include_qr_code_subscription: includeQrCodeSubscription.value,
       include_consultation: includeConsultation.value,
       attributes: selectedAttributes.value,
@@ -90,6 +84,7 @@ const localRedirectIds = ref(props.redirectIds ?? []);
 const quantity = ref(1);
 const includeQrCodeSubscription = ref(true);
 const includeConsultation = ref(true);
+const notes = ref("");
 
 const localProductIds = ref(props.productIds ?? []);
 
@@ -159,20 +154,20 @@ const gates = computed(() => {
       required
     />
     <template v-if="loadedProduct?.attributes">
-      <template v-for="(options, key) in loadedProduct.attributes" :key="key">
-        <label for="size">{{ key }}</label>
+      <template v-for="options in loadedProduct.attributes" :key="options.name">
+        <label for="size">{{ options.name }}</label>
         <select
           name="size"
           required
           @change="
             handleSelectedAttribute(
-              `${key}`,
+              `${options.name}`,
               ($event.target as HTMLSelectElement).value
             )
           "
           :aria-busy="isLoadingProduct"
         >
-          <option v-for="option in options" :value="option" :key="option">
+          <option v-for="option in options.value" :value="option" :key="option">
             {{ option }}
           </option>
         </select>
@@ -188,6 +183,18 @@ const gates = computed(() => {
       required
       v-model="quantity"
     />
+
+    <!-- Notes input -->
+    <!-- Notes emoji:  -->
+    <details>
+      <summary>📝 Add order notes</summary>
+      <textarea
+        id="notes"
+        name="notes"
+        v-model="notes"
+        placeholder="Any notes for the designer?"
+      ></textarea>
+    </details>
 
     <label>
       <input
@@ -210,7 +217,7 @@ const gates = computed(() => {
         name="terms"
         v-model="includeConsultation"
       />
-      {{ $t("Include one to one consultation on design.") }}
+      {{ $t("Include one to one design consultation.") }}
       {{
         $t(
           "We'll meet with you to discuss your needs and help you meet your design vision."
@@ -239,12 +246,12 @@ const gates = computed(() => {
         >
       </confirms-gate>
     </template>
-    <template #after-submit v-if="selectedVariant?.prices[0].priceWithTax">
+    <template #after-submit v-if="selectedVariant?.prices[0]?.priceWithTax">
       <small
         >{{
           formatPrice(
-            selectedVariant?.prices[0].priceWithTax,
-            selectedVariant?.prices[0].currencyCode
+            selectedVariant?.prices[0]?.priceWithTax,
+            selectedVariant?.prices[0]?.currencyCode
           ) + " incl. VAT"
         }}
         {{ selectedVariant?.name }} x

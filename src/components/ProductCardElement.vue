@@ -39,9 +39,11 @@ const { formatPrice } = useProducts();
       },
     ]"
     :subtitle="
-      product.prices.min !== 0
-        ? formatPrice(product.prices.min, product.prices.currency) +
-          ' incl. VAT'
+      product.prices?.min?.price !== 0
+        ? formatPrice(
+            product.prices?.min?.priceWithTax,
+            product.prices?.min?.currencyCode
+          ) + ' incl. VAT'
         : 'Free'
     "
     style="height: 100%"
@@ -51,11 +53,8 @@ const { formatPrice } = useProducts();
 
     <footer v-if="Object.keys(product.attributes).length > 0">
       Customise:
-      <base-badge
-        v-for="attribute in Object.keys(product.attributes)"
-        :key="attribute"
-      >
-        {{ attribute }}
+      <base-badge v-for="attribute in product.attributes" :key="attribute.name">
+        {{ attribute.name }}
       </base-badge>
     </footer>
   </card-element>

@@ -49,14 +49,17 @@ const productOptions = computed((): selectOptionObject[] =>
           ...product,
           image: product.image,
           description: product.short_description,
-          price: formatPrice(product.prices.min, product.prices.currency),
+          price: formatPrice(
+            product.prices?.min.priceWithTax,
+            product.prices.currency
+          ),
         },
       } as selectOptionObject)
   )
 );
 
 onMounted(async () => {
-  await loadMoreProducts();
+  loadMoreProducts();
 });
 
 const currentlySelectedProduct = computed(() =>

@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 
 import NavBar from "@/components/NavBar.vue";
 
-import { useUserStore } from "@/stores/user";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+
+import userFixture from "../../../cypress/fixtures/user.json";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof NavBar> = {
@@ -22,25 +23,17 @@ type Story = StoryObj<typeof NavBar>;
  * to learn how to use render functions.
  */
 export const LoggedIn: Story = {
-  render: () => ({
-    components: { NavBar },
-    setup() {
-      const user = useUserStore();
-      user.isAuthenticated = true;
-    },
-    template: "<NavBar />",
-  }),
+  args: {
+    // @ts-ignore
+    user: userFixture,
+  },
 };
 
 export const DropdownOpen: Story = {
-  render: () => ({
-    components: { NavBar },
-    setup() {
-      const user = useUserStore();
-      user.isAuthenticated = true;
-    },
-    template: "<NavBar />",
-  }),
+  args: {
+    // @ts-ignore
+    user: userFixture,
+  },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
 
@@ -74,20 +67,10 @@ export const DropdownOpen: Story = {
 };
 
 export const Loading: Story = {
-  render: () => ({
-    components: { NavBar },
-    setup() {
-      const user = useUserStore();
-      user.isAuthenticated = true;
-      user.isLoading = true;
-    },
-    template: "<NavBar />",
-  }),
-};
-
-export const LoggedOut: Story = {
   args: {
     // @ts-ignore
-    href: "/",
+    isLoading: true,
   },
 };
+
+export const LoggedOut: Story = {};

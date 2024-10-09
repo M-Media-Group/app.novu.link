@@ -82,7 +82,21 @@ const emit = defineEmits<{
 </script>
 <template>
   <template v-if="!isLoading && redirectOptions.length === 0">
-    <create-redirect :inline="true" :showNameInput="false" :showLabel="false" />
+    <create-redirect
+      :inline="true"
+      :showNameInput="false"
+      :showLabel="false"
+      :redirectOnSuccess="false"
+      @success="
+        ($event) => {
+          redirectOptions.push({
+            id: $event,
+            render: $event,
+          });
+          handleSelect([$event]);
+        }
+      "
+    />
   </template>
   <dropdown-select
     v-else

@@ -154,6 +154,18 @@ const props = defineProps({
     type: String,
     default: t("Search for an option"),
   },
+
+  /** Whether there should be a "Clear" option */
+  clearable: {
+    type: Boolean,
+    default: false,
+  },
+
+  /** The text to show for the clear option */
+  clearText: {
+    type: String,
+    default: t("Clear"),
+  },
 });
 
 // Above rewritten in type declaration
@@ -171,6 +183,7 @@ const {
   isOptionSelected,
   toggleAllOptions,
   updateModelValue,
+  unselectAllOptions,
 } = useMultiselect(props, emit);
 
 const setModelValue = (
@@ -267,6 +280,7 @@ onMounted(() => {
 
 const getSummaryText = () => {
   if (props.modelValue.length > 0) {
+    console.log("filterOptions got", props.modelValue);
     return props.modelValue
       .map((value) => {
         const option = normalisedOptions.value.find((option) =>
@@ -274,6 +288,7 @@ const getSummaryText = () => {
             ? option === value
             : option[props.modelKey] === value
         );
+        console.log("filterOptions local", value);
         return option
           ? getLabel(option)
           : value.trim() !== ""
@@ -402,6 +417,16 @@ defineExpose({ focus, setCustomValidity, setAttribute });
           />
           {{ props.selectAllText }}
         </label>
+      </li>
+
+      <li v-if="props.clearable && props.modelValue.length > 0">
+        <button
+          type="button"
+          @click="unselectAllOptions"
+          :disabled="props.disabled"
+        >
+          {{ props.clearText }}
+        </button>
       </li>
 
       <li

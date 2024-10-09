@@ -28,8 +28,11 @@ const {
 minProductsToTriggerLoadMore.value = 3;
 
 onMounted(async () => {
-  await loadMoreProducts();
+  loadMoreProducts();
 
+  while (products.value.length < 10) {
+    await new Promise((resolve) => setTimeout(resolve, 5));
+  }
   // Load a random product
   handleProductSelect(
     products.value[Math.floor(Math.random() * products.value.length)]
@@ -90,69 +93,92 @@ const showBuyNow = ref(false);
 </script>
 <template>
   <div>
-    <hgroup>
-      <h1>{{ $t("Print your QR code on anything") }}</h1>
-      <p>Shirts, mugs, stickers, and more</p>
-    </hgroup>
     <section
       v-if="loadedProduct && loadedProduct !== null"
       class="fulscreen-width-container hero-section"
-      data-theme="light"
     >
       <div class="two-column-grid">
-        <div
-          class="images overflow-auto"
-          style="
-            height: 100%;
-            max-height: 70dvh;
-            border-radius: var(--pico-border-radius);
-            margin-bottom: var(--pico-spacing);
-          "
-          v-if="loadedProduct"
-        >
-          <img
-            v-for="img in getAllImages(loadedProduct).map((image) => ({
-              src: image,
-              alt: loadedProduct?.name ?? 'Product image',
-            }))"
-            :key="img.src"
-            :src="img.src"
-            class="full-width"
-            :alt="img.alt"
-          />
-        </div>
+        <div>
+          <div
+            class="images overflow-auto"
+            style="
+              height: 100%;
+              max-height: 70dvh;
+              border-radius: var(--pico-border-radius);
+              margin-bottom: var(--pico-spacing);
+            "
+            v-if="loadedProduct"
+          >
+            <img
+              v-for="img in getAllImages(loadedProduct).map((image) => ({
+                src: image,
+                alt: loadedProduct?.name ?? 'Product image',
+              }))"
+              :key="img.src"
+              :src="img.src"
+              class="full-width"
+              :alt="img.alt"
+              loading="lazy"
+            />
+          </div>
+          <!-- An image caption saying its not the actual product -->
 
+          <!-- A div grid for all images - small thumbnails -->
+          <div class="images overflow-auto" style="height: 100%">
+            <img
+              v-for="img in getAllImages(loadedProduct).map((image) => ({
+                src: image,
+                alt: loadedProduct?.name ?? 'Product image',
+              }))"
+              :key="img.src"
+              :src="img.src"
+              class="full-width"
+              :alt="img.alt"
+              height="32"
+              style="object-fit: contain; height: 96px; width: auto"
+            />
+          </div>
+        </div>
         <div>
           <hgroup>
-            <h2 ref="primaryProductHeading">
+            <h1 ref="primaryProductHeading">
               {{ loadedProduct.name }} With Custom QR Code
-            </h2>
+            </h1>
             <p>
               <template
-                v-if="loadedProduct.prices.min !== loadedProduct.prices.max"
+                v-if="
+                  loadedProduct?.prices?.min?.priceWithTax !==
+                  loadedProduct?.prices?.max?.priceWithTax
+                "
               >
                 {{ $t("From") }}
               </template>
               {{
                 formatPrice(
-                  loadedProduct.prices.min,
-                  loadedProduct.prices.currency
+                  loadedProduct.prices?.min?.priceWithTax,
+                  loadedProduct.prices?.min?.currencyCode
                 ) + " incl. VAT"
               }}
               +
               {{
                 formatPrice(
-                  loadedProduct.prices.shipping,
-                  loadedProduct.prices.currency
+                  loadedProduct.prices?.shipping,
+                  loadedProduct.prices?.currency
                 )
               }}
               worldwide shipping
             </p>
           </hgroup>
           <div v-show="!showBuyNow">
-            <base-button @click="showBuyNow = true" class="full-width"
-              >Buy now</base-button
+            <base-button
+              @click="showBuyNow = true"
+              class="full-width"
+              :disabled="!loadedProduct.is_in_stock"
             >
+              {{
+                loadedProduct.is_in_stock ? $t("Buy now") : $t("Out of stock")
+              }}
+            </base-button>
             <p style="white-space: pre-line">
               {{ loadedProduct.description }}<br />• Advanced Novu.Link QR Code
               printed in high quality<br />• Changeable destinations even after
@@ -186,10 +212,31 @@ const showBuyNow = ref(false);
         </div>
       </div>
     </section>
+    <section
+      v-else
+      class="fulscreen-width-container hero-section"
+      data-theme="light"
+    >
+      <div class="two-column-grid" style="height: 100dvh">
+        <div
+          class="gl-animate-skeleton-loader images overflow-auto"
+          style="
+            min-height: 100%;
+            max-height: 70dvh;
+            border-radius: var(--pico-border-radius);
+            margin-bottom: var(--pico-spacing);
+          "
+        ></div>
+        <div>
+          <div class="gl-animate-skeleton-loader" style="height: 2rem"></div>
+          <div class="gl-animate-skeleton-loader" style="height: 1rem"></div>
+        </div>
+      </div>
+    </section>
     <section class="three-column-grid">
       <div>
         <hgroup>
-          <h2>All products</h2>
+          <h2>Explore 1320 products</h2>
           <p>Our most popular products</p>
         </hgroup>
         <input
@@ -202,19 +249,30 @@ const showBuyNow = ref(false);
             Filters {{ selectedAttributes.map((x) => x.value).join(", ") }}
           </summary>
           <div v-if="allAttributes">
-            <template v-for="(options, key) in allAttributes" :key="key">
-              <label for="size">{{ key }}</label>
+            <template v-for="options in allAttributes" :key="options.name">
+              <label for="size">{{ options.name }}</label>
               <dropdown-select
                 :modelValue="
-                  selectedAttributes.find((x) => x.name === key)?.value
-                    ? [selectedAttributes.find((x) => x.name === key)!.value]
-                    : []
+                  selectedAttributes
+                    .filter((x) => x.name === options.name)
+                    .map((x) =>
+                      typeof x.value === 'string' ? x.value : x.value?.join(',')
+                    )
+                    .filter(Boolean)
                 "
                 @update:modelValue="
-                  handleSelectedAttribute(`${key}`, $event?.[0] as string)
+                  handleSelectedAttribute(
+                    `${options.name}`,
+                    $event?.[0] as string
+                  )
                 "
-                :options="options"
+                :options="
+                  typeof options.value === 'string'
+                    ? [options.value]
+                    : options.value
+                "
                 :visibleLimit="100"
+                :clearable="true"
               />
             </template>
           </div>
@@ -283,12 +341,18 @@ const showBuyNow = ref(false);
 </template>
 <style scoped>
 .hero-section {
-  background-color: blanchedalmond;
+  /* background-color: blanchedalmond; */
   padding-top: calc(var(--pico-spacing) * 2);
+
+  min-height: 100dvh;
 }
 
 /* And also for every interjection make it full width */
 .three-column-grid *:nth-child(8n + 2) {
   grid-column: span 2;
+}
+
+.gl-animate-skeleton-loader {
+  height: 100%;
 }
 </style>

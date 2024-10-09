@@ -4,16 +4,18 @@ export interface Product {
   image: string;
   description: string;
   short_description: string;
+  brand?: string;
+  model?: string;
   merchant: string;
   locale: string;
   is_in_stock: boolean;
   quantities: Quantities;
-  attributes: Attributes;
-  attributes_filtered: Attributes;
+  attributes: Attribute[];
+  attributes_filtered: Attribute[];
   variants: Variant[];
   prices: {
-    min: number;
-    max: number;
+    min: Price;
+    max: Price;
     shipping: number;
     currency: string;
   };
@@ -25,15 +27,11 @@ export interface Quantities {
   stock: any;
 }
 
-export interface Attributes {
-  [key: string]: string[];
-}
-
 export interface Variant {
   sku: string;
   name: string;
   imageUrl: string;
-  isPhysical: boolean;
+  is_physical: boolean;
   height: any;
   width: any;
   depth: any;
@@ -45,7 +43,7 @@ export interface Variant {
 
 export interface Attribute {
   name: string;
-  value: string;
+  value: string | string[];
 }
 
 export interface Price {

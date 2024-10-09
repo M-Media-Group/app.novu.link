@@ -1,6 +1,6 @@
 import { computed, ref, watch } from "vue";
 import axios from "axios";
-import type { Attribute, Attributes, Product, Variant } from "@/types/product";
+import type { Attribute, Product, Variant } from "@/types/product";
 import { debounce } from "@/helpers/debounce";
 
 const products = ref([] as Product[]);
@@ -8,34 +8,93 @@ const currentPage = ref(1);
 const hasMoreProducts = ref(true);
 const isLoading = ref(false);
 
-const getProducts = async (page = 1): Promise<Product[]> => {
-  const response = await axios.get("/api/v1/products?page=" + page);
+const baseURL = import.meta.env.VITE_API_URL;
 
-  if (!response.data) {
-    return [];
+const getProducts = async (page = 1) => {
+  const response = await fetch(
+    `${baseURL}/api/v1/products?page=${page}&stream=true`,
+    {
+      headers: {
+        Accept: "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.error("Failed to fetch products");
+    return;
   }
 
-  //   If not a product, return an empty array
-  if (!Array.isArray(response.data)) {
-    return [];
+  const reader = response.body?.getReader();
+  const decoder = new TextDecoder("utf-8");
+  let accumulatedData = "";
+
+  if (reader) {
+    while (true!) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      // Decode the chunk and accumulate
+      accumulatedData += decoder.decode(value, { stream: true });
+
+      // Split the accumulated data into individual objects
+      const objects = accumulatedData.split("\n");
+
+      // Process each complete JSON object except the last one
+      for (let i = 0; i < objects.length - 1; i++) {
+        let objectString = objects[i].trim();
+        // If it ends with a comma, remove it
+        if (objectString.endsWith(",")) {
+          objectString = objectString.slice(0, -1);
+        }
+        if (objectString.startsWith("[")) {
+          objectString = objectString.slice(1);
+        }
+        if (objectString) {
+          try {
+            const product = JSON.parse(objectString);
+            products.value.push(product);
+            console.log("Product:", product); // Log the product
+          } catch (error) {
+            console.error("Error parsing JSON object:", error);
+            console.error("Invalid JSON string:", objectString); // Log the invalid string for debugging
+          }
+        }
+      }
+
+      // Keep the last partial object for the next iteration
+      accumulatedData = objects[objects.length - 1];
+    }
+
+    // Handle any remaining data after the stream ends
+    if (accumulatedData) {
+      try {
+        if (accumulatedData.startsWith("[")) {
+          accumulatedData = accumulatedData.slice(1);
+        }
+        if (accumulatedData.endsWith(",")) {
+          accumulatedData = accumulatedData.slice(0, -1);
+        }
+        if (accumulatedData.endsWith("]")) {
+          accumulatedData = accumulatedData.slice(0, -1);
+        }
+
+        // If there is no accumulated data, return
+        if (!accumulatedData || accumulatedData === "[]") {
+          return [];
+        }
+
+        const lastProductsArray = JSON.parse(`[${accumulatedData}]`); // Wrap the remaining data in brackets
+        lastProductsArray.forEach((product: Product) => {
+          products.value.push(product);
+        });
+      } catch (error) {
+        console.error("Error parsing remaining JSON object:", error);
+        console.error("Remaining data:", accumulatedData); // Log remaining data for debugging
+      }
+    }
   }
-
-  const data = response.data.map((product: Product) => ({
-    ...product,
-    prices: {
-      ...product.prices,
-      formattedPrice: new Intl.NumberFormat("en", {
-        style: "currency",
-        currency: product.prices.currency,
-      }).format(product.prices.min),
-      formattedShipping: new Intl.NumberFormat("en", {
-        style: "currency",
-        currency: product.prices.currency,
-      }).format(product.prices.shipping),
-    },
-  }));
-
-  return data;
+  return products.value;
 };
 
 const getProduct = async (id: Product["id"]): Promise<Product | null> => {
@@ -45,20 +104,7 @@ const getProduct = async (id: Product["id"]): Promise<Product | null> => {
     return null;
   }
 
-  return {
-    ...response.data,
-    prices: {
-      ...response.data.prices,
-      formattedPrice: new Intl.NumberFormat("en", {
-        style: "currency",
-        currency: response.data.prices.currency,
-      }).format(response.data.prices.price),
-      formattedShipping: new Intl.NumberFormat("en", {
-        style: "currency",
-        currency: response.data.prices.currency,
-      }).format(response.data.prices.shipping),
-    },
-  };
+  return response.data;
 };
 
 /**
@@ -127,8 +173,6 @@ function findVariantByAttributes(
     }
   }
 
-  console.log(variants, "variants");
-
   if (variants.length === 1) {
     return variants[0].variant;
   }
@@ -155,15 +199,23 @@ const loadMoreProducts = async () => {
   if (!hasMoreProducts.value || isLoading.value) {
     return;
   }
+
   isLoading.value = true;
   const newProducts = await getProducts(currentPage.value);
   isLoading.value = false;
-  if (newProducts.length === 0) {
+
+  if (!newProducts) {
+    return;
+  }
+  //   Deduplicate the products via set
+  products.value = [...new Set([...products.value, ...newProducts])];
+
+  if (newProducts?.length === 0) {
     hasMoreProducts.value = false;
     return;
   }
+
   currentPage.value += 1;
-  products.value = [...products.value, ...newProducts];
 };
 
 const debounceLoadMoreProducts = debounce(loadMoreProducts);
@@ -184,7 +236,7 @@ function getAllImages(product: {
   if (!variantImages) {
     return [product.image];
   }
-  return [...new Set([product.image, ...variantImages])];
+  return [...new Set([product.image, ...variantImages])].filter(Boolean);
 }
 
 /**
@@ -194,20 +246,27 @@ function getAllImages(product: {
  *
  * @returns An object with all the attributes and their values
  */
-const allAttributes = computed(() => {
-  const attributes: Attributes = {};
+const allAttributes = computed((): Attribute[] => {
+  const attributes: Attribute[] = [];
 
   products.value.forEach((product) => {
-    Object.keys(product.attributes).forEach((attributeName) => {
-      if (!attributes[attributeName]) {
-        attributes[attributeName] = [];
-      }
-
-      product.attributes[attributeName].forEach((attributeValue) => {
-        if (!attributes[attributeName].includes(attributeValue)) {
-          attributes[attributeName].push(attributeValue);
+    product.attributes?.forEach((attribute) => {
+      const existingAttribute = attributes.find(
+        (attr) => attr.name === attribute.name
+      );
+      if (existingAttribute) {
+        if (Array.isArray(attribute.value)) {
+          existingAttribute.value = [
+            ...new Set([...existingAttribute.value, ...attribute.value]),
+          ];
+        } else {
+          existingAttribute.value = [
+            ...new Set([...existingAttribute.value, attribute.value]),
+          ];
         }
-      });
+      } else {
+        attributes.push({ ...attribute });
+      }
     });
   });
 
@@ -245,13 +304,31 @@ export const useProducts = () => {
     Object.keys(loadedProduct.value!.attributes).forEach((attributeName) => {
       handleSelectedAttribute(
         attributeName,
-        loadedProduct.value!.attributes[attributeName][0]
+        loadedProduct.value!.attributes.find(
+          (attr) => attr.name === attributeName
+        )?.value ?? null
       );
     });
   };
 
-  const handleSelectedAttribute = (key: string, value: string) => {
+  const handleSelectedAttribute = (
+    key: string,
+    value: string | string[] | null
+  ) => {
     if (!loadedProduct.value) {
+      return;
+    }
+
+    // If the selected value is null, remove the attribute
+    if (!value) {
+      selectedAttributes.value = selectedAttributes.value.filter(
+        (attr) => attr.name !== key
+      );
+      selectedVariant.value =
+        findVariantByAttributes(
+          loadedProduct.value,
+          selectedAttributes.value
+        ) ?? null;
       return;
     }
 
@@ -264,70 +341,6 @@ export const useProducts = () => {
       findVariantByAttributes(loadedProduct.value, selectedAttributes.value) ??
       null;
   };
-
-  /**
-   * This computed property checks which current attributes are selected, and returns the remaining attributes and attribute options that can be selected.
-   *
-   * It will look through all variants of the loaded product, and filter to the ones that match the currently selected attributes. It will then return the remaining attributes and their options.
-   *
-   * @returns An object with the all the loadedProduct.attributes, but with only the allowed values based on the already selected attributes.
-   */
-  const allowedAttributeValues = computed((): Attributes => {
-    // If there is no product loaded, return an empty object
-    if (!loadedProduct.value) {
-      return {};
-    }
-
-    const allowedValues: Attributes = {};
-
-    // Iterate over all filtered attributes
-    Object.keys(loadedProduct.value.attributes).forEach(
-      (attributeName, index) => {
-        // If its the first attribute, just add all values
-        if (index === 0) {
-          allowedValues[attributeName] =
-            loadedProduct.value!.attributes[attributeName];
-          return;
-        }
-        // Get all variants that match the selected attributes so far
-        const matchingVariants = loadedProduct.value!.variants.filter(
-          (variant) =>
-            selectedAttributes.value.every((selectedAttr) =>
-              variant.attributes.some(
-                (variantAttr) =>
-                  variantAttr.name === selectedAttr.name &&
-                  variantAttr.value === selectedAttr.value
-              )
-            )
-        );
-
-        // Collect the unique options for the current attribute
-        const attributeOptions = new Set<string>();
-
-        // For the variants that match, gather possible values for the current attribute
-        matchingVariants.forEach((variant) => {
-          const attr = variant.attributes?.find(
-            (variantAttr) => variantAttr.name === attributeName
-          );
-          if (attr) {
-            attributeOptions.add(attr.value);
-          }
-        });
-
-        // If there is 0 options, add all options
-        if (attributeOptions.size < 1) {
-          allowedValues[attributeName] =
-            loadedProduct.value!.attributes[attributeName];
-          return;
-        }
-
-        // Store the allowed options for the attribute
-        allowedValues[attributeName] = Array.from(attributeOptions);
-      }
-    );
-
-    return allowedValues;
-  });
 
   const searchTerm = ref("");
 
@@ -384,7 +397,6 @@ export const useProducts = () => {
     selectedVariant,
     selectedAttributes,
     handleSelectedAttribute,
-    allowedAttributeValues,
     formatPrice,
     getAllImages,
     filteredProducts,
