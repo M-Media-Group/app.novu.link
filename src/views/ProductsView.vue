@@ -9,6 +9,10 @@ import type { Product } from "@/types/product";
 import BaseBadge from "@/components/BaseBadge.vue";
 import ProductCardElement from "@/components/ProductCardElement.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";
+import skierImage from "@/assets/skierQR.png";
+import skaterQr from "@/assets/skaterQr.png";
+import businessQr from "@/assets/businessQr.png";
+import storefrontQr from "@/assets/storefrontQr.png";
 
 const {
   products,
@@ -90,9 +94,48 @@ const handleProductSelect = (product: Product) => {
 };
 
 const showBuyNow = ref(false);
+
+const resultsSection = ref();
+
+const handleCategoryClick = (category: string) => {
+  searchTerm.value = category;
+  // smooth scroll to the search
+  resultsSection.value?.scrollIntoView({ behavior: "smooth" });
+};
 </script>
 <template>
   <div>
+    <section class="fulscreen-width-container hero-section">
+      <hgroup
+        style="
+          padding-top: calc(var(--pico-spacing));
+          padding-bottom: calc(var(--pico-spacing));
+          text-align: center;
+          font-size: 100%;
+        "
+      >
+        <h1>Printed Products With Changeable QR Codes</h1>
+        <p>Easily update your QR code links anytime, even after printing.</p>
+      </hgroup>
+      <div class="two-column-grid category-images">
+        <div @click="handleCategoryClick('jacket')">
+          <img :src="skierImage" />
+          <h2>Jackets</h2>
+        </div>
+        <div @click="handleCategoryClick('hoodie')">
+          <img :src="skaterQr" />
+          <h2>Hoodies</h2>
+        </div>
+        <div @click="handleCategoryClick('mug')">
+          <img :src="businessQr" />
+          <h2>Mugs</h2>
+        </div>
+        <div @click="handleCategoryClick('sticker')">
+          <img :src="storefrontQr" />
+          <h2>Stickers</h2>
+        </div>
+      </div>
+    </section>
     <section
       v-if="loadedProduct && loadedProduct !== null"
       class="fulscreen-width-container hero-section"
@@ -237,7 +280,7 @@ const showBuyNow = ref(false);
         </div>
       </div>
     </section>
-    <section class="three-column-grid">
+    <section class="results three-column-grid" ref="resultsSection">
       <div>
         <hgroup>
           <h2>Explore 1320 products</h2>
@@ -352,11 +395,30 @@ const showBuyNow = ref(false);
 }
 
 /* And also for every interjection make it full width */
-.three-column-grid *:nth-child(8n + 2) {
+.results.three-column-grid *:nth-child(8n + 2) {
   grid-column: span 2;
 }
 
 .gl-animate-skeleton-loader {
   height: 100%;
+}
+
+.category-images > div img,
+.category-images > div img + h2 {
+  /* Make smooth translation */
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.category-images > div:hover img {
+  transform: scale(1.05);
+}
+
+.category-images > div:hover img + h2 {
+  transform: scale(1.05);
+  margin-top: -2rem;
+  margin-left: 1rem;
+  color: white;
 }
 </style>
