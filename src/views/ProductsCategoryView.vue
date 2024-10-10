@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import CreateProductOrder from "@/forms/CreateProductOrder.vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
@@ -8,66 +8,38 @@ import { useProducts } from "@/composables/useProducts";
 import type { Product } from "@/types/product";
 import BaseBadge from "@/components/BaseBadge.vue";
 import ProductCardElement from "@/components/ProductCardElement.vue";
-import DropdownSelect from "@/components/DropdownSelect.vue";
-import skierImage from "@/assets/skierQr.png";
-import skaterQr from "@/assets/skaterQr.png";
-import businessQr from "@/assets/businessQr.png";
-import storefrontQr from "@/assets/storefrontQr.png";
+
+const props = defineProps({
+  category: {
+    type: String,
+    required: true,
+  },
+});
 
 const {
-  products,
-  loadMoreProducts,
+  getProductsByCategory,
   isLoading,
   formatPrice,
   getAllImages,
   loadedProduct,
-  filteredProducts,
-  allAttributes,
-  handleSelectedAttribute,
-  selectedAttributes,
+
   searchTerm,
   minProductsToTriggerLoadMore,
 } = useProducts();
 
 minProductsToTriggerLoadMore.value = 3;
 
-onMounted(async () => {
-  loadMoreProducts();
+const products = ref([] as Product[]);
 
-  while (products.value.length < 10) {
+onMounted(async () => {
+  getProductsByCategory(props.category, products);
+
+  while (products.value.length === 0) {
     await new Promise((resolve) => setTimeout(resolve, 5));
   }
   // Load a random product
   handleProductSelect(
     products.value[Math.floor(Math.random() * products.value.length)]
-  );
-});
-
-const displayAbleProducts = computed(() => {
-  // Interject a loading card every 20 products
-  return products.value.flatMap((product, index) =>
-    index % 12 === 0
-      ? [
-          {
-            id: `loading-${index}`,
-            name: "Free Integrated Novu.Link QR Code",
-            price: "0",
-            image: image,
-            merchant: "Novu.Link",
-            description:
-              "We offer your QR Code to be printed on any of our products for free",
-            short_description:
-              "We offer your QR Code to be printed on any of our products for free",
-            prices: {
-              min: 0,
-              max: 0,
-              currency: "EUR",
-            },
-            attributes: {},
-          },
-          product,
-        ]
-      : product
   );
 });
 
@@ -82,7 +54,7 @@ window.onscroll = async () => {
     return;
   }
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-    loadMoreProducts();
+    // loadMoreProducts();
   }
 };
 
@@ -105,7 +77,7 @@ const handleCategoryClick = (category: string) => {
 </script>
 <template>
   <div>
-    <section class="fulscreen-width-container hero-section">
+    <section class="fulscreen-width-container hero-sectin">
       <hgroup
         style="
           padding-top: calc(var(--pico-spacing));
@@ -114,27 +86,9 @@ const handleCategoryClick = (category: string) => {
           font-size: 100%;
         "
       >
-        <h1>Printed Products With Changeable QR Codes</h1>
-        <p>Easily update your QR code links anytime, even after printing.</p>
+        <h1>Your QR on {{ category }}</h1>
+        <p>With changeable QR codes. Even <b>after printing.</b></p>
       </hgroup>
-      <div class="two-column-grid category-images">
-        <router-link to="/products/categories/jackets">
-          <img :src="skierImage" />
-          <h2>Jackets</h2>
-        </router-link>
-        <router-link to="/products/categories/hoodies">
-          <img :src="skaterQr" />
-          <h2>Hoodies</h2>
-        </router-link>
-        <router-link to="/products/categories/mugs">
-          <img :src="businessQr" />
-          <h2>Mugs</h2>
-        </router-link>
-        <router-link to="/products/categories/stickers">
-          <img :src="storefrontQr" />
-          <h2>Stickers</h2>
-        </router-link>
-      </div>
     </section>
     <section
       v-if="loadedProduct && loadedProduct !== null"
@@ -281,52 +235,8 @@ const handleCategoryClick = (category: string) => {
       </div>
     </section>
     <section class="results three-column-grid" ref="resultsSection">
-      <div>
-        <hgroup>
-          <h2>Explore 1320 products</h2>
-          <p>Our most popular products</p>
-        </hgroup>
-        <input
-          type="search"
-          v-model="searchTerm"
-          placeholder="Search products"
-        />
-        <details>
-          <summary>
-            Filters {{ selectedAttributes.map((x) => x.value).join(", ") }}
-          </summary>
-          <div v-if="allAttributes">
-            <template v-for="options in allAttributes" :key="options.name">
-              <label for="size">{{ options.name }}</label>
-              <dropdown-select
-                :modelValue="
-                  selectedAttributes
-                    .filter((x) => x.name === options.name)
-                    .map((x) =>
-                      typeof x.value === 'string' ? x.value : x.value?.join(',')
-                    )
-                    .filter(Boolean)
-                "
-                @update:modelValue="
-                  handleSelectedAttribute(
-                    `${options.name}`,
-                    $event?.[0] as string
-                  )
-                "
-                :options="
-                  typeof options.value === 'string'
-                    ? [options.value]
-                    : options.value
-                "
-                :visibleLimit="100"
-                :clearable="true"
-              />
-            </template>
-          </div>
-        </details>
-      </div>
       <product-card-element
-        v-for="product in filteredProducts"
+        v-for="product in products"
         :product="product"
         :key="product.id"
         @click="
@@ -358,7 +268,7 @@ const handleCategoryClick = (category: string) => {
         </card-element>
       </template>
       <card-element
-        v-if="filteredProducts.length === 0 && !isLoading"
+        v-if="products.length === 0 && !isLoading"
         :title="'No products found'"
         :subtitle="'Try a different search term or change the filters'"
         :images="[
@@ -402,20 +312,22 @@ const handleCategoryClick = (category: string) => {
 .gl-animate-skeleton-loader {
   height: 100%;
 }
+.category-images > div img {
+}
 
-.category-images > a img,
-.category-images > a img + h2 {
+.category-images > div img,
+.category-images > div img + h2 {
   /* Make smooth translation */
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   overflow: hidden;
 }
 
-.category-images > a:hover img {
+.category-images > div:hover img {
   transform: scale(1.05);
 }
 
-.category-images > a:hover img + h2 {
+.category-images > div:hover img + h2 {
   transform: scale(1.05);
   margin-top: -2rem;
   margin-left: 1rem;

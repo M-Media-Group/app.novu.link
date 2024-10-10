@@ -1,100 +1,59 @@
-import { computed, ref, watch } from "vue";
+import { type Ref, computed, ref, watch } from "vue";
 import axios from "axios";
 import type { Attribute, Product, Variant } from "@/types/product";
 import { debounce } from "@/helpers/debounce";
+import { parseStreamedResponse } from "@/helpers/streamers";
 
 const products = ref([] as Product[]);
 const currentPage = ref(1);
 const hasMoreProducts = ref(true);
 const isLoading = ref(false);
 
-const baseURL = import.meta.env.VITE_API_URL;
+// Generalized function to fetch products, which can be used for pagination or category-based requests
+const getProducts = async (
+  productsArray: Ref<Product[]>, // Pass the local array to store products
+  page = 1,
+  categoryId?: string
+) => {
+  isLoading.value = true;
+  const baseURL = import.meta.env.VITE_API_URL;
 
-const getProducts = async (page = 1) => {
-  const response = await fetch(
-    `${baseURL}/api/v1/products?page=${page}&stream=true`,
-    {
-      headers: {
-        Accept: "application/json",
-      },
-    }
-  );
-
-  if (!response.ok) {
-    console.error("Failed to fetch products");
-    return;
+  let url = `${baseURL}/api/v1/products?page=${page}&stream=true`;
+  if (categoryId) {
+    url += `&categories[]=${categoryId}`;
   }
 
-  const reader = response.body?.getReader();
-  const decoder = new TextDecoder("utf-8");
-  let accumulatedData = "";
+  try {
+    const response = await fetch(url, {
+      headers: { Accept: "application/json" },
+    });
 
-  if (reader) {
-    while (true!) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      // Decode the chunk and accumulate
-      accumulatedData += decoder.decode(value, { stream: true });
-
-      // Split the accumulated data into individual objects
-      const objects = accumulatedData.split("\n");
-
-      // Process each complete JSON object except the last one
-      for (let i = 0; i < objects.length - 1; i++) {
-        let objectString = objects[i].trim();
-        // If it ends with a comma, remove it
-        if (objectString.endsWith(",")) {
-          objectString = objectString.slice(0, -1);
-        }
-        if (objectString.startsWith("[")) {
-          objectString = objectString.slice(1);
-        }
-        if (objectString) {
-          try {
-            const product = JSON.parse(objectString);
-            products.value.push(product);
-            console.log("Product:", product); // Log the product
-          } catch (error) {
-            console.error("Error parsing JSON object:", error);
-            console.error("Invalid JSON string:", objectString); // Log the invalid string for debugging
-          }
-        }
-      }
-
-      // Keep the last partial object for the next iteration
-      accumulatedData = objects[objects.length - 1];
+    if (!response.ok) {
+      console.error("Failed to fetch products");
+      return [];
     }
 
-    // Handle any remaining data after the stream ends
-    if (accumulatedData) {
-      try {
-        if (accumulatedData.startsWith("[")) {
-          accumulatedData = accumulatedData.slice(1);
-        }
-        if (accumulatedData.endsWith(",")) {
-          accumulatedData = accumulatedData.slice(0, -1);
-        }
-        if (accumulatedData.endsWith("]")) {
-          accumulatedData = accumulatedData.slice(0, -1);
-        }
-
-        // If there is no accumulated data, return
-        if (!accumulatedData || accumulatedData === "[]") {
-          return [];
-        }
-
-        const lastProductsArray = JSON.parse(`[${accumulatedData}]`); // Wrap the remaining data in brackets
-        lastProductsArray.forEach((product: Product) => {
-          products.value.push(product);
-        });
-      } catch (error) {
-        console.error("Error parsing remaining JSON object:", error);
-        console.error("Remaining data:", accumulatedData); // Log remaining data for debugging
-      }
+    const reader = response.body?.getReader();
+    if (reader) {
+      await parseStreamedResponse(reader, productsArray); // Pass local products array for streaming
     }
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  } finally {
+    isLoading.value = false;
   }
-  return products.value;
+
+  return productsArray.value;
+};
+
+const getProductsByCategory = async (
+  categoryId: string,
+  productRef: Ref<Product[]>
+) => {
+  products.value = [];
+  currentPage.value = 1;
+  hasMoreProducts.value = true;
+  await getProducts(productRef, currentPage.value, categoryId);
 };
 
 const getProduct = async (id: Product["id"]): Promise<Product | null> => {
@@ -201,7 +160,7 @@ const loadMoreProducts = async () => {
   }
 
   isLoading.value = true;
-  const newProducts = await getProducts(currentPage.value);
+  const newProducts = await getProducts(products, currentPage.value);
   isLoading.value = false;
 
   if (!newProducts) {
@@ -399,6 +358,7 @@ export const useProducts = () => {
     handleSelectedAttribute,
     formatPrice,
     getAllImages,
+    getProductsByCategory,
     filteredProducts,
     allAttributes,
     searchTerm,
