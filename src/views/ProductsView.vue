@@ -9,7 +9,7 @@ import type { Product } from "@/types/product";
 import BaseBadge from "@/components/BaseBadge.vue";
 import ProductCardElement from "@/components/ProductCardElement.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import skierImage from "@/assets/skierQR.png";
+import skierImage from "@/assets/skierQr.png";
 import skaterQr from "@/assets/skaterQr.png";
 import businessQr from "@/assets/businessQr.png";
 import storefrontQr from "@/assets/storefrontQr.png";
@@ -188,9 +188,9 @@ const handleCategoryClick = (category: string) => {
         </div>
         <div>
           <hgroup>
-            <h1 ref="primaryProductHeading">
+            <h2 ref="primaryProductHeading">
               {{ loadedProduct.name }} With Custom QR Code
-            </h1>
+            </h2>
             <p>
               <template
                 v-if="

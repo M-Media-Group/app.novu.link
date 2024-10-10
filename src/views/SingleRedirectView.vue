@@ -185,7 +185,7 @@ const convertSecondsToMinutes = (seconds: number) => {
 </script>
 <template>
   <div>
-    <nav aria-label="breadcrumb">
+    <!-- <nav aria-label="breadcrumb">
       <ul>
         <li>
           <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
@@ -198,7 +198,7 @@ const convertSecondsToMinutes = (seconds: number) => {
         </li>
         <li>{{ redirectName }}</li>
       </ul>
-    </nav>
+    </nav> -->
     <hgroup>
       <h1 v-if="isLoading" class="gl-animate-skeleton-loader"></h1>
       <h1 v-else-if="!teamStore.activeTeam">
