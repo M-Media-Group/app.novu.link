@@ -208,6 +208,19 @@ const router = createRouter({
       },
     },
     {
+      path: "/products/categories/:category",
+      name: "products/category",
+      component: () => import("../views/ProductsCategoryView.vue"),
+      props: true,
+      beforeEnter(to: any, from: any, next: any) {
+        if (to.params.category === "all") {
+          next({ name: "products" });
+        } else {
+          next();
+        }
+      },
+    },
+    {
       path: "/products",
       name: "products",
       component: () => import("../views/ProductsView.vue"),
