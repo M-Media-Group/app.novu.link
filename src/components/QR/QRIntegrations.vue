@@ -50,20 +50,24 @@ getIntegrations();
     :subtitle="$t('Integrations with analytics services')"
   >
     <table v-if="analyticsIntegrations.length > 0">
-      <tr>
-        <th>{{ $t("Service") }}</th>
-        <th>{{ $t("Enabled") }}</th>
-      </tr>
-      <tr v-for="integration in analyticsIntegrations" :key="integration.id">
-        <td>{{ integration.name ?? "-" }} ({{ integration.type }})</td>
-        <td>
-          <toggle-analytics-integration
-            :redirectId="redirectId"
-            :integration="integration"
-            @success="getIntegrations"
-          />
-        </td>
-      </tr>
+      <thead>
+        <tr>
+          <th>{{ $t("Service") }}</th>
+          <th>{{ $t("Enabled") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="integration in analyticsIntegrations" :key="integration.id">
+          <td>{{ integration.name ?? "-" }} ({{ integration.type }})</td>
+          <td>
+            <toggle-analytics-integration
+              :redirectId="redirectId"
+              :integration="integration"
+              @success="getIntegrations"
+            />
+          </td>
+        </tr>
+      </tbody>
     </table>
     <p v-else>
       {{
