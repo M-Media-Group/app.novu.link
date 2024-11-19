@@ -50,8 +50,18 @@ const startSubscriptionForRedirect = async () => {
       success.value = true;
       emit("success");
     })
-    .catch(() => {
+    .catch((error: null | Record<string, any>) => {
       console.log("Error starting subscription");
+
+      // if the error message contains "invalid payment method", show the add payment method form
+      if (error?.response?.data?.message?.includes("invalid payment method")) {
+        alert(
+          t(
+            "There is a problem with your payment method. Please add a new one."
+          )
+        );
+        showAddForm.value = true;
+      }
     })
     .finally(() => {
       isLoading.value = false;
