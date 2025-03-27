@@ -12,17 +12,50 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
+  yLabels: {
+    type: Array as PropType<string[]>,
+    required: false,
+    default: () => [],
+  },
+  flipXY: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 });
 
+// Return either the original or flipped matrix based on the flipXY prop
+const matrix = computed(() =>
+  props.flipXY
+    ? props.matrix[0].map((_, i) => props.matrix.map((row) => row[i]))
+    : props.matrix
+);
+
+const xLabels = computed(() =>
+  props.flipXY
+    ? props.yLabels
+    : props.xLabels.length > 0
+    ? props.xLabels
+    : Array.from({ length: matrix.value.length }, (_, i) => i + 1)
+);
+
+const yLabels = computed(() =>
+  props.flipXY
+    ? props.xLabels.length > 0
+      ? props.xLabels
+      : Array.from({ length: matrix.value[0].length }, (_, i) => i + 1)
+    : props.yLabels
+);
+
 const totalSum = computed(() =>
-  props.matrix.reduce(
+  matrix.value.reduce(
     (acc, row) => acc + row.reduce((acc, num) => acc + num, 0),
     0
   )
 );
 
 const percentageMatrix = computed(() =>
-  props.matrix.map((row) => row.map((num) => (num / totalSum.value) * 100))
+  matrix.value.map((row) => row.map((num) => (num / totalSum.value) * 100))
 );
 
 /**
@@ -95,8 +128,12 @@ function getContrastColor(rgb: string) {
         <tr>
           <td></td>
           <!-- Empty cell for alignment -->
-          <td v-for="(col, j) in matrix[0]" :key="'label-' + j">
-            {{ j + 1 }}
+          <td
+            class="label-row"
+            v-for="(col, j) in matrix[0]"
+            :key="'label-' + j"
+          >
+            {{ yLabels[j] ?? j + 1 }}
           </td>
         </tr>
       </tbody>
@@ -105,9 +142,18 @@ function getContrastColor(rgb: string) {
 </template>
 
 <style scoped>
+.overflow-auto {
+  max-height: 400px;
+}
 .label-column {
   position: sticky;
   left: 0px;
   top: 0px;
+}
+
+.label-row {
+  position: sticky;
+  left: 0px;
+  bottom: 0px;
 }
 </style>

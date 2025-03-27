@@ -254,6 +254,8 @@ const filterValue = ref([
 watch(filterValue, ([_limit, fromDate, toDate]) => {
   getData(fromDate, toDate);
 });
+
+const flipAxis = ref(false);
 </script>
 <template>
   <div>
@@ -388,6 +390,12 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
       :subtitle="$t('Scans by day of week and time of day')"
       :loadingOn="['title']"
     >
+      <template #headerActions>
+        <button class="outline" @click="flipAxis = !flipAxis">
+          {{ flipAxis ? $t("Flip axis") : $t("Flip axis") }}
+        </button>
+      </template>
+
       <div
         v-if="loading"
         class="placeholder-chart gl-animate-skeleton-loader"
@@ -405,6 +413,7 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
           $t('Friday'),
           $t('Saturday'),
         ]"
+        :flip-x-y="flipAxis"
       />
 
       <div v-else class="placeholder-chart" style="height: 240px">
