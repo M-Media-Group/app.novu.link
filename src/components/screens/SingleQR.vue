@@ -153,6 +153,13 @@ const props = defineProps({
     type: Number,
     required: false,
   },
+
+  /** The heatmap data (weekdays / hours) */
+  heatmapData: {
+    type: Array as PropType<number[][]>,
+    required: false,
+    default: null,
+  },
 });
 
 const isLoading = ref(false);
@@ -655,6 +662,7 @@ const testLink = () => {
           :bestEndpoint="!authenticated ? undefined : bestEndpoint"
           :isLoading="isLoading || loading"
           :subscribed="subscribed"
+          :heatmapData="!authenticated ? undefined : heatmapData"
         />
       </div>
 

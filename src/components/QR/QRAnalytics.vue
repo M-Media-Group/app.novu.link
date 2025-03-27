@@ -4,6 +4,8 @@ import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, computed } from "vue";
+import { defineProps } from "vue";
+import HeatMap from "@/components/charts/HeatMap.vue";
 
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 
@@ -53,6 +55,12 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false,
+  },
+
+  heatmapData: {
+    type: Array as PropType<number[][]>,
+    required: false,
+    default: null,
   },
 });
 
@@ -135,6 +143,27 @@ const percentChange = computed(() => {
     </card-element>
 
     <card-element
+      v-if="heatmapData?.length > 0"
+      :title="$t('Heatmap')"
+      :subtitle="$t('Scans by day of week and time of day')"
+      :loading="isLoading"
+      :loadingOn="['title']"
+    >
+      <heat-map
+        :matrix="heatmapData"
+        :xLabels="[
+          $t('Sunday'),
+          $t('Monday'),
+          $t('Tuesday'),
+          $t('Wednesday'),
+          $t('Thursday'),
+          $t('Friday'),
+          $t('Saturday'),
+        ]"
+      />
+    </card-element>
+
+    <card-element
       :title="$t('Scans by time of day')"
       :subtitle="$t('By scans')"
     >
@@ -213,6 +242,22 @@ const percentChange = computed(() => {
 
     <card-element
       :title="$t('Scans by time of day')"
+      :subtitle="$t('By scans')"
+      :badges="[$t('Pro')]"
+    >
+      <div class="placeholder-chart">
+        <p>
+          {{
+            $t(
+              "Enable advanced analytics to see this data, add free destinations, and update the design of your magic link."
+            )
+          }}
+        </p>
+      </div>
+    </card-element>
+
+    <card-element
+      :title="$t('Heatmap')"
       :subtitle="$t('By scans')"
       :badges="[$t('Pro')]"
     >

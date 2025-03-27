@@ -7,6 +7,11 @@ const props = defineProps({
     type: Array as PropType<number[][]>,
     required: true,
   },
+  xLabels: {
+    type: Array as PropType<string[]>,
+    required: false,
+    default: () => [],
+  },
 });
 
 const totalSum = computed(() =>
@@ -40,9 +45,16 @@ function getPercentage(number: number) {
 /** This function takes the percentages and normalizes them from 0 to 100, so that the lowest percentage is 0 and the highest is 100, therefore the lowest color is red and the highest is green */
 function getSquareColor(x: number, y: number) {
   const percentage = normalisedPercentageMatrix.value[x][y];
+
+  // If the percentage is 0, return masked (gray) color
+  if (percentage === 0) {
+    return "transparent";
+  }
+
   // Interpolating between red (0%) and green (100%)
   const red = Math.round(255 * (1 - percentage / 100));
   const green = Math.round(255 * (percentage / 100));
+
   return `rgb(${red}, ${green}, 0)`;
 }
 
@@ -58,39 +70,43 @@ function getContrastColor(rgb: string) {
 </script>
 
 <template>
-  <div class="matrix">
-    {{ normalisedPercentageMatrix }}
-    <div v-for="(row, i) in matrix" :key="i" class="row">
-      <div
-        v-for="(number, j) in row"
-        :key="j"
-        class="square"
-        :style="{
-          backgroundColor: getSquareColor(i, j),
-          color: getContrastColor(getSquareColor(i, j)),
-        }"
-      >
-        {{ getPercentage(number).toFixed(0) }}%
-      </div>
-    </div>
+  <div class="overflow-auto">
+    <table class="striped">
+      <tbody>
+        <!-- Table Rows with Label Column -->
+        <tr v-for="(row, i) in matrix" :key="i">
+          <!-- Label Column (Row Number) -->
+          <td class="label-column">{{ xLabels[i] ?? i + 1 }}</td>
+
+          <!-- Heatmap Cells -->
+          <td
+            v-for="(number, j) in row"
+            :key="j"
+            :style="{
+              backgroundColor: getSquareColor(i, j),
+              color: getContrastColor(getSquareColor(i, j)),
+            }"
+          >
+            {{ getPercentage(number).toFixed(0) }}%
+          </td>
+        </tr>
+
+        <!-- Label Row at the Bottom -->
+        <tr>
+          <td></td>
+          <!-- Empty cell for alignment -->
+          <td v-for="(col, j) in matrix[0]" :key="'label-' + j">
+            {{ j + 1 }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <style>
-.matrix {
-  display: flex;
-  flex-direction: column;
-}
-
-.row {
-  display: flex;
-}
-
-.square {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* each cell needs to have a white border */
+td {
+  border: 1px solid var(--pico-color);
 }
 </style>

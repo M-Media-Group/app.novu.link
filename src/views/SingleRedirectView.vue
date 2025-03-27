@@ -44,6 +44,7 @@ const designs = ref([] as QRDesign[]);
 const webhooks = ref([] as Webhook[]);
 const alerts = ref([] as Alert[]);
 const remainingClicks = ref(0);
+const heatmapData = ref(null);
 
 const getData = () => {
   if (teamStore.activeTeam === null) {
@@ -62,6 +63,7 @@ const getData = () => {
       designs.value = response.data.qr_designs ?? [];
       webhooks.value = response.data.webhooks ?? [];
       alerts.value = response.data.alerts ?? [];
+      heatmapData.value = response.data.heatmap ?? null;
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -232,6 +234,7 @@ const convertSecondsToMinutes = (seconds: number) => {
       :description="teamStore.activeTeam ? undefined : ''"
       :clicksSameTimeYesterday="clicksSameTimeYesterday"
       :remainingClicks="remainingClicks"
+      :heatmapData="heatmapData"
       ref="singleQRElement"
     />
   </div>
