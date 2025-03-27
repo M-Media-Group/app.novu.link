@@ -63,7 +63,7 @@ const getData = () => {
       designs.value = response.data.qr_designs ?? [];
       webhooks.value = response.data.webhooks ?? [];
       alerts.value = response.data.alerts ?? [];
-      heatmapData.value = response.data.heatmap ?? null;
+      heatmapData.value = response.data.heatmap;
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
