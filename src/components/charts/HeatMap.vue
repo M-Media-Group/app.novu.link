@@ -20,7 +20,7 @@ const props = defineProps({
   flipXY: {
     type: Boolean,
     required: false,
-    default: true,
+    default: false,
   },
 });
 
@@ -143,7 +143,7 @@ function getContrastColor(rgb: string) {
 
 <style scoped>
 .overflow-auto {
-  max-height: 400px;
+  height: 47vh;
 }
 .label-column {
   position: sticky;

@@ -165,7 +165,7 @@ const percentChange = computed(() => {
         ]"
       />
 
-      <div v-else class="placeholder-chart" style="height: 240px">
+      <div v-else class="placeholder-chart">
         {{ $t("No data available") }}
       </div>
     </card-element>
