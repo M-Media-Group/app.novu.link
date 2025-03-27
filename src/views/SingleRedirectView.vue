@@ -44,7 +44,7 @@ const designs = ref([] as QRDesign[]);
 const webhooks = ref([] as Webhook[]);
 const alerts = ref([] as Alert[]);
 const remainingClicks = ref(0);
-const heatmapData = ref(null);
+const heatmapData = ref(undefined as Redirect["heatmap"] | undefined);
 
 const getData = () => {
   if (teamStore.activeTeam === null) {
