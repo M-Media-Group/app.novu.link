@@ -11,8 +11,11 @@ import type { selectOption } from "@/types/listItem";
 import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import { useI18n } from "vue-i18n";
+import HeatMap from "@/components/charts/HeatMap.vue";
 
 const data = ref([] as Analytics[]);
+const heatmapData = ref([] as number[][]);
+
 const loading = ref(false);
 
 const { t } = useI18n();
@@ -37,7 +40,8 @@ const getData = async (startDate?: string, endDate?: string) => {
       endDate: endDate ? `${endDate}T23:59:59` : undefined,
     },
   });
-  data.value = response.data as Analytics[];
+  data.value = response.data[0] as Analytics[];
+  heatmapData.value = response.data[1];
   loading.value = false;
 };
 
@@ -379,5 +383,33 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
         </div>
       </card-element>
     </div>
+    <card-element
+      :title="$t('Heatmap')"
+      :subtitle="$t('Scans by day of week and time of day')"
+      :loadingOn="['title']"
+    >
+      <div
+        v-if="loading"
+        class="placeholder-chart gl-animate-skeleton-loader"
+      ></div>
+
+      <heat-map
+        v-else-if="heatmapData?.length > 0"
+        :matrix="heatmapData"
+        :xLabels="[
+          $t('Sunday'),
+          $t('Monday'),
+          $t('Tuesday'),
+          $t('Wednesday'),
+          $t('Thursday'),
+          $t('Friday'),
+          $t('Saturday'),
+        ]"
+      />
+
+      <div v-else class="placeholder-chart" style="height: 240px">
+        {{ $t("No data available") }}
+      </div>
+    </card-element>
   </div>
 </template>
