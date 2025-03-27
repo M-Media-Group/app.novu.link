@@ -71,7 +71,7 @@ function getContrastColor(rgb: string) {
 
 <template>
   <div class="overflow-auto">
-    <table class="striped">
+    <table>
       <tbody>
         <!-- Table Rows with Label Column -->
         <tr v-for="(row, i) in matrix" :key="i">
@@ -104,9 +104,10 @@ function getContrastColor(rgb: string) {
   </div>
 </template>
 
-<style>
-/* each cell needs to have a white border */
-td {
-  border: 1px solid var(--pico-color);
+<style scoped>
+.label-column {
+  position: sticky;
+  left: 0px;
+  top: 0px;
 }
 </style>

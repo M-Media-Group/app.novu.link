@@ -101,7 +101,7 @@ defineProps({
         <div
           class="gl-animate-skeleton-loader"
           v-if="title"
-          style="height: 25px"
+          style="height: 24px"
         ></div>
         <div
           class="gl-animate-skeleton-loader"
@@ -112,7 +112,7 @@ defineProps({
       <div
         class="gl-animate-skeleton-loader actions"
         v-if="$slots.headerActions"
-        style="width: 10%"
+        style="width: 10%; height: 27px"
       ></div>
     </header>
     <template v-if="$slots.default">

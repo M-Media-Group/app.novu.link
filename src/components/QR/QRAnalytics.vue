@@ -109,7 +109,6 @@ const percentChange = computed(() => {
   </div>
   <template v-if="subscribed">
     <card-element
-      :loading="isLoading"
       :loadingOn="['title']"
       :title="
         barChartData !== null
@@ -143,13 +142,17 @@ const percentChange = computed(() => {
     </card-element>
 
     <card-element
-      v-if="heatmapData?.length > 0"
       :title="$t('Heatmap')"
       :subtitle="$t('Scans by day of week and time of day')"
-      :loading="isLoading"
       :loadingOn="['title']"
     >
+      <div
+        v-if="isLoading"
+        class="placeholder-chart gl-animate-skeleton-loader"
+      ></div>
+
       <heat-map
+        v-else-if="heatmapData?.length > 0"
         :matrix="heatmapData"
         :xLabels="[
           $t('Sunday'),
@@ -161,6 +164,10 @@ const percentChange = computed(() => {
           $t('Saturday'),
         ]"
       />
+
+      <div v-else class="placeholder-chart" style="height: 240px">
+        {{ $t("No data available") }}
+      </div>
     </card-element>
 
     <card-element
@@ -241,8 +248,8 @@ const percentChange = computed(() => {
     </card-element>
 
     <card-element
-      :title="$t('Scans by time of day')"
-      :subtitle="$t('By scans')"
+      :title="$t('Heatmap')"
+      :subtitle="$t('Scans by day of week and time of day')"
       :badges="[$t('Pro')]"
     >
       <div class="placeholder-chart">
@@ -257,7 +264,7 @@ const percentChange = computed(() => {
     </card-element>
 
     <card-element
-      :title="$t('Heatmap')"
+      :title="$t('Scans by time of day')"
       :subtitle="$t('By scans')"
       :badges="[$t('Pro')]"
     >
