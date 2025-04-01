@@ -1,8 +1,11 @@
+import type { ClicksByTimeOfDay } from "./analytics";
+
 export interface Dashboard {
   clicks: Clicks;
   bestRedirect: BestRedirect;
   hasPaymentMethodSet: boolean;
   hasBillableRedirects: boolean;
+  clicksByMinuteLast30: ClicksByTimeOfDay[];
 }
 
 export interface BestRedirect {
