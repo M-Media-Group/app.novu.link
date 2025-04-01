@@ -48,36 +48,35 @@ getAlerts();
       $t("Create a new alert")
     }}</base-button>
   </div>
-  <div>
-    <template v-if="isLoading">
-      <card-element
-        v-for="index in 5"
-        :title="$t('Alerts links')"
-        :subtitle="$t('Alerts links')"
-        :loading="true"
-        :key="index"
-      />
-    </template>
-    <template v-else>
-      <card-element
-        v-for="alert in results"
-        :title="alert.redirect?.name"
-        :subtitle="
-          $t(
-            'If in the last {time} {more/less} {count} {type} scans occur, trigger the alert',
-            [
-              formatMinutes(alert.time_window),
-              $t(alert.condition).toLowerCase(),
-              alert.target,
-              alert.type === 'all' ? $t('total') : $t(alert.type),
-            ]
-          )
-        "
-        :to="`/redirects/${alert.redirect_uuid}`"
-        :key="alert.id"
-        :class="{ disabled: !alert.redirect?.subscribed_at }"
-      >
-      </card-element>
-    </template>
-  </div>
+
+  <template v-if="isLoading">
+    <card-element
+      v-for="index in 5"
+      :title="$t('Alerts links')"
+      :subtitle="$t('Alerts links')"
+      :loading="true"
+      :key="index"
+    />
+  </template>
+  <template v-else>
+    <card-element
+      v-for="alert in results"
+      :title="alert.redirect?.name"
+      :subtitle="
+        $t(
+          'If in the last {time} {more/less} {count} {type} scans occur, trigger the alert',
+          [
+            formatMinutes(alert.time_window),
+            $t(alert.condition).toLowerCase(),
+            alert.target,
+            alert.type === 'all' ? $t('total') : $t(alert.type),
+          ]
+        )
+      "
+      :to="`/redirects/${alert.redirect_uuid}`"
+      :key="alert.id"
+      :class="{ disabled: !alert.redirect?.subscribed_at }"
+    >
+    </card-element>
+  </template>
 </template>

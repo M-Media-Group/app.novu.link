@@ -471,7 +471,7 @@ const testLink = () => {
 
 <template>
   <background-confetti ref="confetti" :fireOnLoad="false" />
-  <div class="two-column-grid flex-start reverse">
+  <div class="two-column-grid four-two-grid flex-start reverse">
     <div class="main-grid-display sticky-on-desktop">
       <hgroup class="smaller-gap">
         <h2 v-if="showTitle">{{ title }}</h2>

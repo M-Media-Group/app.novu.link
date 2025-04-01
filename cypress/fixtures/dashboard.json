@@ -1,18 +1,27 @@
 {
     "clicks": {
-        "total": 1,
-        "today": 1
+        "total": 9887,
+        "today": 15
     },
     "bestRedirect": {
-        "uuid": "QeXM0Y6",
-        "team_id": 75,
-        "name": "strawberry",
+        "uuid": "eTmffqX",
+        "team_id": 1,
+        "name": "Reddit NovuLink promotion",
         "enable_analytics": true,
-        "created_at": "2024-04-20T10:03:12.000000Z",
-        "updated_at": "2024-04-20T10:03:26.000000Z",
+        "created_at": "2022-07-09T10:52:09.000000Z",
+        "updated_at": "2024-04-27T22:24:00.000000Z",
         "deleted_at": null,
-        "clicks_count": 1
+        "subscribed_at": "2024-04-27T22:24:00.000000Z",
+        "clicks_count": 8419,
+        "remaining_clicks": 29811
     },
-    "hasPaymentMethodSet": false,
-    "hasBillableRedirects": false
+    "hasPaymentMethodSet": true,
+    "hasBillableRedirects": false,
+    "remainingRedirectsOnPlan": null,
+    "isCashierAndBillableRedirectsEqual": true,
+    "isOnGenericTrial": null,
+    "isOnGracePeriod": null,
+    "isSubscribed": false,
+    "isBillingExempt": false,
+    "subscription": null
 }
