@@ -101,41 +101,18 @@ if (window.location.search.includes("verified=1")) {
   $bus.$emit(eventTypes.confirmed_email);
 }
 
-// const barChartData = [
-//   {
-//     name: "28",
-//     count: 5,
-//   },
-//   {
-//     name: "10",
-//     count: 9,
-//   },
-//   {
-//     name: "2",
-//     count: 3,
-//   },
-// ];
-
 const barChartData = computed(() => {
   if (!data.value?.hasBillableRedirects) {
     return null;
   }
   const mappedData = data.value?.clicksByMinuteLast30?.map((item) => ({
-    // Data looks like
-    // {
-    //   "uuid": "2d5jk71",
-    //   "datetime": "42",
-    //   "click_count": 1,
-    //   "laravel_through_key": 88
-    // },
-
     name: item.datetime,
     count: item.click_count,
   }));
 
   // Sum for each datetime, discard the redirect_uuid
-  const groupedData = mappedData.reduce((acc, item) => {
-    if (!item) {
+  const groupedData = mappedData?.reduce((acc, item) => {
+    if (!item || !item.name || !item.count) {
       return acc;
     }
     // Her we just have "mm" value. If for example the current time is 13:45, and the datetime is 40, then the click was 5 minutes ago.
@@ -150,7 +127,7 @@ const barChartData = computed(() => {
   // Fill in the missing minutes
   const minutes = Array.from({ length: 30 }, (_, i) => i.toString());
   const filledData = minutes.map((minute) => {
-    const found = groupedData[minute];
+    const found = groupedData && groupedData[minute];
     if (found) {
       return {
         name: minute,
