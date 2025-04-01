@@ -17,37 +17,33 @@ if (!redirectTo) {
 }
 </script>
 <template>
-  <div>
-    <hgroup>
-      <h1>{{ $t("Link Not Safe for Work") }}</h1>
+  <hgroup>
+    <h1>{{ $t("Link Not Safe for Work") }}</h1>
+    <p>
+      {{
+        $t("This link contains porn, nudity, violence, or other NSFW content.")
+      }}
+    </p>
+  </hgroup>
+  <div class="two-column-grid">
+    <card-element :title="$t('NSFW link')" :subtitle="redirectTo ?? ''">
       <p>
         {{
           $t(
-            "This link contains porn, nudity, violence, or other NSFW content."
+            "You can continue to the link at your own risk, or go back to safety."
           )
         }}
       </p>
-    </hgroup>
-    <div class="two-column-grid">
-      <card-element :title="$t('NSFW link')" :subtitle="redirectTo ?? ''">
-        <p>
-          {{
-            $t(
-              "You can continue to the link at your own risk, or go back to safety."
-            )
-          }}
-        </p>
-        <div class="two-column-grid">
-          <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
-          <base-button
-            class="secondary"
-            :href="redirectTo"
-            rel="noopener noreferrer"
-            >{{ $t("Continue to the link") }}</base-button
-          >
-        </div>
-      </card-element>
-      <img :src="image" alt="A person holding a link" />
-    </div>
+      <div class="two-column-grid">
+        <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
+        <base-button
+          class="secondary"
+          :href="redirectTo"
+          rel="noopener noreferrer"
+          >{{ $t("Continue to the link") }}</base-button
+        >
+      </div>
+    </card-element>
+    <img :src="image" alt="A person holding a link" />
   </div>
 </template>

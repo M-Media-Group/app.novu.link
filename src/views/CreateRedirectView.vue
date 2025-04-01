@@ -9,20 +9,18 @@ const url = searchParams.get("url");
 const shouldSubmit = searchParams.has("url") && searchParams.has("submit");
 </script>
 <template>
-  <div>
-    <nav aria-label="breadcrumb">
-      <ul>
-        <li>
-          <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
-        </li>
-        <li>
-          <router-link to="/redirects">{{ $t("Magic links") }}</router-link>
-        </li>
-        <li>{{ $t("New magic link") }}</li>
-      </ul>
-    </nav>
-    <h1>{{ $t("New magic link") }}</h1>
-  </div>
+  <nav aria-label="breadcrumb">
+    <ul>
+      <li>
+        <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+      </li>
+      <li>
+        <router-link to="/redirects">{{ $t("Magic links") }}</router-link>
+      </li>
+      <li>{{ $t("New magic link") }}</li>
+    </ul>
+  </nav>
+  <h1>{{ $t("New magic link") }}</h1>
   <div class="two-column-grid">
     <card-element>
       <create-redirect

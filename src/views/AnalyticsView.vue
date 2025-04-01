@@ -258,167 +258,163 @@ watch(filterValue, ([_limit, fromDate, toDate]) => {
 const flipAxis = ref(false);
 </script>
 <template>
-  <div>
-    <div class="two-column-grid">
-      <hgroup>
-        <h1>{{ $t("Analytics") }}</h1>
-        <p>{{ $t("Scans all time") }}</p>
-      </hgroup>
-      <div>
-        <dropdown-select
-          :options="dropdownOptions"
-          placeholder="Filter"
-          v-model="filterValue"
-          :multiple="true"
-        >
-          <template
-            #optionSlot="{ option, updateModelValue, modelValue, index }"
-          >
-            <label :for="option.id">{{ option.raw.label }}</label>
-            <template v-if="option.render === 'preset'">
-              <select
-                :id="option.id"
-                @input="updateModelValue($event, index)"
-                :value="modelValue[index]"
-              >
-                <option
-                  v-for="preset in option.raw.options"
-                  :key="preset.value"
-                  :value="preset.value"
-                >
-                  {{ preset.label }}
-                </option>
-              </select>
-            </template>
-            <template v-else-if="option.render === 'button'">
-              <base-button @click="updateModelValue($event, index)">
-                {{ option.raw.label }}
-              </base-button>
-            </template>
-            <input
-              v-else
+  <div class="two-column-grid">
+    <hgroup>
+      <h1>{{ $t("Analytics") }}</h1>
+      <p>{{ $t("Scans all time") }}</p>
+    </hgroup>
+    <div>
+      <dropdown-select
+        :options="dropdownOptions"
+        placeholder="Filter"
+        v-model="filterValue"
+        :multiple="true"
+      >
+        <template #optionSlot="{ option, updateModelValue, modelValue, index }">
+          <label :for="option.id">{{ option.raw.label }}</label>
+          <template v-if="option.render === 'preset'">
+            <select
               :id="option.id"
-              :type="option.raw.type"
               @input="updateModelValue($event, index)"
               :value="modelValue[index]"
-              :max="option.raw.max"
-            />
+            >
+              <option
+                v-for="preset in option.raw.options"
+                :key="preset.value"
+                :value="preset.value"
+              >
+                {{ preset.label }}
+              </option>
+            </select>
           </template>
-        </dropdown-select>
-      </div>
+          <template v-else-if="option.render === 'button'">
+            <base-button @click="updateModelValue($event, index)">
+              {{ option.raw.label }}
+            </base-button>
+          </template>
+          <input
+            v-else
+            :id="option.id"
+            :type="option.raw.type"
+            @input="updateModelValue($event, index)"
+            :value="modelValue[index]"
+            :max="option.raw.max"
+          />
+        </template>
+      </dropdown-select>
     </div>
-    <card-element :loading="loading">
-      <hgroup>
-        <h2>{{ $t("Best performing magic links") }}</h2>
-        <p>{{ $t("By scans") }}</p>
-      </hgroup>
+  </div>
+  <card-element :loading="loading">
+    <hgroup>
+      <h2>{{ $t("Best performing magic links") }}</h2>
+      <p>{{ $t("By scans") }}</p>
+    </hgroup>
 
-      <bar-chart
-        v-if="clickData[0]?.count > 0"
-        :clickData="clickData"
-      ></bar-chart>
-      <div class="placeholder-chart" v-else>
-        <p>
-          {{ $t("No data available") }}
-        </p>
-      </div>
-    </card-element>
-    <card-element :loading="loading">
-      <hgroup>
-        <h2>{{ $t("Scans by time of day") }}</h2>
-        <p>{{ $t("By scans") }}</p>
-      </hgroup>
-      <line-chart
-        v-if="lineChartData.reduce((acc, item) => acc + item.count, 0) > 0"
-        :clickData="lineChartData"
-      />
-      <div class="placeholder-chart" v-else>
-        <p>
-          {{ $t("No data available") }}
-        </p>
-      </div>
-    </card-element>
-    <card-element :loading="loading">
-      <hgroup>
-        <h2>{{ $t("Unique referers") }}</h2>
-        <p>{{ $t("By scans") }}</p>
-      </hgroup>
-      <bar-chart
-        v-if="uniqueReferersAndClicks.length > 0"
-        :clickData="uniqueReferersAndClicks"
-      ></bar-chart>
-      <div class="placeholder-chart" v-else>
-        <p>
-          {{ $t("No data available") }}
-        </p>
-      </div>
-    </card-element>
-    <div class="two-column-grid">
-      <card-element :loading="loading">
-        <hgroup>
-          <h2>{{ $t("Scans by country") }}</h2>
-          <p>{{ $t("By scans") }}</p>
-        </hgroup>
-        <pie-chart
-          v-if="uniqueCountries.length > 1"
-          :clickData="uniqueCountries"
-        ></pie-chart>
-        <div class="placeholder-chart" v-else>
-          <p>
-            {{ $t("No data available") }}
-          </p>
-        </div>
-      </card-element>
-      <card-element :loading="loading">
-        <hgroup>
-          <h2>{{ $t("Scans by language") }}</h2>
-          <p>{{ $t("By scans") }}</p>
-        </hgroup>
-        <pie-chart
-          v-if="uniqueLanguages.length > 0"
-          :clickData="uniqueLanguages"
-        ></pie-chart>
-        <div class="placeholder-chart" v-else>
-          <p>
-            {{ $t("No data available") }}
-          </p>
-        </div>
-      </card-element>
-    </div>
-    <card-element
-      :title="$t('Heatmap')"
-      :subtitle="$t('Scans by day of week and time of day')"
-      :loadingOn="['title']"
-    >
-      <template #headerActions>
-        <button class="outline" @click="flipAxis = !flipAxis">
-          {{ flipAxis ? $t("Flip axis") : $t("Flip axis") }}
-        </button>
-      </template>
-
-      <div
-        v-if="loading"
-        class="placeholder-chart gl-animate-skeleton-loader"
-      ></div>
-
-      <heat-map
-        v-else-if="heatmapData?.length > 0"
-        :matrix="heatmapData"
-        :xLabels="[
-          $t('Sunday'),
-          $t('Monday'),
-          $t('Tuesday'),
-          $t('Wednesday'),
-          $t('Thursday'),
-          $t('Friday'),
-          $t('Saturday'),
-        ]"
-        :flip-x-y="flipAxis"
-      />
-
-      <div v-else class="placeholder-chart" style="height: 240px">
+    <bar-chart
+      v-if="clickData[0]?.count > 0"
+      :clickData="clickData"
+    ></bar-chart>
+    <div class="placeholder-chart" v-else>
+      <p>
         {{ $t("No data available") }}
+      </p>
+    </div>
+  </card-element>
+  <card-element :loading="loading">
+    <hgroup>
+      <h2>{{ $t("Scans by time of day") }}</h2>
+      <p>{{ $t("By scans") }}</p>
+    </hgroup>
+    <line-chart
+      v-if="lineChartData.reduce((acc, item) => acc + item.count, 0) > 0"
+      :clickData="lineChartData"
+    />
+    <div class="placeholder-chart" v-else>
+      <p>
+        {{ $t("No data available") }}
+      </p>
+    </div>
+  </card-element>
+  <card-element :loading="loading">
+    <hgroup>
+      <h2>{{ $t("Unique referers") }}</h2>
+      <p>{{ $t("By scans") }}</p>
+    </hgroup>
+    <bar-chart
+      v-if="uniqueReferersAndClicks.length > 0"
+      :clickData="uniqueReferersAndClicks"
+    ></bar-chart>
+    <div class="placeholder-chart" v-else>
+      <p>
+        {{ $t("No data available") }}
+      </p>
+    </div>
+  </card-element>
+  <div class="two-column-grid">
+    <card-element :loading="loading">
+      <hgroup>
+        <h2>{{ $t("Scans by country") }}</h2>
+        <p>{{ $t("By scans") }}</p>
+      </hgroup>
+      <pie-chart
+        v-if="uniqueCountries.length > 1"
+        :clickData="uniqueCountries"
+      ></pie-chart>
+      <div class="placeholder-chart" v-else>
+        <p>
+          {{ $t("No data available") }}
+        </p>
+      </div>
+    </card-element>
+    <card-element :loading="loading">
+      <hgroup>
+        <h2>{{ $t("Scans by language") }}</h2>
+        <p>{{ $t("By scans") }}</p>
+      </hgroup>
+      <pie-chart
+        v-if="uniqueLanguages.length > 0"
+        :clickData="uniqueLanguages"
+      ></pie-chart>
+      <div class="placeholder-chart" v-else>
+        <p>
+          {{ $t("No data available") }}
+        </p>
       </div>
     </card-element>
   </div>
+  <card-element
+    :title="$t('Heatmap')"
+    :subtitle="$t('Scans by day of week and time of day')"
+    :loadingOn="['title']"
+  >
+    <template #headerActions>
+      <button class="outline" @click="flipAxis = !flipAxis">
+        {{ flipAxis ? $t("Flip axis") : $t("Flip axis") }}
+      </button>
+    </template>
+
+    <div
+      v-if="loading"
+      class="placeholder-chart gl-animate-skeleton-loader"
+    ></div>
+
+    <heat-map
+      v-else-if="heatmapData?.length > 0"
+      :matrix="heatmapData"
+      :xLabels="[
+        $t('Sunday'),
+        $t('Monday'),
+        $t('Tuesday'),
+        $t('Wednesday'),
+        $t('Thursday'),
+        $t('Friday'),
+        $t('Saturday'),
+      ]"
+      :flip-x-y="flipAxis"
+    />
+
+    <div v-else class="placeholder-chart" style="height: 240px">
+      {{ $t("No data available") }}
+    </div>
+  </card-element>
 </template>
