@@ -109,8 +109,5 @@ export function softlyAddProtocolIfMissing(url: string, protocol = "https://") {
  * @param {string} protocol
  */
 export function formatUrl(url: string, protocol = "https://") {
-  return softlyAddProtocolIfMissing(url, protocol)
-    .toLowerCase()
-    .trim()
-    .replace(/ /g, "");
+  return softlyAddProtocolIfMissing(url, protocol).trim().replace(/ /g, "");
 }
