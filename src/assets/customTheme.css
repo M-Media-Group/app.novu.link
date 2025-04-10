@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+html {
+    font-size: 16px;
+    font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;
+}
+
+:root {
+    /* Inter font */
+    --pico-font-family-sans-serif: "Inter", sans-serif;
+}
+
 /* Root */
 @media (color-gamut: p3) {}
 
@@ -28,6 +40,7 @@ article:has(>:first-child:is(.images)) {
 .main-grid-display {
     display: grid;
     gap: calc(var(--pico-block-spacing-vertical) * 1.6);
+    grid-template-columns: minmax(0, 1fr);
 
     /** @todo this may also need the "fieldset", but it doesnt look good with the OTP */
     >*,
@@ -166,7 +179,7 @@ button,
 @keyframes fade-move-in {
     0% {
         opacity: 0;
-        transform: translateY(10px);
+        /* transform: translateY(10px); */
     }
 
     100% {
@@ -302,6 +315,10 @@ img {
     grid-template-columns: 3fr 2fr;
 }
 
+.four-two-grid {
+    grid-template-columns: 4fr 2fr;
+}
+
 .hero-section hgroup>p {
     margin-bottom: var(--pico-spacing);
 }
@@ -390,4 +407,19 @@ nav.tab-nav li {
 
 table>tr>th {
     white-space: nowrap;
+}
+
+[aria-label="breadcrumb"] {
+    display: none;
+}
+
+article,
+[type=button],
+[type=reset],
+[type=submit] {
+    margin-bottom: 0;
+}
+
+article>:last-child:is(header) {
+    align-items: center;
 }

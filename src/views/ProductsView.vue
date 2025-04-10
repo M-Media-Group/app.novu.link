@@ -104,287 +104,279 @@ const handleCategoryClick = (category: string) => {
 };
 </script>
 <template>
-  <div>
-    <section class="fulscreen-width-container hero-section">
-      <hgroup
-        style="
-          padding-top: calc(var(--pico-spacing));
-          padding-bottom: calc(var(--pico-spacing));
-          text-align: center;
-          font-size: 100%;
-        "
-      >
-        <h1>Printed Products With Changeable QR Codes</h1>
-        <p>Easily update your QR code links anytime, even after printing.</p>
-      </hgroup>
-      <div class="two-column-grid category-images">
-        <router-link to="/products/categories/jackets">
-          <img :src="skierImage" />
-          <h2>Jackets</h2>
-        </router-link>
-        <router-link to="/products/categories/hoodies">
-          <img :src="skaterQr" />
-          <h2>Hoodies</h2>
-        </router-link>
-        <router-link to="/products/categories/mugs">
-          <img :src="businessQr" />
-          <h2>Mugs</h2>
-        </router-link>
-        <router-link to="/products/categories/stickers">
-          <img :src="storefrontQr" />
-          <h2>Stickers</h2>
-        </router-link>
-      </div>
-    </section>
-    <section
-      v-if="loadedProduct && loadedProduct !== null"
-      class="fulscreen-width-container hero-section"
+  <section class="fulscreen-width-container hero-section">
+    <hgroup
+      style="
+        padding-top: calc(var(--pico-spacing));
+        padding-bottom: calc(var(--pico-spacing));
+        text-align: center;
+        font-size: 100%;
+      "
     >
-      <div class="two-column-grid">
-        <div>
-          <div
-            class="images overflow-auto"
-            style="
-              height: 100%;
-              max-height: 70dvh;
-              border-radius: var(--pico-border-radius);
-              margin-bottom: var(--pico-spacing);
-            "
-            v-if="loadedProduct"
-          >
-            <img
-              v-for="img in getAllImages(loadedProduct).map((image) => ({
-                src: image,
-                alt: loadedProduct?.name ?? 'Product image',
-              }))"
-              :key="img.src"
-              :src="img.src"
-              class="full-width"
-              :alt="img.alt"
-              loading="lazy"
-            />
-          </div>
-          <!-- An image caption saying its not the actual product -->
-
-          <!-- A div grid for all images - small thumbnails -->
-          <div
-            v-if="getAllImages(loadedProduct).length > 1"
-            class="images overflow-auto"
-            style="height: min-content"
-          >
-            <img
-              v-for="img in getAllImages(loadedProduct).map((image) => ({
-                src: image,
-                alt: loadedProduct?.name ?? 'Product image',
-              }))"
-              :key="img.src"
-              :src="img.src"
-              class="full-width"
-              :alt="img.alt"
-              height="32"
-              style="object-fit: contain; height: 96px; width: auto"
-            />
-          </div>
-        </div>
-        <div>
-          <hgroup>
-            <h2 ref="primaryProductHeading">
-              {{ loadedProduct.name }} With Custom QR Code
-            </h2>
-            <p>
-              <template
-                v-if="
-                  loadedProduct?.prices?.min?.priceWithTax !==
-                  loadedProduct?.prices?.max?.priceWithTax
-                "
-              >
-                {{ $t("From") }}
-              </template>
-              {{
-                formatPrice(
-                  loadedProduct.prices?.min?.priceWithTax,
-                  loadedProduct.prices?.min?.currencyCode
-                ) + " incl. VAT"
-              }}
-              +
-              {{
-                formatPrice(
-                  loadedProduct.prices?.shipping,
-                  loadedProduct.prices?.currency
-                )
-              }}
-              worldwide shipping
-            </p>
-          </hgroup>
-          <div v-show="!showBuyNow">
-            <base-button
-              @click="showBuyNow = true"
-              class="full-width"
-              :disabled="!loadedProduct.is_in_stock"
-            >
-              {{
-                loadedProduct.is_in_stock ? $t("Buy now") : $t("Out of stock")
-              }}
-            </base-button>
-            <p style="white-space: pre-line">
-              {{ loadedProduct.description }}<br />• Advanced Novu.Link QR Code
-              printed in high quality<br />• Changeable destinations even after
-              print, for free
-            </p>
-            <small>
-              <base-badge>{{
-                loadedProduct.is_in_stock ? "In stock" : "Out of stock"
-              }}</base-badge>
-            </small>
-          </div>
-          <div v-show="showBuyNow">
-            <p>
-              <a @click="showBuyNow = false" class="back-link"
-                >← Back to product</a
-              >
-            </p>
-            <create-product-order
-              :productIds="[loadedProduct.id]"
-              @success="showBuyNow = false"
-            />
-          </div>
-          <hr />
-          <small>
-            Fulfilled by
-            <a
-              href="https://www.printful.com/print-on-demand/a/583122:ccf515ea17b07bdf388ebbff9f76827b"
-              >{{ loadedProduct.merchant }}</a
-            >
-          </small>
-        </div>
-      </div>
-    </section>
-    <section
-      v-else
-      class="fulscreen-width-container hero-section"
-      data-theme="light"
-    >
-      <div class="two-column-grid" style="height: 100dvh">
+      <h1>Printed Products With Changeable QR Codes</h1>
+      <p>Easily update your QR code links anytime, even after printing.</p>
+    </hgroup>
+    <div class="two-column-grid category-images">
+      <router-link to="/products/categories/jackets">
+        <img :src="skierImage" />
+        <h2>Jackets</h2>
+      </router-link>
+      <router-link to="/products/categories/hoodies">
+        <img :src="skaterQr" />
+        <h2>Hoodies</h2>
+      </router-link>
+      <router-link to="/products/categories/mugs">
+        <img :src="businessQr" />
+        <h2>Mugs</h2>
+      </router-link>
+      <router-link to="/products/categories/stickers">
+        <img :src="storefrontQr" />
+        <h2>Stickers</h2>
+      </router-link>
+    </div>
+  </section>
+  <section
+    v-if="loadedProduct && loadedProduct !== null"
+    class="fulscreen-width-container hero-section"
+  >
+    <div class="two-column-grid">
+      <div>
         <div
-          class="gl-animate-skeleton-loader images overflow-auto"
+          class="images overflow-auto"
           style="
-            min-height: 100%;
+            height: 100%;
             max-height: 70dvh;
             border-radius: var(--pico-border-radius);
             margin-bottom: var(--pico-spacing);
           "
-        ></div>
-        <div>
-          <div class="gl-animate-skeleton-loader" style="height: 2rem"></div>
-          <div class="gl-animate-skeleton-loader" style="height: 1rem"></div>
+          v-if="loadedProduct"
+        >
+          <img
+            v-for="img in getAllImages(loadedProduct).map((image) => ({
+              src: image,
+              alt: loadedProduct?.name ?? 'Product image',
+            }))"
+            :key="img.src"
+            :src="img.src"
+            class="full-width"
+            :alt="img.alt"
+            loading="lazy"
+          />
+        </div>
+        <!-- An image caption saying its not the actual product -->
+
+        <!-- A div grid for all images - small thumbnails -->
+        <div
+          v-if="getAllImages(loadedProduct).length > 1"
+          class="images overflow-auto"
+          style="height: min-content"
+        >
+          <img
+            v-for="img in getAllImages(loadedProduct).map((image) => ({
+              src: image,
+              alt: loadedProduct?.name ?? 'Product image',
+            }))"
+            :key="img.src"
+            :src="img.src"
+            class="full-width"
+            :alt="img.alt"
+            height="32"
+            style="object-fit: contain; height: 96px; width: auto"
+          />
         </div>
       </div>
-    </section>
-    <section class="results three-column-grid" ref="resultsSection">
       <div>
         <hgroup>
-          <h2>Explore 1320 products</h2>
-          <p>Our most popular products</p>
-        </hgroup>
-        <input
-          type="search"
-          v-model="searchTerm"
-          placeholder="Search products"
-        />
-        <details>
-          <summary>
-            Filters {{ selectedAttributes.map((x) => x.value).join(", ") }}
-          </summary>
-          <div v-if="allAttributes">
-            <template v-for="options in allAttributes" :key="options.name">
-              <label for="size">{{ options.name }}</label>
-              <dropdown-select
-                :modelValue="
-                  selectedAttributes
-                    .filter((x) => x.name === options.name)
-                    .map((x) =>
-                      typeof x.value === 'string' ? x.value : x.value?.join(',')
-                    )
-                    .filter(Boolean)
-                "
-                @update:modelValue="
-                  handleSelectedAttribute(
-                    `${options.name}`,
-                    $event?.[0] as string
-                  )
-                "
-                :options="
-                  typeof options.value === 'string'
-                    ? [options.value]
-                    : options.value
-                "
-                :visibleLimit="100"
-                :clearable="true"
-              />
+          <h2 ref="primaryProductHeading">
+            {{ loadedProduct.name }} With Custom QR Code
+          </h2>
+          <p>
+            <template
+              v-if="
+                loadedProduct?.prices?.min?.priceWithTax !==
+                loadedProduct?.prices?.max?.priceWithTax
+              "
+            >
+              {{ $t("From") }}
             </template>
-          </div>
-        </details>
+            {{
+              formatPrice(
+                loadedProduct.prices?.min?.priceWithTax,
+                loadedProduct.prices?.min?.currencyCode
+              ) + " incl. VAT"
+            }}
+            +
+            {{
+              formatPrice(
+                loadedProduct.prices?.shipping,
+                loadedProduct.prices?.currency
+              )
+            }}
+            worldwide shipping
+          </p>
+        </hgroup>
+        <div v-show="!showBuyNow">
+          <base-button
+            @click="showBuyNow = true"
+            class="full-width"
+            :disabled="!loadedProduct.is_in_stock"
+          >
+            {{ loadedProduct.is_in_stock ? $t("Buy now") : $t("Out of stock") }}
+          </base-button>
+          <p style="white-space: pre-line">
+            {{ loadedProduct.description }}<br />• Advanced Novu.Link QR Code
+            printed in high quality<br />• Changeable destinations even after
+            print, for free
+          </p>
+          <small>
+            <base-badge>{{
+              loadedProduct.is_in_stock ? "In stock" : "Out of stock"
+            }}</base-badge>
+          </small>
+        </div>
+        <div v-show="showBuyNow">
+          <p>
+            <a @click="showBuyNow = false" class="back-link"
+              >← Back to product</a
+            >
+          </p>
+          <create-product-order
+            :productIds="[loadedProduct.id]"
+            @success="showBuyNow = false"
+          />
+        </div>
+        <hr />
+        <small>
+          Fulfilled by
+          <a
+            href="https://www.printful.com/print-on-demand/a/583122:ccf515ea17b07bdf388ebbff9f76827b"
+            >{{ loadedProduct.merchant }}</a
+          >
+        </small>
       </div>
-      <product-card-element
-        v-for="product in filteredProducts"
-        :product="product"
-        :key="product.id"
-        @click="
-          handleProductSelect(product as Product);
-          $refs.primaryProductHeading.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
+    </div>
+  </section>
+  <section
+    v-else
+    class="fulscreen-width-container hero-section"
+    data-theme="light"
+  >
+    <div class="two-column-grid" style="height: 100dvh">
+      <div
+        class="gl-animate-skeleton-loader images overflow-auto"
+        style="
+          min-height: 100%;
+          max-height: 70dvh;
+          border-radius: var(--pico-border-radius);
+          margin-bottom: var(--pico-spacing);
         "
-        :inline="false"
-      />
+      ></div>
+      <div>
+        <div class="gl-animate-skeleton-loader" style="height: 2rem"></div>
+        <div class="gl-animate-skeleton-loader" style="height: 1rem"></div>
+      </div>
+    </div>
+  </section>
+  <section class="results three-column-grid" ref="resultsSection">
+    <div>
+      <hgroup>
+        <h2>Explore 1320 products</h2>
+        <p>Our most popular products</p>
+      </hgroup>
+      <input type="search" v-model="searchTerm" placeholder="Search products" />
+      <details>
+        <summary>
+          Filters {{ selectedAttributes.map((x) => x.value).join(", ") }}
+        </summary>
+        <div v-if="allAttributes">
+          <template v-for="options in allAttributes" :key="options.name">
+            <label for="size">{{ options.name }}</label>
+            <dropdown-select
+              :modelValue="
+                selectedAttributes
+                  .filter((x) => x.name === options.name)
+                  .map((x) =>
+                    typeof x.value === 'string' ? x.value : x.value?.join(',')
+                  )
+                  .filter(Boolean)
+              "
+              @update:modelValue="
+                handleSelectedAttribute(
+                  `${options.name}`,
+                  $event?.[0] as string
+                )
+              "
+              :options="
+                typeof options.value === 'string'
+                  ? [options.value]
+                  : options.value
+              "
+              :visibleLimit="100"
+              :clearable="true"
+            />
+          </template>
+        </div>
+      </details>
+    </div>
+    <product-card-element
+      v-for="product in filteredProducts"
+      :product="product"
+      :key="product.id"
+      @click="
+        handleProductSelect(product as Product);
+        $refs.primaryProductHeading.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      "
+      :inline="false"
+    />
 
-      <template v-if="isLoading">
-        <card-element
-          v-for="x in 20"
-          :key="x"
-          :loading="isLoading"
-          :title="'Loading...'"
-          :subtitle="'Please wait'"
-          :images="[
-            {
-              src: 'https://via.placeholder.com/150',
-              alt: 'Placeholder image',
-            },
-          ]"
-          style="height: 100%"
-        >
-          Loading...
-        </card-element>
-      </template>
+    <template v-if="isLoading">
       <card-element
-        v-if="filteredProducts.length === 0 && !isLoading"
-        :title="'No products found'"
-        :subtitle="'Try a different search term or change the filters'"
+        v-for="x in 20"
+        :key="x"
+        :loading="isLoading"
+        :title="'Loading...'"
+        :subtitle="'Please wait'"
         :images="[
           {
-            src: image,
-            alt: 'Placeholder image',
-          },
-        ]"
-        style="height: 100%"
-      />
-      <card-element
-        v-if="!hasMoreProducts"
-        :title="'No more products'"
-        :subtitle="'Check back later for more products'"
-        :images="[
-          {
-            src: image,
+            src: 'https://via.placeholder.com/150',
             alt: 'Placeholder image',
           },
         ]"
         style="height: 100%"
       >
-        <p>There's new products added every week. Check back later for more.</p>
+        Loading...
       </card-element>
-    </section>
-  </div>
+    </template>
+    <card-element
+      v-if="filteredProducts.length === 0 && !isLoading"
+      :title="'No products found'"
+      :subtitle="'Try a different search term or change the filters'"
+      :images="[
+        {
+          src: image,
+          alt: 'Placeholder image',
+        },
+      ]"
+      style="height: 100%"
+    />
+    <card-element
+      v-if="!hasMoreProducts"
+      :title="'No more products'"
+      :subtitle="'Check back later for more products'"
+      :images="[
+        {
+          src: image,
+          alt: 'Placeholder image',
+        },
+      ]"
+      style="height: 100%"
+    >
+      <p>There's new products added every week. Check back later for more.</p>
+    </card-element>
+  </section>
 </template>
 <style scoped>
 .hero-section {

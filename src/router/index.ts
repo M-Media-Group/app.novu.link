@@ -253,7 +253,7 @@ const router = createRouter({
     } else if (to.meta.scrollPosition) {
       return to.meta.scrollPosition as any;
     } else {
-      return { top: 72 };
+      return { top: 0 };
     }
   },
 });

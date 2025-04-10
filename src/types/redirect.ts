@@ -22,6 +22,7 @@ export interface Redirect {
   analytics_integrations?: AnalyticsIntegration[];
   subscribed_at: Date | null;
   remaining_clicks: number;
+  heatmap?: number[][];
 }
 
 export interface Endpoint {

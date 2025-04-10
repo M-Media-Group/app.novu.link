@@ -11,7 +11,6 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Alert, Endpoint, Placement, Webhook } from "@/types/redirect";
 import type { selectOption } from "@/types/listItem";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
-import UnsubscribeRedirect from "@/forms/UnsubscribeRedirect.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
 import QRPlacements from "@/components/QR/QRPlacements.vue";
@@ -33,6 +32,8 @@ import { deleteRedirect, getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
 
 import QRIntegrations from "../QR/QRIntegrations.vue";
+
+import ConfirmsSubscriptionEnd from "@/components/modals/ConfirmsSubscriptionEnd.vue";
 
 const $bus = useEventsBus();
 
@@ -152,6 +153,13 @@ const props = defineProps({
   remainingClicks: {
     type: Number,
     required: false,
+  },
+
+  /** The heatmap data (weekdays / hours) */
+  heatmapData: {
+    type: Array as PropType<number[][]>,
+    required: false,
+    default: null,
   },
 });
 
@@ -464,7 +472,7 @@ const testLink = () => {
 
 <template>
   <background-confetti ref="confetti" :fireOnLoad="false" />
-  <div class="two-column-grid flex-start reverse">
+  <div class="two-column-grid four-two-grid flex-start reverse">
     <div class="main-grid-display sticky-on-desktop">
       <hgroup class="smaller-gap">
         <h2 v-if="showTitle">{{ title }}</h2>
@@ -655,6 +663,7 @@ const testLink = () => {
           :bestEndpoint="!authenticated ? undefined : bestEndpoint"
           :isLoading="isLoading || loading"
           :subscribed="subscribed"
+          :heatmapData="!authenticated ? undefined : heatmapData"
         />
       </div>
 
@@ -768,7 +777,13 @@ const testLink = () => {
               >
             </confirms-gate>
           </template>
-          <unsubscribe-redirect v-else :redirectId="props.redirectId" />
+          <confirms-subscription-end v-else :redirectId="props.redirectId">
+            <template v-slot="{ isConfirming }">
+              <base-button :aria-busy="isConfirming" class="outline">
+                {{ $t("Unsubscribe") }}
+              </base-button>
+            </template>
+          </confirms-subscription-end>
         </card-element>
         <!-- Delete card element -->
         <card-element :loading="isLoading || loading">

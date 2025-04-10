@@ -44,6 +44,7 @@ const designs = ref([] as QRDesign[]);
 const webhooks = ref([] as Webhook[]);
 const alerts = ref([] as Alert[]);
 const remainingClicks = ref(0);
+const heatmapData = ref(undefined as Redirect["heatmap"] | undefined);
 
 const getData = () => {
   if (teamStore.activeTeam === null) {
@@ -62,6 +63,7 @@ const getData = () => {
       designs.value = response.data.qr_designs ?? [];
       webhooks.value = response.data.webhooks ?? [];
       alerts.value = response.data.alerts ?? [];
+      heatmapData.value = response.data.heatmap;
 
       const totalClicks = () => {
         return response.data.endpoints.reduce((total: any, endpoint: any) => {
@@ -184,8 +186,7 @@ const convertSecondsToMinutes = (seconds: number) => {
 };
 </script>
 <template>
-  <div>
-    <!-- <nav aria-label="breadcrumb">
+  <!-- <nav aria-label="breadcrumb">
       <ul>
         <li>
           <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
@@ -199,40 +200,40 @@ const convertSecondsToMinutes = (seconds: number) => {
         <li>{{ redirectName }}</li>
       </ul>
     </nav> -->
-    <hgroup>
-      <h1 v-if="isLoading" class="gl-animate-skeleton-loader"></h1>
-      <h1 v-else-if="!teamStore.activeTeam">
-        {{
-          $t("Link ready to use. time left to claim it.", {
-            time: convertSecondsToMinutes(timer),
-          })
-        }}
-      </h1>
-      <h1 v-else>{{ redirectName ?? $t("Magic link") }}</h1>
-      <p v-if="teamStore.activeTeam">
-        <router-link to="/redirects">Default Campaign</router-link>
-      </p>
-    </hgroup>
-    <progress v-if="!teamStore.activeTeam" :value="timer" :max="timerLength" />
-    <single-q-r
-      :showTitle="false"
-      :redirectName="redirectName"
-      :subscribed="teamStore.activeTeam?.is_billing_exempt || !!subscribedAt"
-      v-bind="$props"
-      :clicksToday="clicksToday"
-      :clicksAllTime="clicksAllTime"
-      :bestEndpoint="bestEndpoint"
-      :endpoints="endpoints"
-      :placements="placements"
-      :designs="designs"
-      :webhooks="webhooks"
-      :alerts="alerts"
-      :loading="isLoading"
-      :authenticated="!!teamStore.activeTeam"
-      :description="teamStore.activeTeam ? undefined : ''"
-      :clicksSameTimeYesterday="clicksSameTimeYesterday"
-      :remainingClicks="remainingClicks"
-      ref="singleQRElement"
-    />
-  </div>
+  <hgroup>
+    <h1 v-if="isLoading" class="gl-animate-skeleton-loader"></h1>
+    <h1 v-else-if="!teamStore.activeTeam">
+      {{
+        $t("Link ready to use. time left to claim it.", {
+          time: convertSecondsToMinutes(timer),
+        })
+      }}
+    </h1>
+    <h1 v-else>{{ redirectName ?? $t("Magic link") }}</h1>
+    <p v-if="teamStore.activeTeam">
+      <router-link to="/redirects">Default Campaign</router-link>
+    </p>
+  </hgroup>
+  <progress v-if="!teamStore.activeTeam" :value="timer" :max="timerLength" />
+  <single-q-r
+    :showTitle="false"
+    :redirectName="redirectName"
+    :subscribed="teamStore.activeTeam?.is_billing_exempt || !!subscribedAt"
+    v-bind="$props"
+    :clicksToday="clicksToday"
+    :clicksAllTime="clicksAllTime"
+    :bestEndpoint="bestEndpoint"
+    :endpoints="endpoints"
+    :placements="placements"
+    :designs="designs"
+    :webhooks="webhooks"
+    :alerts="alerts"
+    :loading="isLoading"
+    :authenticated="!!teamStore.activeTeam"
+    :description="teamStore.activeTeam ? undefined : ''"
+    :clicksSameTimeYesterday="clicksSameTimeYesterday"
+    :remainingClicks="remainingClicks"
+    :heatmapData="heatmapData"
+    ref="singleQRElement"
+  />
 </template>

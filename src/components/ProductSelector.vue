@@ -118,7 +118,12 @@ const handleReachedEndOfList = async () => {
           :visibleLimit="100"
         />
 
-        <img :src="option.raw.image" style="height: 64px" alt="" />
+        <img
+          loading="lazy"
+          :src="option.raw.image"
+          style="height: 64px"
+          alt=""
+        />
         {{ label }}
         <br />
         <small>{{ option.raw.price }} EUR - {{ option.raw.description }}</small>

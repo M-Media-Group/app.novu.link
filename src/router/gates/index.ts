@@ -7,6 +7,7 @@ import confirmedEmail from "./confirmedEmail";
 import unconfirmedEmail from "./unconfirmedEmail";
 import confirmedEmailOrPhone from "./confirmedEmailOrPhone";
 import subscribedRedirect from "./subscribedRedirect";
+import notSubscribedRedirect from "./notSubscribedRedirect";
 
 export default {
   auth,
@@ -18,4 +19,5 @@ export default {
   unconfirmedEmail,
   confirmedEmailOrPhone,
   subscribedRedirect,
+  notSubscribedRedirect,
 };

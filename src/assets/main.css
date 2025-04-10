@@ -14,7 +14,7 @@ body {
 }
 
 main {
-  gap: 40px;
+  gap: 1rem;
   display: flex;
   flex-direction: column;
 }

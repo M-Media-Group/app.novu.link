@@ -2,6 +2,7 @@
 import type { PropType } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 import BaseBadge from "./BaseBadge.vue";
+import { Transition } from "vue";
 
 defineProps({
   /** The title of the card */
@@ -50,7 +51,7 @@ defineProps({
   <!-- @todo the animation breaks with component, need to fix. It works when article is direct child or when <template> (from Vue) is used, but not with <component>, even with an :is to a Vue template -->
   <component
     v-if="!loading"
-    :is="to ? 'router-link' : 'vue:template'"
+    :is="to ? 'router-link' : Transition"
     :to="to ? to : undefined"
   >
     <article v-bind="$attrs">
@@ -100,7 +101,7 @@ defineProps({
         <div
           class="gl-animate-skeleton-loader"
           v-if="title"
-          style="height: 25px"
+          style="height: 24px"
         ></div>
         <div
           class="gl-animate-skeleton-loader"
@@ -111,7 +112,7 @@ defineProps({
       <div
         class="gl-animate-skeleton-loader actions"
         v-if="$slots.headerActions"
-        style="width: 10%"
+        style="width: 10%; height: 27px"
       ></div>
     </header>
     <template v-if="$slots.default">
