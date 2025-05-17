@@ -8,7 +8,7 @@ import { useTeamStore } from "@/stores/team";
 import { apiService } from "@/services/apiClient";
 import type { Redirect } from "@/types/redirect";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
-import { useUrlFormatter } from "@/composables/useDebouceProtocol";
+import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const $bus = useEventsBus();
 

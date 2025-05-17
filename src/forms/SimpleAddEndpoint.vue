@@ -10,7 +10,7 @@ import { removeProtocol } from "@/helpers/urlFormatter";
 import { addRedirectEndpoint } from "@/useRedirects";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
-import { useUrlFormatter } from "@/composables/useDebouceProtocol";
+import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const $bus = useEventsBus();
 

@@ -10,7 +10,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { apiService } from "@/services/apiClient";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
-import { useUrlFormatter } from "@/composables/useDebouceProtocol";
+import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */

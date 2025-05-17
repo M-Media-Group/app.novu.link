@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { deleteRedirectEndpoint, updateRedirectEndpoint } from "@/useRedirects";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
-import { useUrlFormatter } from "@/composables/useDebouceProtocol";
+import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const props = defineProps({
   redirectId: {
@@ -57,6 +57,12 @@ const submitForm = async () => {
 };
 
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
+
+onMounted(() => {
+  if (props.currentUrl) {
+    endpointUrl.value = props.currentUrl;
+  }
+});
 
 const deleteEndpoint = async () => {
   loading.value = true;
