@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
 import BaseForm from "@/forms/BaseForm.vue";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 import { useUserStore } from "@/stores/user";
 import { nextTick, reactive, ref } from "vue";
@@ -73,43 +74,19 @@ const register = async () => {
     return;
   }
   // Check if the email is already in use
-  const response = await userStore.register(
-    userStore.userEmail,
-    authForm.password,
-    authForm.name
-  );
-
-  // const data = await response.json();
-
-  if (response !== true) {
-    // If the response has a body with json
-    if (response.data) {
-      const data = await response.data;
-      // If there are no errors, we need to throw a generic error
-      if (!data.errors) {
-        checkedEmail.value = false;
-        await nextTick();
-        alert("Something went wrong on our side, please try again");
-        return;
-      }
-
-      // If in the data there is errors.email, return to the first screen by setting checkedEmail to false
-      if (data.errors?.email) {
-        checkedEmail.value = false;
-      }
-      await nextTick();
-      baseFormRef.value.setInputErrors(data.errors);
-    } else {
+  try {
+    await userStore.register(
+      userStore.userEmail,
+      authForm.password,
+      authForm.name
+    );
+  } catch (error) {
+    assertIsUnifiedError(error);
+    if (error.status === 422 && error.details?.email) {
       checkedEmail.value = false;
-      await nextTick();
-
-      baseFormRef.value.setInputErrors({
-        email: "Something went wrong",
-      });
     }
-    // handleError(data.errors);
-  } else {
-    emit("success");
+
+    throw error;
   }
 };
 

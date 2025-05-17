@@ -144,25 +144,17 @@ export const useUserStore = defineStore("user", () => {
       return;
     }
 
-    isLoading.value = true;
-
-    try {
-      // Check if the email is already in use
-      await apiService.post("/register", {
-        email: email,
-        password: password,
-        password_confirmation: password,
-        name: name,
-        terms: true,
-      });
-      await getUser();
-      $bus.$emit(eventTypes.registered);
-      return true;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
-    }
+    // Check if the email is already in use
+    await apiService.post("/register", {
+      email: email,
+      password: password,
+      password_confirmation: password,
+      name: name,
+      terms: true,
+    });
+    await getUser();
+    $bus.$emit(eventTypes.registered);
+    return true;
   }
 
   /**
