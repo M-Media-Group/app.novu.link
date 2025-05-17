@@ -67,141 +67,145 @@ const isElementInFocus = (element: HTMLSupportedInputElement) => {
   return document.activeElement === element;
 };
 
+const focusOnFirstInput = (formElement: HTMLFormElement) => {
+  const firstInput = formElement?.querySelector("input");
+  if (firstInput) {
+    firstInput.focus();
+  }
+};
+
+const focusOnFirstEmptyInput = (formElement: HTMLFormElement) => {
+  const firstInput = formElement?.querySelectorAll("input");
+  if (firstInput) {
+    for (let i = 0; i < firstInput.length; i++) {
+      if (!firstInput[i].value) {
+        firstInput[i].focus();
+        return;
+      }
+    }
+  }
+};
+
+const callActionsOnAllInputs = (
+  formElement: HTMLFormElement,
+  callback: (element: HTMLSupportedInputElement) => void
+) => {
+  if (!formElement?.elements) {
+    return;
+  }
+  const elements = formElement.elements;
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLSelectElement ||
+      element instanceof HTMLTextAreaElement ||
+      element instanceof HTMLFormElement ||
+      element instanceof HTMLFieldSetElement
+    ) {
+      callback(element);
+    }
+  }
+};
+
+const resetCustomValidityOnInputs = (formElement: HTMLFormElement) => {
+  callActionsOnAllInputs(formElement, (element) => {
+    resetCustomValidityOnInput(element);
+  });
+};
+
+const checkValidityOnAllInputs = (formElement: HTMLFormElement) => {
+  // For each element in the form, check if it's valid
+  callActionsOnAllInputs(formElement, (element) => {
+    // If the element is invalid, add the invalid class
+    if (
+      !element.validity.valid &&
+      !element.validity.valueMissing
+
+      // Not sure why below line was here in the first place @todo investigate
+      // !isElementInFocus(element)
+    ) {
+      setErrorMessageOnElement(element);
+    } else {
+      clearErrorMessageOnElement(element);
+    }
+  });
+};
+
+const removeSuccessOnInputs = (formElement: HTMLFormElement) => {
+  callActionsOnAllInputs(formElement, (element) => {
+    removeSuccessOnInput(element);
+  });
+};
+
+const setSuccessOnInputs = (formElement: HTMLFormElement) => {
+  callActionsOnAllInputs(formElement, (element) => {
+    setSuccessOnInput(element);
+  });
+  // After 5 seconds, clear the success state
+  setTimeout(() => {
+    removeSuccessOnInputs(formElement);
+  }, 5000);
+};
+
+const setInputErrors = (
+  formElement: HTMLFormElement,
+  errors?: Record<string, string | string[] | null>
+) => {
+  // For each key in errors, find the input and call setErrorOnInput with the value
+  if (!errors) {
+    return;
+  }
+
+  for (const [key, value] of Object.entries(errors)) {
+    const input = formElement?.elements.namedItem(
+      key
+    ) as HTMLSupportedInputElement;
+    if (input) {
+      // If the value is an array, join it with a space
+      let valueToPass = value as string | string[];
+
+      // If the valueToPass is an array, join it with a space
+      if (Array.isArray(valueToPass)) {
+        valueToPass = valueToPass.join(" ");
+      }
+
+      setErrorOnInput(input, valueToPass);
+    }
+  }
+};
+
 export const useForm = (formElement: Ref<HTMLFormElement | null>) => {
   const formIsValid = ref(false);
 
-  const focusOnFirstInput = () => {
-    const firstInput = formElement.value?.querySelector("input");
-    if (firstInput) {
-      firstInput.focus();
-    }
-  };
+  const checkValidity = (formElement: HTMLFormElement) => {
+    checkValidityOnAllInputs(formElement);
 
-  const focusOnFirstEmptyInput = () => {
-    const firstInput = formElement.value?.querySelectorAll("input");
-    if (firstInput) {
-      for (let i = 0; i < firstInput.length; i++) {
-        if (!firstInput[i].value) {
-          firstInput[i].focus();
-          return;
-        }
-      }
-    }
-  };
-
-  const checkValidity = () => {
-    checkValidityOnAllInputs();
-
-    formIsValid.value = formElement.value?.checkValidity() ?? false;
+    formIsValid.value = formElement?.checkValidity() ?? false;
   };
 
   const handleInput = () => {
-    resetCustomValidityOnInputs();
-    checkValidity();
-  };
-
-  const callActionsOnAllInputs = (
-    callback: (element: HTMLSupportedInputElement) => void
-  ) => {
-    if (!formElement.value?.elements) {
-      return;
-    }
-    const elements = formElement.value.elements;
-    for (let i = 0; i < elements.length; i++) {
-      const element = elements[i];
-      if (
-        element instanceof HTMLInputElement ||
-        element instanceof HTMLSelectElement ||
-        element instanceof HTMLTextAreaElement ||
-        element instanceof HTMLFormElement ||
-        element instanceof HTMLFieldSetElement
-      ) {
-        callback(element);
-      }
-    }
-  };
-
-  const resetCustomValidityOnInputs = () => {
-    // For each element in the form, check if it's valid
-    callActionsOnAllInputs((element) => {
-      resetCustomValidityOnInput(element);
-    });
-  };
-
-  const checkValidityOnAllInputs = () => {
-    // For each element in the form, check if it's valid
-    callActionsOnAllInputs((element) => {
-      // If the element is invalid, add the invalid class
-      if (
-        !element.validity.valid &&
-        !element.validity.valueMissing
-
-        // Not sure why below line was here in the first place @todo investigate
-        // !isElementInFocus(element)
-      ) {
-        setErrorMessageOnElement(element);
-      } else {
-        clearErrorMessageOnElement(element);
-      }
-    });
-  };
-
-  const removeSuccessOnInputs = () => {
-    callActionsOnAllInputs((element) => {
-      removeSuccessOnInput(element);
-    });
-  };
-
-  const setInputErrors = (
-    errors?: Record<string, string | string[] | null>
-  ) => {
-    // For each key in errors, find the input and call setErrorOnInput with the value
-    if (!errors) {
-      return;
-    }
-
-    for (const [key, value] of Object.entries(errors)) {
-      const input = formElement.value?.elements.namedItem(
-        key
-      ) as HTMLSupportedInputElement;
-      if (input) {
-        // If the value is an array, join it with a space
-        let valueToPass = value as string | string[];
-
-        // If the valueToPass is an array, join it with a space
-        if (Array.isArray(valueToPass)) {
-          valueToPass = valueToPass.join(" ");
-        }
-
-        setErrorOnInput(input, valueToPass);
-      }
-    }
-  };
-
-  const setSuccessOnInputs = () => {
-    callActionsOnAllInputs((element) => {
-      setSuccessOnInput(element);
-    });
-    // After 5 seconds, clear the success state
-    setTimeout(() => {
-      removeSuccessOnInputs();
-    }, 5000);
+    resetCustomValidityOnInputs(formElement.value!);
+    checkValidity(formElement.value!);
   };
 
   return {
     formElement,
     formIsValid,
     setErrorOnInput,
-    setInputErrors,
-    setSuccessOnInputs,
+    setInputErrors: (errors?: Record<string, string | string[] | null>) =>
+      setInputErrors(formElement.value!, errors),
+    setSuccessOnInputs: () => setSuccessOnInputs(formElement.value!),
     setSuccessOnInput,
-    removeSuccessOnInputs,
+    removeSuccessOnInputs: () => removeSuccessOnInputs(formElement.value!),
     removeSuccessOnInput,
     resetCustomValidityOnInput,
-    resetCustomValidityOnInputs,
-    checkValidity,
+    resetCustomValidityOnInputs: () =>
+      resetCustomValidityOnInputs(formElement.value!),
+    checkValidity: () => checkValidity(formElement.value!),
     handleInput,
-    focusOnFirstInput,
-    focusOnFirstEmptyInput,
+    focusOnFirstInput: () => focusOnFirstInput(formElement.value!),
+    focusOnFirstEmptyInput: () => focusOnFirstEmptyInput(formElement.value!),
+    isElementInFocus,
   };
 };
