@@ -280,7 +280,6 @@ onMounted(() => {
 
 const getSummaryText = () => {
   if (props.modelValue.length > 0) {
-    console.log("filterOptions got", props.modelValue);
     return props.modelValue
       .map((value) => {
         const option = normalisedOptions.value.find((option) =>
@@ -288,7 +287,6 @@ const getSummaryText = () => {
             ? option === value
             : option[props.modelKey] === value
         );
-        console.log("filterOptions local", value);
         return option
           ? getLabel(option)
           : value.trim() !== ""
