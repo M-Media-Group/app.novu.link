@@ -61,42 +61,63 @@ const handleError = (
   };
 
   if (isAxiosError(error) && error.response) {
-    unifiedError.status = error.response.status;
-    unifiedError.message = error.response.data?.message || error.message;
-    if (error.response.status === 422) {
-      unifiedError.type = "validation";
-      let allErrors: UnifiedError["details"] = {};
-      if (
-        error.response.data?.errors &&
-        typeof error.response.data.errors === "object"
-      ) {
-        // If the error response contains a validation error
-        allErrors = error.response.data.errors;
-      }
-      unifiedError.details = allErrors || {};
-    } else if (error.response.status >= 500) {
-      unifiedError.type = "server";
-    } else if (error.response.status === 401) {
-      unifiedError.type = "network";
-      unifiedError.message = i18n.global.t("errors.unauthorized");
-    } else if (error.response.status === 403) {
-      unifiedError.type = "network";
-      unifiedError.message = i18n.global.t("errors.forbidden");
-    } else if (error.response.status === 404) {
-      unifiedError.type = "network";
-      unifiedError.message = i18n.global.t("errors.not_found");
-    } else if (error.response.status === 429) {
-      unifiedError.type = "network";
-      unifiedError.message = i18n.global.t("errors.too_many_requests");
-    } else if (error.response.status === 500) {
-      unifiedError.type = "server";
-      unifiedError.message = i18n.global.t("errors.server_error");
-    } else {
-      unifiedError.type = "network";
-      unifiedError.message = i18n.global.t("errors.network_error");
+    const { status, data } = error.response;
+
+    unifiedError.status = status;
+    unifiedError.message = data?.message || error.message;
+
+    switch (status) {
+      case 422:
+        unifiedError.type = "validation";
+        unifiedError.message = i18n.global.t("errors.validation_error");
+        if (data?.errors && typeof data.errors === "object") {
+          unifiedError.details = data.errors;
+        } else {
+          unifiedError.details = {};
+        }
+        break;
+
+      case 401:
+        unifiedError.type = "network";
+        unifiedError.message = i18n.global.t("errors.unauthorized");
+        break;
+
+      case 403:
+        unifiedError.type = "network";
+        unifiedError.message = i18n.global.t("errors.forbidden");
+        break;
+
+      case 404:
+        unifiedError.type = "network";
+        unifiedError.message = i18n.global.t("errors.not_found");
+        break;
+
+      case 429:
+        unifiedError.type = "network";
+        unifiedError.message = i18n.global.t("errors.too_many_requests");
+        break;
+
+      case 500:
+        unifiedError.type = "server";
+        unifiedError.message = i18n.global.t("errors.server_error");
+        break;
+
+      default:
+        // Handle other status codes not specifically listed
+        if (status >= 500) {
+          // Any other 5xx status code
+          unifiedError.type = "server";
+          // Use the generic server error message
+          unifiedError.message = i18n.global.t("errors.server_error");
+        } else {
+          // Default for other 4xx codes (like 400, 408, etc.) or unhandled codes
+          unifiedError.type = "network";
+          // Use the generic network error message
+          unifiedError.message = i18n.global.t("errors.network_error");
+        }
+        break;
     }
   } else {
-    // Something happened in setting up the request that triggered an Error
     unifiedError.type = "unknown";
     unifiedError.message = i18n.global.t("errors.unknown_error"); // Fallback message
   }

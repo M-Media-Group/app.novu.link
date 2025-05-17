@@ -5,13 +5,12 @@ import { useI18n } from "vue-i18n";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import type { selectOption } from "@/types/listItem";
 import type { Ref } from "vue";
-import { debounce } from "@/helpers/debounce";
-import { formatUrl } from "@/helpers/urlFormatter";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { apiService } from "@/services/apiClient";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { useUrlFormatter } from "@/composables/useDebouceProtocol";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -20,8 +19,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const url = ref("");
 
 const baseFormRef = ref();
 
@@ -50,16 +47,16 @@ const $bus = useEventsBus();
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
   console.log("submitForm");
-  if (!url.value) {
+  if (!endpointUrl.value) {
     return;
   }
 
-  if (!url.value.startsWith("http")) {
-    url.value = `https://${url.value}`;
+  if (!endpointUrl.value.startsWith("http")) {
+    endpointUrl.value = `https://${endpointUrl.value}`;
   }
   try {
     await apiService.post(`/api/v1/redirects/${props.redirectId}/webhooks`, {
-      url: url.value,
+      url: endpointUrl.value,
       event_types: events.value,
     });
     emit("success");
@@ -75,11 +72,7 @@ const submitForm = async () => {
 const events = ref([]);
 const searchTerm = ref("");
 
-const debounceAddProtocolIfMissing = debounce(
-  (data: string) => (url.value ? (url.value = formatUrl(data)) : undefined),
-  500,
-  true
-);
+const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 </script>
 
 <template>
@@ -91,7 +84,7 @@ const debounceAddProtocolIfMissing = debounce(
       name="url"
       placeholder="https://example.com/webhook"
       required
-      v-model="url"
+      v-model="endpointUrl"
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "

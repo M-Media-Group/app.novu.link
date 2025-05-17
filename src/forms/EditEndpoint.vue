@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { debounce } from "@/helpers/debounce";
-import { formatUrl } from "@/helpers/urlFormatter";
 import { deleteRedirectEndpoint, updateRedirectEndpoint } from "@/useRedirects";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { useUrlFormatter } from "@/composables/useDebouceProtocol";
 
 const props = defineProps({
   redirectId: {
@@ -28,7 +27,6 @@ const props = defineProps({
   },
 });
 
-const url = ref(props.currentUrl);
 const loading = ref(false);
 
 const baseFormRef = ref();
@@ -37,7 +35,7 @@ const emit = defineEmits(["success"]);
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  if (!url.value) {
+  if (!endpointUrl.value) {
     return;
   }
 
@@ -45,7 +43,7 @@ const submitForm = async () => {
 
   try {
     await updateRedirectEndpoint(props.redirectId, `${props.endpointId}`, {
-      endpoint: url.value,
+      endpoint: endpointUrl.value,
     });
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
@@ -58,11 +56,7 @@ const submitForm = async () => {
   }
 };
 
-const debounceAddProtocolIfMissing = debounce(
-  (data: string) => (url.value ? (url.value = formatUrl(data)) : undefined),
-  500,
-  true
-);
+const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 const deleteEndpoint = async () => {
   loading.value = true;
@@ -93,7 +87,7 @@ const deleteEndpoint = async () => {
       name="endpoint"
       placeholder="https://test.com"
       data-hj-allow=""
-      v-model="url"
+      v-model="endpointUrl"
       required
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?(\?.*)?(#.*)?"
       @input="

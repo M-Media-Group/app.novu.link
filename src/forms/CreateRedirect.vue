@@ -4,19 +4,17 @@ import { type PropType, ref } from "vue";
 import { useRouter } from "vue-router";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
-import { formatUrl } from "@/helpers/urlFormatter";
-import { debounce } from "@/helpers/debounce";
 import { useTeamStore } from "@/stores/team";
 import { apiService } from "@/services/apiClient";
 import type { Redirect } from "@/types/redirect";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { useUrlFormatter } from "@/composables/useDebouceProtocol";
 
 const $bus = useEventsBus();
 
 const emit = defineEmits(["success"]);
 
 const name = ref("");
-const defaultEndpoint = ref("");
 
 const { t } = useI18n();
 
@@ -107,27 +105,20 @@ if (props.prefillName) {
   name.value = t("Untitled Magic Link");
 }
 
-const debounceAddProtocolIfMissing = debounce(
-  (data: string) =>
-    defaultEndpoint.value
-      ? (defaultEndpoint.value = formatUrl(data))
-      : undefined,
-  500,
-  true
-);
+const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 const submitForm = async () => {
   isLoading.value = true;
 
   //   If the URL does not start with http, auto append https://
-  if (!defaultEndpoint.value.startsWith("http")) {
-    defaultEndpoint.value = `https://${defaultEndpoint.value}`;
+  if (!endpointUrl.value?.startsWith("http")) {
+    endpointUrl.value = `https://${endpointUrl.value}`;
   }
 
   try {
     const response = await apiService.post<Redirect>("/redirects", {
       name: name.value,
-      default_endpoint: defaultEndpoint.value,
+      default_endpoint: endpointUrl.value,
     });
     // If the redirect was created when we were not logged in - set a 5 minute cookie
     if (!isAuthenticated) {
@@ -150,8 +141,8 @@ const submitForm = async () => {
 
 // If we have a default endpoint value, set it and trigger the debounce
 if (props.defaultEndpointValue !== "") {
-  defaultEndpoint.value = props.defaultEndpointValue;
-  debounceAddProtocolIfMissing(defaultEndpoint.value);
+  endpointUrl.value = props.defaultEndpointValue;
+  debounceAddProtocolIfMissing(endpointUrl.value);
   if (props.autoSubmit) {
     submitForm();
   }
@@ -187,7 +178,7 @@ if (props.defaultEndpointValue !== "") {
       data-hj-allow=""
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?(\?.*)?(#.*)?"
       required
-      v-model="defaultEndpoint"
+      v-model="endpointUrl"
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "

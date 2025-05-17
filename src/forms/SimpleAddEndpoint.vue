@@ -3,14 +3,14 @@ import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RuleSelector from "@/components/RuleSelector.vue";
 import type { RuleModel } from "@/types/rule";
-import { debounce } from "@/helpers/debounce";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";
-import { formatUrl, removeProtocol } from "@/helpers/urlFormatter";
+import { removeProtocol } from "@/helpers/urlFormatter";
 import { addRedirectEndpoint } from "@/useRedirects";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { useUrlFormatter } from "@/composables/useDebouceProtocol";
 
 const $bus = useEventsBus();
 
@@ -28,7 +28,6 @@ const props = defineProps({
 });
 
 // url, password, and remember me
-const url = ref(null as string | null);
 const urlInput = ref(null as HTMLInputElement | null);
 
 const subscriptionStartRef = ref();
@@ -55,7 +54,7 @@ const startConfirming = async () => {
 const submitForm = async () => {
   if (
     !ruleData.value.selectedRuleKey ||
-    !url.value ||
+    !endpointUrl.value ||
     !ruleData.value.selectedOperator ||
     !ruleData.value.selectedValue ||
     !props.redirectId
@@ -67,7 +66,7 @@ const submitForm = async () => {
 
   try {
     await await addRedirectEndpoint(props.redirectId, {
-      endpoint: url.value,
+      endpoint: endpointUrl.value,
       rule_groups: [
         {
           rules: [
@@ -120,11 +119,7 @@ const focusOnUrl = () => {
   urlInput.value.focus();
 };
 
-const debounceAddProtocolIfMissing = debounce(
-  (data: string) => (url.value ? (url.value = formatUrl(data)) : undefined),
-  500,
-  true
-);
+const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 </script>
 
 <template>
@@ -158,7 +153,7 @@ const debounceAddProtocolIfMissing = debounce(
       name="endpoint"
       placeholder="https://test.com"
       data-hj-allow=""
-      v-model="url"
+      v-model="endpointUrl"
       required
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
       @input="
