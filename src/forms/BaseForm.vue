@@ -7,6 +7,7 @@ import {
   onMounted,
   onUpdated,
   ref,
+  useSlots,
   useTemplateRef,
 } from "vue";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
@@ -76,6 +77,8 @@ const emit = defineEmits<{
 const formElement = useTemplateRef("formElement");
 
 const loading = ref(false);
+
+const slots = useSlots();
 
 const submit = async () => {
   if (
@@ -150,14 +153,18 @@ defineExpose({
   setSuccessOnInputs,
   submit,
 });
+
+const hasSubmitSlot = computed(() => {
+  return !!slots.submit;
+});
 </script>
 
 <template>
   <form
     ref="formElement"
     @input="handleInput"
-    @keydown.enter.prevent="submit"
-    @submit.prevent="submit"
+    @keydown.enter.prevent="hasSubmitSlot ? emit('submit') : submit()"
+    @submit.prevent="hasSubmitSlot ? emit('submit') : submit()"
   >
     <component
       :role="inline ? 'group' : null"

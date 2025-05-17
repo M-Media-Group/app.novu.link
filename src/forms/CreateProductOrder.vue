@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, computed, ref } from "vue";
+import { type PropType, computed, ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RedirectSelector from "@/components/RedirectSelector.vue";
 import ProductSelector from "@/components/ProductSelector.vue";
@@ -12,7 +12,6 @@ import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Gate } from "@m-media/vue3-gate-keeper";
 import { apiService } from "@/services/apiClient";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect ids. If passed, the selector will be hidden */
@@ -28,7 +27,7 @@ const props = defineProps({
   },
 });
 
-const baseFormRef = ref();
+const baseFormRef = useTemplateRef("baseFormRef");
 const $bus = useEventsBus();
 
 const emit = defineEmits(["success"]);
@@ -48,28 +47,16 @@ const submitForm = async () => {
   if (!localRedirectIds.value || !loadedProduct.value) {
     return;
   }
+  await apiService.post(`/api/v1/products/${loadedProduct.value.id}/orders`, {
+    redirect_uuid: localRedirectIds.value[0],
+    quantity: quantity.value,
+    merchant: loadedProduct.value.merchant,
+    include_qr_code_subscription: includeQrCodeSubscription.value,
+    include_consultation: includeConsultation.value,
+    attributes: selectedAttributes.value,
+  });
 
-  isLoading.value = true;
-
-  try {
-    await apiService.post(`/api/v1/products/${loadedProduct.value.id}/orders`, {
-      redirect_uuid: localRedirectIds.value[0],
-      quantity: quantity.value,
-      merchant: loadedProduct.value.merchant,
-      include_qr_code_subscription: includeQrCodeSubscription.value,
-      include_consultation: includeConsultation.value,
-      attributes: selectedAttributes.value,
-    });
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-    $bus.$emit(eventTypes.created_product_order);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
-  }
+  $bus.$emit(eventTypes.created_product_order);
 };
 
 const isLoading = ref(false);
@@ -131,7 +118,8 @@ const gates = computed(() => {
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @succeess="emit('success')"
+    :submitFn="submitForm"
     submitText="Buy now"
     :disabled="isLoading || isLoadingProduct || localRedirectIds.length === 0"
     :isLoading="isLoading || isLoadingProduct"
@@ -219,10 +207,10 @@ const gates = computed(() => {
         )
       }}
     </label>
-    <template #submit="{ disabled, isLoading, submitText }">
+    <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
         :title="$t('Subscribe')"
-        @confirmed="submitForm"
+        @confirmed="submit()"
         :description="
           $t(
             'Additional destinations and design changes are free after you subscribe.'

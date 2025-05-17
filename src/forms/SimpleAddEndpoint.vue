@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RuleSelector from "@/components/RuleSelector.vue";
 import type { RuleModel } from "@/types/rule";
@@ -30,7 +30,7 @@ const props = defineProps({
 // url, password, and remember me
 const urlInput = ref(null as HTMLInputElement | null);
 
-const subscriptionStartRef = ref();
+const subscriptionStartRef = useTemplateRef("subscriptionStartRef");
 
 const isLoading = ref(false);
 
@@ -47,7 +47,7 @@ const emit = defineEmits<{
 }>();
 
 const startConfirming = async () => {
-  subscriptionStartRef.value.startConfirming();
+  subscriptionStartRef.value?.startConfirming();
 };
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
@@ -59,13 +59,11 @@ const submitForm = async () => {
     !ruleData.value.value ||
     !props.redirectId
   ) {
-    return;
+    throw new Error("Missing required fields");
   }
 
-  isLoading.value = true;
-
   try {
-    await await addRedirectEndpoint(props.redirectId, {
+    await addRedirectEndpoint(props.redirectId, {
       endpoint: endpointUrl.value,
       rule_groups: [
         {
@@ -73,8 +71,6 @@ const submitForm = async () => {
         },
       ],
     });
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_endpoint);
   } catch (error) {
     assertIsUnifiedError(error);
@@ -93,10 +89,11 @@ const submitForm = async () => {
     if (errors["rule_groups.0.rules.0.operator"]) {
       errors.operator = errors["rule_groups.0.rules.0.operator"];
     }
-    baseFormRef.value.setInputErrors(errors);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
+
+    throw {
+      ...error,
+      details: errors,
+    };
   }
 };
 
@@ -129,6 +126,8 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
     :submitText="$t('Add destination to QR code')"
     :autofocus="false"
     :disabled="isLoading"
+    @success="emit('success')"
+    :submitFn="submitForm"
   >
     <label for="rule">{{ $t("If") }}</label>
     <rule-selector
@@ -160,10 +159,10 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
     <br />
     <!-- </TransitionGroup> -->
 
-    <template #submit="{ disabled, isLoading, submitText }">
+    <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
         ref="subscriptionStartRef"
-        @confirmed="submitForm"
+        @confirmed="submit()"
         @failed="handleFailedConfirmation"
         :title="$t('Activate destination')"
         :description="

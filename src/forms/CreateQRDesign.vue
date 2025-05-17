@@ -9,7 +9,6 @@ import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { apiService } from "@/services/apiClient";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect uuid */
@@ -71,34 +70,21 @@ const submitForm = async () => {
   if (!name.value) {
     return;
   }
+  await apiService.post("/api/v1/qr-designs", {
+    name: name.value,
+    color: color.value,
+    background_color: backgroundColor.value,
+    block_shape: blockShape.value,
+    corner_dot_shape: cornerDotShape.value,
+    corner_shape: cornerShape.value,
+    error_correction_level: errorCorrectionLevel.value,
+    round_block_size_mode: roundBlockSizeMode.value,
+    logo: logo.value,
+    logo_punchout_background: logoPunchout.value,
+    redirect_uuid: props.redirectId,
+  });
 
-  isLoading.value = true;
-
-  try {
-    await apiService.post("/api/v1/qr-designs", {
-      name: name.value,
-      color: color.value,
-      background_color: backgroundColor.value,
-      block_shape: blockShape.value,
-      corner_dot_shape: cornerDotShape.value,
-      corner_shape: cornerShape.value,
-      error_correction_level: errorCorrectionLevel.value,
-      round_block_size_mode: roundBlockSizeMode.value,
-      logo: logo.value,
-      logo_punchout_background: logoPunchout.value,
-      redirect_uuid: props.redirectId,
-    });
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-    modal.value.closeModal();
-    $bus.$emit(eventTypes.created_qr_design);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
-  }
+  $bus.$emit(eventTypes.created_qr_design);
 };
 
 // Watch all inputs and emit the input_updated event
@@ -190,7 +176,8 @@ const handleLogoFile = (event: Event) => {
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @success="emit('success')"
+    :submitFn="submitForm"
     :showSubmitButton="showSubmitButton"
   >
     <tab-nav
@@ -378,7 +365,7 @@ const handleLogoFile = (event: Event) => {
     </fieldset>
 
     <!-- </TransitionGroup> -->
-    <template #submit v-if="showSubmitButton">
+    <template #submit="{ isLoading, submit }" v-if="showSubmitButton">
       <base-modal title="Create design" ref="modal" class="full-width">
         <template #trigger="{ openModal }">
           <base-button @click.prevent="openModal" type="submit">
@@ -410,7 +397,7 @@ const handleLogoFile = (event: Event) => {
             "
             :allowBackgroundClickToClose="false"
             :gate="['confirmedEmailOrPhone']"
-            @confirmed="submitForm"
+            @confirmed="submit()"
           >
             <base-button :disabled="!name || isLoading" type="submit">{{
               $t("Create design")

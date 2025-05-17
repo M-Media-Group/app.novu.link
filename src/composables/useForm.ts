@@ -1,4 +1,8 @@
 import { type Ref, ref } from "vue";
+import {
+  clearErrorMessageOnElement,
+  setErrorMessageOnElement,
+} from "./manipulateDom";
 
 const supportedElements = [
   HTMLInputElement,
@@ -8,23 +12,15 @@ const supportedElements = [
   HTMLFieldSetElement,
 ] as const;
 
-type HTMLSupportedInputElement =
+export type HTMLSupportedInputElement =
   (typeof supportedElements)[number] extends new (...args: any[]) => infer R
     ? R
     : never;
 
-const setErrorMessageOnElement = (element: HTMLSupportedInputElement) => {
-  //  Update or create a sibling element with the error message
-  let errorElement = element.nextElementSibling as HTMLElement;
-  if (!errorElement || !errorElement.classList.contains("error")) {
-    errorElement = document.createElement("small");
-    element.after(errorElement);
-  }
-  errorElement.innerText = element.validationMessage;
-  errorElement.classList.add("error");
-
-  element.insertAdjacentElement("afterend", errorElement);
-};
+// A string for all possible HTML supported input elements
+const HTMLSupportedInputElementStringForQuerySelector = supportedElements
+  .map((element) => element.name)
+  .join(", ");
 
 const setErrorOnInput = (
   input: HTMLSupportedInputElement,
@@ -55,31 +51,31 @@ const resetCustomValidityOnInput = (input: HTMLSupportedInputElement) => {
   clearErrorMessageOnElement(input);
 };
 
-const clearErrorMessageOnElement = (element: HTMLSupportedInputElement) => {
-  // If the element is valid, remove the invalid class
-  const errorElement = element.nextElementSibling as HTMLElement;
-  if (errorElement && errorElement.classList.contains("error")) {
-    errorElement.remove();
-  }
-};
-
 const isElementInFocus = (element: HTMLSupportedInputElement) => {
   return document.activeElement === element;
 };
 
 const focusOnFirstInput = (formElement: HTMLFormElement) => {
-  const firstInput = formElement?.querySelector("input");
+  const firstInput = formElement?.querySelector(
+    HTMLSupportedInputElementStringForQuerySelector
+  ) as HTMLSupportedInputElement;
   if (firstInput) {
     firstInput.focus();
   }
 };
 
 const focusOnFirstEmptyInput = (formElement: HTMLFormElement) => {
-  const firstInput = formElement?.querySelectorAll("input");
+  const firstInput = formElement?.querySelectorAll(
+    HTMLSupportedInputElementStringForQuerySelector
+  ) as NodeListOf<HTMLSupportedInputElement>;
   if (firstInput) {
     for (let i = 0; i < firstInput.length; i++) {
-      if (!firstInput[i].value) {
-        firstInput[i].focus();
+      const element = firstInput[i];
+      if (element instanceof HTMLFieldSetElement) {
+        return;
+      }
+      if (!element.value) {
+        element.focus();
         return;
       }
     }

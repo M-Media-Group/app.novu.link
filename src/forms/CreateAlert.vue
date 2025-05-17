@@ -8,7 +8,6 @@ import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
 import { apiService } from "@/services/apiClient";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** If the form should autofocus */
@@ -48,27 +47,17 @@ const timeDurationInMinutes = computed(() => {
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  isLoading.value = true;
-  try {
-    await apiService.post("/api/v1/alerts", {
-      redirect_uuid: activeRedirectId.value,
-      type: scanType.value,
-      condition: condition.value,
-      target: targetNumber.value,
-      time_window: timeDurationInMinutes.value,
-    });
-    // Emit the updated event with the changed fields
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-    // modal.value.closeModal();
-    $bus.$emit(eventTypes.created_alert);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
-  }
+  await apiService.post("/api/v1/alerts", {
+    redirect_uuid: activeRedirectId.value,
+    type: scanType.value,
+    condition: condition.value,
+    target: targetNumber.value,
+    time_window: timeDurationInMinutes.value,
+  });
+  // Emit the updated event with the changed fields
+
+  // modal.value.closeModal();
+  $bus.$emit(eventTypes.created_alert);
 };
 
 /** Refactor to not create a new instance each time */
@@ -83,7 +72,8 @@ const { RedirectSelector, activeRedirectId } =
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @succeess="emit('success')"
+    :submitFn="submitForm"
     :disabled="!activeRedirectId"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
@@ -165,10 +155,10 @@ const { RedirectSelector, activeRedirectId } =
         )
       }}
     </small>
-    <template #submit="{ disabled, isLoading, submitText }">
+    <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
         :title="$t('Enable alerts')"
-        @confirmed="submitForm"
+        @confirmed="submit()"
         :description="
           $t(
             'Additional destinations and design changes are free after you subscribe.'

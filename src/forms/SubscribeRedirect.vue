@@ -105,12 +105,13 @@ const handleConfirmedWithPaymentMethod = () => {
       <!-- Button to confirm subscription -->
     </template>
 
-    <template #submit v-if="!showAddForm">
+    <template #submit="{ submit }" v-if="!showAddForm">
       <base-button
         type="submit"
         ref="confirmSubButton"
         :disabled="isLoading"
         :aria-busy="isLoading"
+        @click="submit()"
       >
         {{ submitText }}
       </base-button>

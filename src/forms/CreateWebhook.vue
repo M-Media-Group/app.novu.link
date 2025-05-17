@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { useI18n } from "vue-i18n";
 import DropdownSelect from "@/components/DropdownSelect.vue";
@@ -9,7 +9,6 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { apiService } from "@/services/apiClient";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const props = defineProps({
@@ -46,37 +45,41 @@ const $bus = useEventsBus();
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  console.log("submitForm");
   if (!endpointUrl.value) {
     return;
   }
 
-  if (!endpointUrl.value.startsWith("http")) {
-    endpointUrl.value = `https://${endpointUrl.value}`;
-  }
-  try {
-    await apiService.post(`/api/v1/redirects/${props.redirectId}/webhooks`, {
+  const response = await apiService.post(
+    `/api/v1/redirects/${props.redirectId}/webhooks`,
+    {
       url: endpointUrl.value,
       event_types: events.value,
-    });
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-    $bus.$emit(eventTypes.created_webhook);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  }
+    }
+  );
+  $bus.$emit(eventTypes.created_webhook);
+  return response;
 };
 
 const events = ref([]);
 const searchTerm = ref("");
 
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
+
+const subscriptionStartRef = useTemplateRef("subscriptionStartRef");
+
+const startConfirming = async () => {
+  subscriptionStartRef.value?.startConfirming();
+};
 </script>
 
 <template>
-  <base-form ref="baseFormRef" :disabled="events.length === 0">
+  <base-form
+    ref="baseFormRef"
+    :disabled="events.length === 0"
+    @success="emit('success')"
+    @submit="startConfirming"
+    :submitFn="submitForm"
+  >
     <label for="webhook-url">{{ $t("Webhook URL") }}</label>
     <input
       type="url"
@@ -102,10 +105,11 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
       name="event_types"
     >
     </dropdown-select>
-    <template #submit="{ disabled, isLoading, submitText }">
+    <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
+        ref="subscriptionStartRef"
         :title="$t('Enable custom designs')"
-        @confirmed="submitForm"
+        @confirmed="submit()"
         :description="
           $t(
             'Additional destinations and design changes are free after you subscribe.'
