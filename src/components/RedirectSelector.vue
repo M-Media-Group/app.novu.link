@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import { type PropType, onMounted, ref } from "vue";
-import axios from "axios";
 import type { Redirect } from "@/types/redirect";
 import type { selectOptionObject } from "@/types/listItem";
 import CreateRedirect from "@/forms/CreateRedirect.vue";
+import { apiService } from "@/services/apiClient";
 
 const props = defineProps({
   modelValue: {
@@ -45,14 +45,10 @@ const getTeamRedirects = async (): Promise<selectOptionObject[]> => {
   isLoading.value = true;
   let data: selectOptionObject[] = [];
 
-  const response = await axios.get("/api/v1/redirects").catch((error) => {
-    console.error(error);
-    isLoading.value = false;
-  });
-
-  if (response && response.status === 200) {
-    data = response.data.map(
-      (redirect: Redirect) =>
+  try {
+    const response = await apiService.get<Redirect[]>("/api/v1/redirects");
+    data = response.map(
+      (redirect) =>
         ({
           id: redirect.uuid,
           render: redirect.name,
@@ -60,11 +56,15 @@ const getTeamRedirects = async (): Promise<selectOptionObject[]> => {
           disabled: props.subscribedOnly && !redirect.subscribed_at,
         } as selectOptionObject)
     );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
   }
 
-  isLoading.value = false;
-
-  return data;
+  return [];
 };
 
 onMounted(async () => {

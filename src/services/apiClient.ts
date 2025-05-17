@@ -1,0 +1,193 @@
+// src/services/apiService.ts
+import axios, {
+  type AxiosError,
+  type AxiosInstance,
+  isAxiosError,
+} from "axios";
+import i18n from "@/locales/i18n";
+import router from "@/router";
+import type { UnifiedError } from "./apiServiceErrorHandler";
+
+// Configure an Axios instance
+const apiClient: AxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, // Uncomment and set if you have a common base URL prefix for all API calls
+  withCredentials: true, // Crucial for cookie-based authentication (e.g., Laravel Sanctum)
+  withXSRFToken: true, // Crucial for CSRF protection
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+    Accept: "application/json",
+  },
+});
+
+// Intercept requests to add the locale header
+apiClient.interceptors.request.use((config) => {
+  const locale = i18n.global.locale.value; // Get the current locale from i18n
+  if (locale) {
+    config.headers["Accept-Language"] = locale; // Set the Accept-Language header
+  }
+  return config;
+});
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const gates = router.currentRoute.value.meta?.gates as string[] | undefined;
+    if (error.response?.status === 401 && gates?.includes("auth")) {
+      router.push({ name: "login-otp" });
+    } else if (error.response?.status === 429) {
+      router.push({ name: "429" });
+    }
+    return Promise.reject(error);
+  }
+);
+
+type LaraveErrorResponse = { message?: string; errors?: any };
+
+/**
+ * Handles API errors, logs them, and re-throws them.
+ * @param error The AxiosError object.
+ * @param operation A string describing the operation during which the error occurred.
+ * @throws UnifiedError
+ */
+const handleError = (
+  error: unknown | AxiosError<LaraveErrorResponse>,
+  operation: string = "API operation"
+) => {
+  const unifiedError: Partial<UnifiedError> = {
+    type: "unknown",
+    originalError: error,
+  };
+
+  if (isAxiosError(error) && error.response) {
+    unifiedError.status = error.response.status;
+    unifiedError.message = error.response.data?.message || error.message;
+    if (error.response.status === 422) {
+      unifiedError.type = "validation";
+      let allErrors: UnifiedError["details"] = {};
+      if (
+        error.response.data?.errors &&
+        typeof error.response.data.errors === "object"
+      ) {
+        // If the error response contains a validation error
+        allErrors = error.response.data.errors;
+      }
+      unifiedError.details = allErrors || {};
+    } else if (error.response.status >= 500) {
+      unifiedError.type = "server";
+    } else if (error.response.status === 401) {
+      unifiedError.type = "network";
+      unifiedError.message = i18n.global.t("errors.unauthorized");
+    } else if (error.response.status === 403) {
+      unifiedError.type = "network";
+      unifiedError.message = i18n.global.t("errors.forbidden");
+    } else if (error.response.status === 404) {
+      unifiedError.type = "network";
+      unifiedError.message = i18n.global.t("errors.not_found");
+    } else if (error.response.status === 429) {
+      unifiedError.type = "network";
+      unifiedError.message = i18n.global.t("errors.too_many_requests");
+    } else if (error.response.status === 500) {
+      unifiedError.type = "server";
+      unifiedError.message = i18n.global.t("errors.server_error");
+    } else {
+      unifiedError.type = "network";
+      unifiedError.message = i18n.global.t("errors.network_error");
+    }
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    unifiedError.type = "unknown";
+    unifiedError.message = i18n.global.t("errors.unknown_error"); // Fallback message
+  }
+
+  console.error(
+    `Error during ${operation}: Status ${
+      unifiedError.status || "N/A"
+    } - Message: ${unifiedError.message}`,
+    unifiedError.originalError
+  );
+
+  throw unifiedError; // Throw the structured error
+};
+
+/**
+ * Fetches the CSRF cookie from the server.
+ * Typically required by Laravel Sanctum before making state-changing requests.
+ */
+async function fetchCsrfToken(): Promise<void> {
+  try {
+    await apiClient.get<void>("/sanctum/csrf-cookie");
+  } catch (error) {
+    // This is a critical error for subsequent state-changing requests
+    handleError(error, "fetching CSRF cookie");
+  }
+}
+
+export const apiService = {
+  /**
+   * Performs a GET request.
+   * @param url The URL to request.
+   * @param params Optional query parameters.
+   */
+  async get<T>(url: string, params?: object): Promise<T> {
+    try {
+      const response = await apiClient.get<T>(url, { params });
+      return response.data;
+    } catch (error) {
+      handleError(error, `GET ${url}`);
+      throw error; // Ensure re-throw after handleError
+    }
+  },
+
+  /**
+   * Performs a POST request.
+   * @param url The URL to post to.
+   * @param data The data to send.
+   * @param config Optional Axios request configuration.
+   */
+  async post<T>(url: string, data?: any, config?: any): Promise<T> {
+    try {
+      const response = await apiClient.post<T>(url, data, config);
+      return response.data;
+    } catch (error) {
+      handleError(error, `POST ${url}`);
+      throw error;
+    }
+  },
+
+  /**
+   * Performs a PUT request.
+   * @param url The URL to put to.
+   * @param data The data to send.
+   */
+  async put<T>(url: string, data?: any): Promise<T> {
+    try {
+      const response = await apiClient.put<T>(url, data);
+      return response.data;
+    } catch (error) {
+      handleError(error, `PUT ${url}`);
+      throw error;
+    }
+  },
+
+  /**
+   * Performs a DELETE request.
+   * @param url The URL to delete from.
+   */
+  async delete<T>(url: string): Promise<T> {
+    try {
+      const response = await apiClient.delete<T>(url);
+      return response.data;
+    } catch (error) {
+      handleError(error, `DELETE ${url}`);
+      throw error;
+    }
+  },
+
+  /**
+   * Ensures the CSRF cookie is fetched.
+   * Call this before operations that require CSRF protection if not handled automatically.
+   */
+  getCsrfToken: fetchCsrfToken,
+};

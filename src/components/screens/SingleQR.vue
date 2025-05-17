@@ -1,5 +1,6 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const t = i18n.global.t;
 </script>
@@ -398,19 +399,27 @@ defineExpose({
   triggerSuccess,
 });
 
+const emit = defineEmits(["success"]);
+
 const deleteCurrentRedirect = async () => {
   isLoading.value = true;
-  const response = await deleteRedirect(props.redirectId).catch((error) => {
-    alert(
-      t("An error occurred. Please try again later.") +
-        " " +
-        error.response.data.message
-    );
-    return error.response;
-  });
-  isLoading.value = false;
-  if (response.status === 200) {
+
+  try {
+    await deleteRedirect(props.redirectId).catch((error) => {
+      alert(
+        t("An error occurred. Please try again later.") +
+          " " +
+          error.response.data.message
+      );
+      return error.response;
+    });
+    emit("success");
     $bus.$emit(eventTypes.deleted_redirect);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
 };
 

@@ -24,7 +24,7 @@ userStore
   .getPersonalAccessTokens()
   .then((tokens) => (accessTokens.value = tokens));
 
-const analyticsIntegrations = ref([] as AnalyticsIntegration[]);
+const analyticsIntegrations = ref<AnalyticsIntegration[]>([]);
 
 const getCurrentIntegration = async () => {
   const response = await teamStore.getAnalyticsIntegrations();

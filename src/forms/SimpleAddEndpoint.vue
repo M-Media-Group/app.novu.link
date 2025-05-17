@@ -10,6 +10,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { formatUrl, removeProtocol } from "@/helpers/urlFormatter";
 import { addRedirectEndpoint } from "@/useRedirects";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const $bus = useEventsBus();
 
@@ -64,45 +65,29 @@ const submitForm = async () => {
 
   isLoading.value = true;
 
-  const response = await addRedirectEndpoint(props.redirectId, {
-    endpoint: url.value,
-    rule_groups: [
-      {
-        rules: [
-          {
-            rule: ruleData.value.selectedRuleKey,
-            operator: ruleData.value.selectedOperator,
-            value: ruleData.value.selectedValue,
-          },
-        ],
-      },
-    ],
-  }).catch((error) => {
-    isLoading.value = false;
-    return error.response;
-  });
-
-  isLoading.value = false;
-
-  // If the response is a 201, emit the updated event
-  if (!response) {
-    return;
-  }
-
-  if (response.status === 201) {
-    // Emit the updated event with the changed fields
+  try {
+    await await addRedirectEndpoint(props.redirectId, {
+      endpoint: url.value,
+      rule_groups: [
+        {
+          rules: [
+            {
+              rule: ruleData.value.selectedRuleKey,
+              operator: ruleData.value.selectedOperator,
+              value: ruleData.value.selectedValue,
+            },
+          ],
+        },
+      ],
+    });
     emit("success");
-
     baseFormRef.value.setSuccessOnInputs();
-
     $bus.$emit(eventTypes.created_endpoint);
-  } else if (typeof response === "object") {
-    // We want to show the user the correct fields to the user so they feel better
-    baseFormRef.value.setSuccessOnInputs();
-
+  } catch (error) {
+    assertIsUnifiedError(error);
     // Format errors. We get them as rule_groups.0.rules.0.value - but since this is a simple form, we just need to get the last item after ., in this case its .value, and set it on the setErrors function
     const errors = {
-      ...response.data.errors,
+      ...error.details,
     };
 
     // If response.data.errors["rule_groups.0.rules.0.value"], we set errors.value
@@ -115,9 +100,10 @@ const submitForm = async () => {
     if (errors["rule_groups.0.rules.0.operator"]) {
       errors.operator = errors["rule_groups.0.rules.0.operator"];
     }
-
-    // Show the fields with errors
     baseFormRef.value.setInputErrors(errors);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
 };
 

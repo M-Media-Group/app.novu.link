@@ -14,7 +14,7 @@ const isLoading = ref(true);
 const { t } = useI18n();
 
 getRedirects().then((response) => {
-  redirects.value = response.data;
+  redirects.value = response;
   // Sort by total clicks
   redirects.value.sort((a, b) => b.todays_clicks_count - a.todays_clicks_count);
   isLoading.value = false;

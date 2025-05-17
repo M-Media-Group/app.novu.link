@@ -1,8 +1,8 @@
 import { type Ref, computed, ref, watch } from "vue";
-import axios from "axios";
 import type { Attribute, Product, Variant } from "@/types/product";
 import { debounce } from "@/helpers/debounce";
 import { parseStreamedResponse } from "@/helpers/streamers";
+import { apiService } from "@/services/apiClient";
 
 const products = ref([] as Product[]);
 const currentPage = ref(1);
@@ -57,13 +57,10 @@ const getProductsByCategory = async (
 };
 
 const getProduct = async (id: Product["id"]): Promise<Product | null> => {
-  const response = await axios.get("/api/v1/products/" + id);
-
-  if (!response.data) {
-    return null;
-  }
-
-  return response.data;
+  const response = await apiService.get<Product | null>(
+    "/api/v1/products/" + id
+  );
+  return response;
 };
 
 /**

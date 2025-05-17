@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import axios from "axios";
 import { ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import type { Alert } from "@/types/redirect";
 import { formatMinutes } from "@/helpers/relativeTime";
 import BaseButton from "@/components/BaseButton.vue";
+import { apiService } from "@/services/apiClient";
 
 const results = ref([] as Alert[]);
 const isLoading = ref(true);
@@ -12,10 +12,10 @@ const isLoading = ref(true);
 const getAlerts = async () => {
   isLoading.value = true;
   results.value =
-    (await axios
-      .get("/api/v1/alerts")
+    (await apiService
+      .get<Alert[]>("/api/v1/alerts")
       .then((response) => {
-        return response.data as Alert[];
+        return response;
       })
       .catch((error) => {
         console.error(error);

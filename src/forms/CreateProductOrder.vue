@@ -3,7 +3,6 @@ import { type PropType, computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RedirectSelector from "@/components/RedirectSelector.vue";
 import ProductSelector from "@/components/ProductSelector.vue";
-import axios from "axios";
 import { watch } from "vue";
 import { useProducts } from "@/composables/useProducts";
 import type { Product } from "@/types/product";
@@ -12,6 +11,8 @@ import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Gate } from "@m-media/vue3-gate-keeper";
+import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect ids. If passed, the selector will be hidden */
@@ -50,31 +51,25 @@ const submitForm = async () => {
 
   isLoading.value = true;
 
-  const response = await axios
-    .post(`/api/v1/products/${loadedProduct.value.id}/orders`, {
+  try {
+    await apiService.post(`/api/v1/products/${loadedProduct.value.id}/orders`, {
       redirect_uuid: localRedirectIds.value[0],
       quantity: quantity.value,
       merchant: loadedProduct.value.merchant,
       include_qr_code_subscription: includeQrCodeSubscription.value,
       include_consultation: includeConsultation.value,
       attributes: selectedAttributes.value,
-    })
-    .catch((error) => {
-      console.error(error);
-      return error.response;
     });
-
-  if (response.status === 201) {
-    // Emit the updated event with the changed fields
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_product_order);
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
-
-  isLoading.value = false;
 };
 
 const isLoading = ref(false);

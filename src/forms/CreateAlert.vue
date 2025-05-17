@@ -2,12 +2,13 @@
 import { computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 
-import axios from "axios";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { formatMinutes } from "@/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
+import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** If the form should autofocus */
@@ -48,35 +49,26 @@ const timeDurationInMinutes = computed(() => {
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
   isLoading.value = true;
-
-  const response = await axios
-    .post("/api/v1/alerts", {
+  try {
+    await apiService.post("/api/v1/alerts", {
       redirect_uuid: activeRedirectId.value,
       type: scanType.value,
       condition: condition.value,
       target: targetNumber.value,
       time_window: timeDurationInMinutes.value,
-    })
-    .catch((error) => {
-      // If the error is not a validation error, show a generic error message
-      if (!error.response || error.response.status !== 422)
-        alert("An error occurred. Please try again later.");
-
-      return error.response;
     });
-
-  if (response?.status === 201) {
     // Emit the updated event with the changed fields
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
     // modal.value.closeModal();
     $bus.$emit(eventTypes.created_alert);
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
-
-  isLoading.value = false;
 };
 
 /** Refactor to not create a new instance each time */

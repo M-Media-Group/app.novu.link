@@ -2,12 +2,15 @@
 import { useTeamStore } from "@/stores/team";
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const teamStore = useTeamStore();
 
 const name = ref("");
 
 const baseFormRef = ref();
+
+const isLoading = ref(false);
 
 const emit = defineEmits(["success"]);
 
@@ -17,23 +20,26 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await teamStore.createTeam({
-    name: name.value,
-  });
+  isLoading.value = true;
 
-  if (response === true) {
-    // Emit the updated event with the changed fields
+  try {
+    await teamStore.createTeam({
+      name: name.value,
+    });
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm">
+  <base-form ref="baseFormRef" @submit="submitForm" :isLoading="isLoading">
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 

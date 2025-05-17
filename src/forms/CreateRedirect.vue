@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import BaseForm from "@/forms/BaseForm.vue";
 import { type PropType, ref } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { formatUrl } from "@/helpers/urlFormatter";
 import { debounce } from "@/helpers/debounce";
 import { useTeamStore } from "@/stores/team";
+import { apiService } from "@/services/apiClient";
+import type { Redirect } from "@/types/redirect";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const $bus = useEventsBus();
+
+const emit = defineEmits(["success"]);
 
 const name = ref("");
 const defaultEndpoint = ref("");
@@ -114,39 +118,34 @@ const debounceAddProtocolIfMissing = debounce(
 
 const submitForm = async () => {
   isLoading.value = true;
+
   //   If the URL does not start with http, auto append https://
   if (!defaultEndpoint.value.startsWith("http")) {
     defaultEndpoint.value = `https://${defaultEndpoint.value}`;
   }
 
-  const response = await axios
-    .post("/redirects", {
+  try {
+    const response = await apiService.post<Redirect>("/redirects", {
       name: name.value,
       default_endpoint: defaultEndpoint.value,
-    })
-    .catch((error) => {
-      isLoading.value = false;
-      // If the error is not a validation error, show a generic error message
-      if (!error.response || error.response.status !== 422)
-        alert(t("An error occurred. Please try again later."));
-
-      return error.response;
     });
-
-  if (response.status === 201) {
     // If the redirect was created when we were not logged in - set a 5 minute cookie
     if (!isAuthenticated) {
-      document.cookie = `created_when_not_logged_in=${response.data.uuid}; max-age=300`;
+      document.cookie = `created_when_not_logged_in=${response.uuid}; max-age=300`;
     }
     baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_redirect);
 
-    router.push(`/redirects/${response.data.uuid}`);
-  } else {
-    baseFormRef.value.setInputErrors(response.data.errors);
+    router.push(`/redirects/${response.uuid}`);
+    emit("success");
+    baseFormRef.value.setSuccessOnInputs();
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
-
-  isLoading.value = false;
 };
 
 // If we have a default endpoint value, set it and trigger the debounce

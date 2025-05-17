@@ -1,8 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
-import axios from "axios";
-
 import App from "./App.vue";
 import router from "./router";
 
@@ -22,25 +20,6 @@ import { metaTagPlugin } from "@m-media/vue3-meta-tags";
 import { EventsPlugin } from "./eventBus/events";
 
 const app = createApp(App);
-
-axios.defaults.withXSRFToken = true;
-axios.defaults.withCredentials = true;
-// Set accept header
-axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const gates = router.currentRoute.value.meta?.gates as string[] | undefined;
-    if (error.response?.status === 401 && gates?.includes("auth")) {
-      router.push({ name: "login-otp" });
-    } else if (error.response?.status === 429) {
-      router.push({ name: "429" });
-    }
-    return Promise.reject(error);
-  }
-);
 
 app.use(createPinia());
 app.use(router);

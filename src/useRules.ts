@@ -6,14 +6,23 @@ import type {
   Rules,
 } from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
-import axios from "axios";
 import i18n from "@/locales/i18n";
+import { apiService } from "./services/apiClient";
 
 const rules = ref({} as Rules);
 
 const isLoading = ref(false);
 
 const t = i18n.global.t;
+
+const removeLanguage = {
+  transformRequest: [
+    (data: any, headers: Record<string, any>) => {
+      delete headers["Accept-Language"];
+      return data;
+    },
+  ],
+};
 
 const getAllRules = async (redirectId?: string) => {
   isLoading.value = true;
@@ -23,18 +32,11 @@ const getAllRules = async (redirectId?: string) => {
     : "/api/v1/rules";
 
   // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly
-  const response = await axios.get(endpoint, {
-    transformRequest: [
-      (data, headers) => {
-        delete headers["Accept-Language"];
-        return data;
-      },
-    ],
-  });
+  const response = await apiService.get<Rules>(endpoint, removeLanguage);
 
   isLoading.value = false;
 
-  rules.value = response.data as Rules;
+  rules.value = response;
 };
 
 /**
@@ -61,19 +63,8 @@ const testRule = async (
     (redirectId ? `&redirectId=${redirectId}` : "");
 
   // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly. Because its a post request to `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`, we need to set the headers in the data object
-  const response = await axios
-    .post(
-      url,
-      {},
-      {
-        transformRequest: [
-          (data, headers) => {
-            delete headers["Accept-Language"];
-            return data;
-          },
-        ],
-      }
-    )
+  const response = await apiService
+    .post<{ passes: boolean }>(url, {}, removeLanguage)
     // Catch and pass 422 errors
     .catch((error) => {
       if (error.response.status === 422) {
@@ -83,7 +74,7 @@ const testRule = async (
       throw error;
     });
 
-  const data = response.data as { passes: boolean };
+  const data = response;
 
   return data?.passes ?? false;
 };

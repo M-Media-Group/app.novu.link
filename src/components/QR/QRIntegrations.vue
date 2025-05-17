@@ -4,11 +4,11 @@ import type { PropType } from "vue";
 import type { Webhook } from "@/types/redirect";
 import CreateWebhook from "@/forms/CreateWebhook.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import axios from "axios";
 import { ref } from "vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 
 import ToggleAnalyticsIntegration from "@/forms/ToggleAnalyticsIntegration.vue";
+import { apiService } from "@/services/apiClient";
 
 defineProps({
   redirectId: {
@@ -32,13 +32,16 @@ defineProps({
   },
 });
 
-const analyticsIntegrations = ref([] as AnalyticsIntegration[]);
+const analyticsIntegrations = ref<AnalyticsIntegration[]>([]);
 
 const getIntegrations = async () => {
-  const result = await axios.get("/api/v1/analytics/integrations");
-
-  if (result.status === 200) {
-    analyticsIntegrations.value = result.data;
+  try {
+    const result = await apiService.get<AnalyticsIntegration[]>(
+      "/api/v1/analytics/integrations"
+    );
+    analyticsIntegrations.value = result;
+  } catch (error) {
+    console.error(error);
   }
 };
 

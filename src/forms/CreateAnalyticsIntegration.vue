@@ -3,12 +3,13 @@ import { computed, onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import type { selectOptionObject } from "@/types/listItem";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import axios from "axios";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type {
   AnalyticsIntegration,
   SupportedIntegration,
 } from "@/types/analyticsIntegrations";
+import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const id = ref("" as AnalyticsIntegration["external_id"]);
 const secret = ref("" as string);
@@ -25,17 +26,20 @@ const $bus = useEventsBus();
 const allOptions = ref([] as selectOptionObject[]);
 
 const getOptions = async (): Promise<selectOptionObject[]> => {
-  const response = await axios.get("/api/v1/analytics/integrations/supported");
-
-  if (response.status === 200) {
-    return (response.data as SupportedIntegration[]).map((option) => ({
+  try {
+    const response = await apiService.get<SupportedIntegration[]>(
+      "/api/v1/analytics/integrations/supported"
+    );
+    return response.map((option) => ({
       id: option.name,
       render: option.pretty_name,
       raw: option,
     }));
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return [];
   }
-
-  return [];
 };
 
 onMounted(async () => {
@@ -91,31 +95,23 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await axios
-    .post("/api/v1/analytics/integrations", {
+  try {
+    await apiService.post("/api/v1/analytics/integrations", {
       type: selectedOption.value,
       external_id: id.value,
       external_secret: secret.value,
       debug: debug.value,
       name: name.value,
       debug_code: debug.value ? debugCode.value : null,
-    })
-    .catch((error) => {
-      if (!error.response || error.response.status !== 422) {
-        alert("An error occurred. Please try again later.");
-      }
-
-      return error.response;
     });
-
-  if (response?.status === 201) {
     // Emit the updated event with the changed fields
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_analytics_integration);
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
   }
 };
 </script>

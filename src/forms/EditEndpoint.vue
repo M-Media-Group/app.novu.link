@@ -4,9 +4,7 @@ import BaseForm from "./BaseForm.vue";
 import { debounce } from "@/helpers/debounce";
 import { formatUrl } from "@/helpers/urlFormatter";
 import { deleteRedirectEndpoint, updateRedirectEndpoint } from "@/useRedirects";
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   redirectId: {
@@ -44,23 +42,19 @@ const submitForm = async () => {
   }
 
   loading.value = true;
-  const response = await updateRedirectEndpoint(
-    props.redirectId,
-    `${props.endpointId}`,
-    { endpoint: url.value }
-  ).catch((error) => {
-    console.error(error);
-    return error.response;
-  });
-  loading.value = false;
 
-  if (response.status === 200) {
-    // Emit the updated event with the changed fields
+  try {
+    await updateRedirectEndpoint(props.redirectId, `${props.endpointId}`, {
+      endpoint: url.value,
+    });
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -72,22 +66,14 @@ const debounceAddProtocolIfMissing = debounce(
 
 const deleteEndpoint = async () => {
   loading.value = true;
-
-  const response = await deleteRedirectEndpoint(
-    props.redirectId,
-    `${props.endpointId}`
-  ).catch((error) => {
-    console.error(error);
-    return error.response;
-  });
-
-  if (response.status === 200) {
-    emit("success");
-  } else {
-    alert(t("An error occurred. Please try again later."));
+  try {
+    await deleteRedirectEndpoint(props.redirectId, `${props.endpointId}`);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    return error.originalError;
+  } finally {
+    loading.value = false;
   }
-
-  loading.value = false;
 };
 </script>
 

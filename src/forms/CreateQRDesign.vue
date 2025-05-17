@@ -4,11 +4,12 @@ import BaseForm from "./BaseForm.vue";
 import TabNav from "@/components/TabNav.vue";
 import type { HexColor, QRDesign } from "@/types/qrDesign";
 import type { selectOption } from "@/types/listItem";
-import axios from "axios";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect uuid */
@@ -73,8 +74,8 @@ const submitForm = async () => {
 
   isLoading.value = true;
 
-  const response = await axios
-    .post("/api/v1/qr-designs", {
+  try {
+    await apiService.post("/api/v1/qr-designs", {
       name: name.value,
       color: color.value,
       background_color: backgroundColor.value,
@@ -86,27 +87,18 @@ const submitForm = async () => {
       logo: logo.value,
       logo_punchout_background: logoPunchout.value,
       redirect_uuid: props.redirectId,
-    })
-    .catch((error) => {
-      // If the error is not a validation error, show a generic error message
-      if (!error.response || error.response.status !== 422)
-        alert("An error occurred. Please try again later.");
-
-      return error.response;
     });
-
-  if (response?.status === 201) {
-    // Emit the updated event with the changed fields
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
     modal.value.closeModal();
     $bus.$emit(eventTypes.created_qr_design);
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
-
-  isLoading.value = false;
 };
 
 // Watch all inputs and emit the input_updated event

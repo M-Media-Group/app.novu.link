@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import axios from "axios";
+
 import type { Team } from "@/types/team";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useRouter } from "vue-router";
+import { apiService } from "@/services/apiClient";
+import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 
 export const useTeamStore = defineStore("team", () => {
   const activeTeamId = ref(null as Team["id"] | null);
@@ -15,36 +17,28 @@ export const useTeamStore = defineStore("team", () => {
   const router = useRouter();
 
   const getUserTeams = async () => {
-    // Fetch teams from the API
-    const response = await axios.get("/api/v1/teams").catch((error) => {
-      return error.response;
-    });
+    try {
+      const response = await apiService.get<Team[]>("/api/v1/teams");
+      teams.value = response;
 
-    if (response?.status !== 200) {
-      return;
-    }
+      const activeTeam = teams.value.find((team) => team.is_active)?.id;
 
-    // Set the teams to the response data
-    teams.value = response.data;
+      if (!activeTeam) {
+        return;
+      }
 
-    if (!teams.value.length) {
-      return;
-    }
+      const hasActiveTeam = !!activeTeamId.value;
 
-    const activeTeam = teams.value.find((team) => team.is_active)?.id;
+      // Set the active team to the team that has is_active set to true
+      activeTeamId.value = activeTeam;
 
-    if (!activeTeam) {
-      return;
-    }
-
-    const hasActiveTeam = !!activeTeamId.value;
-
-    // Set the active team to the team that has is_active set to true
-    activeTeamId.value = activeTeam;
-
-    // If there is current no active team, we emit an event
-    if (!hasActiveTeam) {
-      $bus.$emit(eventTypes.set_active_team);
+      // If there is current no active team, we emit an event
+      if (!hasActiveTeam) {
+        $bus.$emit(eventTypes.set_active_team);
+      }
+    } catch (error) {
+      console.error("Failed to fetch teams", error);
+      return error;
     }
   };
 
@@ -69,8 +63,10 @@ export const useTeamStore = defineStore("team", () => {
    */
   async function getPaymentIntent() {
     try {
-      const response = await axios.get("user/payment-intent");
-      return response.data;
+      const response = await apiService.get<{ client_secret: string }>(
+        "user/payment-intent"
+      );
+      return response;
     } catch (error) {
       console.log(error);
     }
@@ -81,7 +77,7 @@ export const useTeamStore = defineStore("team", () => {
    */
   async function addPaymentMethod(paymentMethodId: string) {
     try {
-      await axios.post("/api/v1/payment-methods", {
+      await apiService.post("/api/v1/payment-methods", {
         payment_method: paymentMethodId,
       });
       $bus.$emit(eventTypes.added_payment_method);
@@ -98,76 +94,60 @@ export const useTeamStore = defineStore("team", () => {
    */
   async function getPaymentMethods() {
     try {
-      const response = await axios.get("/api/v1/payment-methods");
-      return response.data;
+      const response = await apiService.get("/api/v1/payment-methods");
+      return response;
     } catch (error) {
       console.log(error);
     }
   }
 
   const update = async (team: Team) => {
-    const response = await axios.put(`/teams/${team.id}`, {
+    await apiService.put(`/teams/${team.id}`, {
       name: team.name,
     });
 
-    if (response.status === 200) {
-      // If we have no teams, return false
-      if (!teams.value.length) {
-        return false;
-      }
-      // Update the team - only update the name for now
-      const index = teams.value.findIndex((t) => t.id === team.id);
-      teams.value[index].name = team.name;
-      return true;
-    } else {
-      console.error("Failed to update team");
+    if (!teams.value.length) {
+      return false;
     }
+
+    // Update the team - only update the name for now
+    const index = teams.value.findIndex((t) => t.id === team.id);
+    teams.value[index].name = team.name;
+    return true;
   };
 
   /** Switch the current team */
   const switchTeam = async (teamId: Team["id"]) => {
     //  Make a put to /current-team with the teamId
-    const response = await axios.put("/current-team", {
+    await apiService.put("/current-team", {
       team_id: teamId,
     });
 
-    if (response.data.success || response.data.message === "Team updated.") {
-      // Set the active team to the teamId
-      activeTeamId.value = teamId;
-      $bus.$emit(eventTypes.changed_team);
-      // Redirect to dashboard
-      router.push({ name: "dashboard" });
-    } else {
-      console.error("Failed to switch team", response.data.message);
-    }
+    // Set the active team to the teamId
+    activeTeamId.value = teamId;
+    $bus.$emit(eventTypes.changed_team);
+    // Redirect to dashboard
+    router.push({ name: "dashboard" });
   };
 
   const createTeam = async (team: { name: Team["name"] }) => {
-    const response = await axios
-      .post("/teams", {
-        name: team.name,
-      })
-      .catch((error) => {
-        console.error("Failed to create team", error);
-        return error.response;
-      });
+    await apiService.post("/teams", {
+      name: team.name,
+    });
 
-    if (response.status === 201) {
-      //  The response does not return anything, so we need to fetch the teams again and then set the active team to the newly created team
-      await getUserTeams();
-      const newTeam = teams.value.sort((a, b) => b.id - a.id)[0];
-      activeTeamId.value = newTeam.id;
-      return true;
-    } else {
-      console.error("Failed to create team");
-      return response;
-    }
+    //  The response does not return anything, so we need to fetch the teams again and then set the active team to the newly created team
+    await getUserTeams();
+    const newTeam = teams.value.sort((a, b) => b.id - a.id)[0];
+    activeTeamId.value = newTeam.id;
+    return true;
   };
 
   const getAnalyticsIntegrations = async () => {
     try {
-      const response = await axios.get("/api/v1/analytics/integrations");
-      return response.data;
+      const response = await apiService.get<AnalyticsIntegration[]>(
+        "/api/v1/analytics/integrations"
+      );
+      return response;
     } catch (error) {
       console.log(error);
     }
@@ -175,10 +155,10 @@ export const useTeamStore = defineStore("team", () => {
 
   const deleteAnalyticsIntegration = async (integrationId: string | number) => {
     try {
-      const response = await axios.delete(
+      await apiService.delete(
         `/api/v1/analytics/integrations/${integrationId}`
       );
-      return response.status === 204;
+      return true;
     } catch (error) {
       console.log(error);
     }

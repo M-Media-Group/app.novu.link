@@ -6,8 +6,8 @@ import { onMounted, provide, ref, watch } from "vue";
 import image from "@/assets/undraw_share_link.svg";
 import TabNav from "@/components/TabNav.vue";
 import { assetUrl, loadData } from "@/helpers/dataLoader";
-import axios from "axios";
 import type { QRDesign } from "@/types/qrDesign";
+import { apiService } from "@/services/apiClient";
 
 const { locale } = useI18n();
 
@@ -51,20 +51,22 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
   }));
 };
 
-const logos = ref([] as QRDesign[]);
+const logos = ref<QRDesign[]>([]);
 
 const getLogos = async () => {
-  const results = await axios.get("/qr-designs/logos").catch((error) => {
-    console.error(error);
-  });
+  const results = await apiService
+    .get<QRDesign[]>("/qr-designs/logos")
+    .catch((error) => {
+      console.error(error);
+    });
 
   if (results) {
-    return results.data;
+    return results;
   }
 };
 
 onMounted(async () => {
-  logos.value = await getLogos();
+  logos.value = (await getLogos()) ?? [];
 });
 
 provide("showExpandedFooter", true);

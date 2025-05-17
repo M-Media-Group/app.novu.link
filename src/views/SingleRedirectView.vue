@@ -56,17 +56,17 @@ const getData = () => {
   getRedirect(props.redirectId)
     .then((response) => {
       // From the response, we need to pass as props the redirect name, the redirect URL, and the redirect ID
-      redirectName.value = response.data.name;
-      subscribedAt.value = response.data.subscribed_at;
-      remainingClicks.value = response.data.remaining_clicks;
-      placements.value = response.data.sources ?? [];
-      designs.value = response.data.qr_designs ?? [];
-      webhooks.value = response.data.webhooks ?? [];
-      alerts.value = response.data.alerts ?? [];
-      heatmapData.value = response.data.heatmap;
+      redirectName.value = response.name;
+      subscribedAt.value = response.subscribed_at;
+      remainingClicks.value = response.remaining_clicks;
+      placements.value = response.sources ?? [];
+      designs.value = response.qr_designs ?? [];
+      webhooks.value = response.webhooks ?? [];
+      alerts.value = response.alerts ?? [];
+      heatmapData.value = response.heatmap;
 
       const totalClicks = () => {
-        return response.data.endpoints.reduce((total: any, endpoint: any) => {
+        return response.endpoints.reduce((total: any, endpoint: any) => {
           return (
             total +
             endpoint.clicks_by_time_of_day.reduce((sum: any, click: any) => {
@@ -77,7 +77,7 @@ const getData = () => {
       };
 
       const bestPerformingEndpoint = () => {
-        return response.data.endpoints.reduce(
+        return response.endpoints.reduce(
           (best: any, endpoint: any) => {
             const totalClicks = endpoint.clicks_by_time_of_day.reduce(
               (sum: any, click: any) => {
@@ -94,19 +94,19 @@ const getData = () => {
       };
 
       // set clicksToday and clicksTodayUnique
-      clicksToday.value = response.data.todays_clicks_count;
+      clicksToday.value = response.todays_clicks_count;
       clicksSameTimeYesterday.value =
-        response.data.yesterdays_clicks_up_to_now_count ?? null;
+        response.yesterdays_clicks_up_to_now_count ?? null;
 
       clicksAllTime.value = totalClicks();
 
       bestEndpoint.value =
         // If there is more than 1 endpoint, return the best performing endpoint. If there is only 1 endpoint, return that endpoint.
-        response.data.endpoints.length > 1
+        response.endpoints.length > 1
           ? bestPerformingEndpoint().endpoint
           : undefined;
 
-      endpoints.value = response.data.endpoints;
+      endpoints.value = response.endpoints;
 
       // next()\
     })

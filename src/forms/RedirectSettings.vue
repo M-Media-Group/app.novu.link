@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { updateRedirect } from "@/useRedirects";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -28,6 +29,8 @@ const name = ref(props.redirectName);
 
 const baseFormRef = ref();
 
+const isLoading = ref(false);
+
 const emit = defineEmits(["updated"]);
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
@@ -35,6 +38,8 @@ const submitForm = async () => {
   if (!name.value || !props.redirectId) {
     return;
   }
+
+  isLoading.value = true;
 
   // Create an object containing only the changed values
   const changedValues = {} as Record<string, string>;
@@ -48,26 +53,30 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await updateRedirect(props.redirectId, {
-    name: name.value,
-  });
-
-  if (response.status === 200) {
+  try {
+    await updateRedirect(props.redirectId, {
+      name: name.value,
+    });
     // Emit the updated event with the changed fields
     emit("updated", changedValues);
     baseFormRef.value.setSuccessOnInputs();
-  } else if (typeof response === "object") {
-    // We want to show the user the correct fields to the user so they feel better
-    baseFormRef.value.setSuccessOnInputs();
-
-    // Show the fields with errors
-    // baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm" submitText="Save">
+  <base-form
+    ref="baseFormRef"
+    @submit="submitForm"
+    submitText="Save"
+    :isLoading="isLoading"
+  >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 

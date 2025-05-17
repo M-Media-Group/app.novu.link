@@ -18,13 +18,15 @@ export default class extends baseGate {
       return this.fail();
     }
 
-    // Get the redirect to determine if we need to redirect
-    const redirect = await getRedirect(redirectId);
+    try {
+      // Get the redirect to determine if we need to redirect
+      const redirect = await getRedirect(redirectId);
 
-    if (!redirect.data?.subscribed_at) {
-      return;
+      if (redirect?.subscribed_at !== null) {
+        throw new Error("Already subscribed");
+      }
+    } catch (error) {
+      return this.fail();
     }
-
-    return this.fail();
   }
 }

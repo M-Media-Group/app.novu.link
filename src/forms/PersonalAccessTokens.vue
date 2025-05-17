@@ -3,6 +3,7 @@ import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import BaseForm from "./BaseForm.vue";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const userStore = useUserStore();
 
@@ -14,6 +15,8 @@ const tokenName = ref("");
 const baseFormRef = ref();
 
 const emit = defineEmits(["created"]);
+
+const isLoading = ref(false);
 
 defineProps({
   /** If the form should autofocus */
@@ -29,19 +32,23 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await userStore.createPersonalAccessToken(tokenName.value);
+  isLoading.value = true;
 
-  if (response) {
+  try {
+    const response = await userStore.createPersonalAccessToken(tokenName.value);
+    // emit("success");
     emit("created", response);
+    baseFormRef.value.setSuccessOnInputs();
     const text = t(
       "Your personal access token has been created. This is the only time you can see it."
     );
     alert(text + "\n\n" + response.token);
-  } else if (typeof response === "object") {
-    // We want to show the user the correct fields to the user so they feel better
-    baseFormRef.value.setSuccessOnInputs();
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -50,9 +57,9 @@ const submitForm = async () => {
   <base-form
     ref="baseFormRef"
     @submit="submitForm"
-    :isLoading="userStore.isLoading"
     submitText="Create a new API token"
     :autofocus="autofocus"
+    :isLoading="isLoading || userStore.isLoading"
   >
     <label for="name">{{ $t("New token name") }}</label>
     <input

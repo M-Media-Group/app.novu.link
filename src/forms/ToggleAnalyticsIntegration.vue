@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { type PropType, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import axios from "axios";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   redirectId: {
@@ -20,40 +21,46 @@ const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
 
+const isLoading = ref(false);
+
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
+  isLoading.value = true;
+
   const shouldDelete = !!props.integration.redirects?.find(
     (r) => r.uuid === props.redirectId
   );
 
-  const response = shouldDelete
-    ? await axios.delete(
-        `/api/v1/redirects/${props.redirectId}/analytics/integrations/${props.integration.id}`
-      )
-    : await axios.post(
-        `/api/v1/redirects/${props.redirectId}/analytics/integrations`,
-        {
-          integration_id: props.integration.id,
-        }
-      );
-
-  if (
-    response.status === 200 ||
-    response.status === 201 ||
-    response.status === 204
-  ) {
-    // Emit the updated event with the changed fields
+  try {
+    shouldDelete
+      ? await apiService.delete(
+          `/api/v1/redirects/${props.redirectId}/analytics/integrations/${props.integration.id}`
+        )
+      : await apiService.post(
+          `/api/v1/redirects/${props.redirectId}/analytics/integrations`,
+          {
+            integration_id: props.integration.id,
+          }
+        );
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm" :showSubmitButton="false">
+  <base-form
+    ref="baseFormRef"
+    @submit="submitForm"
+    :showSubmitButton="false"
+    :isLoading="isLoading"
+  >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 

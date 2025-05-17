@@ -3,7 +3,6 @@ import { onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { useI18n } from "vue-i18n";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import axios from "axios";
 import type { selectOption } from "@/types/listItem";
 import type { Ref } from "vue";
 import { debounce } from "@/helpers/debounce";
@@ -11,6 +10,8 @@ import { formatUrl } from "@/helpers/urlFormatter";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
+import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -29,13 +30,12 @@ const emit = defineEmits(["success"]);
 const { t } = useI18n();
 
 const getOptions = async (): Promise<selectOption[]> => {
-  const response = await axios.get("/api/v1/webhooks/events");
-
-  if (response.status === 200) {
-    return response.data;
+  try {
+    return await apiService.get<selectOption[]>("/api/v1/webhooks/events");
+  } catch (error) {
+    console.error(error);
+    return [];
   }
-
-  return [];
 };
 
 const options = ref([]) as Ref<selectOption[]>;
@@ -57,28 +57,18 @@ const submitForm = async () => {
   if (!url.value.startsWith("http")) {
     url.value = `https://${url.value}`;
   }
-
-  const response = await axios
-    .post(`/api/v1/redirects/${props.redirectId}/webhooks`, {
+  try {
+    await apiService.post(`/api/v1/redirects/${props.redirectId}/webhooks`, {
       url: url.value,
       event_types: events.value,
-    })
-    .catch((error) => {
-      if (!error.response || error.response.status !== 422) {
-        alert(t("An error occurred. Please try again later."));
-      }
-
-      return error.response;
     });
-
-  if (response.status === 201) {
-    // Emit the updated event with the changed fields
     emit("success");
     baseFormRef.value.setSuccessOnInputs();
     $bus.$emit(eventTypes.created_webhook);
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    baseFormRef.value.setInputErrors(error.details);
+    return error.originalError;
   }
 };
 

@@ -1,27 +1,25 @@
-import axios from "axios";
-import type { AxiosResponse } from "axios";
 import type { Endpoint, Redirect } from "./types/redirect";
 import $bus, { eventTypes } from "@/eventBus/events";
 import i18n from "@/locales/i18n";
+import { apiService } from "./services/apiClient";
 
 const baseUrl = import.meta.env.VITE_API_URL;
+const t = i18n.global.t;
 
 export const getRedirects = async () => {
-  return (await axios.get("/api/v1/redirects")) as AxiosResponse<Redirect[]>;
+  return await apiService.get<Redirect[]>("/api/v1/redirects");
 };
 
 export const getRedirect = async (redirectId: string) => {
-  return (await axios.get(
-    `/api/v1/redirects/${redirectId}`
-  )) as AxiosResponse<Redirect>;
+  return await apiService.get<Redirect>(`/api/v1/redirects/${redirectId}`);
 };
 
 export const createRedirect = async (data: any) => {
-  await axios.post("/api/v1/redirects", data);
+  await apiService.post("/api/v1/redirects", data);
 };
 
 export const updateRedirect = async (redirectId: string, data: any) => {
-  return await axios
+  return await apiService
     .put(`/api/v1/redirects/${redirectId}`, data)
     .then((response) => {
       $bus.$emit(eventTypes.updated_redirect, redirectId);
@@ -30,7 +28,7 @@ export const updateRedirect = async (redirectId: string, data: any) => {
 };
 
 export const deleteRedirect = async (redirectId: string) => {
-  return await axios
+  return await apiService
     .delete(`/api/v1/redirects/${redirectId}`)
     .then((response) => {
       $bus.$emit(eventTypes.deleted_redirect, redirectId);
@@ -59,7 +57,10 @@ export const addRedirectEndpoint = async (
   redirectId: string,
   data: Endpoint
 ) => {
-  return await axios.post(`/api/v1/redirects/${redirectId}/endpoints`, data);
+  return await apiService.post(
+    `/api/v1/redirects/${redirectId}/endpoints`,
+    data
+  );
 };
 
 export const updateRedirectEndpoint = async (
@@ -67,48 +68,35 @@ export const updateRedirectEndpoint = async (
   endpointId: string,
   data: Endpoint
 ) => {
-  const results = await axios.put(
+  const respone = await apiService.put(
     `/api/v1/redirects/${redirectId}/endpoints/${endpointId}`,
     data
   );
-
-  // If the results are successful, emit an event to let the app know that the endpoint was updated
-  if (results.status === 200) {
-    $bus.$emit(eventTypes.updated_endpoint, endpointId);
-  }
-
-  return results;
+  $bus.$emit(eventTypes.updated_endpoint, endpointId);
+  return respone;
 };
 
 export const deleteRedirectEndpoint = async (
   redirectId: string,
   endpointId: string
 ) => {
-  const results = await axios.delete(
+  const respone = await apiService.delete(
     `/api/v1/redirects/${redirectId}/endpoints/${endpointId}`
   );
-
-  // If the results are successful, emit an event to let the app know that the endpoint was deleted
-  if (results.status === 200) {
-    $bus.$emit(eventTypes.deleted_endpoint, endpointId);
-  }
-
-  return results;
+  $bus.$emit(eventTypes.deleted_endpoint, endpointId);
+  return respone;
 };
 
 export const startSubscription = async (redirectId: string) => {
-  $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
+  try {
+    $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
 
-  const response = await axios.post(
-    `/api/v1/redirects/${redirectId}/subscription`
-  );
+    await apiService.post(`/api/v1/redirects/${redirectId}/subscription`);
 
-  if (response.status === 200) {
     $bus.$emit(eventTypes.started_subscription);
     return Promise.resolve();
-  } else {
-    const t = i18n.global.t;
-    console.error("Failed to start subscription", response);
+  } catch (error) {
+    console.error("Failed to start subscription", error);
     alert(
       t("An error occurred. Please try again.") +
         " " +
@@ -119,21 +107,18 @@ export const startSubscription = async (redirectId: string) => {
 };
 
 export const unsubscribe = async (redirectId: string) => {
-  const response = await axios.delete(
-    `/api/v1/redirects/${redirectId}/subscription`
-  );
-
-  if (response.status === 200) {
+  try {
+    await apiService.delete(`/api/v1/redirects/${redirectId}/subscription`);
     $bus.$emit(eventTypes.unsubscribed);
     return Promise.resolve(true);
-  } else {
+  } catch (error) {
     const t = i18n.global.t;
-    console.error("Failed to unsubscribe", response);
+    console.error("Failed to unsubscribe", error);
     alert(
       t("An error occurred. Please try again.") +
         " " +
         t("Your subscription was not canceled.")
     );
-    return Promise.reject(response);
+    return Promise.reject(error);
   }
 };

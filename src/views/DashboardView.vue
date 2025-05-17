@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/stores/user";
-import axios from "axios";
 import { computed, onMounted, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import type { Dashboard } from "@/types/dashboard";
@@ -8,8 +7,9 @@ import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import LineChart from "@/components/charts/LineChart.vue";
+import { apiService } from "@/services/apiClient";
 
-const data = ref(null as Dashboard | null);
+const data = ref<Dashboard | null>(null);
 
 const userStore = useUserStore();
 
@@ -20,8 +20,8 @@ const { t } = useI18n();
 const isLoading = ref(true);
 
 const getData = async () => {
-  const response = await axios.get("/dashboard");
-  data.value = response.data;
+  const response = await apiService.get<Dashboard>("/dashboard");
+  data.value = response;
   isLoading.value = false;
 };
 
