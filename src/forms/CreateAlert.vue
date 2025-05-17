@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 
 import { eventTypes, useEventsBus } from "@/eventBus/events";
-import { formatMinutes } from "@/helpers/relativeTime";
+import { formatMinutes, formatToMinutes } from "@/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
@@ -27,20 +27,10 @@ const scanType = ref("successful");
 const condition = ref(">");
 const targetNumber = ref(10);
 const timeDuration = ref(60);
-const timeUnit = ref("minutes");
+const timeUnit = ref<"minutes" | "hours" | "days">("minutes");
 
 const timeDurationInMinutes = computed(() => {
-  switch (timeUnit.value) {
-    case "minutes":
-      return timeDuration.value;
-    case "hours":
-      return timeDuration.value * 60;
-    case "days":
-      return timeDuration.value * 60 * 24;
-
-    default:
-      return timeDuration.value;
-  }
+  return formatToMinutes(timeDuration.value, timeUnit.value);
 });
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.

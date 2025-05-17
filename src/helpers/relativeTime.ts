@@ -90,3 +90,19 @@ export const formatMinutes = (minutes: number): string => {
     unitDisplay: "long",
   }).format(computeMinutesToUnit(minutes, unit));
 };
+
+export const formatToMinutes = (
+  value: number,
+  timeUnit: "minutes" | "hours" | "days"
+): number => {
+  switch (timeUnit) {
+    case "minutes":
+      return value;
+    case "hours":
+      return value * 60;
+    case "days":
+      return value * 60 * 24;
+    default:
+      return value;
+  }
+};
