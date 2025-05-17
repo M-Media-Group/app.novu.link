@@ -32,6 +32,7 @@ exports[`NavBar > renders properly when logged in 1`] = `
       <li data-v-2202255b=""><a data-v-2202255b="">Dashboard</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Magic links</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Analytics</a></li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Shop QR Products</a></li>
       <li data-v-2202255b="" aria-busy="false">
         <details data-v-2202255b="" class="dropdown">
           <summary data-v-2202255b="" aria-busy="false">My Account</summary>
@@ -68,6 +69,7 @@ exports[`NavBar > renders properly when logged out 1`] = `
       <li data-v-2202255b=""><a data-v-2202255b="">Home</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Features</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Pricing</a></li>
+      <li data-v-2202255b=""><a data-v-2202255b="">Shop QR Products</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Login</a></li>
       <li data-v-2202255b=""><a data-v-2202255b="">Sign up</a></li>
       <li data-v-2202255b=""><a role="button" href="[object Object]">

@@ -5,7 +5,6 @@ import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import NavBar from "../NavBar.vue";
-import { useUserStore } from "@/stores/user";
 
 import "html-validate/vitest";
 
@@ -33,6 +32,11 @@ describe("NavBar", () => {
   });
   it("renders properly when logged in", async () => {
     const wrapper = mount(NavBar, {
+      props: {
+        user: {
+          id: 1,
+        } as any,
+      },
       global: {
         plugins: [
           createTestingPinia({
@@ -41,11 +45,6 @@ describe("NavBar", () => {
         ],
       },
     });
-    const store = useUserStore(); // uses the testing pinia!
-    store.isAuthenticated = true;
-
-    // Await the nextTick
-    await wrapper.vm.$nextTick();
 
     expect(wrapper.find("[aria-roledescription='logo']").exists()).toBe(true);
     expect(wrapper.text()).toContain("My Account");
