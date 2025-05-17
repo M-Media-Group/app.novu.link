@@ -95,31 +95,24 @@ const submitForm = async () => {
     return;
   }
 
-  try {
-    await apiService.post("/api/v1/analytics/integrations", {
-      type: selectedOption.value,
-      external_id: id.value,
-      external_secret: secret.value,
-      debug: debug.value,
-      name: name.value,
-      debug_code: debug.value ? debugCode.value : null,
-    });
-    // Emit the updated event with the changed fields
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-    $bus.$emit(eventTypes.created_analytics_integration);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  }
+  await apiService.post("/api/v1/analytics/integrations", {
+    type: selectedOption.value,
+    external_id: id.value,
+    external_secret: secret.value,
+    debug: debug.value,
+    name: name.value,
+    debug_code: debug.value ? debugCode.value : null,
+  });
+
+  $bus.$emit(eventTypes.created_analytics_integration);
 };
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @succeess="emit('success')"
+    :submitFn="submitForm"
     submitText="Save"
     :disabled="!selectedOption || !id || !secret"
   >

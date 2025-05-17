@@ -11,32 +11,25 @@ const success = ref(false);
 
 const baseFormRef = ref();
 
+const emit = defineEmits(["success"]);
+
 const token = router.currentRoute.value.query.token as string;
 const email = router.currentRoute.value.query.email as string;
 
 const userStore = useUserStore();
-// The submit function. If there is just the password, check if the password is valid. If it is not, set the register mode. If it is, set the login mode.
-const submitForm = async () => {
-  const response = await userStore.sendPasswordReset(
-    email,
-    token,
-    password.value
-  );
-  if (response === true) {
-    success.value = response;
-  } else if (typeof response === "object") {
-    if (response.data.errors.email) {
-      response.data.errors.password = response.data.errors.email;
-      delete response.data.errors.email;
-    }
-    baseFormRef.value.setInputErrors(response.data.errors);
-  }
-  return success.value;
-};
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm" :disabled="success">
+  <base-form
+    ref="baseFormRef"
+    :disabled="success"
+    @success="emit('success')"
+    :submitFn="
+      async () => {
+        await userStore.sendPasswordReset(email, token, password);
+      }
+    "
+  >
     <label for="password">{{ $t("New password") }}</label>
     <input
       type="password"

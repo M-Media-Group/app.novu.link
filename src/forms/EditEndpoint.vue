@@ -33,29 +33,6 @@ const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
 
-// The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
-const submitForm = async () => {
-  if (!endpointUrl.value) {
-    return;
-  }
-
-  loading.value = true;
-
-  try {
-    await updateRedirectEndpoint(props.redirectId, `${props.endpointId}`, {
-      endpoint: endpointUrl.value,
-    });
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    loading.value = false;
-  }
-};
-
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 onMounted(() => {
@@ -78,7 +55,18 @@ const deleteEndpoint = async () => {
 </script>
 
 <template>
-  <base-form ref="baseFormRef" @submit="submitForm" :isLoading="loading">
+  <base-form
+    v-if="endpointUrl"
+    ref="baseFormRef"
+    :isLoading="loading"
+    @success="emit('success')"
+    :submitFn="
+      async () =>
+        await updateRedirectEndpoint(props.redirectId, `${props.endpointId}`, {
+          endpoint: endpointUrl as string,
+        })
+    "
+  >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 

@@ -403,24 +403,18 @@ const emit = defineEmits(["success"]);
 
 const deleteCurrentRedirect = async () => {
   isLoading.value = true;
-
-  try {
-    await deleteRedirect(props.redirectId).catch((error) => {
+  await deleteRedirect(props.redirectId)
+    .catch((error) => {
+      assertIsUnifiedError(error);
       alert(
-        t("An error occurred. Please try again later.") +
-          " " +
-          error.response.data.message
+        t("An error occurred. Please try again later.") + " " + error.message
       );
-      return error.response;
+      return error;
+    })
+    .finally(() => {
+      isLoading.value = false;
     });
-    emit("success");
-    $bus.$emit(eventTypes.deleted_redirect);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
-  }
+  emit("success");
 };
 
 const toggleQRCodeDropdown = (event: MouseEvent) => {

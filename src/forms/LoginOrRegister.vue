@@ -38,11 +38,6 @@ const checkEmail = async () => {
   // Check if the email is already in use
   const response = await userStore.checkEmail(userStore.userEmail);
 
-  // If the response is not a bool
-  if (typeof response !== "boolean") {
-    alert(response.data.message);
-    return;
-  }
   isRegistering.value = !response;
 
   errorMessage.value = "";
@@ -140,7 +135,8 @@ const goBack = async () => {
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @success="emit('success')"
+    :submitFn="submitForm"
     :isLoading="userStore.isLoading"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->

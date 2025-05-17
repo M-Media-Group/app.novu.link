@@ -4,12 +4,13 @@ import { defineStore } from "pinia";
 import type { PersonalAccessToken, User } from "@/types/user";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { apiService } from "@/services/apiClient";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 export const useUserStore = defineStore("user", () => {
   // the state of the user
   const isAuthenticated = ref(false);
   const isLoading = ref(false);
-  const user = ref(null) as Ref<User | null>;
+  const user = ref<User | null>(null);
   const attemptedToFetchUser = ref(false);
 
   const $bus = useEventsBus();
@@ -70,11 +71,13 @@ export const useUserStore = defineStore("user", () => {
     try {
       await apiService.post("/email-exists/" + email);
       return true;
-    } catch (error: any) {
-      if (error.response.status === 404) {
+    } catch (error) {
+      assertIsUnifiedError(error);
+
+      if (error.status === 404) {
         return false;
       }
-      return error.response;
+      throw error;
     } finally {
       isLoading.value = false;
     }
@@ -98,8 +101,6 @@ export const useUserStore = defineStore("user", () => {
       return false;
     }
 
-    isLoading.value = true;
-
     // Check if the email is already in use
     try {
       await apiService.post("/login", {
@@ -111,9 +112,11 @@ export const useUserStore = defineStore("user", () => {
       $bus.$emit(eventTypes.logged_in);
       return true;
     } catch (error) {
-      return false;
-    } finally {
-      isLoading.value = false;
+      assertIsUnifiedError(error);
+      if (error.status === 422 && error.details) {
+        error.details.password = error.details.email;
+      }
+      throw error;
     }
   }
 
@@ -176,20 +179,10 @@ export const useUserStore = defineStore("user", () => {
       return false;
     }
 
-    isLoading.value = true;
-
-    // Submit a reset password
-    try {
-      await apiService.post("/user/otp", {
-        [method]: notifiable,
-      });
-      $bus.$emit(eventTypes.sent_otp);
-      return true;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
-    }
+    await apiService.post("/user/otp", {
+      [method]: notifiable,
+    });
+    $bus.$emit(eventTypes.sent_otp);
   }
 
   /**
@@ -201,8 +194,6 @@ export const useUserStore = defineStore("user", () => {
     if (!otp) {
       return false;
     }
-
-    isLoading.value = true;
 
     // Submit a reset password
     try {
@@ -225,10 +216,15 @@ export const useUserStore = defineStore("user", () => {
       }
 
       return true;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
+    } catch (error) {
+      assertIsUnifiedError(error);
+      if (error.status === 422 && !error.details?.length) {
+        error.details = {
+          otp: "The OTP is invalid or expired.",
+        };
+      }
+
+      throw error;
     }
   }
 
@@ -265,19 +261,17 @@ export const useUserStore = defineStore("user", () => {
       return false;
     }
 
-    isLoading.value = true;
-
-    // Submit a reset password
     try {
       await apiService.post("/forgot-password", {
         email: email,
       });
       $bus.$emit(eventTypes.sent_reset_password_email);
-      return true;
     } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
+      assertIsUnifiedError(error);
+      if (error.status === 422 && error.details) {
+        error.details.password = error.details.email;
+      }
+      throw error;
     }
   }
 

@@ -3,7 +3,6 @@ import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import BaseForm from "./BaseForm.vue";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const userStore = useUserStore();
 
@@ -32,31 +31,22 @@ const submitForm = async () => {
     return;
   }
 
-  isLoading.value = true;
+  const response = await userStore.createPersonalAccessToken(tokenName.value);
+  // emit("success");
+  emit("created", response);
 
-  try {
-    const response = await userStore.createPersonalAccessToken(tokenName.value);
-    // emit("success");
-    emit("created", response);
-    baseFormRef.value.setSuccessOnInputs();
-    const text = t(
-      "Your personal access token has been created. This is the only time you can see it."
-    );
-    alert(text + "\n\n" + response.token);
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
-  }
+  const text = t(
+    "Your personal access token has been created. This is the only time you can see it."
+  );
+
+  alert(text + "\n\n" + response.token);
 };
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    :submitFn="submitForm"
     submitText="Create a new API token"
     :autofocus="autofocus"
     :isLoading="isLoading || userStore.isLoading"

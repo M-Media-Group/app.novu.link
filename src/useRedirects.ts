@@ -28,12 +28,9 @@ export const updateRedirect = async (redirectId: string, data: any) => {
 };
 
 export const deleteRedirect = async (redirectId: string) => {
-  return await apiService
-    .delete(`/api/v1/redirects/${redirectId}`)
-    .then((response) => {
-      $bus.$emit(eventTypes.deleted_redirect, redirectId);
-      return response;
-    });
+  const response = await apiService.delete(`/api/v1/redirects/${redirectId}`);
+  $bus.$emit(eventTypes.deleted_redirect, redirectId);
+  return response;
 };
 
 export const getRedirectQrCodeUrl = (redirectId: string) => {

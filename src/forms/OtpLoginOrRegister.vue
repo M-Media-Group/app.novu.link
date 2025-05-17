@@ -50,30 +50,25 @@ const makeOtpRequest = async () => {
 
   if (timeRemaining > 0) {
     alert(t("Please wait x seconds before trying again.", [timeRemaining]));
-    return;
+    throw new Error("Please wait before trying again");
   }
-
-  isLoading.value = true;
 
   const dataToSend = `${
     !usePhone.value ? userStore.userEmail : userStore.userPhone
   }`;
 
-  const result = await userStore.requestOtp(
-    dataToSend,
-    usePhone.value ? "phone_number" : "email"
-  );
-
-  if (result === true) {
+  try {
+    await userStore.requestOtp(
+      dataToSend,
+      usePhone.value ? "phone_number" : "email"
+    );
     isOnOtpPage.value = true;
     lastRequestTime.value = Date.now();
-  } else {
-    baseFormRef.value.setInputErrors(result.data.errors);
+  } catch (error) {
     // Reset the timer so the user can try again
     lastRequestTime.value = 0;
+    throw error;
   }
-
-  isLoading.value = false;
 };
 
 const validateOtp = async () => {
@@ -86,17 +81,7 @@ const validateOtp = async () => {
     return;
   }
 
-  isLoading.value = true;
-
-  const response = await userStore.confirmOtp(otpCode.value);
-
-  isLoading.value = false;
-
-  if (response === true) {
-    emit("success");
-  } else {
-    alert("Invalid OTP");
-  }
+  await userStore.confirmOtp(otpCode.value);
 };
 
 const phoneInput = ref<HTMLInputElement | null>(null);
@@ -120,7 +105,8 @@ const toggleUsePhone = async () => {
   <base-form
     ref="baseFormRef"
     v-if="isOnOtpPage"
-    @submit="validateOtp"
+    @success="emit('success')"
+    :submitFn="validateOtp"
     :isLoading="isLoading"
     :disabled="isLoading"
     :inline="inline"
@@ -144,7 +130,7 @@ const toggleUsePhone = async () => {
       maxlength="6"
       :placeholder="$t('One-time password')"
       :autofocus="autofocus"
-      @input="validateOtp"
+      @input="baseFormRef?.submit()"
     />
 
     <template #after-submit v-if="userStore.userEmail || userStore.userPhone">
@@ -162,7 +148,7 @@ const toggleUsePhone = async () => {
   <base-form
     v-else
     ref="baseFormRef"
-    @submit="makeOtpRequest"
+    :submitFn="makeOtpRequest"
     :isLoading="isLoading"
     :disabled="isLoading"
     :inline="inline"

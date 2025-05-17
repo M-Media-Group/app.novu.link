@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { updateRedirect } from "@/useRedirects";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -39,8 +38,6 @@ const submitForm = async () => {
     return;
   }
 
-  isLoading.value = true;
-
   // Create an object containing only the changed values
   const changedValues = {} as Record<string, string>;
   if (props.redirectName !== name.value) {
@@ -49,31 +46,22 @@ const submitForm = async () => {
 
   // If there are no changed values, return
   if (Object.keys(changedValues).length === 0) {
-    baseFormRef.value.setSuccessOnInputs();
     return;
   }
 
-  try {
-    await updateRedirect(props.redirectId, {
-      name: name.value,
-    });
-    // Emit the updated event with the changed fields
-    emit("updated", changedValues);
-    baseFormRef.value.setSuccessOnInputs();
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
-  }
+  await updateRedirect(props.redirectId, {
+    name: name.value,
+  });
+
+  // Emit the updated event with the changed fields
+  emit("updated", changedValues);
 };
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    :submitFn="submitForm"
     submitText="Save"
     :isLoading="isLoading"
   >

@@ -15,21 +15,15 @@ const submitForm = async () => {
   if (!userStore.userEmail) {
     return;
   }
-  const response = await userStore.sendPasswordResetEmail(userStore.userEmail);
-  if (response === true) {
-    success.value = response;
-    emit("success");
-  } else if (typeof response === "object") {
-    baseFormRef.value.setInputErrors(response.data.errors);
-  }
-  return success.value;
+  await userStore.sendPasswordResetEmail(userStore.userEmail);
 };
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @success="emit('success')"
+    :submitFn="submitForm"
     :disabled="success"
     :submit-text="$t('Send a new password')"
   >

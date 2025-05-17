@@ -37,7 +37,7 @@ const AddPaymentMethod = defineAsyncComponent(
   () => import("@/forms/AddPaymentMethod.vue")
 );
 
-const startSubscriptionForRedirect = async () => {
+const submitForm = async () => {
   if (!props.redirectId) {
     alert("No Magic Link ID provided");
     return;
@@ -70,14 +70,15 @@ const startSubscriptionForRedirect = async () => {
 
 const handleConfirmedWithPaymentMethod = () => {
   showAddForm.value = false;
-  startSubscriptionForRedirect();
+  baseFormRef.value.submit();
 };
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="startSubscriptionForRedirect"
+    @success="emit('success')"
+    :submitFn="submitForm"
     :disabled="isLoading || success"
     :isLoading="isLoading"
     :showTrigger="false"

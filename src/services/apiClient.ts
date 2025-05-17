@@ -69,7 +69,8 @@ const handleError = (
     switch (status) {
       case 422:
         unifiedError.type = "validation";
-        unifiedError.message = i18n.global.t("errors.validation_error");
+        unifiedError.message =
+          unifiedError.message ?? i18n.global.t("errors.validation_error");
         if (data?.errors && typeof data.errors === "object") {
           unifiedError.details = data.errors;
         } else {

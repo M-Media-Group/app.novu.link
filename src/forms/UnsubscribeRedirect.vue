@@ -15,31 +15,14 @@ const isLoading = ref(false);
 
 const baseFormRef = ref();
 
-// The submit function. If there is just the password, check if the password is valid. If it is not, set the register mode. If it is, set the login mode.
-const submitForm = async () => {
-  isLoading.value = true;
-  try {
-    const response = await unsubscribe(props.redirectId);
-    isLoading.value = false;
-
-    if (response === true) {
-      success.value = response;
-    } else if (typeof response === "object") {
-      return false;
-    }
-    return success.value;
-  } catch (error) {
-    console.error(error);
-    isLoading.value = false;
-    return false;
-  }
-};
+const emit = defineEmits(["success"]);
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
+    @success="emit('success')"
+    :submitFn="async () => await unsubscribe(props.redirectId)"
     :disabled="isLoading || success"
     :isLoading="isLoading"
     :submitText="$t('Unsubscribe')"

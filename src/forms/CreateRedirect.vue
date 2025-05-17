@@ -7,7 +7,6 @@ import { useI18n } from "vue-i18n";
 import { useTeamStore } from "@/stores/team";
 import { apiService } from "@/services/apiClient";
 import type { Redirect } from "@/types/redirect";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const $bus = useEventsBus();
@@ -108,35 +107,21 @@ if (props.prefillName) {
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 const submitForm = async () => {
-  isLoading.value = true;
-
   //   If the URL does not start with http, auto append https://
   if (!endpointUrl.value?.startsWith("http")) {
     endpointUrl.value = `https://${endpointUrl.value}`;
   }
 
-  try {
-    const response = await apiService.post<Redirect>("/redirects", {
-      name: name.value,
-      default_endpoint: endpointUrl.value,
-    });
-    // If the redirect was created when we were not logged in - set a 5 minute cookie
-    if (!isAuthenticated) {
-      document.cookie = `created_when_not_logged_in=${response.uuid}; max-age=300`;
-    }
-    baseFormRef.value.setSuccessOnInputs();
-    $bus.$emit(eventTypes.created_redirect);
-
-    router.push(`/redirects/${response.uuid}`);
-    emit("success");
-    baseFormRef.value.setSuccessOnInputs();
-  } catch (error) {
-    assertIsUnifiedError(error);
-    baseFormRef.value.setInputErrors(error.details);
-    return error.originalError;
-  } finally {
-    isLoading.value = false;
+  const response = await apiService.post<Redirect>("/redirects", {
+    name: name.value,
+    default_endpoint: endpointUrl.value,
+  });
+  // If the redirect was created when we were not logged in - set a 5 minute cookie
+  if (!isAuthenticated) {
+    document.cookie = `created_when_not_logged_in=${response.uuid}; max-age=300`;
   }
+  $bus.$emit(eventTypes.created_redirect);
+  router.push(`/redirects/${response.uuid}`);
 };
 
 // If we have a default endpoint value, set it and trigger the debounce
@@ -144,7 +129,7 @@ if (props.defaultEndpointValue !== "") {
   endpointUrl.value = props.defaultEndpointValue;
   debounceAddProtocolIfMissing(endpointUrl.value);
   if (props.autoSubmit) {
-    submitForm();
+    baseFormRef.value.submit();
   }
 }
 </script>
@@ -157,11 +142,11 @@ if (props.defaultEndpointValue !== "") {
     :submitText="
       inline ? $t('New magic link') : $t('Create a free permanent magic link')
     "
-    @submit="submitForm"
     ref="baseFormRef"
     :isLoading="isLoading"
     :inline="inline"
     :submitButtonClasses="buttonClasses"
+    :submitFn="submitForm"
   >
     <template v-if="showNameInput">
       <label for="name" v-show="!inline">{{ $t("Magic link name") }}</label

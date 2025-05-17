@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
-import { type PropType, nextTick, onMounted, onUpdated, ref } from "vue";
-import { navIsLoading } from "@/router";
+import {
+  type PropType,
+  computed,
+  nextTick,
+  onMounted,
+  onUpdated,
+  ref,
+} from "vue";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 type HTMLSupportedInputElement =
   | HTMLInputElement
@@ -58,13 +65,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+
+  // We can pass an ASYNC function to the submit function. This is useful for when we want to do something before the form is submitted.
+  submitFn: {
+    type: Function as PropType<() => Promise<any>>,
+    required: false,
+  },
 });
 
-const emit = defineEmits(["submit"]);
+const emit = defineEmits(["submit", "success", "error"]);
 
 const formElement = ref<HTMLFormElement>();
 
 const formIsValid = ref(false);
+
+const loading = ref(false);
 
 const checkValidity = () => {
   // For each element in the form, check if it's valid
@@ -109,11 +124,30 @@ const submit = async () => {
   if (
     formIsValid.value &&
     !props.isLoading &&
-    !navIsLoading.value &&
+    !loading.value &&
     !props.disabled
   ) {
-    // setSuccessOnInputs();
-    emit("submit");
+    if (props.submitFn) {
+      loading.value = true;
+      try {
+        await props.submitFn();
+        emit("success");
+        setSuccessOnInputs();
+      } catch (error) {
+        assertIsUnifiedError(error);
+
+        if (error.type === "validation") {
+          setSuccessOnInputs();
+          setInputErrors(error.details);
+        } else {
+          alert(error.message);
+        }
+      } finally {
+        loading.value = false;
+      }
+    } else {
+      emit("submit");
+    }
   }
 };
 
@@ -256,12 +290,17 @@ const handleInput = () => {
   checkValidity();
 };
 
+const isAnythingLoading = computed(() => {
+  return props.isLoading || loading.value;
+});
+
 defineExpose({
   checkValidity,
   setInputErrors,
   focusOnFirstInput,
   focusOnFirstEmptyInput,
   setSuccessOnInputs,
+  submit,
 });
 </script>
 
@@ -284,14 +323,14 @@ defineExpose({
         name="submit"
         :submitText="submitText"
         :submit="submit"
-        :disabled="!formIsValid || disabled || isLoading || navIsLoading"
-        :isLoading="isLoading"
+        :disabled="!formIsValid || disabled || isAnythingLoading"
+        :isLoading="isAnythingLoading"
       >
         <base-button
           v-if="showSubmitButton"
           type="submit"
-          :disabled="!formIsValid || disabled || isLoading || navIsLoading"
-          :aria-busy="isLoading"
+          :disabled="!formIsValid || disabled || isAnythingLoading"
+          :aria-busy="isAnythingLoading"
           :class="// We need to merge both { fit: !inline } and submitButtonClasses
           [{ fit: inline }, submitButtonClasses]"
         >

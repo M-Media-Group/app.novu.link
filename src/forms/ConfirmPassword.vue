@@ -13,25 +13,19 @@ const baseFormRef = ref();
 const emit = defineEmits(["success"]);
 
 const userStore = useUserStore();
-// The submit function. If there is just the password, check if the password is valid. If it is not, set the register mode. If it is, set the login mode.
-const submitForm = async () => {
-  const response = await userStore.confirmPassword(password.value);
-  if (response === true) {
-    success.value = response;
-    emit("success");
-  } else if (typeof response === "object") {
-    baseFormRef.value.setInputErrors(response.data.errors);
-  }
-  return success.value;
-};
 </script>
 
 <template>
   <base-form
     v-if="userStore.isAuthenticated"
     ref="baseFormRef"
-    @submit="submitForm"
+    @success="emit('success')"
     :disabled="success"
+    :submitFn="
+      async () => {
+        await userStore.confirmPassword(password);
+      }
+    "
   >
     <label for="password">{{ $t("Password") }}</label>
     <input

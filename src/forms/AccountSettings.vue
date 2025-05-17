@@ -40,28 +40,18 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await userStore.update(name.value, email.value, phone.value);
+  await userStore.update(name.value, email.value, phone.value);
 
-  if (response === true) {
-    // Emit the updated event with the changed fields
-    emit("updated", changedValues);
-    baseFormRef.value.setSuccessOnInputs();
-  } else if (typeof response === "object") {
-    // We want to show the user the correct fields to the user so they feel better
-    baseFormRef.value.setSuccessOnInputs();
-
-    // Show the fields with errors
-    baseFormRef.value.setInputErrors(response.data.errors);
-  }
+  emit("updated", changedValues);
 };
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @submit="submitForm"
     :isLoading="userStore.isLoading"
     submitText="Save"
+    :submitFn="submitForm"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
