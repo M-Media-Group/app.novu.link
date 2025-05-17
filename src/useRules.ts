@@ -1,4 +1,4 @@
-import { type Ref, computed, ref, watchEffect } from "vue";
+import { type Ref, computed, onMounted, ref, watchEffect } from "vue";
 import type {
   CommonRuleProperties,
   RuleGroup,
@@ -8,6 +8,7 @@ import type {
 import { debounce } from "@/helpers/debounce";
 import i18n from "@/locales/i18n";
 import { apiService } from "./services/apiClient";
+import { assertIsUnifiedError } from "./services/apiServiceErrorHandler";
 
 const rules = ref({} as Rules);
 
@@ -31,12 +32,16 @@ const getAllRules = async (redirectId?: string) => {
     ? `/api/v1/rules?redirectId=${redirectId}`
     : "/api/v1/rules";
 
-  // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly
-  const response = await apiService.get<Rules>(endpoint, removeLanguage);
-
-  isLoading.value = false;
-
-  rules.value = response;
+  try {
+    const response = await apiService.get<Rules>(endpoint, removeLanguage);
+    rules.value = response;
+  } catch (error) {
+    assertIsUnifiedError(error);
+    alert(error.message);
+    return error.originalError;
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 /**
@@ -149,7 +154,9 @@ export function useRules(
   redirectId?: Ref<string | undefined>
 ) {
   // Get all rules on load
-  getAllRules(redirectId?.value);
+  onMounted(() => {
+    getAllRules(redirectId?.value);
+  });
 
   const selectedRule = computed(() => {
     if (!modelData?.value?.selectedRuleKey) {

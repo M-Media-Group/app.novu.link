@@ -52,6 +52,7 @@ export default {
     purchase({
       transaction_id: transactionId,
       value: 36,
+      currency: "EUR",
     });
     fbq("track", "Purchase", {
       value: 36,

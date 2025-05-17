@@ -28,8 +28,8 @@ export const InsufficentContrast: Story = {
 
     const button = canvas.getByLabelText("Color", { selector: "input" });
 
-    await waitFor(() => {
-      expect(button).toBeVisible();
+    await waitFor(async () => {
+      await expect(button).toBeVisible();
     });
 
     await userEvent.click(button);
@@ -41,8 +41,8 @@ export const InsufficentContrast: Story = {
       "The contrast ratio is too low. The QR code may not be scannable."
     );
 
-    await waitFor(() => {
-      expect(contrastWarning).toBeVisible();
+    await waitFor(async () => {
+      await expect(contrastWarning).toBeVisible();
     });
   },
 };
@@ -54,8 +54,8 @@ export const ShapePage: Story = {
 
     const button = canvas.getByText("Shape", { selector: "button" });
 
-    await waitFor(() => {
-      expect(button).toBeVisible();
+    await waitFor(async () => {
+      await expect(button).toBeVisible();
     });
 
     await userEvent.click(button);
@@ -69,8 +69,8 @@ export const LogoPage: Story = {
 
     const button = canvas.getByText("Logo", { selector: "button" });
 
-    await waitFor(() => {
-      expect(button).toBeVisible();
+    await waitFor(async () => {
+      await expect(button).toBeVisible();
     });
 
     await userEvent.click(button);
@@ -84,8 +84,8 @@ export const NamePage: Story = {
 
     const button = canvas.getByText("Name", { selector: "button" });
 
-    await waitFor(() => {
-      expect(button).toBeVisible();
+    await waitFor(async () => {
+      await expect(button).toBeVisible();
     });
 
     await userEvent.click(button);
@@ -99,8 +99,8 @@ export const AdvancedPage: Story = {
 
     const button = canvas.getByText("Advanced", { selector: "button" });
 
-    await waitFor(() => {
-      expect(button).toBeVisible();
+    await waitFor(async () => {
+      await expect(button).toBeVisible();
     });
 
     await userEvent.click(button);
@@ -114,8 +114,8 @@ export const NameModal: Story = {
 
     const button = canvas.getAllByText("Create design")[0];
 
-    await waitFor(() => {
-      expect(button).toBeVisible();
+    await waitFor(async () => {
+      await expect(button).toBeVisible();
     });
 
     await userEvent.click(button);

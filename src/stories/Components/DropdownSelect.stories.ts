@@ -148,17 +148,17 @@ export const WithCheckboxesAndHundredOptions: Story = {
 
     // When pressing tab, the focus should move to the first option
     await userEvent.tab();
-    expect(firstOption).toHaveFocus();
+    await expect(firstOption).toHaveFocus();
 
     // Pressing tab again should go to the next option
     await userEvent.tab();
     const secondOption = canvas.getByDisplayValue("1");
-    expect(secondOption).toHaveFocus();
+    await expect(secondOption).toHaveFocus();
 
     // It should be possible to check it with the space key
     expect(secondOption).not.toBeChecked();
     await userEvent.type(secondOption, " ");
-    expect(secondOption).toBeChecked();
+    await expect(secondOption).toBeChecked();
   },
 };
 

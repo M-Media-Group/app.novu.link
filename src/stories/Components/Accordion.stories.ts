@@ -62,7 +62,7 @@ export const OpenWithOverflow: Story = {
     const canvas = within(canvasElement);
     const summary = canvas.getByText(overflowFixture.text_without_spaces);
 
-    expect(summary).toBeVisible();
+    await expect(summary).toBeVisible();
 
     // Weird issue caused by font line-height changing size of contents within div means the following fails for now, although no user-impact seems to be visible
     // eslint-disable-next-line no-secrets/no-secrets

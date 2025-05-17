@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import CreateProductOrder from "@/forms/CreateProductOrder.vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
@@ -86,7 +86,7 @@ window.onscroll = async () => {
   }
 };
 
-const primaryProductHeading = ref();
+const primaryProductHeading = useTemplateRef("primaryProductHeading");
 
 const handleProductSelect = (product: Product) => {
   loadedProduct.value = product;
@@ -324,7 +324,7 @@ const handleCategoryClick = (category: string) => {
       :key="product.id"
       @click="
         handleProductSelect(product as Product);
-        $refs.primaryProductHeading.scrollIntoView({
+        primaryProductHeading?.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
         });
