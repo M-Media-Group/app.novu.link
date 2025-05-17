@@ -7,7 +7,7 @@ export interface UnifiedError {
   /** A user-friendly message describing the error. */
   message: string;
   /** Optional details, especially for validation errors (e.g., field-specific messages). */
-  details?: { [field: string]: string[] | string };
+  details?: { [field: string]: string[] | string | undefined };
   /** The HTTP status code, if applicable. */
   status?: number;
   /** The original error object. */
