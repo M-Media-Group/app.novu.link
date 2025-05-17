@@ -159,34 +159,34 @@ export function useRules(
   });
 
   const selectedRule = computed(() => {
-    if (!modelData?.value?.selectedRuleKey) {
+    if (!modelData?.value?.rule) {
       return null;
     }
-    return rules.value[modelData?.value?.selectedRuleKey];
+    return rules.value[modelData?.value?.rule];
   });
 
   const allowedOperators = computed(() => {
-    if (!modelData?.value?.selectedRuleKey) {
+    if (!modelData?.value?.rule) {
       return [];
     }
-    return getAllowedOperatorForRule(modelData?.value?.selectedRuleKey);
+    return getAllowedOperatorForRule(modelData?.value?.rule);
   });
 
   const userWouldPass = ref(null as boolean | null);
 
   const debounceTestRule = debounce(() => {
     if (
-      !modelData?.value?.selectedRuleKey ||
-      !modelData?.value?.selectedOperator ||
-      !modelData?.value?.selectedValue
+      !modelData?.value?.rule ||
+      !modelData?.value?.operator ||
+      !modelData?.value?.value
     ) {
       return;
     }
 
     testRule(
-      modelData?.value?.selectedRuleKey as keyof Rules,
-      modelData?.value?.selectedOperator,
-      modelData?.value?.selectedValue,
+      modelData?.value?.rule as keyof Rules,
+      modelData?.value?.operator,
+      modelData?.value?.value,
       redirectId?.value
     )
       .then((passes) => {
@@ -217,21 +217,21 @@ export function useRules(
 
   // Compute if the value is valid. If the rule is a number, only allow numbers. If the rule has allowed values, only allow those values
   const isValidValue = computed(() => {
-    if (!selectedRule.value || !modelData?.value?.selectedValue) {
+    if (!selectedRule.value || !modelData?.value?.value) {
       return false;
     }
 
     if (
       formattedAllowedValues.value.length > 0 &&
       !formattedAllowedValues.value.some(
-        (allowedValue) => allowedValue.key == modelData?.value?.selectedValue
+        (allowedValue) => allowedValue.key == modelData?.value?.value
       )
     ) {
       return false;
     }
 
     if (selectedRule.value.valueType === "number") {
-      return /^\d*$/.test(modelData?.value?.selectedValue ?? "");
+      return /^\d*$/.test(modelData?.value?.value ?? "");
     }
 
     return true;
@@ -240,8 +240,8 @@ export function useRules(
   watchEffect(() => {
     if (
       selectedRule.value &&
-      modelData?.value?.selectedOperator &&
-      modelData?.value?.selectedValue
+      modelData?.value?.operator &&
+      modelData?.value?.value
     ) {
       debounceTestRule();
     } else {

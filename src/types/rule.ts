@@ -95,12 +95,6 @@ export interface Rules {
   is_bot: IsBot;
 }
 
-export interface RuleModel {
-  selectedRuleKey: keyof Rules | null;
-  selectedOperator: string | null;
-  selectedValue: string | null;
-}
-
 export interface RuleGroups {
   rule_groups: RuleGroup[];
 }
@@ -125,3 +119,5 @@ export interface Rule {
   created_at: Date;
   updated_at: Date;
 }
+
+export type RuleModel = Pick<Partial<Rule>, "rule" | "operator" | "value">;

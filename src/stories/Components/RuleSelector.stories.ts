@@ -27,9 +27,9 @@ const meta: Meta<typeof RuleSelector> = {
   args: {
     ...sharedInputArgs,
     modelValue: {
-      selectedRuleKey: "browser_language",
-      selectedOperator: "=",
-      selectedValue: "en",
+      rule: "browser_language",
+      operator: "=",
+      value: "en",
     },
   },
 
@@ -71,9 +71,9 @@ export const Default: Story = {};
 export const NoValues: Story = {
   args: {
     modelValue: {
-      selectedRuleKey: null,
-      selectedOperator: null,
-      selectedValue: null,
+      rule: undefined,
+      operator: undefined,
+      value: undefined,
     },
   },
 };
@@ -81,9 +81,9 @@ export const NoValues: Story = {
 export const AllErrors: Story = {
   args: {
     modelValue: {
-      selectedRuleKey: "Bad value" as any,
-      selectedOperator: "Bad value",
-      selectedValue: "Bad value",
+      rule: "Bad value" as any,
+      operator: "Bad value",
+      value: "Bad value",
     },
   },
 };
