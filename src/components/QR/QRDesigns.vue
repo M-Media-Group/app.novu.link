@@ -27,7 +27,7 @@ defineProps({
   },
 });
 
-const emit = defineEmits(["input_updated"]);
+const emit = defineEmits<{ input_updated: [QRDesign] }>();
 
 const emitInputUpdated = (data: QRDesign) => {
   emit("input_updated", data);
