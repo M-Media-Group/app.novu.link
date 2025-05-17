@@ -10,9 +10,6 @@ const props = defineProps({
   },
 });
 
-const success = ref(false);
-const isLoading = ref(false);
-
 const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
@@ -23,8 +20,6 @@ const emit = defineEmits(["success"]);
     ref="baseFormRef"
     @success="emit('success')"
     :submitFn="async () => await unsubscribe(props.redirectId)"
-    :disabled="isLoading || success"
-    :isLoading="isLoading"
     :submitText="$t('Unsubscribe')"
     :submitButtonClasses="['delete']"
   >

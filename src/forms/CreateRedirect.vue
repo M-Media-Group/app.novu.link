@@ -19,8 +19,6 @@ const name = ref("");
 
 const { t } = useI18n();
 
-const isLoading = ref(false);
-
 const baseFormRef = ref();
 
 const router = useRouter();
@@ -144,7 +142,6 @@ if (props.defaultEndpointValue !== "") {
       inline ? $t('New magic link') : $t('Create a free permanent magic link')
     "
     ref="baseFormRef"
-    :isLoading="isLoading"
     :inline="inline"
     :submitButtonClasses="buttonClasses"
     @success="handleSuccess"

@@ -9,8 +9,6 @@ const name = ref("");
 
 const baseFormRef = ref();
 
-const isLoading = ref(false);
-
 const emit = defineEmits(["success"]);
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
@@ -28,7 +26,6 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
-    :isLoading="isLoading"
     @success="emit('success')"
     :submitFn="submitForm"
   >

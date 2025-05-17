@@ -27,7 +27,6 @@ const emit = defineEmits<{
 }>();
 
 const success = ref(false);
-const isLoading = ref(false);
 
 const showAddForm = ref(typeof teamStore.activeTeam?.pm_type !== "string");
 
@@ -42,8 +41,6 @@ const submitForm = async () => {
     alert("No Magic Link ID provided");
     return;
   }
-
-  isLoading.value = true;
 
   startSubscription(props.redirectId)
     .then(() => {
@@ -62,9 +59,6 @@ const submitForm = async () => {
         );
         showAddForm.value = true;
       }
-    })
-    .finally(() => {
-      isLoading.value = false;
     });
 };
 
@@ -79,8 +73,7 @@ const handleConfirmedWithPaymentMethod = () => {
     ref="baseFormRef"
     @success="emit('success')"
     :submitFn="submitForm"
-    :disabled="isLoading || success"
-    :isLoading="isLoading"
+    :disabled="success"
     :showTrigger="false"
     :showFooter="false"
     :allowBackgroundClickToClose="false"
@@ -105,7 +98,7 @@ const handleConfirmedWithPaymentMethod = () => {
       <!-- Button to confirm subscription -->
     </template>
 
-    <template #submit="{ submit }" v-if="!showAddForm">
+    <template #submit="{ submit, isLoading }" v-if="!showAddForm">
       <base-button
         type="submit"
         ref="confirmSubButton"

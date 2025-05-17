@@ -32,8 +32,6 @@ const urlInput = ref(null as HTMLInputElement | null);
 
 const subscriptionStartRef = useTemplateRef("subscriptionStartRef");
 
-const isLoading = ref(false);
-
 const ruleData = ref<RuleModel>({
   rule: undefined,
   operator: undefined,
@@ -98,7 +96,6 @@ const submitForm = async () => {
 };
 
 const handleFailedConfirmation = () => {
-  isLoading.value = false;
   baseFormRef.value.setSuccessOnInputs();
   baseFormRef.value.setInputErrors({
     endpoint: "Error",
@@ -122,10 +119,8 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
     v-else
     ref="baseFormRef"
     @submit="startConfirming"
-    :isLoading="isLoading"
     :submitText="$t('Add destination to QR code')"
     :autofocus="false"
-    :disabled="isLoading"
     @success="emit('success')"
     :submitFn="submitForm"
   >

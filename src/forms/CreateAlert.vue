@@ -17,8 +17,6 @@ const props = defineProps({
   },
 });
 
-const isLoading = ref(false);
-
 const baseFormRef = ref();
 
 const $bus = useEventsBus();

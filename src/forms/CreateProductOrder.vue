@@ -59,8 +59,6 @@ const submitForm = async () => {
   $bus.$emit(eventTypes.created_product_order);
 };
 
-const isLoading = ref(false);
-
 const localRedirectIds = ref(props.redirectIds ?? []);
 
 const quantity = ref(1);
@@ -121,8 +119,8 @@ const gates = computed(() => {
     @succeess="emit('success')"
     :submitFn="submitForm"
     submitText="Buy now"
-    :disabled="isLoading || isLoadingProduct || localRedirectIds.length === 0"
-    :isLoading="isLoading || isLoadingProduct"
+    :disabled="isLoadingProduct || localRedirectIds.length === 0"
+    :isLoading="isLoadingProduct"
   >
     <label for="redirect">QR Code to Print on Product</label>
     <redirect-selector

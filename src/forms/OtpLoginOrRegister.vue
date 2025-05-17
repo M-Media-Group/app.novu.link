@@ -8,7 +8,6 @@ const userStore = useUserStore();
 const isOnOtpPage = ref(false);
 
 const otpCode = ref("");
-const isLoading = ref(false);
 const usePhone = ref(false);
 
 /** The number of seconds to wait before the user can request a new OTP */
@@ -107,8 +106,6 @@ const toggleUsePhone = async () => {
     v-if="isOnOtpPage"
     @success="emit('success')"
     :submitFn="validateOtp"
-    :isLoading="isLoading"
-    :disabled="isLoading"
     :inline="inline"
     ><p v-show="!inline">
       {{ $t("Enter the code you received.") }}
@@ -149,8 +146,6 @@ const toggleUsePhone = async () => {
     v-else
     ref="baseFormRef"
     :submitFn="makeOtpRequest"
-    :isLoading="isLoading"
-    :disabled="isLoading"
     :inline="inline"
     :autofocus="autofocus"
     :submitText="submitText"

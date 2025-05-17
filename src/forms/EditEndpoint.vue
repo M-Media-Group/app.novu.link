@@ -27,7 +27,7 @@ const props = defineProps({
   },
 });
 
-const loading = ref(false);
+const loadingDelete = ref(false);
 
 const baseFormRef = ref();
 
@@ -42,14 +42,14 @@ onMounted(() => {
 });
 
 const deleteEndpoint = async () => {
-  loading.value = true;
+  loadingDelete.value = true;
   try {
     await deleteRedirectEndpoint(props.redirectId, `${props.endpointId}`);
   } catch (error) {
     assertIsUnifiedError(error);
     return error.originalError;
   } finally {
-    loading.value = false;
+    loadingDelete.value = false;
   }
 };
 </script>
@@ -58,7 +58,7 @@ const deleteEndpoint = async () => {
   <base-form
     v-if="endpointUrl"
     ref="baseFormRef"
-    :isLoading="loading"
+    :isLoading="loadingDelete"
     @success="emit('success')"
     :submitFn="
       async () =>

@@ -28,8 +28,6 @@ const name = ref(props.redirectName);
 
 const baseFormRef = ref();
 
-const isLoading = ref(false);
-
 const emit = defineEmits(["updated"]);
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
@@ -59,12 +57,7 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <base-form
-    ref="baseFormRef"
-    :submitFn="submitForm"
-    submitText="Save"
-    :isLoading="isLoading"
-  >
+  <base-form ref="baseFormRef" :submitFn="submitForm" submitText="Save">
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { useI18n } from "vue-i18n";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import type { selectOption } from "@/types/listItem";
 import type { Ref } from "vue";
@@ -22,8 +21,6 @@ const props = defineProps({
 const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
-
-const { t } = useI18n();
 
 const getOptions = async (): Promise<selectOption[]> => {
   try {

@@ -15,8 +15,6 @@ const baseFormRef = ref();
 
 const emit = defineEmits(["created"]);
 
-const isLoading = ref(false);
-
 defineProps({
   /** If the form should autofocus */
   autofocus: {
@@ -49,7 +47,7 @@ const submitForm = async () => {
     :submitFn="submitForm"
     submitText="Create a new API token"
     :autofocus="autofocus"
-    :isLoading="isLoading || userStore.isLoading"
+    :isLoading="userStore.isLoading"
   >
     <label for="name">{{ $t("New token name") }}</label>
     <input

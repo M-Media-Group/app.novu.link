@@ -33,8 +33,6 @@ const props = defineProps({
 
 const $bus = useEventsBus();
 
-const isLoading = ref(false);
-
 const modal = ref();
 
 const name = ref("") as Ref<QRDesign["name"]>;
