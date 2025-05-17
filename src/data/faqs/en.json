@@ -32,6 +32,10 @@
         "description": "A redirect credit is worth one redirect. If you have 300 redirect credits, you can redirect 300 users to your defined page. Known bots and crawlers are not counted against your redirect credits."
     },
     {
+        "name": "What happens to my magic link if I never claim it and/or never sign-up?",
+        "description": "Your magic link will automatically be disabled after some time or after a few scans."
+    },
+    {
         "name": "What happens to my magic link if the URL stops existing?",
         "description": "Nothing. Your magic link will continue to redirect to the page you have defined. You can always change where the user is redirected to within your magic link."
     }
