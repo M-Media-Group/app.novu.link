@@ -107,11 +107,6 @@ if (props.prefillName) {
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 const submitForm = async () => {
-  //   If the URL does not start with http, auto append https://
-  if (!endpointUrl.value?.startsWith("http")) {
-    endpointUrl.value = `https://${endpointUrl.value}`;
-  }
-
   const response = await apiService.post<Redirect>("/redirects", {
     name: name.value,
     default_endpoint: endpointUrl.value,
@@ -146,6 +141,7 @@ if (props.defaultEndpointValue !== "") {
     :isLoading="isLoading"
     :inline="inline"
     :submitButtonClasses="buttonClasses"
+    @success="emit('success')"
     :submitFn="submitForm"
   >
     <template v-if="showNameInput">
