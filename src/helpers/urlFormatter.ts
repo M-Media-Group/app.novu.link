@@ -4,7 +4,7 @@
  * @param {string} url
  * @returns {boolean}
  */
-export function hasProtocol(url: string) {
+export function hasProtocol(url: string): boolean {
   return url.startsWith("http://") || url.startsWith("https://");
 }
 
@@ -14,7 +14,7 @@ export function hasProtocol(url: string) {
  * @param {any} url
  * @returns {string}
  */
-export function removeProtocol(url: any) {
+export function removeProtocol(url: any): string {
   // If the url is not a string, return it as is
   if (typeof url !== "string") {
     return url;
@@ -30,7 +30,10 @@ export function removeProtocol(url: any) {
  * @param {string} protocol - http:// or https:// by default its https://
  * @returns {string}
  */
-export function addProtocolIfMissing(url: string, protocol = "https://") {
+export function addProtocolIfMissing(
+  url: string,
+  protocol = "https://"
+): string {
   return hasProtocol(url) ? url : protocol + url;
 }
 
@@ -53,29 +56,32 @@ export function addProtocolIfMissing(url: string, protocol = "https://") {
  * @returns {boolean}
  *
  */
-export function looksLikeStartingWithProtocol(url: string) {
+export function looksLikeStartingWithProtocol(url: string): boolean {
+  // Prepare URL
+  url = url.toLowerCase().trim();
+
   //   If it does not start with "h" or "H" return false
   if (!url.startsWith("h") && !url.startsWith("H")) {
     return false;
   }
 
   //   if the second letter is not a "t" or "T" return false
-  if (!url[1]?.toLowerCase().startsWith("t")) {
+  if (!url[1]?.startsWith("t")) {
     return false;
   }
 
   // if the third letter is not a "t" or "T" return false
-  if (!url[2]?.toLowerCase().startsWith("t")) {
+  if (!url[2]?.startsWith("t")) {
     return false;
   }
 
   // if the fourth letter is not a "p" or "P" return false
-  if (!url[3]?.toLowerCase().startsWith("p")) {
+  if (!url[3]?.startsWith("p")) {
     return false;
   }
 
   // If the fifth letter is not a ":" or "s" return false
-  if (!url[4]?.startsWith(":") && !url[4].toLowerCase().startsWith("s")) {
+  if (!url[4]?.startsWith(":") && !url[4].startsWith("s")) {
     return false;
   }
 
@@ -98,7 +104,10 @@ export function looksLikeStartingWithProtocol(url: string) {
  * @param {string} url
  * @param {string} protocol
  */
-export function softlyAddProtocolIfMissing(url: string, protocol = "https://") {
+export function softlyAddProtocolIfMissing(
+  url: string,
+  protocol = "https://"
+): string {
   return looksLikeStartingWithProtocol(url) ? url : protocol + url;
 }
 
@@ -108,6 +117,6 @@ export function softlyAddProtocolIfMissing(url: string, protocol = "https://") {
  * @param {string} url
  * @param {string} protocol
  */
-export function formatUrl(url: string, protocol = "https://") {
+export function formatUrl(url: string, protocol = "https://"): string {
   return softlyAddProtocolIfMissing(url, protocol).trim().replace(/ /g, "");
 }
