@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends unknown">
 import BaseButton from "@/components/BaseButton.vue";
 import {
   type PropType,
@@ -68,12 +68,15 @@ const props = defineProps({
 
   // We can pass an ASYNC function to the submit function. This is useful for when we want to do something before the form is submitted.
   submitFn: {
-    type: Function as PropType<() => Promise<any>>,
+    type: Function as PropType<() => Promise<T>>,
     required: false,
   },
 });
 
-const emit = defineEmits(["submit", "success", "error"]);
+const emit = defineEmits<{
+  (e: "success", response: T): void;
+  (e: "submit"): void;
+}>();
 
 const formElement = ref<HTMLFormElement>();
 
@@ -130,8 +133,8 @@ const submit = async () => {
     if (props.submitFn) {
       loading.value = true;
       try {
-        await props.submitFn();
-        emit("success");
+        const response = await props.submitFn();
+        emit("success", response);
         setSuccessOnInputs();
       } catch (error) {
         assertIsUnifiedError(error);

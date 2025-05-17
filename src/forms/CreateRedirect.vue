@@ -11,7 +11,9 @@ import { useUrlFormatter } from "@/composables/useUrlFormatter";
 
 const $bus = useEventsBus();
 
-const emit = defineEmits(["success"]);
+const emit = defineEmits<{
+  success: [Redirect["uuid"]];
+}>();
 
 const name = ref("");
 
@@ -107,16 +109,20 @@ if (props.prefillName) {
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 const submitForm = async () => {
-  const response = await apiService.post<Redirect>("/redirects", {
+  return await apiService.post<Redirect>("/redirects", {
     name: name.value,
     default_endpoint: endpointUrl.value,
   });
+};
+
+const handleSuccess = async (response: Redirect) => {
   // If the redirect was created when we were not logged in - set a 5 minute cookie
   if (!isAuthenticated) {
     document.cookie = `created_when_not_logged_in=${response.uuid}; max-age=300`;
   }
   $bus.$emit(eventTypes.created_redirect);
-  router.push(`/redirects/${response.uuid}`);
+  emit("success", response.uuid);
+  return router.push(`/redirects/${response.uuid}`);
 };
 
 // If we have a default endpoint value, set it and trigger the debounce
@@ -141,7 +147,7 @@ if (props.defaultEndpointValue !== "") {
     :isLoading="isLoading"
     :inline="inline"
     :submitButtonClasses="buttonClasses"
-    @success="emit('success')"
+    @success="handleSuccess"
     :submitFn="submitForm"
   >
     <template v-if="showNameInput">

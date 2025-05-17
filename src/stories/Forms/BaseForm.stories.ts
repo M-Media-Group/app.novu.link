@@ -5,7 +5,8 @@ import BaseForm from "@/forms/BaseForm.vue";
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof BaseForm> = {
   title: "Forms/BaseForm",
-  component: BaseForm,
+  // BaseForm has generics declaration and causes some weird issues here - @todo investigate later
+  component: BaseForm as any,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
 };
