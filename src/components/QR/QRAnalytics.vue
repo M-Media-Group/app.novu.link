@@ -4,7 +4,6 @@ import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, computed } from "vue";
-import { defineProps } from "vue";
 import HeatMap from "@/components/charts/HeatMap.vue";
 
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
