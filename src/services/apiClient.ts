@@ -10,9 +10,11 @@ import type { UnifiedError } from "./apiServiceErrorHandler";
 import { z } from "zod";
 import { flattenObjectToDotNotationWithArrayAndStopAtKey } from "@/helpers/hasMethod";
 
+export const baseUrl = import.meta.env.VITE_API_URL;
+
 // Configure an Axios instance
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Uncomment and set if you have a common base URL prefix for all API calls
+  baseURL: baseUrl, // Uncomment and set if you have a common base URL prefix for all API calls
   withCredentials: true, // Crucial for cookie-based authentication (e.g., Laravel Sanctum)
   withXSRFToken: true, // Crucial for CSRF protection
   xsrfCookieName: "XSRF-TOKEN",

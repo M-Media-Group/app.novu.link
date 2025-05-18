@@ -1,8 +1,10 @@
 import { type Ref, computed, ref, watch } from "vue";
 import type { Attribute, Product, Variant } from "@/types/product";
 import { debounce } from "@/helpers/debounce";
-import { parseStreamedResponse } from "@/helpers/streamers";
-import { apiService } from "@/services/apiClient";
+import {
+  getProduct,
+  streamProducts,
+} from "@/repositories/product/productRepository";
 
 const products = ref([] as Product[]);
 const currentPage = ref(1);
@@ -16,27 +18,12 @@ const getProducts = async (
   categoryId?: string
 ) => {
   isLoading.value = true;
-  const baseURL = import.meta.env.VITE_API_URL;
-
-  let url = `${baseURL}/api/v1/products?page=${page}&stream=true`;
-  if (categoryId) {
-    url += `&categories[]=${categoryId}`;
-  }
 
   try {
-    const response = await fetch(url, {
-      headers: { Accept: "application/json" },
-    });
-
-    if (!response.ok) {
-      console.error("Failed to fetch products");
-      return [];
-    }
-
-    const reader = response.body?.getReader();
-    if (reader) {
-      await parseStreamedResponse(reader, productsArray); // Pass local products array for streaming
-    }
+    await streamProducts(
+      { page, categories: categoryId ? [categoryId] : [] },
+      productsArray.value
+    );
   } catch (error) {
     console.error("Error fetching products:", error);
   } finally {
@@ -54,13 +41,6 @@ const getProductsByCategory = async (
   currentPage.value = 1;
   hasMoreProducts.value = true;
   await getProducts(productRef, currentPage.value, categoryId);
-};
-
-const getProduct = async (id: Product["id"]): Promise<Product | null> => {
-  const response = await apiService.get<Product | null>(
-    "/api/v1/products/" + id
-  );
-  return response;
 };
 
 /**
@@ -184,7 +164,7 @@ const debounceLoadMoreProducts = debounce(loadMoreProducts);
  */
 function getAllImages(product: {
   image: string;
-  variants?: { imageUrl: string }[];
+  variants?: { imageUrl: string | null }[];
 }): string[] {
   const variantImages = product.variants?.flatMap(
     (variant) => variant.imageUrl
@@ -192,7 +172,12 @@ function getAllImages(product: {
   if (!variantImages) {
     return [product.image];
   }
-  return [...new Set([product.image, ...variantImages])].filter(Boolean);
+  return [
+    ...new Set([
+      product.image,
+      ...variantImages.filter((image) => image !== null),
+    ]),
+  ].filter(Boolean);
 }
 
 /**
@@ -230,7 +215,7 @@ const allAttributes = computed((): Attribute[] => {
 });
 
 export const useProducts = () => {
-  const loadedProduct = ref(null as Product | null);
+  const loadedProduct = ref<Product | null>(null);
   const isLoadingProduct = ref(false);
 
   const selectedVariant = ref(null as Variant | null);
@@ -246,7 +231,7 @@ export const useProducts = () => {
     isLoadingProduct.value = true;
     selectedVariant.value = null;
     selectedAttributes.value = [];
-    loadedProduct.value = await getProduct(id);
+    loadedProduct.value = await getProduct({ id });
 
     isLoadingProduct.value = false;
 

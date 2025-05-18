@@ -1,5 +1,3 @@
-import type { Ref } from "vue";
-
 // Utility to clean the JSON string fragments
 export const cleanJSONString = (str: string) => {
   if (str.endsWith(",")) str = str.slice(0, -1);
@@ -11,7 +9,7 @@ export const cleanJSONString = (str: string) => {
 // Updated utility to handle streamed response, pushing results into the local products array
 export const parseStreamedResponse = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
-  productsArray: Ref<any[]>
+  productsArray: any[]
 ) => {
   const decoder = new TextDecoder("utf-8");
   let accumulatedData = "";
@@ -30,7 +28,7 @@ export const parseStreamedResponse = async (
       if (objectString) {
         try {
           const product = JSON.parse(objectString);
-          productsArray.value.push(product); // Use the local array
+          productsArray.push(product); // Use the local array
         } catch (error) {
           console.error("Error parsing JSON object:", error);
           console.error("Invalid JSON string:", objectString);
@@ -47,14 +45,14 @@ export const parseStreamedResponse = async (
 };
 
 // Updated parseRemainingData to use the local products array
-export const parseRemainingData = (data: string, productsArray: Ref<any[]>) => {
+export const parseRemainingData = (data: string, productsArray: any[]) => {
   try {
     data = cleanJSONString(data);
     if (!data || data === "[]") return;
 
     const lastProductsArray = JSON.parse(`[${data}]`);
     lastProductsArray.forEach((product: any) => {
-      productsArray.value.push(product); // Use the local array
+      productsArray.push(product); // Use the local array
     });
   } catch (error) {
     console.error("Error parsing remaining JSON object:", error);
