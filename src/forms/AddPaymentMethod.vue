@@ -83,7 +83,6 @@ const getClientSecret = async () => {
 };
 
 const addPaymentMethod = async () => {
-  form.processing = true;
   // Access instance methods, e.g. createToken()
   // Get stripe element
 
@@ -91,24 +90,31 @@ const addPaymentMethod = async () => {
     form.error = t(
       "There was an error with the payment intent. Please try again."
     );
-    form.processing = false;
-    alert(form.error);
-    return;
   }
 
   if (!card.value) {
     form.error = t(
       "There was an error with the card element. Please try again."
     );
-    form.processing = false;
+  }
+
+  if (form.error) {
     alert(form.error);
     return;
   }
 
+  form.processing = true;
+
   const cardElement = card.value?.stripeElement;
 
-  elms.value?.instance
-    .confirmCardSetup(clientSecret.value, {
+  const result:
+    | {
+        error: { message: string };
+        setupIntent: { payment_method: string };
+      }
+    | undefined = await elms.value?.instance.confirmCardSetup(
+    clientSecret.value,
+    {
       payment_method: {
         card: cardElement,
         billing_details: {
@@ -116,38 +122,41 @@ const addPaymentMethod = async () => {
           email: userStore.user?.email,
         },
       },
-    })
-    .then(
-      (result: {
-        error: { message: string };
-        setupIntent: { payment_method: string };
-      }) => {
-        // Handle result.error or result.token
-        if (result.error) {
-          form.error = result.error.message;
-          alert(form.error);
-          form.processing = false;
-        } else {
-          if (!userStore.isAuthenticated) {
-            return;
-          }
+    }
+  );
 
-          addPaymentMethodRepo(result.setupIntent)
-            .then((response) => {
-              // If the response is false, pass to the next catch
-              if (!response) {
-                throw new Error("Error adding payment method");
-              }
-              emit("success");
-              form.processing = false;
-            })
-            .catch((error) => {
-              form.error = error.response.data.message;
-              form.processing = false;
-            });
-        }
-      }
+  if (!result) {
+    form.error = t(
+      "There was an error with the payment intent. Please try again."
     );
+    form.processing = false;
+    return;
+  }
+
+  // Handle result.error or result.token
+  if (result.error) {
+    form.error = result.error.message;
+    alert(form.error);
+    form.processing = false;
+  } else {
+    if (!userStore.isAuthenticated) {
+      return;
+    }
+
+    addPaymentMethodRepo(result.setupIntent)
+      .then((response) => {
+        // If the response is false, pass to the next catch
+        if (!response) {
+          throw new Error("Error adding payment method");
+        }
+        emit("success");
+        form.processing = false;
+      })
+      .catch((error) => {
+        form.error = error.response.data.message;
+        form.processing = false;
+      });
+  }
 };
 
 const appearanceVariables = {
