@@ -157,30 +157,6 @@ const loadMoreProducts = async () => {
 const debounceLoadMoreProducts = debounce(loadMoreProducts);
 
 /**
- * Get all the images
- *
- * @param product - The product to get the images from
- * @returns An array of image URLs
- */
-function getAllImages(product: {
-  image: string;
-  variants?: { imageUrl: string | null }[];
-}): string[] {
-  const variantImages = product.variants?.flatMap(
-    (variant) => variant.imageUrl
-  );
-  if (!variantImages) {
-    return [product.image];
-  }
-  return [
-    ...new Set([
-      product.image,
-      ...variantImages.filter((image) => image !== null),
-    ]),
-  ].filter(Boolean);
-}
-
-/**
  * All the attributes across all products
  *
  * This computed property will return all the attributes across all products.
@@ -213,6 +189,30 @@ const allAttributes = computed((): Attribute[] => {
 
   return attributes;
 });
+
+/**
+ * Get all the images
+ *
+ * @param product - The product to get the images from
+ * @returns An array of image URLs
+ */
+function getAllImages(product: {
+  image: string;
+  variants?: { imageUrl: string | null }[];
+}): string[] {
+  const variantImages = product.variants?.flatMap(
+    (variant) => variant.imageUrl
+  );
+  if (!variantImages) {
+    return [product.image];
+  }
+  return [
+    ...new Set([
+      product.image,
+      ...variantImages.filter((image) => image !== null),
+    ]),
+  ].filter(Boolean);
+}
 
 export const useProducts = () => {
   const loadedProduct = ref<Product | null>(null);
