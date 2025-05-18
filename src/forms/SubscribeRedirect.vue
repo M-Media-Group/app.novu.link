@@ -7,7 +7,6 @@ import { defineAsyncComponent, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import { startSubscription } from "@/useRedirects";
 import { useTeamStore } from "@/stores/team";
-import BaseButton from "@/components/BaseButton.vue";
 
 const props = defineProps({
   redirectId: {
@@ -77,7 +76,8 @@ const handleConfirmedWithPaymentMethod = () => {
     :showTrigger="false"
     :showFooter="false"
     :allowBackgroundClickToClose="false"
-    :showSubmitButton="false"
+    :showSubmitButton="!showAddForm"
+    :submitText="submitText"
   >
     <add-payment-method
       v-if="showAddForm"
@@ -96,18 +96,6 @@ const handleConfirmedWithPaymentMethod = () => {
       </p>
 
       <!-- Button to confirm subscription -->
-    </template>
-
-    <template #submit="{ submit, isLoading }" v-if="!showAddForm">
-      <base-button
-        type="submit"
-        ref="confirmSubButton"
-        :disabled="isLoading"
-        :aria-busy="isLoading"
-        @click="submit()"
-      >
-        {{ submitText }}
-      </base-button>
     </template>
 
     <template #after-submit>
