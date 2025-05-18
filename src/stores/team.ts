@@ -6,6 +6,7 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useRouter } from "vue-router";
 import { apiService } from "@/services/apiClient";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import { getUserTeams as getUserTeamsRepo } from "@/repositories/team/teamRepository";
 
 export const useTeamStore = defineStore("team", () => {
   const activeTeamId = ref(null as Team["id"] | null);
@@ -18,7 +19,7 @@ export const useTeamStore = defineStore("team", () => {
 
   const getUserTeams = async () => {
     try {
-      const response = await apiService.get<Team[]>("/api/v1/teams");
+      const response = await getUserTeamsRepo();
       teams.value = response;
 
       const activeTeam = teams.value.find((team) => team.is_active)?.id;

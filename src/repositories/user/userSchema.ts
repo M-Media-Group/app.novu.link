@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { teamSchema } from "../team/teamSchema";
 
 const emailSchema = z.string().email("Invalid email format");
 const phoneNumberSchema = z.string().min(5).max(20).startsWith("+", {
@@ -103,20 +104,6 @@ export const createPersonalAccessTokenRequestSchema = z.object({
 
 export const deletePersonalAccessTokenRequestSchema = z.object({
   id: z.number(),
-});
-
-export const teamSchema = z.object({
-  id: z.number(),
-  user_id: z.number(),
-  name: z.string(),
-  personal_team: z.boolean(),
-  created_at: z.coerce.date(),
-  updated_at: z.coerce.date(),
-  is_billing_exempt: z.boolean(),
-  stripe_id: z.string().nullable(),
-  pm_type: z.string().nullable(),
-  pm_last_four: z.string().length(4).nullable(),
-  trial_ends_at: z.coerce.date().nullable(),
 });
 
 export const getUserResponseSchema = z.object({
