@@ -1,11 +1,12 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
+import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { startSubscription } from "@/useRedirects";
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { startSubscription } from "@/useRedirects";
 import { useTeamStore } from "@/stores/team";
 
 const props = defineProps({
@@ -40,37 +41,34 @@ const submitForm = async () => {
     alert("No Magic Link ID provided");
     return;
   }
-
-  startSubscription(props.redirectId)
-    .then(() => {
-      success.value = true;
-      emit("success");
-    })
-    .catch((error: null | Record<string, any>) => {
-      console.log("Error starting subscription");
-
-      // if the error message contains "invalid payment method", show the add payment method form
-      if (error?.response?.data?.message?.includes("invalid payment method")) {
-        alert(
-          t(
-            "There is a problem with your payment method. Please add a new one."
-          )
-        );
-        showAddForm.value = true;
-      }
-    });
+  try {
+    await startSubscription(props.redirectId);
+  } catch (error) {
+    assertIsUnifiedError(error);
+    if (error?.message?.includes("invalid payment method")) {
+      alert(
+        t("There is a problem with your payment method. Please add a new one.")
+      );
+      showAddForm.value = true;
+    }
+  }
 };
 
 const handleConfirmedWithPaymentMethod = () => {
   showAddForm.value = false;
   baseFormRef.value.submit();
 };
+
+const handleSuccess = () => {
+  success.value = true;
+  emit("success");
+};
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @success="emit('success')"
+    @success="handleSuccess"
     :submitFn="submitForm"
     :disabled="success"
     :showTrigger="false"
