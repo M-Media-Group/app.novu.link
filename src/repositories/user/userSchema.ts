@@ -125,14 +125,14 @@ export const getUserResponseSchema = z.object({
   email: emailSchema,
   email_verified_at: z.coerce.date().nullable(),
   two_factor_confirmed_at: z.coerce.date().nullable(),
-  current_team_id: z.number(),
+  current_team_id: z.number().nullable(),
   profile_photo_path: z.string().url().nullable(),
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
   phone_number: phoneNumberSchema.nullable(),
   phone_number_verified_at: z.coerce.date().nullable(),
   last_login_at: z.coerce.date().nullable(),
-  profile_photo_url: z.string(),
+  profile_photo_url: z.string().url().nullable(),
   current_team: teamSchema,
 });
 
