@@ -50,25 +50,14 @@ const startConfirming = async () => {
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  if (
-    !endpointUrl.value ||
-    !ruleData.value.rule ||
-    !ruleData.value.operator ||
-    !ruleData.value.value ||
-    !props.redirectId
-  ) {
-    throw new Error("Missing required fields");
-  }
-
   try {
     await addRedirectEndpoint(props.redirectId, {
-      endpoint: endpointUrl.value,
-      rule_groups: [
-        {
-          rules: [ruleData.value],
-        },
-      ],
+      endpoint: endpointUrl.value ?? undefined,
+
+      /** @note the below type assertion is not really true (the values may still be undefined), but thats OK because Zod will cath it */
+      rule_groups: [{ rules: [ruleData.value as Required<RuleModel>] }],
     });
+
     $bus.$emit(eventTypes.created_endpoint);
   } catch (error) {
     assertIsUnifiedError(error);

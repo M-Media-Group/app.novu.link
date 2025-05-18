@@ -1,10 +1,5 @@
 import { type Ref, computed, onMounted, ref, watchEffect } from "vue";
-import type {
-  CommonRuleProperties,
-  RuleGroup,
-  RuleModel,
-  Rules,
-} from "@/types/rule";
+import type { CommonRuleProperties, RuleModel, Rules } from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
 import i18n from "@/locales/i18n";
 import { apiService } from "./services/apiClient";
@@ -141,8 +136,11 @@ const getAllowedOperatorForRule = (ruleName: keyof Rules) => {
             ],
  *
  */
-export function parseRuleGroup(ruleGroup: RuleGroup) {
-  return ruleGroup.rules.map((rule) => {
+export function parseRuleGroup(rules: RuleModel[]) {
+  return rules.map((rule) => {
+    if (!rule.rule || !rule.operator || !rule.value) {
+      return "";
+    }
     const ruleName = t("Rules." + rule.rule + ".Name", rule.rule);
     const operatorName = t(rule.operator).toLocaleLowerCase();
     return `${ruleName} ${operatorName} ${rule.value}`;

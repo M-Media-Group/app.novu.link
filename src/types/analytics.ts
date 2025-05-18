@@ -17,7 +17,7 @@ export interface Analytics {
 }
 
 export interface ClicksByTimeOfDay {
-  redirect_uuid: string;
+  redirect_uuid?: string;
   datetime: string;
   click_count: number;
 }

@@ -8,6 +8,7 @@ import type { Endpoint } from "@/types/redirect";
 import { parseRuleGroup } from "@/useRules";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { isError } from "@/helpers/httpCodes";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps({
   redirectId: {
@@ -63,6 +64,25 @@ const isDefaultEndpoint = (endpoint: Endpoint) => {
     !endpoint.rule_groups[0]
   );
 };
+
+const { t } = useI18n();
+
+const formatSubtitle = (endpoint: Endpoint) => {
+  const group = endpoint.rule_groups?.[0];
+  if (!group) {
+    return t("Default destination") + " (" + t("If no rules match") + ")";
+  }
+  const rules = group?.rules;
+  if (!rules || rules.length === 0) {
+    return t("Default destination") + " (" + t("No rules") + ")";
+  }
+  return group
+    ? t("If") + " " + parseRuleGroup(rules)[0]
+    : t("Default destination") +
+        (props.endpoints && props.endpoints?.length <= 1
+          ? ""
+          : " (" + t("If no rules match") + ")");
+};
 </script>
 <template>
   <template v-if="isLoading">
@@ -105,14 +125,7 @@ const isDefaultEndpoint = (endpoint: Endpoint) => {
           disabled: !subscribed && index > 0,
         }"
         :title="removeProtocol(endpoint.endpoint)"
-        :subtitle="
-          endpoint.rule_groups?.[0]
-            ? $t('If') + ' ' + parseRuleGroup(endpoint.rule_groups[0])[0]
-            : $t('Default destination') +
-              (endpoints.length <= 1
-                ? ''
-                : ' (' + $t('If no rules match') + ')')
-        "
+        :subtitle="formatSubtitle(endpoint)"
         :badges="
           endpoint.last_http_code && isError(endpoint.last_http_code)
             ? [$t('Error') + ' ' + endpoint.last_http_code]

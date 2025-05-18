@@ -1,6 +1,7 @@
 import type { ClicksByTimeOfDay } from "./analytics";
 import type { AnalyticsIntegration } from "./analyticsIntegrations";
 import type { QRDesign } from "./qrDesign";
+import type { RuleModel } from "./rule";
 import type { Team } from "./team";
 
 export interface Redirect {
@@ -34,11 +35,16 @@ export interface Endpoint {
   order?: number;
   created_at?: Date;
   updated_at?: Date;
-  rule_groups?: any[];
+  rule_groups?: RuleGroup[];
   clicks?: Click[];
   clicks_by_time_of_day?: ClicksByTimeOfDay[];
   clicks_by_minute?: ClicksByTimeOfDay[];
-  last_http_code?: number;
+  last_http_code?: number | null;
+}
+
+export interface RuleGroup {
+  match_all?: boolean | null;
+  rules: RuleModel[];
 }
 
 export interface Click {

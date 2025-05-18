@@ -75,6 +75,18 @@ interface IsBot extends CommonRuleProperties {
   value: boolean;
 }
 
+interface DateRule extends CommonRuleProperties {
+  value: Date;
+}
+
+interface MoonPhase extends CommonRuleProperties {
+  value: string;
+}
+
+interface OperatingSystem extends CommonRuleProperties {
+  value: string;
+}
+
 export interface Rules {
   browser_language: BrowserLanguage;
   cookie: Cookie;
@@ -93,6 +105,9 @@ export interface Rules {
   supports_geolocation: SupportsGeolocation;
   user_time: UserTime;
   is_bot: IsBot;
+  date: DateRule;
+  moon_phase: MoonPhase;
+  operating_system: OperatingSystem;
 }
 
 export interface RuleGroups {
@@ -101,8 +116,8 @@ export interface RuleGroups {
 
 export interface RuleGroup {
   id: number;
-  name: null;
-  match_all: number;
+  name: string | null;
+  match_all: boolean;
   endpoint_id: number;
   created_at: Date;
   updated_at: Date;

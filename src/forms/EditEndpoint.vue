@@ -44,7 +44,7 @@ onMounted(() => {
 const deleteEndpoint = async () => {
   loadingDelete.value = true;
   try {
-    await deleteRedirectEndpoint(props.redirectId, `${props.endpointId}`);
+    await deleteRedirectEndpoint(props.redirectId, props.endpointId);
   } catch (error) {
     assertIsUnifiedError(error);
     return error.originalError;
@@ -62,7 +62,7 @@ const deleteEndpoint = async () => {
     @success="emit('success')"
     :submitFn="
       async () =>
-        await updateRedirectEndpoint(props.redirectId, `${props.endpointId}`, {
+        await updateRedirectEndpoint(props.redirectId, props.endpointId, {
           endpoint: endpointUrl as string,
         })
     "
