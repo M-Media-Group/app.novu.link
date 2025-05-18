@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
-import { nextTick, onBeforeMount, onMounted, reactive, ref } from "vue";
+import {
+  nextTick,
+  onBeforeMount,
+  onMounted,
+  reactive,
+  ref,
+  useTemplateRef,
+} from "vue";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElement, StripeElements } from "vue-stripe-js";
 import { getCssVarForStripe } from "@/helpers/cssVariables";
 import { useI18n } from "vue-i18n";
 import BaseForm from "@/forms/BaseForm.vue";
-import { useTeamStore } from "@/stores/team";
 import {
   addPaymentMethod as addPaymentMethodRepo,
   getPaymentIntent,
@@ -31,7 +37,6 @@ const paymentInfoComplete = ref(false);
 const baseFormRef = ref();
 
 const userStore = useUserStore();
-const teamStore = useTeamStore();
 
 const form = reactive({
   paymentMethod: "",
@@ -53,8 +58,8 @@ const handleStripeInput = async (event: { complete: any }) => {
 };
 
 const stripeLoaded = ref(false);
-const elms = ref();
-const card = ref();
+const elms = useTemplateRef<any>("elms");
+const card = useTemplateRef<any>("card");
 
 const clientSecret = ref();
 
@@ -74,9 +79,7 @@ onMounted(() => {
 
 const getClientSecret = async () => {
   const response = await getPaymentIntent();
-  if (response) {
-    clientSecret.value = response.client_secret;
-  }
+  clientSecret.value = response.client_secret;
 };
 
 const addPaymentMethod = async () => {
@@ -93,9 +96,18 @@ const addPaymentMethod = async () => {
     return;
   }
 
-  const cardElement = card.value.stripeElement;
+  if (!card.value) {
+    form.error = t(
+      "There was an error with the card element. Please try again."
+    );
+    form.processing = false;
+    alert(form.error);
+    return;
+  }
 
-  elms.value.instance
+  const cardElement = card.value?.stripeElement;
+
+  elms.value?.instance
     .confirmCardSetup(clientSecret.value, {
       payment_method: {
         card: cardElement,
@@ -184,7 +196,7 @@ const handleElementReady = async () => {
 };
 
 const focusOnInput = () => {
-  card.value.stripeElement.focus();
+  card.value?.stripeElement.focus();
 };
 </script>
 
