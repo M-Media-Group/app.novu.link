@@ -53,7 +53,7 @@ const getData = () => {
   }
 
   isLoading.value = true;
-  getRedirect(props.redirectId)
+  getRedirect({ id: props.redirectId })
     .then((response) => {
       // From the response, we need to pass as props the redirect name, the redirect URL, and the redirect ID
       redirectName.value = response.name;

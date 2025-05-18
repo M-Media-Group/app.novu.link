@@ -20,7 +20,7 @@ export default class extends baseGate {
 
     try {
       // Get the redirect to determine if we need to redirect
-      const redirect = await getRedirect(redirectId);
+      const redirect = await getRedirect({ id: redirectId });
 
       if (redirect?.subscribed_at === null) {
         throw new Error("Not subscribed");

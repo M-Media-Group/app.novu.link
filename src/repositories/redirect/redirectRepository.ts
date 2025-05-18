@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   createRedirectRequestSchema,
   createRedirectResponseSchema,
+  getRedirectRequestSchema,
   getRedirectResponseSchema,
   getRedirectsResponseSchema,
 } from "./redirectSchema";
@@ -32,9 +33,11 @@ export const getRedirects = async () => {
   );
 };
 
-export const getRedirect = async (uuid: string) => {
+export const getRedirect = async (
+  data: z.infer<typeof getRedirectRequestSchema>
+) => {
   return await apiServiceCall(
-    `/api/v1/redirects/${uuid}`,
+    `/api/v1/redirects/${data.id}`,
     "get",
     undefined,
     undefined,

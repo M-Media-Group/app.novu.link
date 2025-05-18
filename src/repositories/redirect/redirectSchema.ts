@@ -27,6 +27,10 @@ export const createRedirectResponseSchema = z.object({
   heatmap: z.array(z.array(z.number())).optional(),
 });
 
+export const getRedirectRequestSchema = z.object({
+  id: z.string(),
+});
+
 export const getRedirectsResponseSchema = z.array(createRedirectResponseSchema);
 
 export const getRedirectResponseSchema = createRedirectResponseSchema;
