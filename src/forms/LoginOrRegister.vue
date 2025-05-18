@@ -5,11 +5,8 @@ import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 import { useUserStore } from "@/stores/user";
 import { nextTick, reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
 
 const userStore = useUserStore();
-
-const { t } = useI18n();
 
 /**
  * Note that we don't have the email here. Its in the userStore - we put it there so we can remember the email entered across the login, forgot password, and register pages.
