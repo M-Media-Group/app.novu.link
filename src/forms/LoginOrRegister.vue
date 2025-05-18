@@ -50,21 +50,16 @@ const login = async () => {
   if (!userStore.userEmail) {
     return;
   }
-  // Check if the email is already in use
-  const response = await userStore.login(
-    userStore.userEmail,
-    authForm.password
-  );
-
-  if (response === false) {
-    baseFormRef.value.setInputErrors({
-      password: t("Invalid email or password"),
-    });
-    // const data = await response.json();
-    // handleError(data.errors);
-    authForm.password = "";
-  } else {
+  try {
+    // Check if the email is already in use
+    await userStore.login(userStore.userEmail, authForm.password);
     emit("success");
+  } catch (error) {
+    assertIsUnifiedError(error);
+
+    authForm.password = "";
+
+    throw error;
   }
 };
 

@@ -44,6 +44,14 @@ export const useUserStore = defineStore("user", () => {
     return true;
   });
 
+  $bus.$on(eventTypes.logged_in, () => {
+    getUser();
+  });
+
+  $bus.$on(eventTypes.registered, () => {
+    getUser();
+  });
+
   // The userEmail is meant for keeping email state across auth pages, for example when going from login to forgot-password page
   const userEmail = ref(null) as Ref<string | null>;
 
@@ -54,13 +62,22 @@ export const useUserStore = defineStore("user", () => {
    *
    */
   async function getUser() {
-    user.value = await getUserUser();
-
-    attemptedToFetchUser.value = true;
-    isAuthenticated.value = true;
-
-    userEmail.value = user.value.email;
-    userPhone.value = user.value.phone_number;
+    try {
+      user.value = await getUserUser();
+      isAuthenticated.value = true;
+      userEmail.value = user.value.email;
+      userPhone.value = user.value.phone_number;
+    } catch (error) {
+      assertIsUnifiedError(error);
+      if (error.status === 401) {
+        isAuthenticated.value = false;
+        user.value = null;
+        return;
+      }
+      throw error;
+    } finally {
+      attemptedToFetchUser.value = true;
+    }
   }
 
   /**
@@ -99,13 +116,11 @@ export const useUserStore = defineStore("user", () => {
         password: password,
         remember: "on",
       });
-      await getUser();
-      $bus.$emit(eventTypes.logged_in);
       return true;
     } catch (error) {
       assertIsUnifiedError(error);
       if (error.status === 422 && error.details) {
-        error.details.password = error.details.email;
+        error.details.password = error.details.password ?? error.details.email;
       }
       throw error;
     }
@@ -128,8 +143,6 @@ export const useUserStore = defineStore("user", () => {
       terms: true,
     });
 
-    await getUser();
-    $bus.$emit(eventTypes.registered);
     return true;
   }
 

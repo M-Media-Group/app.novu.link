@@ -17,12 +17,28 @@ import {
 } from "./userSchema";
 import { apiServiceCall } from "../apiServiceCall";
 
+import $bus, { eventTypes } from "@/eventBus/events";
+
 export const login = async (data: z.infer<typeof loginRequestSchema>) => {
-  return await apiServiceCall("/login", "post", data, loginRequestSchema);
+  const response = await apiServiceCall(
+    "/login",
+    "post",
+    data,
+    loginRequestSchema
+  );
+  $bus.$emit(eventTypes.logged_in);
+  return response;
 };
 
 export const register = async (data: z.infer<typeof registerRequestSchema>) => {
-  return await apiServiceCall("/register", "post", data, registerRequestSchema);
+  const respone = await apiServiceCall(
+    "/register",
+    "post",
+    data,
+    registerRequestSchema
+  );
+  $bus.$emit(eventTypes.registered);
+  return respone;
 };
 
 export const requestOtp = async (

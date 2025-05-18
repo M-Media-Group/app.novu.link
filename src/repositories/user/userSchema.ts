@@ -1,22 +1,32 @@
 import { z } from "zod";
 
 const emailSchema = z.string().email("Invalid email format");
-const phoneNumberSchema = z.string().min(5).startsWith("+", {
+const phoneNumberSchema = z.string().min(5).max(20).startsWith("+", {
   message: "Phone number must start with +",
 });
 const passwordSchema = z
   .string()
   .min(8, "Password must be at least 8 characters long");
 
-export const registerRequestSchema = z.object({
-  email: emailSchema,
+const passwordWithConfirmation = z.object({
   password: passwordSchema,
   password_confirmation: passwordSchema,
-  name: z.string().min(2),
-  terms: z.coerce.boolean().refine((val) => val === true, {
-    message: "You must accept the terms and conditions",
-  }),
 });
+
+const emailPasswordSchema = z
+  .object({
+    email: emailSchema,
+  })
+  .merge(passwordWithConfirmation);
+
+export const registerRequestSchema = z
+  .object({
+    name: z.string().min(2),
+    terms: z.coerce.boolean().refine((val) => val === true, {
+      message: "You must accept the terms and conditions",
+    }),
+  })
+  .merge(emailPasswordSchema);
 
 export const registerResponseSchema = z.object({
   id: z.number(),
@@ -27,11 +37,11 @@ export const registerResponseSchema = z.object({
   updated_at: z.coerce.date(),
 });
 
-export const loginRequestSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
-  remember: z.enum(["on", "off"]),
-});
+export const loginRequestSchema = z
+  .object({
+    remember: z.enum(["on", "off"]),
+  })
+  .merge(emailPasswordSchema.omit({ password_confirmation: true }));
 
 export const requestOtpRequestSchema = z.union([
   // Schema for the email payload
@@ -44,7 +54,7 @@ export const requestOtpRequestSchema = z.union([
 ]);
 
 export const confirmOtpRequestSchema = z.object({
-  otp: z.string().min(6).max(6),
+  otp: z.string().length(6),
 });
 
 export const resendEmailConfirmationUserRequestSchema = z.object({
@@ -55,12 +65,11 @@ export const sendPasswordResetEmailRequestSchema = z.object({
   email: emailSchema,
 });
 
-export const sendPasswordResetRequestSchema = z.object({
-  email: emailSchema,
-  token: z.string(),
-  password: passwordSchema,
-  password_confirmation: passwordSchema,
-});
+export const sendPasswordResetRequestSchema = z
+  .object({
+    token: z.string(),
+  })
+  .merge(emailPasswordSchema);
 
 export const confirmPasswordRequestSchema = z.object({
   password: passwordSchema,
@@ -104,9 +113,9 @@ export const teamSchema = z.object({
   created_at: z.coerce.date(),
   updated_at: z.coerce.date(),
   is_billing_exempt: z.boolean(),
-  stripe_id: z.string(),
-  pm_type: z.string(),
-  pm_last_four: z.string().length(4),
+  stripe_id: z.string().nullable(),
+  pm_type: z.string().nullable(),
+  pm_last_four: z.string().length(4).nullable(),
   trial_ends_at: z.coerce.date().nullable(),
 });
 
