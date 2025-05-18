@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import type { Redirect } from "@/types/redirect";
 import CardElement from "@/components/CardElement.vue";
-import { getRedirects } from "@/useRedirects";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import QRCode from "@/components/QRCode.vue";
+import { getRedirects } from "@/repositories/redirect/redirectRepository";
 
 const redirects = ref([] as Redirect[]);
 const isLoading = ref(true);
@@ -16,20 +16,22 @@ const { t } = useI18n();
 getRedirects().then((response) => {
   redirects.value = response;
   // Sort by total clicks
-  redirects.value.sort((a, b) => b.todays_clicks_count - a.todays_clicks_count);
+  redirects.value.sort(
+    (a, b) => (b.todays_clicks_count ?? 0) - (a.todays_clicks_count ?? 0)
+  );
   isLoading.value = false;
 });
 
 const defaultEndpoint = (redirect: Redirect) => {
-  if (redirect.endpoints.length === 0) {
+  if (redirect.endpoints?.length === 0) {
     return "";
   }
-  const defaultEndpoint = redirect.endpoints.find(
+  const defaultEndpoint = redirect.endpoints?.find(
     (endpoint) => endpoint.is_default
   )?.endpoint;
   if (!defaultEndpoint) {
     // just grab the first endpoint if there is no default
-    return removeProtocol(redirect.endpoints[0].endpoint);
+    return removeProtocol(redirect.endpoints?.[0].endpoint);
   }
   return removeProtocol(defaultEndpoint);
 };
@@ -82,7 +84,7 @@ const redirectBadges = (redirect: Redirect) => {
       ' - ' +
       // Defaults to
       defaultEndpoint(redirect) +
-      (redirect.endpoints.length > 1
+      (redirect.endpoints && redirect.endpoints?.length > 1
         ? ' + ' + (redirect.endpoints.length - 1) + ' ' + $t('more')
         : '')
     "

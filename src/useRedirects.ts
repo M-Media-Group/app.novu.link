@@ -1,22 +1,10 @@
-import type { Endpoint, Redirect } from "./types/redirect";
+import type { Endpoint } from "./types/redirect";
 import $bus, { eventTypes } from "@/eventBus/events";
 import i18n from "@/locales/i18n";
 import { apiService } from "./services/apiClient";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const t = i18n.global.t;
-
-export const getRedirects = async () => {
-  return await apiService.get<Redirect[]>("/api/v1/redirects");
-};
-
-export const getRedirect = async (redirectId: string) => {
-  return await apiService.get<Redirect>(`/api/v1/redirects/${redirectId}`);
-};
-
-export const createRedirect = async (data: any) => {
-  await apiService.post("/api/v1/redirects", data);
-};
 
 export const updateRedirect = async (redirectId: string, data: any) => {
   return await apiService

@@ -21,13 +21,13 @@ const accessTokens = ref<PersonalAccessToken[]>([]);
 
 userStore
   .getPersonalAccessTokens()
-  .then((tokens) => (accessTokens.value = tokens));
+  .then((tokens) => (accessTokens.value = tokens || []));
 
 const handleCreatedToken = (e: PersonalAccessToken) => {
   accessTokens.value.push(e);
 };
 
-const handleDeleteToken = (id: string) => {
+const handleDeleteToken = (id: number) => {
   userStore.deletePersonalAccessToken(id);
   const accessTokenIndex = accessTokens.value.findIndex((token) => {
     return token.id === id;

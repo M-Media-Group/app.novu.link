@@ -5,15 +5,15 @@ import type { Team } from "./team";
 
 export interface Redirect {
   uuid: string;
-  team_id: Team["id"];
+  team_id: Team["id"] | null;
   name: string;
   enable_analytics: boolean;
   created_at: Date;
   updated_at: Date;
-  deleted_at: Date | null;
-  todays_clicks_count: number;
+  deleted_at?: Date | null;
+  todays_clicks_count?: number;
   yesterdays_clicks_up_to_now_count?: number;
-  endpoints: Endpoint[];
+  endpoints?: Endpoint[];
   sources?: Placement[];
   qr_designs?: QRDesign[];
   default_qr_design?: QRDesign;

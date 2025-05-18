@@ -54,10 +54,9 @@ export const Default: Story = {
       user.isAuthenticated = true;
       user.user = {
         ...userFixture,
-        seen_at: new Date(),
         created_at: new Date(),
         updated_at: new Date(),
-      };
+      } as any;
 
       team.teams = teamsFixture;
 

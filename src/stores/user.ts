@@ -1,10 +1,28 @@
 import { type Ref, ref } from "vue";
 import { defineStore } from "pinia";
 
-import type { PersonalAccessToken, User } from "@/types/user";
+import type { User } from "@/types/user";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
-import { apiService } from "@/services/apiClient";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+
+import {
+  checkEmail as checkEmailUser,
+  confirmOtp as confirmOtpUser,
+  confirmPassword as confirmPasswordUser,
+  createPersonalAccessToken as createPersonalAccessTokenUser,
+  deletePersonalAccessToken as deletePersonalAccessTokenUser,
+  getPersonalAccessTokens as getPersonalAccessTokensUser,
+  getUser as getUserUser,
+  login as loginUser,
+  logout as logoutUser,
+  register as registerUser,
+  requestOtp as requestOtpUser,
+  resendEmailConfirmation as resendEmailConfirmationUser,
+  sendPasswordResetEmail as sendPasswordResetEmailUser,
+  sendPasswordReset as sendPasswordResetUser,
+  shouldConfirmPassword as shouldConfirmPasswordUser,
+  update as updateUser,
+} from "@/repositories/user/userRepository";
 
 export const useUserStore = defineStore("user", () => {
   // the state of the user
@@ -36,21 +54,13 @@ export const useUserStore = defineStore("user", () => {
    *
    */
   async function getUser() {
-    isLoading.value = true;
-    try {
-      const response = await apiService.get<User>("/api/user");
-      user.value = response;
+    user.value = await getUserUser();
 
-      isAuthenticated.value = true;
+    attemptedToFetchUser.value = true;
+    isAuthenticated.value = true;
 
-      userEmail.value = response.email;
-      userPhone.value = response.phone_number;
-    } catch (error) {
-      console.log(error);
-    } finally {
-      attemptedToFetchUser.value = true;
-      isLoading.value = false;
-    }
+    userEmail.value = user.value.email;
+    userPhone.value = user.value.phone_number;
   }
 
   /**
@@ -60,16 +70,9 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function checkEmail(email: string) {
-    // Check if the email is valid
-    if (!email) {
-      return;
-    }
-
-    isLoading.value = true;
-
     // Check if the email is already in use by calling POST "email-exists/" + email with apiService. If it returns 404, the email is not in use.
     try {
-      await apiService.post("/email-exists/" + email);
+      await checkEmailUser({ email });
       return true;
     } catch (error) {
       assertIsUnifiedError(error);
@@ -78,8 +81,6 @@ export const useUserStore = defineStore("user", () => {
         return false;
       }
       throw error;
-    } finally {
-      isLoading.value = false;
     }
   }
 
@@ -91,19 +92,9 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function login(email: string, password: string) {
-    // Check if the email is valid
-    if (!email) {
-      return false;
-    }
-
-    // Check if the password is valid
-    if (!password) {
-      return false;
-    }
-
     // Check if the email is already in use
     try {
-      await apiService.post("/login", {
+      await loginUser({
         email: email,
         password: password,
         remember: "on",
@@ -129,51 +120,26 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function register(email: string, password: string, name: string) {
-    // Check if the email is valid
-    if (!email) {
-      return;
-    }
-
-    // Check if the password is valid
-    if (!password) {
-      return;
-    }
-
-    // Check if the name is valid
-    if (!name) {
-      return;
-    }
-
-    // Check if the email is already in use
-    await apiService.post("/register", {
+    await registerUser({
       email: email,
       password: password,
       password_confirmation: password,
       name: name,
       terms: true,
     });
+
     await getUser();
     $bus.$emit(eventTypes.registered);
     return true;
   }
 
-  /**
-   * Request an OTP to be sent to the provided email
-   *
-   * @param {string} notifiable
-   * @return {*}
-   */
   async function requestOtp(
     notifiable: string,
     method = "email" as "email" | "phone_number"
   ) {
-    if (!notifiable) {
-      return false;
-    }
-
-    await apiService.post("/user/otp", {
-      [method]: notifiable,
-    });
+    const payload =
+      method === "email" ? { email: notifiable } : { phone_number: notifiable };
+    await requestOtpUser(payload);
     $bus.$emit(eventTypes.sent_otp);
   }
 
@@ -183,18 +149,9 @@ export const useUserStore = defineStore("user", () => {
    * @param {string} otp
    */
   async function confirmOtp(otp: string) {
-    if (!otp) {
-      return false;
-    }
-
     // Submit a reset password
     try {
-      const response = await apiService.post<{ user_created: boolean }>(
-        "/user/otp/confirm",
-        {
-          otp: otp,
-        }
-      );
+      const response = await confirmOtpUser({ otp });
       // Fetch the user
       $bus.$emit(eventTypes.confirmed_otp);
 
@@ -226,20 +183,10 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function resendEmailConfirmation() {
-    if (!user.value) {
-      return;
-    }
-    isLoading.value = true;
-    try {
-      await apiService.post("/email/verification-notification", {
-        email: user.value.email,
-      });
-      return true;
-    } catch (error) {
-      return false;
-    } finally {
-      isLoading.value = false;
-    }
+    await resendEmailConfirmationUser({
+      email: user.value?.email,
+    });
+    return true;
   }
 
   /**
@@ -249,13 +196,9 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function sendPasswordResetEmail(email: string) {
-    if (!email) {
-      return false;
-    }
-
     try {
-      await apiService.post("/forgot-password", {
-        email: email,
+      await sendPasswordResetEmailUser({
+        email,
       });
       $bus.$emit(eventTypes.sent_reset_password_email);
     } catch (error: any) {
@@ -280,35 +223,14 @@ export const useUserStore = defineStore("user", () => {
     token: string,
     password: string
   ) {
-    if (!email) {
-      return false;
-    }
-
-    if (!token) {
-      return false;
-    }
-
-    if (!password) {
-      return false;
-    }
-
-    isLoading.value = true;
-
-    // Submit a reset password
-    try {
-      await apiService.post("/reset-password", {
-        email: email,
-        token: token,
-        password: password,
-        password_confirmation: password,
-      });
-      $bus.$emit(eventTypes.reset_password);
-      return true;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
-    }
+    await sendPasswordResetUser({
+      email: email,
+      token: token,
+      password: password,
+      password_confirmation: password,
+    });
+    $bus.$emit(eventTypes.reset_password);
+    return true;
   }
 
   /**
@@ -318,24 +240,11 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function confirmPassword(password: string) {
-    if (!password) {
-      return false;
-    }
-
-    isLoading.value = true;
-
-    // Submit a reset password
-    try {
-      await apiService.post("/user/confirm-password", {
-        password: password,
-      });
-      $bus.$emit(eventTypes.confirmed_password);
-      return true;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
-    }
+    await confirmPasswordUser({
+      password,
+    });
+    $bus.$emit(eventTypes.confirmed_password);
+    return true;
   }
 
   /**
@@ -344,17 +253,8 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function shouldConfirmPassword() {
-    isLoading.value = true;
-    try {
-      const response = await apiService.get<{ confirmed: boolean }>(
-        "/user/confirmed-password-status"
-      );
-      return !response.confirmed;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
-    }
+    const response = await shouldConfirmPasswordUser();
+    return !response.confirmed;
   }
 
   /**
@@ -362,12 +262,10 @@ export const useUserStore = defineStore("user", () => {
    *
    */
   async function logout() {
-    isLoading.value = true;
-    await apiService.post("/logout");
+    await logoutUser();
+    $bus.$emit(eventTypes.logged_out);
     isAuthenticated.value = false;
     user.value = null;
-    isLoading.value = false;
-    $bus.$emit(eventTypes.logged_out);
   }
 
   /**
@@ -378,21 +276,14 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function update(name: string, email: string, phone?: string | null) {
-    isLoading.value = true;
-    try {
-      await apiService.put("/user/profile-information", {
-        name: name ?? user.value?.name,
-        email: email ?? user.value?.email,
-        phone_number: phone ?? user.value?.phone_number,
-      });
-      await getUser();
-      $bus.$emit(eventTypes.updated_user);
-      return true;
-    } catch (error: any) {
-      return error.response;
-    } finally {
-      isLoading.value = false;
-    }
+    await updateUser({
+      name: name ?? user.value?.name,
+      email: email ?? user.value?.email,
+      phone_number: phone ?? user.value?.phone_number ?? undefined,
+    });
+    await getUser();
+    $bus.$emit(eventTypes.updated_user);
+    return true;
   }
 
   /**
@@ -401,30 +292,7 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function getPersonalAccessTokens() {
-    return apiService
-      .get("/user/personal-access-tokens")
-      .then((response) => {
-        if (!user.value) {
-          return [] as PersonalAccessToken[];
-        }
-        // If the response is not one containing an array of personal access tokens, return an empty array. For example, the endpoint might return HTML instead of JSON.
-        if (
-          !Array.isArray(response) ||
-          response.length === 0 ||
-          !response[0].id
-        ) {
-          throw new Error(
-            "Invalid response while fetching personal access tokens."
-          );
-        }
-
-        user.value.personal_access_tokens = response;
-        return response as PersonalAccessToken[];
-      })
-      .catch((error) => {
-        console.log("Personal access tokens error", error);
-        return [] as PersonalAccessToken[];
-      });
+    return await getPersonalAccessTokensUser();
   }
 
   /**
@@ -434,32 +302,16 @@ export const useUserStore = defineStore("user", () => {
    * @return {*}
    */
   async function createPersonalAccessToken(name: string) {
-    const response = apiService.post<{ token: string }>(
-      "/user/personal-access-tokens",
-      {
-        name: name,
-      }
-    );
-
+    const response = createPersonalAccessTokenUser({
+      name,
+    });
     $bus.$emit(eventTypes.created_personal_access_token, response);
-
     return response;
   }
 
-  async function deletePersonalAccessToken(id: string) {
-    return apiService
-      .delete("/user/personal-access-tokens/" + id)
-      .then((response) => {
-        $bus.$emit(eventTypes.deleted_personal_access_token, response);
-        return response;
-      })
-      .catch((error) => {
-        console.log("Personal access tokens error", error);
-        alert(error.response.message);
-      })
-      .finally(() => {
-        isLoading.value = false;
-      });
+  async function deletePersonalAccessToken(id: number) {
+    await deletePersonalAccessTokenUser({ id });
+    $bus.$emit(eventTypes.deleted_personal_access_token);
   }
 
   return {

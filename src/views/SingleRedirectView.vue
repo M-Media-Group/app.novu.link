@@ -4,7 +4,7 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
-import { getRedirect } from "@/useRedirects";
+import { getRedirect } from "@/repositories/redirect/redirectRepository";
 import type {
   Alert,
   Endpoint,
@@ -66,7 +66,7 @@ const getData = () => {
       heatmapData.value = response.heatmap;
 
       const totalClicks = () => {
-        return response.endpoints.reduce((total: any, endpoint: any) => {
+        return response.endpoints?.reduce((total: any, endpoint: any) => {
           return (
             total +
             endpoint.clicks_by_time_of_day.reduce((sum: any, click: any) => {
@@ -77,7 +77,7 @@ const getData = () => {
       };
 
       const bestPerformingEndpoint = () => {
-        return response.endpoints.reduce(
+        return response.endpoints?.reduce(
           (best: any, endpoint: any) => {
             const totalClicks = endpoint.clicks_by_time_of_day.reduce(
               (sum: any, click: any) => {
@@ -94,7 +94,7 @@ const getData = () => {
       };
 
       // set clicksToday and clicksTodayUnique
-      clicksToday.value = response.todays_clicks_count;
+      clicksToday.value = response.todays_clicks_count ?? 0;
       clicksSameTimeYesterday.value =
         response.yesterdays_clicks_up_to_now_count ?? null;
 
@@ -102,11 +102,11 @@ const getData = () => {
 
       bestEndpoint.value =
         // If there is more than 1 endpoint, return the best performing endpoint. If there is only 1 endpoint, return that endpoint.
-        response.endpoints.length > 1
+        response.endpoints && response.endpoints?.length > 1
           ? bestPerformingEndpoint().endpoint
           : undefined;
 
-      endpoints.value = response.endpoints;
+      endpoints.value = response.endpoints ?? [];
 
       // next()\
     })

@@ -5,9 +5,9 @@ import { useRouter } from "vue-router";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { useTeamStore } from "@/stores/team";
-import { apiService } from "@/services/apiClient";
 import type { Redirect } from "@/types/redirect";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
+import { createRedirect } from "@/repositories/redirect/redirectRepository";
 
 const $bus = useEventsBus();
 
@@ -107,9 +107,9 @@ if (props.prefillName) {
 const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
 
 const submitForm = async () => {
-  return await apiService.post<Redirect>("/redirects", {
+  return await createRedirect({
     name: name.value,
-    default_endpoint: endpointUrl.value,
+    default_endpoint: endpointUrl.value ?? undefined,
   });
 };
 

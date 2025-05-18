@@ -97,7 +97,12 @@ const submit = async () => {
         try {
           assertIsUnifiedError(error);
         } catch (e) {
-          console.error("Error is not a UnifiedError", e);
+          console.error(
+            "Error is not a UnifiedError",
+            e,
+            "its type is",
+            typeof error
+          );
           alert("An error occurred");
           return;
         }

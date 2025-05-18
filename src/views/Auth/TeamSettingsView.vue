@@ -22,7 +22,7 @@ const accessTokens = ref<PersonalAccessToken[]>([]);
 
 userStore
   .getPersonalAccessTokens()
-  .then((tokens) => (accessTokens.value = tokens));
+  .then((tokens) => (accessTokens.value = tokens || []));
 
 const analyticsIntegrations = ref<AnalyticsIntegration[]>([]);
 

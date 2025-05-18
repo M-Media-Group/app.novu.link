@@ -34,10 +34,9 @@ export const WithUserData: Story = {
       user.isAuthenticated = true;
       user.user = {
         ...userFixture,
-        seen_at: new Date(),
         created_at: new Date(),
         updated_at: new Date(),
-      };
+      } as any;
     },
     template: "<settingsView />",
   }),

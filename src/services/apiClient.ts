@@ -7,6 +7,7 @@ import axios, {
 import i18n from "@/locales/i18n";
 import router from "@/router";
 import type { UnifiedError } from "./apiServiceErrorHandler";
+import { z } from "zod";
 
 // Configure an Axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -51,10 +52,10 @@ type LaraveErrorResponse = { message?: string; errors?: any };
  * @param operation A string describing the operation during which the error occurred.
  * @throws UnifiedError
  */
-const handleError = (
-  error: unknown | AxiosError<LaraveErrorResponse>,
+export const handleError = (
+  error: unknown | AxiosError<LaraveErrorResponse> | z.ZodError,
   operation: string = "API operation"
-) => {
+): never => {
   const unifiedError: Partial<UnifiedError> = {
     type: "unknown",
     originalError: error,
@@ -118,17 +119,29 @@ const handleError = (
         }
         break;
     }
+  } else if (error instanceof z.ZodError) {
+    unifiedError.type = "validation";
+    unifiedError.status = 422; // Set status to 422 for validation errors
+    unifiedError.message = i18n.global.t("errors.validation_error");
+
+    unifiedError.details = error.flatten().fieldErrors; // Zod error details
   } else {
     unifiedError.type = "unknown";
     unifiedError.message = i18n.global.t("errors.unknown_error"); // Fallback message
   }
 
-  console.error(
-    `Error during ${operation}: Status ${
-      unifiedError.status || "N/A"
-    } - Message: ${unifiedError.message}`,
-    unifiedError.originalError
-  );
+  const isDev = import.meta.env.MODE === "development";
+
+  if (isDev) {
+    console.error(
+      `Error during ${operation}: Status ${
+        unifiedError.status || "N/A"
+      } - Message: ${unifiedError.message}`,
+      unifiedError.originalError,
+      "Full Error Details:",
+      unifiedError
+    );
+  }
 
   throw unifiedError; // Throw the structured error
 };

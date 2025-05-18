@@ -39,10 +39,6 @@ const { t } = useI18n();
 const baseFormRef = ref();
 
 const makeOtpRequest = async () => {
-  if (!userStore.userEmail && !userStore.userPhone) {
-    return;
-  }
-
   const timeRemaining =
     secondsBetweenOtpRequests -
     Math.floor((Date.now() - lastRequestTime.value) / 1000);
@@ -172,7 +168,7 @@ const toggleUsePhone = async () => {
       <input
         id="phone"
         type="tel"
-        name="phone"
+        name="phone_number"
         inputmode="tel"
         required
         :autofocus="autofocus"

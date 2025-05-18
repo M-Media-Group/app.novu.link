@@ -1,35 +1,24 @@
 export interface User {
   id?: number;
-  username: string;
-  name: string | null;
+  username?: string;
+  name: string;
   email: string;
   phone_number: string | null;
-  email_verified_at: string | null;
-  phone_number_verified_at: string | null;
-  avatar: string | null;
-  seen_at: Date;
+  email_verified_at: Date | null;
+  phone_number_verified_at: Date | null;
   created_at: Date;
   updated_at: Date;
-  description: string | null;
-  is_public: boolean;
-  stripe_id: string | null;
-  pm_type: string | null;
-  pm_last_four: string | null;
-  trial_ends_at: string | null;
   personal_access_tokens?: PersonalAccessToken[];
 }
 
 export interface PersonalAccessToken {
-  id: string;
-  user_id: number;
-  client_id: number;
+  id: number;
+  tokenable_id: number;
   name: string | null;
-  scopes: string[];
-  revoked: boolean;
+  abilities: string[];
   created_at: Date;
   updated_at: Date;
-  expires_at: Date;
-  client?: Client;
+  last_used_at: Date | null;
 }
 
 export interface Client {

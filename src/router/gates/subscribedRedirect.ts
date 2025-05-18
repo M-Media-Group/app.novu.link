@@ -1,5 +1,5 @@
 import { useTeamStore } from "@/stores/team";
-import { getRedirect } from "@/useRedirects";
+import { getRedirect } from "@/repositories/redirect/redirectRepository";
 import { baseGate } from "@m-media/vue3-gate-keeper";
 
 export default class extends baseGate {

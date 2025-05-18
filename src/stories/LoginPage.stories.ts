@@ -37,10 +37,9 @@ export const WithUserAlreadyAuthenticated: Story = {
 
       user.user = {
         ...userFixture,
-        seen_at: new Date(),
         created_at: new Date(),
         updated_at: new Date(),
-      };
+      } as any;
     },
     template: "<loginOrRegisterView />",
   }),
