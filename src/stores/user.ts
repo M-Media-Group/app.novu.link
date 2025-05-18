@@ -8,7 +8,7 @@ import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 import {
   checkEmail as checkEmailUser,
   confirmOtp as confirmOtpUser,
-  confirmPassword as confirmPasswordUser,
+  confirmPassword,
   createPersonalAccessToken,
   deletePersonalAccessToken,
   getPersonalAccessTokens,
@@ -18,9 +18,9 @@ import {
   register,
   requestOtp,
   resendEmailConfirmation as resendEmailConfirmationUser,
+  sendPasswordReset,
   sendPasswordResetEmail as sendPasswordResetEmailUser,
-  sendPasswordReset as sendPasswordResetUser,
-  shouldConfirmPassword as shouldConfirmPasswordUser,
+  shouldConfirmPassword,
   update as updateUser,
 } from "@/repositories/user/userRepository";
 
@@ -194,51 +194,6 @@ export const useUserStore = defineStore("user", () => {
   }
 
   /**
-   * Attempt to reset a password
-   *
-   * @param {string} email
-   * @param {string} token
-   * @param {string} password
-   * @return {*}
-   */
-  async function sendPasswordReset(
-    email: string,
-    token: string,
-    password: string
-  ) {
-    await sendPasswordResetUser({
-      email: email,
-      token: token,
-      password: password,
-      password_confirmation: password,
-    });
-    return true;
-  }
-
-  /**
-   * Confirm the users password
-   *
-   * @param {string} password
-   * @return {*}
-   */
-  async function confirmPassword(password: string) {
-    await confirmPasswordUser({
-      password,
-    });
-    return true;
-  }
-
-  /**
-   * Determine if the user should confirm their password.
-   *
-   * @return {*}
-   */
-  async function shouldConfirmPassword() {
-    const response = await shouldConfirmPasswordUser();
-    return !response.confirmed;
-  }
-
-  /**
    * Update a user's profile
    *
    * @param {string} name
@@ -252,7 +207,7 @@ export const useUserStore = defineStore("user", () => {
       phone_number: phoneNumber,
     });
     if (!user.value) {
-      return;
+      return true;
     }
     user.value = {
       ...user.value,

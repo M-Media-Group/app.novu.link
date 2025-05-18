@@ -7,7 +7,8 @@ export default class extends baseGate {
   async handle() {
     const store = useUserStore();
     await store.isReady;
-    const shouldConfirmPassword = await store.shouldConfirmPassword();
+    const shouldConfirmPassword = !(await store.shouldConfirmPassword())
+      .confirmed;
     if (shouldConfirmPassword) {
       return this.fail();
     }

@@ -23,7 +23,7 @@ const userStore = useUserStore();
     :disabled="success"
     :submitFn="
       async () => {
-        await userStore.confirmPassword(password);
+        await userStore.confirmPassword({ password });
       }
     "
   >

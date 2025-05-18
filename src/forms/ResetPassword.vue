@@ -26,7 +26,12 @@ const userStore = useUserStore();
     @success="emit('success')"
     :submitFn="
       async () => {
-        await userStore.sendPasswordReset(email, token, password);
+        await userStore.sendPasswordReset({
+          email,
+          token,
+          password,
+          password_confirmation: password,
+        });
       }
     "
   >
