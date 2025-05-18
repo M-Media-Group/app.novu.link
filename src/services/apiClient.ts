@@ -8,6 +8,7 @@ import i18n from "@/locales/i18n";
 import router from "@/router";
 import type { UnifiedError } from "./apiServiceErrorHandler";
 import { z } from "zod";
+import { flattenObjectToDotNotationWithArrayAndStopAtKey } from "@/helpers/hasMethod";
 
 // Configure an Axios instance
 const apiClient: AxiosInstance = axios.create({
@@ -124,7 +125,9 @@ export const handleError = (
     unifiedError.status = 422; // Set status to 422 for validation errors
     unifiedError.message = i18n.global.t("errors.validation_error");
 
-    unifiedError.details = error.flatten().fieldErrors; // Zod error details
+    unifiedError.details = flattenObjectToDotNotationWithArrayAndStopAtKey(
+      error.format()
+    );
   } else {
     unifiedError.type = "unknown";
     unifiedError.message = i18n.global.t("errors.unknown_error"); // Fallback message
