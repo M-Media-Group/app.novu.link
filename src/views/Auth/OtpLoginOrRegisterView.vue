@@ -7,13 +7,7 @@ import LinkReady from "@/assets/linkReady.png";
 import { loadData } from "@/helpers/dataLoader";
 import { watch } from "vue";
 import { useI18n } from "vue-i18n";
-
-const redirect = () => {
-  // Redirect to the home page
-  router.push(
-    (router.currentRoute.value.query.redirect as string) ?? "/dashboard"
-  );
-};
+import { useUserStore } from "@/stores/user";
 
 const timerLength = 60 * 3;
 
@@ -52,6 +46,19 @@ watch(
     immediate: true,
   }
 );
+
+const userStore = useUserStore();
+
+watch(
+  () => userStore.isAuthenticated,
+  (isAuthenticated) => {
+    if (isAuthenticated) {
+      router.push(
+        (router.currentRoute.value.query.redirect as string) ?? "/dashboard"
+      );
+    }
+  }
+);
 </script>
 <template>
   <section class="main-grid-display smaller-gap">
@@ -75,7 +82,7 @@ watch(
     <progress :value="timer" :max="timerLength" />
 
     <card-element :titleHeadingLevel="2">
-      <otp-login-or-register @success="redirect" />
+      <otp-login-or-register />
     </card-element>
   </section>
   <section>

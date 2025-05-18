@@ -29,7 +29,9 @@ const submitForm = async () => {
     return;
   }
 
-  const response = await userStore.createPersonalAccessToken(tokenName.value);
+  const response = await userStore.createPersonalAccessToken({
+    name: tokenName.value,
+  });
   // emit("success");
   emit("created", response);
 

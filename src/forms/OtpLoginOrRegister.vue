@@ -54,8 +54,7 @@ const makeOtpRequest = async () => {
 
   try {
     await userStore.requestOtp(
-      dataToSend,
-      usePhone.value ? "phone_number" : "email"
+      usePhone.value ? { phone_number: dataToSend } : { email: dataToSend }
     );
     isOnOtpPage.value = true;
     lastRequestTime.value = Date.now();

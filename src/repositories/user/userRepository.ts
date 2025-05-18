@@ -162,21 +162,25 @@ export const getPersonalAccessTokens = async () => {
 export const createPersonalAccessToken = async (
   data: z.infer<typeof createPersonalAccessTokenRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     "/user/personal-access-tokens",
     "post",
     data,
     createPersonalAccessTokenRequestSchema
   );
+  $bus.$emit(eventTypes.created_personal_access_token);
+  return response;
 };
 
 export const deletePersonalAccessToken = async (
   data: z.infer<typeof deletePersonalAccessTokenRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     `/user/personal-access-tokens/${data.id}`,
     "delete"
   );
+  $bus.$emit(eventTypes.deleted_personal_access_token);
+  return response;
 };
 
 export const getUser = async () => {

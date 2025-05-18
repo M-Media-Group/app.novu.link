@@ -9,14 +9,14 @@ import {
   checkEmail as checkEmailUser,
   confirmOtp as confirmOtpUser,
   confirmPassword as confirmPasswordUser,
-  createPersonalAccessToken as createPersonalAccessTokenUser,
-  deletePersonalAccessToken as deletePersonalAccessTokenUser,
-  getPersonalAccessTokens as getPersonalAccessTokensUser,
+  createPersonalAccessToken,
+  deletePersonalAccessToken,
+  getPersonalAccessTokens,
   getUser as getUserUser,
   login as loginUser,
-  logout as logoutUser,
-  register as registerUser,
-  requestOtp as requestOtpUser,
+  logout,
+  register,
+  requestOtp,
   resendEmailConfirmation as resendEmailConfirmationUser,
   sendPasswordResetEmail as sendPasswordResetEmailUser,
   sendPasswordReset as sendPasswordResetUser,
@@ -132,35 +132,6 @@ export const useUserStore = defineStore("user", () => {
   }
 
   /**
-   * Register the user
-   *
-   * @param {string} email
-   * @param {string} password
-   * @param {string} name
-   * @return {*}
-   */
-  async function register(email: string, password: string, name: string) {
-    await registerUser({
-      email: email,
-      password: password,
-      password_confirmation: password,
-      name: name,
-      terms: true,
-    });
-
-    return true;
-  }
-
-  async function requestOtp(
-    notifiable: string,
-    method = "email" as "email" | "phone_number"
-  ) {
-    const payload =
-      method === "email" ? { email: notifiable } : { phone_number: notifiable };
-    await requestOtpUser(payload);
-  }
-
-  /**
    * Confirm the OTP
    *
    * @param {string} otp
@@ -268,14 +239,6 @@ export const useUserStore = defineStore("user", () => {
   }
 
   /**
-   * Logout the user
-   *
-   */
-  async function logout() {
-    await logoutUser();
-  }
-
-  /**
    * Update a user's profile
    *
    * @param {string} name
@@ -298,34 +261,6 @@ export const useUserStore = defineStore("user", () => {
       phone_number: phoneNumber ?? user.value.phone_number,
     };
     return true;
-  }
-
-  /**
-   * Get all the users personal access tokens
-   *
-   * @return {*}
-   */
-  async function getPersonalAccessTokens() {
-    return await getPersonalAccessTokensUser();
-  }
-
-  /**
-   * Create a personal access token for the user
-   *
-   * @param {string} name
-   * @return {*}
-   */
-  async function createPersonalAccessToken(name: string) {
-    const response = createPersonalAccessTokenUser({
-      name,
-    });
-    $bus.$emit(eventTypes.created_personal_access_token, response);
-    return response;
-  }
-
-  async function deletePersonalAccessToken(id: number) {
-    await deletePersonalAccessTokenUser({ id });
-    $bus.$emit(eventTypes.deleted_personal_access_token);
   }
 
   return {

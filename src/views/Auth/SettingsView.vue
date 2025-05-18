@@ -28,7 +28,7 @@ const handleCreatedToken = (e: PersonalAccessToken) => {
 };
 
 const handleDeleteToken = (id: number) => {
-  userStore.deletePersonalAccessToken(id);
+  userStore.deletePersonalAccessToken({ id });
   const accessTokenIndex = accessTokens.value.findIndex((token) => {
     return token.id === id;
   });

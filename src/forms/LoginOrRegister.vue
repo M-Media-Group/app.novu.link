@@ -70,11 +70,13 @@ const register = async () => {
   }
   // Check if the email is already in use
   try {
-    await userStore.register(
-      userStore.userEmail,
-      authForm.password,
-      authForm.name
-    );
+    await userStore.register({
+      email: userStore.userEmail,
+      name: authForm.name,
+      password: authForm.password,
+      password_confirmation: authForm.password,
+      terms: true,
+    });
   } catch (error) {
     assertIsUnifiedError(error);
     if (error.status === 422 && error.details?.email) {
