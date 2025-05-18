@@ -3,6 +3,7 @@ import {
   clearErrorMessageOnElement,
   setErrorMessageOnElement,
 } from "./manipulateDom";
+import { hasMethod } from "@/helpers/hasMethod";
 
 const supportedElements = [
   HTMLInputElement,
@@ -23,20 +24,25 @@ const HTMLSupportedInputElementStringForQuerySelector = supportedElements
   .join(", ");
 
 const setErrorOnInput = (
-  input: HTMLSupportedInputElement,
+  input: HTMLSupportedInputElement | HTMLElement,
   error: string,
   report = true
 ) => {
   //   Use setValidity to set the error message
-  input.setCustomValidity(error);
+  //   First, check if the input has a setCustomValidity method
   input.setAttribute("aria-invalid", "true");
-  if (report) {
+
+  if (hasMethod(input, "setCustomValidity")) {
+    input.setCustomValidity(error);
+  }
+  if (report && hasMethod(input, "reportValidity")) {
     input.reportValidity();
   }
-  setErrorMessageOnElement(input);
+
+  setErrorMessageOnElement(input, error);
 };
 
-const setSuccessOnInput = (input: HTMLSupportedInputElement) => {
+const setSuccessOnInput = (input: HTMLSupportedInputElement | HTMLElement) => {
   input.setAttribute("aria-invalid", "false");
 };
 
@@ -51,7 +57,7 @@ const resetCustomValidityOnInput = (input: HTMLSupportedInputElement) => {
   clearErrorMessageOnElement(input);
 };
 
-const isElementInFocus = (element: HTMLSupportedInputElement) => {
+const isElementInFocus = (element: HTMLElement) => {
   return document.activeElement === element;
 };
 
@@ -154,9 +160,9 @@ const setInputErrors = (
   }
 
   for (const [key, value] of Object.entries(errors)) {
-    const input = formElement?.elements.namedItem(
-      key
-    ) as HTMLSupportedInputElement;
+    const input = formElement?.elements.namedItem(key) as
+      | HTMLSupportedInputElement
+      | HTMLElement;
     if (input) {
       // If the value is an array, join it with a space
       let valueToPass = value as string | string[];

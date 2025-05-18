@@ -1,7 +1,9 @@
+import { hasProperty } from "@/helpers/hasMethod";
 import type { HTMLSupportedInputElement } from "./useForm";
 
 export const setErrorMessageOnElement = (
-  element: HTMLSupportedInputElement
+  element: HTMLSupportedInputElement | HTMLElement,
+  customMessage?: string
 ) => {
   //  Update or create a sibling element with the error message
   let errorElement = element.nextElementSibling as HTMLElement;
@@ -9,14 +11,25 @@ export const setErrorMessageOnElement = (
     errorElement = document.createElement("small");
     element.after(errorElement);
   }
-  errorElement.innerText = element.validationMessage;
+
+  const isValidCustomMessage =
+    customMessage && typeof customMessage === "string" && customMessage !== "";
+
+  if (isValidCustomMessage) {
+    errorElement.innerText = customMessage;
+  } else if (hasProperty(element, "validationMessage")) {
+    errorElement.innerText = element.validationMessage;
+  } else {
+    errorElement.innerText = "";
+  }
+
   errorElement.classList.add("error");
 
   element.insertAdjacentElement("afterend", errorElement);
 };
 
 export const clearErrorMessageOnElement = (
-  element: HTMLSupportedInputElement
+  element: HTMLSupportedInputElement | HTMLElement
 ) => {
   // If the element is valid, remove the invalid class
   const errorElement = element.nextElementSibling as HTMLElement;
