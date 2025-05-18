@@ -52,6 +52,11 @@ export const useUserStore = defineStore("user", () => {
     getUser();
   });
 
+  $bus.$on(eventTypes.logged_out, () => {
+    isAuthenticated.value = false;
+    user.value = null;
+  });
+
   // The userEmail is meant for keeping email state across auth pages, for example when going from login to forgot-password page
   const userEmail = ref(null) as Ref<string | null>;
 
@@ -153,7 +158,6 @@ export const useUserStore = defineStore("user", () => {
     const payload =
       method === "email" ? { email: notifiable } : { phone_number: notifiable };
     await requestOtpUser(payload);
-    $bus.$emit(eventTypes.sent_otp);
   }
 
   /**
@@ -165,10 +169,6 @@ export const useUserStore = defineStore("user", () => {
     // Submit a reset password
     try {
       const response = await confirmOtpUser({ otp });
-      // Fetch the user
-      $bus.$emit(eventTypes.confirmed_otp);
-
-      await getUser();
 
       // The response tells us if the user is new or not
       if (response.user_created) {
@@ -213,7 +213,6 @@ export const useUserStore = defineStore("user", () => {
       await sendPasswordResetEmailUser({
         email,
       });
-      $bus.$emit(eventTypes.sent_reset_password_email);
     } catch (error: any) {
       assertIsUnifiedError(error);
       if (error.status === 422 && error.details) {
@@ -242,7 +241,6 @@ export const useUserStore = defineStore("user", () => {
       password: password,
       password_confirmation: password,
     });
-    $bus.$emit(eventTypes.reset_password);
     return true;
   }
 
@@ -256,7 +254,6 @@ export const useUserStore = defineStore("user", () => {
     await confirmPasswordUser({
       password,
     });
-    $bus.$emit(eventTypes.confirmed_password);
     return true;
   }
 
@@ -276,9 +273,6 @@ export const useUserStore = defineStore("user", () => {
    */
   async function logout() {
     await logoutUser();
-    $bus.$emit(eventTypes.logged_out);
-    isAuthenticated.value = false;
-    user.value = null;
   }
 
   /**
@@ -288,14 +282,21 @@ export const useUserStore = defineStore("user", () => {
    * @param {string} email
    * @return {*}
    */
-  async function update(name: string, email: string, phone?: string | null) {
+  async function update(name: string, email: string, phoneNumber?: string) {
     await updateUser({
-      name: name ?? user.value?.name,
-      email: email ?? user.value?.email,
-      phone_number: phone ?? user.value?.phone_number ?? undefined,
+      name,
+      email,
+      phone_number: phoneNumber,
     });
-    await getUser();
-    $bus.$emit(eventTypes.updated_user);
+    if (!user.value) {
+      return;
+    }
+    user.value = {
+      ...user.value,
+      name,
+      email,
+      phone_number: phoneNumber ?? user.value.phone_number,
+    };
     return true;
   }
 

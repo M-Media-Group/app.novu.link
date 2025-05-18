@@ -44,18 +44,20 @@ export const register = async (data: z.infer<typeof registerRequestSchema>) => {
 export const requestOtp = async (
   data: z.infer<typeof requestOtpRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const respone = await apiServiceCall(
     "/user/otp",
     "post",
     data,
     requestOtpRequestSchema
   );
+  $bus.$emit(eventTypes.sent_otp);
+  return respone;
 };
 
 export const confirmOtp = async (
   data: z.infer<typeof confirmOtpRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     "/user/otp/confirm",
     "post",
     data,
@@ -64,6 +66,8 @@ export const confirmOtp = async (
       user_created: z.boolean(),
     })
   );
+  $bus.$emit(eventTypes.confirmed_otp);
+  return response;
 };
 
 export const resendEmailConfirmation = async (
@@ -80,34 +84,40 @@ export const resendEmailConfirmation = async (
 export const sendPasswordResetEmail = async (
   data: z.infer<typeof sendPasswordResetEmailRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     "/forgot-password",
     "post",
     data,
     sendPasswordResetEmailRequestSchema
   );
+  $bus.$emit(eventTypes.sent_reset_password_email);
+  return response;
 };
 
 export const sendPasswordReset = async (
   data: z.infer<typeof sendPasswordResetRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     "/reset-password",
     "post",
     data,
     sendPasswordResetRequestSchema
   );
+  $bus.$emit(eventTypes.reset_password);
+  return response;
 };
 
 export const confirmPassword = async (
   data: z.infer<typeof confirmPasswordRequestSchema>
 ) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     "/user/confirm-password",
     "post",
     data,
     sendPasswordResetRequestSchema
   );
+  $bus.$emit(eventTypes.confirmed_password);
+  return response;
 };
 
 export const shouldConfirmPassword = async () => {
@@ -123,16 +133,20 @@ export const shouldConfirmPassword = async () => {
 };
 
 export const logout = async () => {
-  return await apiServiceCall("/logout", "post");
+  const response = await apiServiceCall("/logout", "post");
+  $bus.$emit(eventTypes.logged_out);
+  return response;
 };
 
 export const update = async (data: z.infer<typeof updateRequestSchema>) => {
-  return await apiServiceCall(
+  const response = await apiServiceCall(
     "/user/profile-information",
     "put",
     data,
     updateRequestSchema
   );
+  $bus.$emit(eventTypes.updated_user);
+  return response;
 };
 
 export const getPersonalAccessTokens = async () => {

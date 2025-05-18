@@ -40,7 +40,7 @@ const submitForm = async () => {
     return;
   }
 
-  await userStore.update(name.value, email.value, phone.value);
+  await userStore.update(name.value, email.value, phone.value ?? undefined);
 
   emit("updated", changedValues);
 };
