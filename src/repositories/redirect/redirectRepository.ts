@@ -58,8 +58,7 @@ export const updateRedirect = async (
     `/api/v1/redirects/${data.id}`,
     "put",
     data,
-    updateRedirectRequestSchema,
-    getRedirectResponseSchema
+    updateRedirectRequestSchema
   );
 };
 

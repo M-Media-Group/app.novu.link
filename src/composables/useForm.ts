@@ -159,11 +159,14 @@ const setInputErrors = (
     return;
   }
 
+  let matchedInputsWithErrors = 0;
+
   for (const [key, value] of Object.entries(errors)) {
     const input = formElement?.elements.namedItem(key) as
       | HTMLSupportedInputElement
       | HTMLElement;
     if (input) {
+      matchedInputsWithErrors++;
       // If the value is an array, join it with a space
       let valueToPass = value as string | string[];
 
@@ -174,6 +177,12 @@ const setInputErrors = (
 
       setErrorOnInput(input, valueToPass);
     }
+  }
+
+  // If we matched 0 inputs but we have errors, attach a generic error to the form
+  if (matchedInputsWithErrors === 0) {
+    const formError = Object.values(errors).join(" ");
+    setErrorOnInput(formElement, formError);
   }
 };
 

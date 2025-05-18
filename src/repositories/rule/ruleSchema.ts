@@ -17,9 +17,10 @@ const CommonRuleProperties = z.object({
   description: z.string(),
   allowedOperators: z.array(z.string()),
   valueType: z.string(),
-  seeAlsoLinks: z.array(z.string()),
+  seeAlsoLinks: z.array(z.string()).nullable(),
   allowedValues: z
     .union([z.array(z.any()), z.record(z.union([z.string(), z.number()]))])
+    .nullable()
     .optional(),
 });
 
@@ -28,7 +29,7 @@ const BrowserLanguage = CommonRuleProperties.extend({
 });
 
 const Cookie = CommonRuleProperties.extend({
-  value: z.string(),
+  value: z.string().or(z.record(z.string(), z.string().nullable())),
 });
 
 const Country = CommonRuleProperties.extend({
@@ -64,11 +65,11 @@ const Time = CommonRuleProperties.extend({
 });
 
 const TotalTimesScanned = CommonRuleProperties.extend({
-  value: z.coerce.number(),
+  value: z.coerce.number().transform((val) => `${val}`),
 });
 
 const TotalTimesScannedPerIP = CommonRuleProperties.extend({
-  value: z.coerce.number(),
+  value: z.coerce.number().transform((val) => `${val}`),
 });
 
 const UserAgent = CommonRuleProperties.extend({
@@ -103,6 +104,14 @@ const OperatingSystem = CommonRuleProperties.extend({
   value: z.string(),
 });
 
+const DeviceMemory = CommonRuleProperties.extend({
+  value: z.coerce.number(),
+});
+
+const PercentChance = CommonRuleProperties.extend({
+  value: z.coerce.number().min(0).max(100),
+});
+
 export const RulesSchema = z.object({
   browser_language: BrowserLanguage,
   cookie: Cookie,
@@ -124,6 +133,8 @@ export const RulesSchema = z.object({
   total_times_scanned_per_i_p: TotalTimesScannedPerIP,
   user_agent: UserAgent,
   user_time: UserTime,
+  device_memory: DeviceMemory,
+  percent_chance: PercentChance,
 });
 
 export const ruleKeys = RulesSchema.keyof();
@@ -188,3 +199,47 @@ export const makeRuleSchemaUnion = () => {
 };
 
 export const RuleCheckSchema = makeRuleSchemaUnion();
+
+export const testRuleRequestSchema = z.intersection(
+  z.object({
+    redirectId: z.string(),
+  }),
+  RuleCheckSchema
+);
+
+export const testRuleResponseSchema = z.object({
+  passes: z.coerce.boolean(),
+});
+
+export const getRulesRequestSchema = z.object({
+  redirectId: z.string().optional(),
+});
+
+// The response is an array. The array keys are the rule names, and the value looks like:
+// {
+//   "name": "IsBot",
+//   "description": "",
+//   "allowedOperators": [
+//     "="
+//   ],
+//   "valueType": "text",
+//   "seeAlsoLinks": null,
+//   "allowedValues": [
+//     "true",
+//     "false"
+//   ],
+//   "value": false
+// }
+
+export const getRulesResponseSchema = z.record(
+  ruleKeys,
+  CommonRuleProperties.extend({
+    value: z.union([
+      z.number(),
+      z.boolean(),
+      z.null(),
+      z.string(),
+      z.record(z.string(), z.string().nullable()),
+    ]),
+  })
+);

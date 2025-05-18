@@ -12,14 +12,15 @@ export const apiServiceCall = async <
     ? Partial<ReqType>
     : undefined,
   requestSchema?: ReqSchema,
-  responseSchema?: ResSchema
+  responseSchema?: ResSchema,
+  clientOptions?: unknown
 ): Promise<ResSchema extends ZodSchema<infer ResType> ? ResType : any> => {
   try {
     const parsedData = requestSchema ? requestSchema.parse(data) : data;
 
     const response = await apiService[method]<
       ResSchema extends ZodSchema<infer ResType> ? ResType : any
-    >(url, parsedData);
+    >(url, parsedData, clientOptions);
 
     return responseSchema ? responseSchema.parse(response) : response;
   } catch (error) {

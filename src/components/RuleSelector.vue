@@ -57,20 +57,22 @@ const valueSelectorSearchTerm = ref("");
 
 const ruleOptions = computed(() => {
   if (!rules.value) return [];
-  return Object.keys(rules.value).map((key: string) => {
-    const ruleKey = key as keyof Rules; // Cast 'key' to keyof Rules
-    return {
-      id: ruleKey,
-      value: ruleKey,
-      render: t("Rules." + ruleKey + ".Name", rules.value[ruleKey].name),
-      raw: {
-        description: t(
-          "Rules." + ruleKey + ".Description",
-          rules.value[ruleKey].description
-        ),
-      },
-    };
-  });
+
+  return Object.keys(rules.value)
+    .map((key: string) => {
+      const ruleKey = key as keyof Rules; // Cast 'key' to keyof Rules
+      const rule = rules.value?.[ruleKey];
+      if (!rule) return;
+      return {
+        id: ruleKey,
+        value: ruleKey,
+        render: t("Rules." + ruleKey + ".Name", rule.name),
+        raw: {
+          description: t("Rules." + ruleKey + ".Description", rule.description),
+        },
+      };
+    })
+    .filter((rule) => rule !== undefined);
 });
 
 const operatorInput = ref<HTMLInputElement>();
@@ -260,12 +262,15 @@ const handleSelect = async (event: string[]) => {
       :required="required"
     />
   </template>
-
   <small
-    v-if="selectedRule?.value && modelValue.operator && userWouldPass !== null"
+    v-if="
+      (selectedRule?.value || modelValue.value) &&
+      modelValue.operator &&
+      userWouldPass !== null
+    "
   >
     {{ $t("Your value is valid.") }}
-    <span :data-tooltip="$t('Your value is', [selectedRule?.value])">
+    <span :data-tooltip="$t('Your value is', [selectedRule?.value ?? 'N/A'])">
       {{
         $t(
           userWouldPass

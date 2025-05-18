@@ -5,6 +5,7 @@ import {
   ref,
   shallowRef,
   useSlots,
+  useTemplateRef,
 } from "vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import type {
@@ -45,7 +46,7 @@ const formToUse = ref();
 
 const emits = defineEmits(["confirmed"]);
 
-const modal = ref();
+const modal = useTemplateRef("modal");
 
 const isConfirming = ref(false);
 
@@ -100,16 +101,16 @@ const startConfirming = async () => {
     setElement();
   }
 
-  modal.value.openModal();
+  modal.value?.openModal();
 };
 
 const HandleConfirmed = () => {
   emits("confirmed");
-  modal.value.closeModal();
+  modal.value?.closeModal();
 };
 
 const HandleFailed = () => {
-  modal.value.closeModal();
+  modal.value?.closeModal();
 };
 
 const ConfirmationElement = shallowRef();

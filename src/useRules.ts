@@ -2,81 +2,29 @@ import { type Ref, computed, onMounted, ref, watchEffect } from "vue";
 import type { CommonRuleProperties, RuleModel, Rules } from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
 import i18n from "@/locales/i18n";
-import { apiService } from "./services/apiClient";
 import { assertIsUnifiedError } from "./services/apiServiceErrorHandler";
+import { getRules, testRule } from "./repositories/rule/ruleRepository";
 
-const rules = ref({} as Rules);
+const rules = ref<Partial<Rules> | null>(null);
 
 const isLoading = ref(false);
 
 const t = i18n.global.t;
 
-const removeLanguage = {
-  transformRequest: [
-    (data: any, headers: Record<string, any>) => {
-      delete headers["Accept-Language"];
-      return data;
-    },
-  ],
-};
-
 const getAllRules = async (redirectId?: string) => {
-  isLoading.value = true;
-
-  const endpoint = redirectId
-    ? `/api/v1/rules?redirectId=${redirectId}`
-    : "/api/v1/rules";
-
   try {
-    const response = await apiService.get<Rules>(endpoint, removeLanguage);
-    rules.value = response;
+    const response = await getRules({
+      redirectId,
+    });
+    if (!response || response === undefined) {
+      return;
+    }
+    rules.value = response as Rules;
   } catch (error) {
     assertIsUnifiedError(error);
     alert(error.message);
     return error.originalError;
-  } finally {
-    isLoading.value = false;
   }
-};
-
-/**
- * Call /rules/{name}/test to test a rule and get the users value
- * @param ruleName
- * @param operator
- * @param value
- * @param redirectId
- * @returns
- */
-const testRule = async (
-  ruleName?: keyof Rules,
-  operator?: string,
-  value?: string,
-  redirectId?: string
-) => {
-  // If not all data is set, return an error
-  if (!ruleName || !operator || !value) {
-    throw new Error("Missing data to test rule");
-  }
-
-  const url =
-    `/api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}` +
-    (redirectId ? `&redirectId=${redirectId}` : "");
-
-  // We need to unset the default accept-language header just for this request - so that it uses the default language provided by the browser and our language rule can be checked correctly. Because its a post request to `api/v1/rules/${ruleName}/test?operator=${operator}&value=${value}`, we need to set the headers in the data object
-  const response = await apiService
-    .post<{ passes: boolean }>(url, {}, removeLanguage)
-    // Catch and pass 422 errors
-    .catch((error) => {
-      if (error.response.status === 422) {
-        throw error.response.data;
-      }
-
-      throw error;
-    });
-
-  const data = response;
-
-  return data?.passes ?? false;
 };
 
 /**
@@ -103,7 +51,7 @@ const formatAllowedValues = (
 };
 
 const getAllowedOperatorForRule = (ruleName: keyof Rules) => {
-  if (!rules.value[ruleName]) {
+  if (!rules.value?.[ruleName]) {
     return [];
   }
   return rules.value[ruleName].allowedOperators;
@@ -160,7 +108,7 @@ export function useRules(
     if (!modelData?.value?.rule) {
       return null;
     }
-    return rules.value[modelData?.value?.rule];
+    return rules.value?.[modelData?.value?.rule];
   });
 
   const allowedOperators = computed(() => {
@@ -173,21 +121,11 @@ export function useRules(
   const userWouldPass = ref(null as boolean | null);
 
   const debounceTestRule = debounce(() => {
-    if (
-      !modelData?.value?.rule ||
-      !modelData?.value?.operator ||
-      !modelData?.value?.value
-    ) {
-      return;
-    }
-
-    testRule(
-      modelData?.value?.rule as keyof Rules,
-      modelData?.value?.operator,
-      modelData?.value?.value,
-      redirectId?.value
-    )
-      .then((passes) => {
+    testRule({
+      ...modelData?.value,
+      redirectId: redirectId?.value,
+    })
+      .then(({ passes }) => {
         userWouldPass.value = passes;
       })
       // Catch any errors and set the error message

@@ -99,7 +99,7 @@ export const updateRedirectRequestSchema = z
   .object({
     id: getRedirectRequestSchema.shape.id,
   })
-  .merge(createRedirectRequestSchema);
+  .merge(createRedirectRequestSchema.partial());
 
 export const generalEndpointRequestSchema = z.object({
   id: getRedirectRequestSchema.shape.id,

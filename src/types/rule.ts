@@ -3,8 +3,8 @@ export interface CommonRuleProperties {
   description: string;
   allowedOperators: string[];
   valueType: string;
-  seeAlsoLinks: string[];
-  allowedValues?: any[] | Record<string, string | number>;
+  seeAlsoLinks?: string[] | null;
+  allowedValues?: any[] | Record<string, string | number> | null;
 }
 
 interface BrowserLanguage extends CommonRuleProperties {
@@ -12,7 +12,7 @@ interface BrowserLanguage extends CommonRuleProperties {
 }
 
 interface Cookie extends CommonRuleProperties {
-  value: any[];
+  value: Record<string, string>;
 }
 
 interface Country extends CommonRuleProperties {
@@ -76,7 +76,7 @@ interface IsBot extends CommonRuleProperties {
 }
 
 interface DateRule extends CommonRuleProperties {
-  value: Date;
+  value: string;
 }
 
 interface MoonPhase extends CommonRuleProperties {
@@ -85,6 +85,14 @@ interface MoonPhase extends CommonRuleProperties {
 
 interface OperatingSystem extends CommonRuleProperties {
   value: string;
+}
+
+interface DeviceMemory extends CommonRuleProperties {
+  value: string;
+}
+
+interface PercentChance extends CommonRuleProperties {
+  value: number;
 }
 
 export interface Rules {
@@ -108,6 +116,8 @@ export interface Rules {
   date: DateRule;
   moon_phase: MoonPhase;
   operating_system: OperatingSystem;
+  device_memory: DeviceMemory;
+  percent_chance: PercentChance;
 }
 
 export interface RuleGroups {
