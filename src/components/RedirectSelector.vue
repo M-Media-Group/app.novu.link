@@ -4,7 +4,7 @@ import { type PropType, onMounted, ref } from "vue";
 import type { Redirect } from "@/types/redirect";
 import type { selectOptionObject } from "@/types/listItem";
 import CreateRedirect from "@/forms/CreateRedirect.vue";
-import { apiService } from "@/services/apiClient";
+import { getRedirects } from "@/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   modelValue: {
@@ -46,7 +46,7 @@ const getTeamRedirects = async (): Promise<selectOptionObject[]> => {
   let data: selectOptionObject[] = [];
 
   try {
-    const response = await apiService.get<Redirect[]>("/api/v1/redirects");
+    const response = await getRedirects();
     data = response.map(
       (redirect) =>
         ({
