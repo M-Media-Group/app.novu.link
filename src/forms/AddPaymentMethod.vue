@@ -7,6 +7,10 @@ import { getCssVarForStripe } from "@/helpers/cssVariables";
 import { useI18n } from "vue-i18n";
 import BaseForm from "@/forms/BaseForm.vue";
 import { useTeamStore } from "@/stores/team";
+import {
+  addPaymentMethod as addPaymentMethodRepo,
+  getPaymentIntent,
+} from "@/repositories/payment/paymentRepository";
 
 defineProps({
   showLabel: {
@@ -69,7 +73,7 @@ onMounted(() => {
 });
 
 const getClientSecret = async () => {
-  const response = await teamStore.getPaymentIntent();
+  const response = await getPaymentIntent();
   if (response) {
     clientSecret.value = response.client_secret;
   }
@@ -115,8 +119,8 @@ const addPaymentMethod = async () => {
           if (!userStore.isAuthenticated) {
             return;
           }
-          teamStore
-            .addPaymentMethod(result.setupIntent.payment_method)
+
+          addPaymentMethodRepo(result.setupIntent)
             .then((response) => {
               // If the response is false, pass to the next catch
               if (!response) {

@@ -51,6 +51,10 @@ export const useTeamStore = defineStore("team", () => {
     teams.value = [];
     activeTeamId.value = null;
   });
+  $bus?.$on(eventTypes.added_payment_method, () => {
+    // If the user changes the team, we should fetch the user's teams.
+    getUserTeams();
+  });
 
   const activeTeam = computed(() => {
     if (!activeTeamId.value || !teams.value.length) {
@@ -58,49 +62,6 @@ export const useTeamStore = defineStore("team", () => {
     }
     return teams.value.find((team) => team.id === activeTeamId.value);
   });
-
-  /**
-   * Get a payment intent
-   */
-  async function getPaymentIntent() {
-    try {
-      const response = await apiService.get<{ client_secret: string }>(
-        "user/payment-intent"
-      );
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  /**
-   * Add a payment method for a user
-   */
-  async function addPaymentMethod(paymentMethodId: string) {
-    try {
-      await apiService.post("/api/v1/payment-methods", {
-        payment_method: paymentMethodId,
-      });
-      $bus.$emit(eventTypes.added_payment_method);
-      await getUserTeams();
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-
-  /**
-   * Get the payment methods of the user
-   */
-  async function getPaymentMethods() {
-    try {
-      const response = await apiService.get("/api/v1/payment-methods");
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const update = async (team: Team) => {
     await apiService.put(`/teams/${team.id}`, {
@@ -170,9 +131,6 @@ export const useTeamStore = defineStore("team", () => {
     teams,
     getUserTeams,
     update,
-    getPaymentIntent,
-    addPaymentMethod,
-    getPaymentMethods,
     switchTeam,
     createTeam,
     getAnalyticsIntegrations,
