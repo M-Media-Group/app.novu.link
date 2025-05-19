@@ -26,20 +26,19 @@ const singleQRElement = ref();
 
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
 
-const { isPending, isLoading, isFetching, isError, data, error, refetch } =
-  useQuery({
-    queryKey: ["redirects", props.redirectId],
-    queryFn: async () => {
-      try {
-        return await getRedirect({ id: props.redirectId });
-      } catch (error) {
-        assertIsUnifiedError(error);
-        if (error.status === 404) {
-          router.push("/404");
-        }
+const { isPending, data, error, refetch } = useQuery({
+  queryKey: ["redirects", props.redirectId],
+  queryFn: async () => {
+    try {
+      return await getRedirect({ id: props.redirectId });
+    } catch (error) {
+      assertIsUnifiedError(error);
+      if (error.status === 404) {
+        router.push("/404");
       }
-    },
-  });
+    }
+  },
+});
 
 const timerLength = 60 * 3;
 
@@ -97,7 +96,7 @@ const clicksAllTime = computed(() => {
       </ul>
     </nav> -->
   <hgroup>
-    <h1 v-if="isLoading" class="gl-animate-skeleton-loader"></h1>
+    <h1 v-if="isPending" class="gl-animate-skeleton-loader"></h1>
     <h1 v-else-if="!teamStore.activeTeam">
       {{
         $t("Link ready to use. time left to claim it.", {
@@ -110,7 +109,6 @@ const clicksAllTime = computed(() => {
       <router-link to="/redirects">Default Campaign</router-link>
     </p>
   </hgroup>
-  {{ error }}
   <progress v-if="!teamStore.activeTeam" :value="timer" :max="timerLength" />
   <single-q-r
     :showTitle="false"
@@ -127,7 +125,7 @@ const clicksAllTime = computed(() => {
     :designs="data?.qr_designs"
     :webhooks="data?.webhooks"
     :alerts="data?.alerts"
-    :loading="isLoading"
+    :loading="isPending"
     :authenticated="!!teamStore.activeTeam"
     :description="teamStore.activeTeam ? undefined : ''"
     :clicksSameTimeYesterday="data?.yesterdays_clicks_up_to_now_count"
