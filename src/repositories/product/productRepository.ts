@@ -1,12 +1,15 @@
 import type { z } from "zod";
 import { apiServiceCall } from "../apiServiceCall";
 import {
+  createOrderRequestSchema,
   getProductRequestSchema,
   getProductResponseSchema,
   getProductsRequestSchema,
 } from "./productSchema";
 import { baseUrl } from "@/services/apiClient";
 import { parseStreamedResponse } from "@/helpers/streamers";
+
+import $bus, { eventTypes } from "@/eventBus/events";
 
 export const getProduct = async (
   data?: z.infer<typeof getProductRequestSchema>
@@ -52,4 +55,17 @@ export const streamProducts = async (
     await parseStreamedResponse(reader, productsArray); // Pass local products array for streaming
   }
   return productsArray;
+};
+
+export const createOrder = async (
+  data: Partial<z.infer<typeof createOrderRequestSchema>>
+) => {
+  const response = await apiServiceCall(
+    `/api/v1/products/${data.product_id}/orders`,
+    "post",
+    data,
+    createOrderRequestSchema
+  );
+  $bus.$emit(eventTypes.created_product_order);
+  return response;
 };

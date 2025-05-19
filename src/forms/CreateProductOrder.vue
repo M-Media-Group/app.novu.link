@@ -9,9 +9,9 @@ import type { Product } from "@/types/product";
 import type { Redirect } from "@/types/redirect";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import type { Gate } from "@m-media/vue3-gate-keeper";
-import { apiService } from "@/services/apiClient";
+import { createOrder } from "@/repositories/product/productRepository";
 
 const props = defineProps({
   /** The redirect ids. If passed, the selector will be hidden */
@@ -44,19 +44,15 @@ const {
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  if (!localRedirectIds.value || !loadedProduct.value) {
-    return;
-  }
-  await apiService.post(`/api/v1/products/${loadedProduct.value.id}/orders`, {
+  await createOrder({
     redirect_uuid: localRedirectIds.value[0],
     quantity: quantity.value,
-    merchant: loadedProduct.value.merchant,
+    merchant: loadedProduct.value?.merchant,
     include_qr_code_subscription: includeQrCodeSubscription.value,
     include_consultation: includeConsultation.value,
     attributes: selectedAttributes.value,
+    product_id: loadedProduct.value?.id,
   });
-
-  $bus.$emit(eventTypes.created_product_order);
 };
 
 const localRedirectIds = ref(props.redirectIds ?? []);
