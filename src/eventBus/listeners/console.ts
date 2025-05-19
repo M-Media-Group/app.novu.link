@@ -1,3 +1,4 @@
+import type { ListenersMap } from "type-safe-event-bus";
 import { eventTypes } from "../events";
 
 const options = {} as any;
@@ -10,4 +11,4 @@ if (import.meta.env.DEV) {
   }
 }
 
-export default options as Record<eventTypes, any>;
+export default options satisfies ListenersMap;

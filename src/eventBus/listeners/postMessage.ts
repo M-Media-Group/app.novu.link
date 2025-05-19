@@ -1,3 +1,4 @@
+import type { ListenersMap } from "type-safe-event-bus";
 import { eventTypes } from "../events";
 
 export default {
@@ -11,4 +12,4 @@ export default {
       "*"
     );
   },
-} as Record<eventTypes, any>;
+} satisfies ListenersMap;

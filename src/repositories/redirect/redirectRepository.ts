@@ -107,7 +107,7 @@ export const updateRedirectEndpoint = async (
     updateRedirectEndpointRequestSchema,
     updateRedirectEndpointResponseSchema
   );
-  $bus.$emit(eventTypes.updated_endpoint, data.endpoint_id);
+  $bus.$emit(eventTypes.updated_endpoint, data.endpoint_id!);
   return response;
 };
 

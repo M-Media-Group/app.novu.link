@@ -1,5 +1,5 @@
 import { event, optIn, optOut, purchase, set } from "vue-gtag";
-import type { eventTypes } from "../events";
+import type { ListenersMap } from "type-safe-event-bus";
 
 // Define fbq for Facebook Pixel as a function (declare it)
 /** @todo add fbq types */
@@ -69,4 +69,4 @@ export default {
   created_qr_design: () => {
     event("create_qr_design");
   },
-} as Record<eventTypes, any>;
+} satisfies ListenersMap;

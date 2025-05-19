@@ -1,6 +1,7 @@
 import { SUPPORT_LOCALES } from "@/locales/i18n";
 import { eventTypes } from "../events";
 import i18n from "@/locales/i18n";
+import type { ListenersMap } from "type-safe-event-bus";
 
 const t = i18n.global.t;
 
@@ -287,4 +288,4 @@ export default {
       5000
     ).show();
   },
-} as Record<eventTypes, any>;
+} satisfies ListenersMap;

@@ -2,6 +2,7 @@ import i18n, { setI18nLanguage } from "@/locales/i18n";
 import router from "@/router";
 import { eventTypes } from "../events";
 import { setTheme } from "@/themes/useTheme";
+import type { ListenersMap } from "type-safe-event-bus";
 
 /**
  * Be careful here - its quite easy to accidentally set up an infinite loop
@@ -67,4 +68,4 @@ export default {
       data: e,
     });
   },
-} as Record<eventTypes, any>;
+} satisfies ListenersMap;
