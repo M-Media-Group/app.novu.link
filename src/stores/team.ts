@@ -33,7 +33,6 @@ export const useTeamStore = defineStore("team", () => {
 
   const update = async (team: Team) => {
     await updateTeam(team);
-    setNewestTeamAsActive();
     return false;
   };
 

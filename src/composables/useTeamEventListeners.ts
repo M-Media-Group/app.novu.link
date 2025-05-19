@@ -3,7 +3,7 @@ import { useTeamStore } from "@/stores/team";
 import { useEventsBus } from "@/eventBus/events";
 import { useRouter } from "vue-router";
 
-export function useTeamEventListeners() {
+export const useTeamEventListeners = () => {
   const store = useTeamStore();
   const $bus = useEventsBus();
   const router = useRouter();
@@ -13,8 +13,8 @@ export function useTeamEventListeners() {
   $bus.$on("confirmed_otp", store.getUserTeams);
   $bus.$on("added_payment_method", store.getUserTeams);
 
-  $bus.$on("logged_out", () => {
-    store.$reset(); // if $reset defined, or manually clear state
+  $bus.$on("updated_team", (id: number) => {
+    store.setNewestTeamAsActive();
   });
 
   $bus.$on("changed_team", (id: number) => {
@@ -26,4 +26,4 @@ export function useTeamEventListeners() {
     await store.getUserTeams();
     store.setNewestTeamAsActive();
   });
-}
+};
