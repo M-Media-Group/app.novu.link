@@ -1,4 +1,4 @@
-import { event, optIn, optOut, purchase, set } from "vue-gtag";
+import { event, optIn, optOut, set } from "vue-gtag";
 import type { ListenersMap } from "type-safe-event-bus";
 
 // Define fbq for Facebook Pixel as a function (declare it)
@@ -8,10 +8,10 @@ declare function fbq(...args: any[]): void;
 export default {
   enabled_analytics: () => {
     optIn();
-    event("analytics_opt_in");
+    event("analytics_opt_in", {});
   },
   disabled_analytics: () => {
-    event("analytics_opt_out");
+    event("analytics_opt_out", {});
     optOut();
   },
   viewed_page: (to: any) => {
@@ -19,10 +19,10 @@ export default {
     // fbq("track", "PageView"); // To confirm, it is likely done automatically already by using the history listener
   },
   logged_in: () => {
-    event("login");
+    event("login", {});
   },
   registered: () => {
-    event("sign_up");
+    event("sign_up", {});
     fbq("track", "CompleteRegistration");
   },
   added_payment_method: () => {
@@ -44,12 +44,12 @@ export default {
     });
   },
   created_personal_access_token: () => {
-    event("create_personal_access_token");
+    event("create_personal_access_token", {});
   },
   started_subscription: () => {
     // generate a random transaction id based on time
     const transactionId = `T${Date.now()}${Math.floor(Math.random() * 1000)}`;
-    purchase({
+    event("purchase",{
       transaction_id: transactionId,
       value: 36,
       currency: "EUR",
@@ -60,13 +60,13 @@ export default {
     });
   },
   created_redirect: () => {
-    event("create_redirect");
+    event("create_redirect", {});
   },
   created_endpoint: () => {
-    event("create_endpoint");
-    fbq("trackCustom", "CreateEndpoint");
+    event("create_endpoint", {});
+    fbq("trackCustom", "CreateEndpoint", {});
   },
   created_qr_design: () => {
-    event("create_qr_design");
+    event("create_qr_design", {});
   },
 } satisfies ListenersMap;
