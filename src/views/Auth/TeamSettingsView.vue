@@ -36,7 +36,6 @@ const getCurrentIntegration = async () => {
 
 const handleDelete = async (integration: AnalyticsIntegration) => {
   await deleteAnalyticsIntegration(integration);
-
   getCurrentIntegration();
 };
 
@@ -44,7 +43,6 @@ const $bus = useEventsBus();
 
 onMounted(() => {
   getCurrentIntegration();
-
   $bus.$on("created_analytics_integration", getCurrentIntegration);
 });
 

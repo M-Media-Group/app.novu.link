@@ -2,43 +2,22 @@
 import CardElement from "@/components/CardElement.vue";
 import AccountSettings from "@/forms/AccountSettings.vue";
 import PersonalAccessTokens from "@/forms/PersonalAccessTokens.vue";
-import router from "@/router";
-import { useUserStore } from "@/stores/user";
-import type { PersonalAccessToken } from "@/types/user";
-import { ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
+import { useUserTokens } from "@/composables/useUserTokens";
 
-const userStore = useUserStore();
-
-const handleUpdate = (event: { email: string | undefined }) => {
-  // If the email is in the event, redirect to the confirm email page
-  if (event.email) {
-    router.push({ name: "confirm-email" });
-  }
-};
-
-const accessTokens = ref<PersonalAccessToken[]>([]);
-
-userStore
-  .getPersonalAccessTokens()
-  .then((tokens) => (accessTokens.value = tokens || []));
-
-const handleCreatedToken = (e: PersonalAccessToken) => {
-  accessTokens.value.push(e);
-};
-
-const handleDeleteToken = (id: number) => {
-  userStore.deletePersonalAccessToken({ id });
-  const accessTokenIndex = accessTokens.value.findIndex((token) => {
-    return token.id === id;
-  });
-  accessTokens.value.splice(accessTokenIndex);
-};
+const {
+  accessTokens,
+  conditionallyPushUserToConfirmEmail,
+  handleCreatedToken,
+  handleDeleteToken,
+} = useUserTokens();
 </script>
 <template>
   <h1>{{ $t("My Account") }}</h1>
   <card-element :titleHeadingLevel="2" :title="$t('Settings')">
-    <account-settings @updated="handleUpdate"></account-settings>
+    <account-settings
+      @updated="conditionallyPushUserToConfirmEmail"
+    ></account-settings>
   </card-element>
 
   <card-element :titleHeadingLevel="2" title="API">
