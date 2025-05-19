@@ -139,16 +139,7 @@ export const useUserStore = defineStore("user", () => {
   async function confirmOtp(otp: string) {
     // Submit a reset password
     try {
-      const response = await confirmOtpUser({ otp });
-
-      // The response tells us if the user is new or not
-      if (response.user_created) {
-        $bus.$emit(eventTypes.registered);
-      } else {
-        $bus.$emit(eventTypes.logged_in);
-      }
-
-      return true;
+      await confirmOtpUser({ otp });
     } catch (error) {
       assertIsUnifiedError(error);
       if (error.status === 422 && !error.details?.length) {

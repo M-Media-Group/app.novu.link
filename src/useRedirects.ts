@@ -1,5 +1,4 @@
 import type { Endpoint } from "./types/redirect";
-import $bus, { eventTypes } from "@/eventBus/events";
 import {
   addRedirectEndpoint as addRedirectEndpointRepo,
   deleteRedirectEndpoint as deleteRedirectEndpointRepo,
@@ -13,22 +12,14 @@ import {
 const baseUrl = import.meta.env.VITE_API_URL;
 
 export const updateRedirect = async (id: string, data: any) => {
-  const response = await updateRedirectRepo({
+  return await updateRedirectRepo({
     id,
     ...data,
   });
-  $bus.$emit(eventTypes.updated_redirect, id);
-  return response;
 };
 
 export const deleteRedirect = async (id: string) => {
-  const response = await deleteRedirectRepo({ id });
-  $bus.$emit(eventTypes.deleted_redirect, id);
-  return response;
-};
-
-export const getRedirectQrCodeUrl = (redirectId: string) => {
-  return `${baseUrl}/api/v1/redirects/${redirectId}/qr`;
+  return await deleteRedirectRepo({ id });
 };
 
 export const getRedirectQrCodeDataUrl = (
@@ -56,35 +47,28 @@ export const updateRedirectEndpoint = async (
   endpointId: number,
   data: Endpoint
 ) => {
-  const respone = await updateRedirectEndpointRepo({
+  return await updateRedirectEndpointRepo({
     ...data,
     id,
     endpoint_id: endpointId,
   });
-  $bus.$emit(eventTypes.updated_endpoint, endpointId);
-  return respone;
 };
 
 export const deleteRedirectEndpoint = async (
   id: string,
   endpointId: number
 ) => {
-  const respone = await deleteRedirectEndpointRepo({
+  return await deleteRedirectEndpointRepo({
     id,
     endpoint_id: endpointId,
   });
-  $bus.$emit(eventTypes.deleted_endpoint, endpointId);
-  return respone;
 };
 
 export const startSubscription = async (id: string) => {
-  $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
   await startSubscriptionRepo({ id });
-  $bus.$emit(eventTypes.started_subscription);
 };
 
 export const unsubscribe = async (id: string) => {
   await unsubscribeRepo({ id });
-  $bus.$emit(eventTypes.unsubscribed);
   return Promise.resolve(true);
 };

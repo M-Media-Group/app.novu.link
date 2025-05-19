@@ -3,7 +3,7 @@ import { ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RuleSelector from "@/components/RuleSelector.vue";
 import type { RuleModel } from "@/types/rule";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
@@ -57,8 +57,6 @@ const submitForm = async () => {
       /** @note the below type assertion is not really true (the values may still be undefined), but thats OK because Zod will cath it */
       rule_groups: [{ rules: [ruleData.value as Required<RuleModel>] }],
     });
-
-    $bus.$emit(eventTypes.created_endpoint);
   } catch (error) {
     assertIsUnifiedError(error);
     // Format errors. We get them as rule_groups.0.rules.0.value - but since this is a simple form, we just need to get the last item after ., in this case its .value, and set it on the setErrors function

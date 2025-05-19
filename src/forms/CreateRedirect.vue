@@ -2,7 +2,7 @@
 import BaseForm from "@/forms/BaseForm.vue";
 import { type PropType, ref } from "vue";
 import { useRouter } from "vue-router";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { useTeamStore } from "@/stores/team";
 import type { Redirect } from "@/types/redirect";
@@ -118,7 +118,6 @@ const handleSuccess = async (response: Redirect) => {
   if (!isAuthenticated) {
     document.cookie = `created_when_not_logged_in=${response.uuid}; max-age=300`;
   }
-  $bus.$emit(eventTypes.created_redirect);
   emit("success", response.uuid);
   return router.push(`/redirects/${response.uuid}`);
 };

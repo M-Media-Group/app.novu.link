@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, computed, ref, useTemplateRef } from "vue";
+import { type PropType, computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RedirectSelector from "@/components/RedirectSelector.vue";
 import ProductSelector from "@/components/ProductSelector.vue";
@@ -9,7 +9,6 @@ import type { Product } from "@/types/product";
 import type { Redirect } from "@/types/redirect";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { useEventsBus } from "@/eventBus/events";
 import type { Gate } from "@m-media/vue3-gate-keeper";
 import { createOrder } from "@/repositories/product/productRepository";
 
@@ -26,9 +25,6 @@ const props = defineProps({
     required: false,
   },
 });
-
-const baseFormRef = useTemplateRef("baseFormRef");
-const $bus = useEventsBus();
 
 const emit = defineEmits(["success"]);
 

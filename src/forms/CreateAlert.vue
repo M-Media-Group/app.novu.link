@@ -2,7 +2,6 @@
 import { computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 
-import { useEventsBus } from "@/eventBus/events";
 import { formatMinutes, formatToMinutes } from "@/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -18,8 +17,6 @@ const props = defineProps({
 });
 
 const baseFormRef = ref();
-
-const $bus = useEventsBus();
 
 const emit = defineEmits(["success"]);
 

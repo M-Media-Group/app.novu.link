@@ -67,6 +67,11 @@ export const confirmOtp = async (
     })
   );
   $bus.$emit(eventTypes.confirmed_otp);
+  if (response.user_created) {
+    $bus.$emit(eventTypes.registered);
+  } else {
+    $bus.$emit(eventTypes.logged_in);
+  }
   return response;
 };
 
