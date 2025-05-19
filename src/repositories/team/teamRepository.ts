@@ -1,7 +1,11 @@
-import type { z } from "zod";
+import { z } from "zod";
 import { apiServiceCall } from "../apiServiceCall";
 import {
+  createAnalyticsIntegrationRequestSchema,
   createTeamRequestSchema,
+  deleteAnalyticsIntegrationRequestSchema,
+  getAnalyticsIntegrationsResponseSchema,
+  getSupportedAnalyticsIntegrationsResponseSchema,
   getUserTeamsResponseSchema,
   switchTeamRequestSchema,
   updateTeamRequestSchema,
@@ -58,4 +62,50 @@ export const createTeam = async (
   $bus.$emit(eventTypes.created_team);
 
   return response;
+};
+
+export const getAnalyticsIntegrations = async () => {
+  return await apiServiceCall(
+    `/api/v1/analytics/integrations`,
+    "get",
+    undefined,
+    undefined,
+    getAnalyticsIntegrationsResponseSchema
+  );
+};
+
+export const deleteAnalyticsIntegration = async (
+  data: z.infer<typeof deleteAnalyticsIntegrationRequestSchema>
+) => {
+  return await apiServiceCall(
+    `/api/v1/analytics/integrations/${data.id}`,
+    "delete",
+    data,
+    deleteAnalyticsIntegrationRequestSchema
+  );
+};
+
+export const createAnalyticsIntegration = async (
+  data: Partial<z.infer<typeof createAnalyticsIntegrationRequestSchema>>
+) => {
+  const response = await apiServiceCall(
+    `/api/v1/analytics/integrations`,
+    "post",
+    data,
+    createAnalyticsIntegrationRequestSchema
+  );
+
+  $bus.$emit(eventTypes.created_analytics_integration);
+
+  return response;
+};
+
+export const getSupportedAnalyticsIntegrations = async () => {
+  return await apiServiceCall(
+    `/api/v1/analytics/integrations/supported`,
+    "get",
+    undefined,
+    undefined,
+    getSupportedAnalyticsIntegrationsResponseSchema
+  );
 };

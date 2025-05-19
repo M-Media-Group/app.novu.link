@@ -4,8 +4,6 @@ import { computed, ref } from "vue";
 import type { Team } from "@/types/team";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useRouter } from "vue-router";
-import { apiService } from "@/services/apiClient";
-import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 import {
   getUserTeams as getUserTeamsRepo,
   switchTeam,
@@ -91,36 +89,11 @@ export const useTeamStore = defineStore("team", () => {
     return true;
   };
 
-  const getAnalyticsIntegrations = async () => {
-    try {
-      const response = await apiService.get<AnalyticsIntegration[]>(
-        "/api/v1/analytics/integrations"
-      );
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteAnalyticsIntegration = async (integrationId: string | number) => {
-    try {
-      await apiService.delete(
-        `/api/v1/analytics/integrations/${integrationId}`
-      );
-      return true;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return {
     activeTeam,
     teams,
     getUserTeams,
     update,
     switchTeam,
-
-    getAnalyticsIntegrations,
-    deleteAnalyticsIntegration,
   };
 });

@@ -10,6 +10,10 @@ import CreateAnalyticsIntegration from "@/forms/CreateAnalyticsIntegration.vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
+import {
+  deleteAnalyticsIntegration,
+  getAnalyticsIntegrations,
+} from "@/repositories/team/teamRepository";
 
 const userStore = useUserStore();
 const teamStore = useTeamStore();
@@ -27,23 +31,13 @@ userStore
 const analyticsIntegrations = ref<AnalyticsIntegration[]>([]);
 
 const getCurrentIntegration = async () => {
-  const response = await teamStore.getAnalyticsIntegrations();
-  if (response) {
-    analyticsIntegrations.value = response;
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    // baseFormRef.value.setInputErrors(response.data.errors);
-  }
+  analyticsIntegrations.value = await getAnalyticsIntegrations();
 };
 
-const deleteAnalyticsIntegration = async (id: number) => {
-  const response = await teamStore.deleteAnalyticsIntegration(id);
-  if (response) {
-    getCurrentIntegration();
-  } else if (typeof response === "object") {
-    // Show the fields with errors
-    // baseFormRef.value.setInputErrors(response.data.errors);
-  }
+const handleDelete = async (integration: AnalyticsIntegration) => {
+  await deleteAnalyticsIntegration(integration);
+
+  getCurrentIntegration();
 };
 
 const $bus = useEventsBus();
@@ -128,7 +122,7 @@ onUnmounted(() => {
               <base-button
                 class="delete"
                 type="button"
-                @click="deleteAnalyticsIntegration(integration.id)"
+                @click="handleDelete(integration)"
               >
                 {{ $t("Delete") }}
               </base-button>

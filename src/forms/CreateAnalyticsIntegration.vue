@@ -3,13 +3,12 @@ import { computed, onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 import type { selectOptionObject } from "@/types/listItem";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
-import type {
-  AnalyticsIntegration,
-  SupportedIntegration,
-} from "@/types/analyticsIntegrations";
-import { apiService } from "@/services/apiClient";
+import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import {
+  createAnalyticsIntegration,
+  getSupportedAnalyticsIntegrations,
+} from "@/repositories/team/teamRepository";
 
 const id = ref("" as AnalyticsIntegration["external_id"]);
 const secret = ref("" as string);
@@ -21,15 +20,13 @@ const debugCode = ref("" as string);
 const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
-const $bus = useEventsBus();
 
 const allOptions = ref([] as selectOptionObject[]);
 
 const getOptions = async (): Promise<selectOptionObject[]> => {
   try {
-    const response = await apiService.get<SupportedIntegration[]>(
-      "/api/v1/analytics/integrations/supported"
-    );
+    const response = await getSupportedAnalyticsIntegrations();
+
     return response.map((option) => ({
       id: option.name,
       render: option.pretty_name,
@@ -91,20 +88,14 @@ const debugCodeHelpLink = computed(() => {
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  if (!selectedOption.value || !id.value || !secret.value) {
-    return;
-  }
-
-  await apiService.post("/api/v1/analytics/integrations", {
-    type: selectedOption.value,
+  await createAnalyticsIntegration({
+    type: selectedOption.value ?? undefined,
     external_id: id.value,
     external_secret: secret.value,
     debug: debug.value,
     name: name.value,
     debug_code: debug.value ? debugCode.value : null,
   });
-
-  $bus.$emit(eventTypes.created_analytics_integration);
 };
 </script>
 
