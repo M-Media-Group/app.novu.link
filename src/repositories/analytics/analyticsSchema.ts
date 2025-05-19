@@ -20,8 +20,8 @@ export const analyticsIntegrationSchema = z.object({
   user_id: z.number(),
   debug: z.boolean(),
   debug_code: z.string().nullable(),
-  created_at: z.date(),
-  updated_at: z.date(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
   redirects: getRedirectsResponseSchema.optional(),
   team: teamSchema.optional(),
 });

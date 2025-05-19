@@ -5,9 +5,9 @@ export const bestRedirectSchema = z.object({
   team_id: z.number(),
   name: z.string(),
   enable_analytics: z.boolean(),
-  created_at: z.date(),
-  updated_at: z.date(),
-  deleted_at: z.date().nullable(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date(),
+  deleted_at: z.coerce.date().nullable(),
   clicks_count: z.number(),
 });
 
