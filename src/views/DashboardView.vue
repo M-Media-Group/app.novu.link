@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/stores/user";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import type { Dashboard } from "@/types/dashboard";
 import BaseButton from "@/components/BaseButton.vue";
@@ -26,9 +26,12 @@ const getData = async () => {
 
 onMounted(async () => {
   getData();
+  $bus.$on("changed_team", getData);
 });
 
-$bus.$on("changed_team", getData);
+onUnmounted(() => {
+  $bus.$off("changed_team", getData);
+});
 
 const itemData = computed(() => ({
   items: [
