@@ -18,7 +18,7 @@ export const clicksSchema = z.object({
 
 export const dashboardSchema = z.object({
   clicks: clicksSchema,
-  bestRedirect: bestRedirectSchema,
+  bestRedirect: bestRedirectSchema.nullable(),
   hasPaymentMethodSet: z.boolean(),
   hasBillableRedirects: z.boolean(),
   clicksByMinuteLast30: z.array(

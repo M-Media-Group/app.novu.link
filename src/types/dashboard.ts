@@ -2,7 +2,7 @@ import type { ClicksByTimeOfDay } from "./analytics";
 
 export interface Dashboard {
   clicks: Clicks;
-  bestRedirect: BestRedirect;
+  bestRedirect: BestRedirect | null;
   hasPaymentMethodSet: boolean;
   hasBillableRedirects: boolean;
   clicksByMinuteLast30: ClicksByTimeOfDay[];

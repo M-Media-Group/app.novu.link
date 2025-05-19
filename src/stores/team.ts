@@ -33,11 +33,7 @@ export const useTeamStore = defineStore("team", () => {
 
   const update = async (team: Team) => {
     await updateTeam(team);
-    const index = teams.value.findIndex((t) => t.id === team.id);
-    if (index !== -1) {
-      teams.value[index].name = team.name;
-      return true;
-    }
+    setNewestTeamAsActive();
     return false;
   };
 
