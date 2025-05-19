@@ -7,7 +7,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import LineChart from "@/components/charts/LineChart.vue";
-import { apiService } from "@/services/apiClient";
+import { getDashboard } from "@/repositories/misc/miscRepository";
 
 const data = ref<Dashboard | null>(null);
 
@@ -20,12 +20,11 @@ const { t } = useI18n();
 const isLoading = ref(true);
 
 const getData = async () => {
-  const response = await apiService.get<Dashboard>("/dashboard");
-  data.value = response;
+  data.value = await getDashboard();
   isLoading.value = false;
 };
 
-onMounted(() => {
+onMounted(async () => {
   getData();
 });
 
