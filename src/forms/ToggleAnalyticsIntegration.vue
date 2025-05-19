@@ -5,7 +5,7 @@ import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 import {
   createRedirectAnalyticsIntegration,
   deleteRedirectAnalyticsIntegration,
-} from "@/repositories/team/teamRepository";
+} from "@/repositories/analytics/analyticsRepository";
 
 const props = defineProps({
   redirectId: {
