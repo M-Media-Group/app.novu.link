@@ -100,7 +100,8 @@
     "vitest": "^3.1.4",
     "vue-stripe-js": "^2.0.2",
     "vue-translation-manager": "^1.2.0",
-    "vue-tsc": "^2.2"
+    "vue-tsc": "^2.2",
+    "@novulink/types": "*"
   },
   "pre-commit": [
     "lint",
