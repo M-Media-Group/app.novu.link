@@ -2,12 +2,12 @@
 import { computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import { formatMinutes, formatToMinutes } from "@/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
-import { apiService } from "@/services/apiClient";
+import { createAlert } from "@/repositories/alert/alertRepository";
 
 const props = defineProps({
   /** If the form should autofocus */
@@ -35,17 +35,13 @@ const timeDurationInMinutes = computed(() => {
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  await apiService.post("/api/v1/alerts", {
-    redirect_uuid: activeRedirectId.value,
+  await createAlert({
+    redirect_uuid: activeRedirectId.value ?? props.redirectId,
     type: scanType.value,
     condition: condition.value,
     target: targetNumber.value,
     time_window: timeDurationInMinutes.value,
   });
-  // Emit the updated event with the changed fields
-
-  // modal.value.closeModal();
-  $bus.$emit(eventTypes.created_alert);
 };
 
 /** Refactor to not create a new instance each time */

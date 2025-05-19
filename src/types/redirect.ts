@@ -100,7 +100,7 @@ export interface Webhook {
 export interface Alert {
   id: number;
   redirect_uuid: string;
-  user_id: any;
+  user_id: number;
   type: string;
   condition: string;
   target: number;

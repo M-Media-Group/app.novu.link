@@ -1,31 +1,19 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import type { Alert } from "@/types/redirect";
 import { formatMinutes } from "@/helpers/relativeTime";
 import BaseButton from "@/components/BaseButton.vue";
-import { apiService } from "@/services/apiClient";
+import { getAlerts } from "@/repositories/alert/alertRepository";
 
-const results = ref([] as Alert[]);
 const isLoading = ref(true);
 
-const getAlerts = async () => {
-  isLoading.value = true;
-  results.value =
-    (await apiService
-      .get<Alert[]>("/api/v1/alerts")
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        isLoading.value = false;
-      })) || [];
-};
+const results = ref<Alert[]>([]);
 
-getAlerts();
+onMounted(async () => {
+  results.value = await getAlerts();
+  isLoading.value = false;
+});
 </script>
 <template>
   <div class="two-column-grid">
