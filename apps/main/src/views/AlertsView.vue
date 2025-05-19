@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
-import type { Alert } from "@/types/redirect";
+import type { Alert } from "@novulink/types";
 import { formatMinutes } from "@/helpers/relativeTime";
 import BaseButton from "@/components/BaseButton.vue";
 import { getAlerts } from "@/repositories/alert/alertRepository";

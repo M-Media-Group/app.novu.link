@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 import DesignItem from "@/components/DesignItem.vue";
 
 import redirectsFixture from "../../../cypress/fixtures/redirects.json";
-import type { QRDesign } from "@/types/qrDesign";
+import type { QRDesign } from "@novulink/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof DesignItem> = {

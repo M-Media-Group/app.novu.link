@@ -13,8 +13,8 @@ import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, type Ref, computed, onMounted, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { useEventsBus } from "@/eventBus/events";
-import type { Alert, Endpoint, Placement, Webhook } from "@/types/redirect";
-import type { selectOption } from "@/types/listItem";
+import type { Alert, Endpoint, Placement, Webhook } from "@novulink/types";
+import type { selectOption } from "@novulink/types";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
@@ -29,7 +29,7 @@ import BaseModal from "@/components/modals/BaseModal.vue";
 
 import type { FileExtension } from "qr-code-styling";
 import { isError } from "@/helpers/httpCodes";
-import type { QRDesign } from "@/types/qrDesign";
+import type { QRDesign } from "@novulink/types";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 

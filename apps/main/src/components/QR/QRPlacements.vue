@@ -2,7 +2,7 @@
 import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import type { PropType } from "vue";
-import type { Placement } from "@/types/redirect";
+import type { Placement } from "@novulink/types";
 import { relativeTime } from "@/helpers/relativeTime";
 
 defineProps({

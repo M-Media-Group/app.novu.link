@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { QRDesign } from "@/types/qrDesign";
+import type { QRDesign } from "@novulink/types";
 import { relativeTime } from "@/helpers/relativeTime";
 import BaseBadge from "./BaseBadge.vue";
 import QRCode from "./QRCode.vue";

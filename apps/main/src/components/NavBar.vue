@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { type PropType, ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
-import type { User } from "@/types/user";
-import type { Team } from "@/types/team";
+import type { User } from "@novulink/types";
+import type { Team } from "@novulink/types";
 
 defineProps({
   isLoading: {

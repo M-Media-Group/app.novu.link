@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-import type { Team } from "@/types/team";
+import type { Team } from "@novulink/types";
 import {
   getUserTeams as getUserTeamsRepo,
   switchTeam,

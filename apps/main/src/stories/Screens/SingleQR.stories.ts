@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 import SingleQR from "@/components/screens/SingleQR.vue";
 import { vueRouter } from "storybook-vue3-router";
 import redirectsFixture from "../../../cypress/fixtures/redirects.json";
-import type { Alert, Endpoint, Webhook } from "@/types/redirect";
-import type { QRDesign } from "@/types/qrDesign";
+import type { Alert, Endpoint, Webhook } from "@novulink/types";
+import type { QRDesign } from "@novulink/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof SingleQR> = {

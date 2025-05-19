@@ -4,7 +4,7 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
 import { getRedirect } from "@/repositories/redirect/redirectRepository";
-import type { Endpoint } from "@/types/redirect";
+import type { Endpoint } from "@novulink/types";
 import { useQuery } from "@tanstack/vue-query";
 import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 

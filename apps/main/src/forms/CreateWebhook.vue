@@ -2,7 +2,7 @@
 import { onMounted, ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import type { selectOption } from "@/types/listItem";
+import type { selectOption } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";

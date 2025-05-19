@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
 import type { PropType } from "vue";
-import type { Webhook } from "@/types/redirect";
+import type { Webhook } from "@novulink/types";
 import CreateWebhook from "@/forms/CreateWebhook.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { ref } from "vue";
-import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import type { AnalyticsIntegration } from "@novulink/types";
 
 import ToggleAnalyticsIntegration from "@/forms/ToggleAnalyticsIntegration.vue";
 import { getAnalyticsIntegrations } from "@/repositories/analytics/analyticsRepository";

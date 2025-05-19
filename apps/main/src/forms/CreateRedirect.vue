@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { useTeamStore } from "@/stores/team";
-import type { Redirect } from "@/types/redirect";
+import type { Redirect } from "@novulink/types";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
 import { createRedirect } from "@/repositories/redirect/redirectRepository";
 

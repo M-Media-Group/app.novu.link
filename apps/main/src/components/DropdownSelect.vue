@@ -10,7 +10,7 @@ import {
   orderOptionsBySelectedFirst,
 } from "@/helpers/normaliseOptions";
 import { useMultiselect } from "@/composables/useMultiselect";
-import type { selectOption } from "@/types/listItem";
+import type { selectOption } from "@novulink/types";
 import BaseBadge from "./BaseBadge.vue";
 
 import { type PropType, computed, nextTick, onMounted, ref, watch } from "vue";

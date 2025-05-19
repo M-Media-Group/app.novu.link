@@ -2,7 +2,7 @@
 import { useRules } from "@/useRules";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import { computed, onMounted, toRef, watch } from "vue";
-import type { RuleModel, Rules } from "@/types/rule";
+import type { RuleModel, Rules } from "@novulink/types";
 import { useI18n } from "vue-i18n";
 import { ref } from "vue";
 import { type PropType, nextTick } from "vue";

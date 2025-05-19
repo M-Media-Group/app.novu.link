@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { Product } from "@/types/product";
+import type { Product } from "@novulink/types";
 import CardElement from "@/components/CardElement.vue";
 import { useProducts } from "@/composables/useProducts";
 import BaseBadge from "@/components/BaseBadge.vue";

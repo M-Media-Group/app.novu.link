@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
-import type { PersonalAccessToken } from "@/types/user";
+import type  {PersonalAccessToken} from "@novulink/types";
 
 export const useUserTokens = () => {
   const userStore = useUserStore();

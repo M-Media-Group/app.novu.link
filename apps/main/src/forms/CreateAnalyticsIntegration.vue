@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import type { selectOptionObject } from "@/types/listItem";
+import type { selectOptionObject } from "@novulink/types";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import type { AnalyticsIntegration } from "@novulink/types";
 import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import {
   createAnalyticsIntegration,

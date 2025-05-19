@@ -2,7 +2,7 @@
 import { ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RuleSelector from "@/components/RuleSelector.vue";
-import type { RuleModel } from "@/types/rule";
+import type { RuleModel } from "@novulink/types";
 import { useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";

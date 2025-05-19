@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import type { Analytics } from "@/types/analytics";
+import type { Analytics } from "@novulink/types";
 import BarChart from "@/components/charts/BarChart.vue";
 import LineChart from "@/components/charts/LineChart.vue";
 import PieChart from "@/components/charts/PieChart.vue";
 import CardElement from "@/components/CardElement.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import type { selectOption } from "@/types/listItem";
+import type { selectOption } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import { useI18n } from "vue-i18n";

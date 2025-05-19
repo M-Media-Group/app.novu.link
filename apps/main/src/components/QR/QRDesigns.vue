@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
 import { type PropType } from "vue";
-import type { QRDesign } from "@/types/qrDesign";
+import type { QRDesign } from "@novulink/types";
 import CreateQRDesign from "@/forms/CreateQRDesign.vue";
 import DesignItem from "../DesignItem.vue";
 

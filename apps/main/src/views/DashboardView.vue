@@ -2,7 +2,7 @@
 import { useUserStore } from "@/stores/user";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
-import type { Dashboard } from "@/types/dashboard";
+import type { Dashboard } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import { useEventsBus } from "@/eventBus/events";

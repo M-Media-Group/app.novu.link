@@ -1,5 +1,5 @@
 import { type Ref, computed, ref, watch } from "vue";
-import type { Attribute, Product, Variant } from "@/types/product";
+import type { Attribute, Product, Variant } from "@novulink/types";
 import { debounce } from "@/helpers/debounce";
 import {
   getProduct,

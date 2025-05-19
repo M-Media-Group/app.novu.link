@@ -2,7 +2,7 @@
 import type { PropType } from "vue";
 import BaseButton from "./BaseButton.vue";
 import BaseBadge from "./BaseBadge.vue";
-import type { selectOption } from "@/types/listItem";
+import type { selectOption } from "@novulink/types";
 import { useMultiselect } from "@/composables/useMultiselect";
 
 const emit = defineEmits([

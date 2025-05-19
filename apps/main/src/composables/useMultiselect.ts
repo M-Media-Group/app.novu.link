@@ -1,5 +1,5 @@
 import { normaliseOptions } from "@/helpers/normaliseOptions";
-import type { normalisedOptionObject, selectOption } from "@/types/listItem";
+import type { normalisedOptionObject, selectOption } from "@novulink/types";
 import { computed, toRaw } from "vue";
 
 export type requiredProps = {

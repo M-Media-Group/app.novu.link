@@ -1,4 +1,4 @@
-import type { HexColor } from "@/types/qrDesign";
+import type { HexColor } from "@novulink/types";
 
 /**
  * Converts an HSL color value to RGB. Conversion formula

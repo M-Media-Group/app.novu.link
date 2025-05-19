@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import type { Redirect } from "@/types/redirect";
+import type { Redirect } from "@novulink/types";
 import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";

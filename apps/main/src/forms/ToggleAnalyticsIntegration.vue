@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
-import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import type { AnalyticsIntegration } from "@novulink/types";
 import {
   createRedirectAnalyticsIntegration,
   deleteRedirectAnalyticsIntegration,

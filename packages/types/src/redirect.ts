@@ -42,7 +42,7 @@ export interface Endpoint {
   last_http_code?: number | null;
 }
 
-export interface RuleGroup {
+interface RuleGroup {
   match_all?: boolean | null;
   rules: RuleModel[];
 }

@@ -4,10 +4,10 @@ import AddPaymentMethod from "@/forms/AddPaymentMethod.vue";
 import TeamSettings from "@/forms/TeamSettings.vue";
 import { useTeamStore } from "@/stores/team";
 import { useUserStore } from "@/stores/user";
-import type { PersonalAccessToken } from "@/types/user";
+import type { PersonalAccessToken } from "@novulink/types";
 import { onMounted, onUnmounted, ref } from "vue";
 import CreateAnalyticsIntegration from "@/forms/CreateAnalyticsIntegration.vue";
-import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
+import type { AnalyticsIntegration } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
 import { useEventsBus } from "@/eventBus/events";
 import {

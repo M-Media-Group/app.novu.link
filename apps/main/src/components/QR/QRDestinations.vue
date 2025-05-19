@@ -4,7 +4,7 @@ import CardElement from "@/components/CardElement.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import type { PropType } from "vue";
-import type { Endpoint } from "@/types/redirect";
+import type { Endpoint } from "@novulink/types";
 import { parseRuleGroup } from "@/useRules";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { isError } from "@/helpers/httpCodes";

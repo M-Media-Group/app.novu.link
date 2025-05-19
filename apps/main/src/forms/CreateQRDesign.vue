@@ -10,8 +10,8 @@ import {
 } from "vue";
 import BaseForm from "./BaseForm.vue";
 import TabNav from "@/components/TabNav.vue";
-import type { HexColor, QRDesign } from "@/types/qrDesign";
-import type { selectOption } from "@/types/listItem";
+import type { HexColor, QRDesign } from "@novulink/types";
+import type { selectOption } from "@novulink/types";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";

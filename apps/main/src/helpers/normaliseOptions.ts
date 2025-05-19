@@ -1,4 +1,4 @@
-import type { normalisedOptionObject, selectOption } from "@/types/listItem";
+import type { normalisedOptionObject, selectOption } from "@novulink/types";
 
 /** Since we support either a callback or a string, we need to normalize the options to always have a render function */
 export const normaliseOptions = (

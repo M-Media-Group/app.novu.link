@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
 import type { PropType } from "vue";
-import type { Alert } from "@/types/redirect";
+import type { Alert } from "@novulink/types";
 import CreateAlert from "@/forms/CreateAlert.vue";
 import BaseBadge from "@/components/BaseBadge.vue";
 import { formatMinutes, relativeTime } from "@/helpers/relativeTime";

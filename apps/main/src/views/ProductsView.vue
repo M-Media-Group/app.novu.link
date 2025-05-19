@@ -5,7 +5,7 @@ import CreateProductOrder from "@/forms/CreateProductOrder.vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
 import { useProducts } from "@/composables/useProducts";
-import type { Product } from "@/types/product";
+import type { Product } from "@novulink/types";
 import BaseBadge from "@/components/BaseBadge.vue";
 import ProductCardElement from "@/components/ProductCardElement.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";

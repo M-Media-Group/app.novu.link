@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import { type PropType, computed, onMounted, ref } from "vue";
-import type { Product } from "@/types/product";
-import type { selectOptionObject } from "@/types/listItem";
+import type { Product } from "@novulink/types";
+import type { selectOptionObject } from "@novulink/types";
 import { useProducts } from "@/composables/useProducts";
 
 const props = defineProps({

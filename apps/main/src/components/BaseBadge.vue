@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BadgeObject } from "@/types/badge";
+import type { BadgeObject } from "@novulink/types";
 import type { PropType } from "vue";
 
 defineProps({

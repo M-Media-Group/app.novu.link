@@ -4,7 +4,7 @@ import LinkReady from "@/assets/linkReady.png";
 
 import QRCodeStyling, { type FileExtension } from "qr-code-styling";
 import type { PropType } from "vue";
-import type { QRDesign } from "@/types/qrDesign";
+import type { QRDesign } from "@novulink/types";
 import { getRedirectQrCodeDataUrl } from "@/repositories/redirect/redirectRepository";
 
 const props = defineProps({

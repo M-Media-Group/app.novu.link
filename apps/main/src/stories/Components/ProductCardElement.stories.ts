@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 import ProductCardElement from "@/components/ProductCardElement.vue";
 
 import productsFixture from "../../../cypress/fixtures/products.json";
-import type { Product } from "@/types/product";
+import type { Product } from "@novulink/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta: Meta<typeof ProductCardElement> = {
