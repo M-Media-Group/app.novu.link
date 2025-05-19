@@ -21,7 +21,7 @@ export const createAlert = async (
   data: Partial<z.infer<typeof createAlertRequestSchema>>
 ) => {
   const response = await apiServiceCall(
-    `/dashboard`,
+    `/api/v1/alerts`,
     "post",
     data,
     createAlertRequestSchema

@@ -36,7 +36,7 @@ export function assertIsUnifiedError(
   error: unknown
 ): asserts error is UnifiedError {
   if (!isUnifiedError(error)) {
-    throw new Error("Not a UnifiedError");
+    throw error;
   }
 }
 

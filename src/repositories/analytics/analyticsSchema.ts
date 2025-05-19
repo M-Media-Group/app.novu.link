@@ -13,7 +13,7 @@ export const supportedIntegrationFieldsSchema = z.object({
 
 export const analyticsIntegrationSchema = z.object({
   id: z.number(),
-  name: z.string(),
+  name: z.string().nullable(),
   team_id: z.number(),
   type: z.string(),
   external_id: z.string(),
@@ -47,7 +47,7 @@ export const createAnalyticsIntegrationRequestSchema = z.object({
   external_id: z.string(),
   external_secret: z.string(),
   debug: z.boolean(),
-  name: z.string(),
+  name: z.string().min(2),
   debug_code: z.string().nullable().optional(),
 });
 

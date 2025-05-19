@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import SingleQR from "@/components/screens/SingleQR.vue";
-import { useEventsBus } from "@/eventBus/events";
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
 import { getRedirect } from "@/repositories/redirect/redirectRepository";
-import type {
-  Alert,
-  Endpoint,
-  Placement,
-  Redirect,
-  Webhook,
-} from "@/types/redirect";
-import type { QRDesign } from "@/types/qrDesign";
+import type { Endpoint } from "@/types/redirect";
+import { useQuery } from "@tanstack/vue-query";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 
-const $bus = useEventsBus();
+import { useRedirectEventListeners } from "@/composables/useRedirectEventListeners";
+
 const router = useRouter();
 
 const teamStore = useTeamStore();
@@ -27,141 +22,24 @@ const props = defineProps({
   },
 });
 
-const isLoading = ref(true);
-
 const singleQRElement = ref();
 
-// All refs
-const redirectName = ref(null as Redirect["name"] | null);
-const subscribedAt = ref(null as Redirect["subscribed_at"]);
-const clicksToday = ref(0);
-const clicksSameTimeYesterday = ref(null as number | null);
-const clicksAllTime = ref(0);
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
-const placements = ref([] as Placement[]);
-const endpoints = ref([] as Endpoint[]);
-const designs = ref([] as QRDesign[]);
-const webhooks = ref([] as Webhook[]);
-const alerts = ref([] as Alert[]);
-const remainingClicks = ref(0);
-const heatmapData = ref(undefined as Redirect["heatmap"] | undefined);
 
-const getData = () => {
-  if (teamStore.activeTeam === null) {
-    isLoading.value = false;
-    return;
-  }
-
-  isLoading.value = true;
-  getRedirect({ id: props.redirectId })
-    .then((response) => {
-      // From the response, we need to pass as props the redirect name, the redirect URL, and the redirect ID
-      redirectName.value = response.name;
-      subscribedAt.value = response.subscribed_at;
-      remainingClicks.value = response.remaining_clicks;
-      placements.value = response.sources ?? [];
-      designs.value = response.qr_designs ?? [];
-      webhooks.value = response.webhooks ?? [];
-      alerts.value = response.alerts ?? [];
-      heatmapData.value = response.heatmap;
-
-      const totalClicks = () => {
-        return response.endpoints?.reduce((total: any, endpoint: any) => {
-          return (
-            total +
-            endpoint.clicks_by_time_of_day.reduce((sum: any, click: any) => {
-              return sum + click.click_count;
-            }, 0)
-          );
-        }, 0);
-      };
-
-      const bestPerformingEndpoint = () => {
-        return response.endpoints?.reduce(
-          (best: any, endpoint: any) => {
-            const totalClicks = endpoint.clicks_by_time_of_day.reduce(
-              (sum: any, click: any) => {
-                return sum + click.click_count;
-              },
-              0
-            );
-            return totalClicks > best.totalClicks
-              ? { endpoint: endpoint.endpoint, totalClicks }
-              : best;
-          },
-          { endpoint: undefined, totalClicks: 0 }
-        );
-      };
-
-      // set clicksToday and clicksTodayUnique
-      clicksToday.value = response.todays_clicks_count ?? 0;
-      clicksSameTimeYesterday.value =
-        response.yesterdays_clicks_up_to_now_count ?? null;
-
-      clicksAllTime.value = totalClicks();
-
-      bestEndpoint.value =
-        // If there is more than 1 endpoint, return the best performing endpoint. If there is only 1 endpoint, return that endpoint.
-        response.endpoints && response.endpoints?.length > 1
-          ? bestPerformingEndpoint().endpoint
-          : undefined;
-
-      endpoints.value = response.endpoints ?? [];
-
-      // next()\
-    })
-    .catch(() => {
-      router.push("/404");
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
-};
-
-const redirectToCreate = () => {
-  router.push("/redirects/create");
-};
-
-const incrementClicks = () => {
-  clicksToday.value += 1;
-  clicksAllTime.value += 1;
-};
-
-onMounted(() => {
-  if (!teamStore.activeTeam) {
-    isLoading.value = false;
-    singleQRElement.value.triggerSuccess();
-    startTimer();
-  } else {
-    getData();
-  }
-
-  $bus.$on("started_subscription", getData);
-  $bus.$on("unsubscribed", getData);
-  $bus.$on("updated_redirect", getData);
-  $bus.$on("updated_endpoint", getData);
-  $bus.$on("deleted_endpoint", getData);
-  $bus.$on("deleted_redirect", redirectToCreate);
-  $bus.$on("set_active_team", getData);
-  $bus.$on("created_qr_design", getData);
-  $bus.$on("created_webhook", getData);
-  $bus.$on("created_alert", getData);
-  $bus.$on("tested_redirect", incrementClicks);
-});
-
-onUnmounted(() => {
-  $bus.$off("started_subscription", getData);
-  $bus.$off("unsubscribed", getData);
-  $bus.$off("updated_redirect", getData);
-  $bus.$off("updated_endpoint", getData);
-  $bus.$off("deleted_endpoint", getData);
-  $bus.$off("deleted_redirect", redirectToCreate);
-  $bus.$off("set_active_team", getData);
-  $bus.$off("created_qr_design", getData);
-  $bus.$off("created_webhook", getData);
-  $bus.$off("created_alert", getData);
-  $bus.$off("tested_redirect", incrementClicks);
-});
+const { isPending, isLoading, isFetching, isError, data, error, refetch } =
+  useQuery({
+    queryKey: ["redirects", props.redirectId],
+    queryFn: async () => {
+      try {
+        return await getRedirect({ id: props.redirectId });
+      } catch (error) {
+        assertIsUnifiedError(error);
+        if (error.status === 404) {
+          router.push("/404");
+        }
+      }
+    },
+  });
 
 const timerLength = 60 * 3;
 
@@ -184,6 +62,24 @@ const convertSecondsToMinutes = (seconds: number) => {
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
+
+const localClicks = ref(0);
+
+useRedirectEventListeners(refetch, localClicks);
+
+const clicksAllTime = computed(() => {
+  // Sum of all clicks from all endpoints
+  return (
+    localClicks.value +
+    (data.value?.endpoints.reduce((acc, endpoint) => {
+      const totalSum = endpoint.clicks_by_time_of_day.reduce(
+        (acc, curr) => acc + curr.click_count,
+        0
+      );
+      return acc + (totalSum ?? 0);
+    }, 0) ?? 0)
+  );
+});
 </script>
 <template>
   <!-- <nav aria-label="breadcrumb">
@@ -209,31 +105,34 @@ const convertSecondsToMinutes = (seconds: number) => {
         })
       }}
     </h1>
-    <h1 v-else>{{ redirectName ?? $t("Magic link") }}</h1>
+    <h1 v-else>{{ data?.name ?? $t("Magic link") }}</h1>
     <p v-if="teamStore.activeTeam">
       <router-link to="/redirects">Default Campaign</router-link>
     </p>
   </hgroup>
+  {{ error }}
   <progress v-if="!teamStore.activeTeam" :value="timer" :max="timerLength" />
   <single-q-r
     :showTitle="false"
-    :redirectName="redirectName"
-    :subscribed="teamStore.activeTeam?.is_billing_exempt || !!subscribedAt"
+    :redirectName="data?.name"
+    :subscribed="
+      teamStore.activeTeam?.is_billing_exempt || !!data?.subscribed_at
+    "
     v-bind="$props"
-    :clicksToday="clicksToday"
+    :clicksToday="localClicks + (data?.todays_clicks_count ?? 0)"
     :clicksAllTime="clicksAllTime"
     :bestEndpoint="bestEndpoint"
-    :endpoints="endpoints"
-    :placements="placements"
-    :designs="designs"
-    :webhooks="webhooks"
-    :alerts="alerts"
+    :endpoints="data?.endpoints"
+    :placements="data?.sources"
+    :designs="data?.qr_designs"
+    :webhooks="data?.webhooks"
+    :alerts="data?.alerts"
     :loading="isLoading"
     :authenticated="!!teamStore.activeTeam"
     :description="teamStore.activeTeam ? undefined : ''"
-    :clicksSameTimeYesterday="clicksSameTimeYesterday"
-    :remainingClicks="remainingClicks"
-    :heatmapData="heatmapData"
+    :clicksSameTimeYesterday="data?.yesterdays_clicks_up_to_now_count"
+    :remainingClicks="data?.remaining_clicks"
+    :heatmapData="data?.heatmap"
     ref="singleQRElement"
   />
 </template>

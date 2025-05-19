@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { type PropType, computed, reactive, ref, toRefs, watch } from "vue";
+import {
+  type PropType,
+  computed,
+  reactive,
+  ref,
+  toRefs,
+  useTemplateRef,
+  watch,
+} from "vue";
 import BaseForm from "./BaseForm.vue";
 import TabNav from "@/components/TabNav.vue";
 import type { HexColor, QRDesign } from "@/types/qrDesign";
@@ -31,7 +39,7 @@ const props = defineProps({
   },
 });
 
-const modal = ref();
+const modal = useTemplateRef("modal");
 
 const state = reactive({
   name: "" as QRDesign["name"],
@@ -74,9 +82,6 @@ const emit = defineEmits<{
 
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
-  if (!name.value) {
-    return;
-  }
   await createQrDesign({
     name: name.value,
     color: color.value,
@@ -137,12 +142,17 @@ const handleLogoFile = (event: Event) => {
     logo.value = reader.result as string;
   };
 };
+
+const handleSuccess = () => {
+  emit("success");
+  modal.value?.closeModal();
+};
 </script>
 
 <template>
   <base-form
     ref="baseFormRef"
-    @success="emit('success')"
+    @success="handleSuccess"
     :submitFn="submitForm"
     :showSubmitButton="showSubmitButton"
   >

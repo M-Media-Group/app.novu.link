@@ -17,7 +17,7 @@ export interface SupportedIntegrationFields {
 
 export interface AnalyticsIntegration {
   id: number;
-  name: string;
+  name: string | null;
   team_id: Team["id"];
   type: string;
   external_id: string;

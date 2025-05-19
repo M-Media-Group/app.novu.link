@@ -93,7 +93,7 @@ const submitForm = async () => {
     external_id: id.value,
     external_secret: secret.value,
     debug: debug.value,
-    name: name.value,
+    name: name.value ?? undefined,
     debug_code: debug.value ? debugCode.value : null,
   });
 };
