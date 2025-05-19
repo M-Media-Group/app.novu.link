@@ -8,7 +8,7 @@ import { ref } from "vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 
 import ToggleAnalyticsIntegration from "@/forms/ToggleAnalyticsIntegration.vue";
-import { apiService } from "@/services/apiClient";
+import { getAnalyticsIntegrations } from "@/repositories/analytics/analyticsRepository";
 
 defineProps({
   redirectId: {
@@ -35,14 +35,7 @@ defineProps({
 const analyticsIntegrations = ref<AnalyticsIntegration[]>([]);
 
 const getIntegrations = async () => {
-  try {
-    const result = await apiService.get<AnalyticsIntegration[]>(
-      "/api/v1/analytics/integrations"
-    );
-    analyticsIntegrations.value = result;
-  } catch (error) {
-    console.error(error);
-  }
+  analyticsIntegrations.value = await getAnalyticsIntegrations();
 };
 
 getIntegrations();
