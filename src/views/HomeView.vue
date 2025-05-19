@@ -7,7 +7,7 @@ import image from "@/assets/undraw_share_link.svg";
 import TabNav from "@/components/TabNav.vue";
 import { assetUrl, loadData } from "@/helpers/dataLoader";
 import type { QRDesign } from "@/types/qrDesign";
-import { apiService } from "@/services/apiClient";
+import { getQrDesignLogos } from "@/repositories/qrdesign/qrdesignRepository";
 
 const { locale } = useI18n();
 
@@ -53,20 +53,8 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
 
 const logos = ref<QRDesign[]>([]);
 
-const getLogos = async () => {
-  const results = await apiService
-    .get<QRDesign[]>("/qr-designs/logos")
-    .catch((error) => {
-      console.error(error);
-    });
-
-  if (results) {
-    return results;
-  }
-};
-
 onMounted(async () => {
-  logos.value = (await getLogos()) ?? [];
+  logos.value = (await getQrDesignLogos()) ?? [];
 });
 
 provide("showExpandedFooter", true);

@@ -14,8 +14,8 @@ export interface QRDesign {
   name: string | null;
 
   // Color and background color
-  color: HexColor;
-  background_color: HexColor;
+  color: string;
+  background_color: string;
 
   // Error correction level
   error_correction_level: "low" | "medium" | "quartile" | "high";

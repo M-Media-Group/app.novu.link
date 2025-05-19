@@ -6,10 +6,9 @@ import type { HexColor, QRDesign } from "@/types/qrDesign";
 import type { selectOption } from "@/types/listItem";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
-import { apiService } from "@/services/apiClient";
 import { getContrastRatio } from "@/helpers/colors";
+import { createQrDesign } from "@/repositories/qrdesign/qrdesignRepository";
 
 const props = defineProps({
   /** The redirect uuid */
@@ -32,7 +31,6 @@ const props = defineProps({
   },
 });
 
-const $bus = useEventsBus();
 const modal = ref();
 
 const state = reactive({
@@ -79,7 +77,7 @@ const submitForm = async () => {
   if (!name.value) {
     return;
   }
-  await apiService.post("/api/v1/qr-designs", {
+  await createQrDesign({
     name: name.value,
     color: color.value,
     background_color: backgroundColor.value,
@@ -88,12 +86,10 @@ const submitForm = async () => {
     corner_shape: cornerShape.value,
     error_correction_level: errorCorrectionLevel.value,
     round_block_size_mode: roundBlockSizeMode.value,
-    logo: logo.value,
-    logo_punchout_background: logoPunchout.value,
+    logo: logo.value ?? null,
+    logo_punchout_background: logoPunchout.value ?? false,
     redirect_uuid: props.redirectId,
   });
-
-  $bus.$emit(eventTypes.created_qr_design);
 };
 
 // Watch all inputs and emit the input_updated event

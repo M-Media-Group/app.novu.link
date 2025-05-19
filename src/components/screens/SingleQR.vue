@@ -25,7 +25,7 @@ import BaseModal from "@/components/modals/BaseModal.vue";
 
 import type { FileExtension } from "qr-code-styling";
 import { isError } from "@/helpers/httpCodes";
-import type { HexColor, QRDesign } from "@/types/qrDesign";
+import type { QRDesign } from "@/types/qrDesign";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
@@ -324,8 +324,8 @@ const barChartData = computed(() => {
   return filledData.reverse();
 });
 
-const color = ref("#000000") as Ref<HexColor>;
-const backgroundColor = ref("#ffffff") as Ref<HexColor>;
+const color = ref("#000000");
+const backgroundColor = ref("#ffffff");
 const logoDataUrl = ref<string | null>(null);
 const logoPunchout = ref(true) as Ref<QRDesign["logo_punchout_background"]>;
 const blockShape = ref("square") as Ref<QRDesign["block_shape"]>;
