@@ -24,7 +24,7 @@ if (!user.attemptedToFetchUser) {
     :user="user.user"
     :team="team.activeTeam"
     :teams="team.teams"
-    @switch-team="team.switchTeam($event)"
+    @switch-team="team.switchTeam({ team_id: $event })"
   />
   <main>
     <RouterView />

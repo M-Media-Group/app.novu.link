@@ -19,6 +19,7 @@ export enum eventTypes {
   added_payment_method = "added_payment_method",
   changed_locale = "changed_locale",
   changed_theme = "changed_theme",
+  created_team = "created_team",
   changed_team = "changed_team",
   set_active_team = "set_active_team",
   confirmed_willingness_to_start_subscription = "confirmed_willingness_to_start_subscription",

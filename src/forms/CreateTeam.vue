@@ -2,6 +2,7 @@
 import { useTeamStore } from "@/stores/team";
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
+import { createTeam } from "@/repositories/team/teamRepository";
 
 const teamStore = useTeamStore();
 
@@ -17,7 +18,7 @@ const submitForm = async () => {
     return;
   }
 
-  await teamStore.createTeam({
+  await createTeam({
     name: name.value,
   });
 };

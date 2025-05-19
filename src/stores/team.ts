@@ -6,7 +6,11 @@ import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { useRouter } from "vue-router";
 import { apiService } from "@/services/apiClient";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
-import { getUserTeams as getUserTeamsRepo } from "@/repositories/team/teamRepository";
+import {
+  getUserTeams as getUserTeamsRepo,
+  switchTeam,
+  updateTeam,
+} from "@/repositories/team/teamRepository";
 
 export const useTeamStore = defineStore("team", () => {
   const activeTeamId = ref(null as Team["id"] | null);
@@ -56,6 +60,17 @@ export const useTeamStore = defineStore("team", () => {
     getUserTeams();
   });
 
+  $bus?.$on(eventTypes.changed_team, (id: number) => {
+    activeTeamId.value = id;
+    router.push({ name: "dashboard" });
+  });
+
+  $bus?.$on(eventTypes.created_team, async () => {
+    await getUserTeams();
+    const newTeam = teams.value.sort((a, b) => b.id - a.id)[0];
+    activeTeamId.value = newTeam.id;
+  });
+
   const activeTeam = computed(() => {
     if (!activeTeamId.value || !teams.value.length) {
       return null;
@@ -64,9 +79,7 @@ export const useTeamStore = defineStore("team", () => {
   });
 
   const update = async (team: Team) => {
-    await apiService.put(`/teams/${team.id}`, {
-      name: team.name,
-    });
+    await updateTeam(team);
 
     if (!teams.value.length) {
       return false;
@@ -75,32 +88,6 @@ export const useTeamStore = defineStore("team", () => {
     // Update the team - only update the name for now
     const index = teams.value.findIndex((t) => t.id === team.id);
     teams.value[index].name = team.name;
-    return true;
-  };
-
-  /** Switch the current team */
-  const switchTeam = async (teamId: Team["id"]) => {
-    //  Make a put to /current-team with the teamId
-    await apiService.put("/current-team", {
-      team_id: teamId,
-    });
-
-    // Set the active team to the teamId
-    activeTeamId.value = teamId;
-    $bus.$emit(eventTypes.changed_team);
-    // Redirect to dashboard
-    router.push({ name: "dashboard" });
-  };
-
-  const createTeam = async (team: { name: Team["name"] }) => {
-    await apiService.post("/teams", {
-      name: team.name,
-    });
-
-    //  The response does not return anything, so we need to fetch the teams again and then set the active team to the newly created team
-    await getUserTeams();
-    const newTeam = teams.value.sort((a, b) => b.id - a.id)[0];
-    activeTeamId.value = newTeam.id;
     return true;
   };
 
@@ -132,7 +119,7 @@ export const useTeamStore = defineStore("team", () => {
     getUserTeams,
     update,
     switchTeam,
-    createTeam,
+
     getAnalyticsIntegrations,
     deleteAnalyticsIntegration,
   };

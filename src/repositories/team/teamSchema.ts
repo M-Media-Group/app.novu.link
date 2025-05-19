@@ -16,3 +16,16 @@ export const teamSchema = z.object({
 });
 
 export const getUserTeamsResponseSchema = z.array(teamSchema);
+
+export const updateTeamRequestSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
+export const switchTeamRequestSchema = z.object({
+  team_id: z.number(),
+});
+
+export const createTeamRequestSchema = z.object({
+  name: z.string(),
+});
