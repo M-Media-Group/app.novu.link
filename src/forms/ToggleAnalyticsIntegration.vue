@@ -2,7 +2,10 @@
 import { type PropType, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
-import { apiService } from "@/services/apiClient";
+import {
+  createRedirectAnalyticsIntegration,
+  deleteRedirectAnalyticsIntegration,
+} from "@/repositories/team/teamRepository";
 
 const props = defineProps({
   redirectId: {
@@ -27,15 +30,14 @@ const submitForm = async () => {
   );
 
   shouldDelete
-    ? await apiService.delete(
-        `/api/v1/redirects/${props.redirectId}/analytics/integrations/${props.integration.id}`
-      )
-    : await apiService.post(
-        `/api/v1/redirects/${props.redirectId}/analytics/integrations`,
-        {
-          integration_id: props.integration.id,
-        }
-      );
+    ? deleteRedirectAnalyticsIntegration({
+        redirect_id: props.redirectId,
+        integration_id: props.integration.id,
+      })
+    : createRedirectAnalyticsIntegration({
+        redirect_id: props.redirectId,
+        integration_id: props.integration.id,
+      });
 };
 </script>
 

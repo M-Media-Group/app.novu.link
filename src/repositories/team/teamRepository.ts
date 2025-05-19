@@ -8,6 +8,7 @@ import {
   getSupportedAnalyticsIntegrationsResponseSchema,
   getUserTeamsResponseSchema,
   switchTeamRequestSchema,
+  toggleRedirectAnalyticsIntegrationRequestSchema,
   updateTeamRequestSchema,
 } from "./teamSchema";
 
@@ -107,5 +108,27 @@ export const getSupportedAnalyticsIntegrations = async () => {
     undefined,
     undefined,
     getSupportedAnalyticsIntegrationsResponseSchema
+  );
+};
+
+export const deleteRedirectAnalyticsIntegration = async (
+  data: z.infer<typeof toggleRedirectAnalyticsIntegrationRequestSchema>
+) => {
+  return await apiServiceCall(
+    `/api/v1/redirects/${data.redirect_id}/analytics/integrations/${data.integration_id}`,
+    "delete",
+    data,
+    toggleRedirectAnalyticsIntegrationRequestSchema
+  );
+};
+
+export const createRedirectAnalyticsIntegration = async (
+  data: Partial<z.infer<typeof toggleRedirectAnalyticsIntegrationRequestSchema>>
+) => {
+  return await apiServiceCall(
+    `/api/v1/redirects/${data.redirect_id}/analytics/integrations`,
+    "post",
+    data,
+    toggleRedirectAnalyticsIntegrationRequestSchema
   );
 };

@@ -80,3 +80,8 @@ export const createAnalyticsIntegrationRequestSchema = z.object({
 export const getSupportedAnalyticsIntegrationsResponseSchema = z.array(
   supportedIntegrationSchema
 );
+
+export const toggleRedirectAnalyticsIntegrationRequestSchema = z.object({
+  redirect_id: z.string(),
+  integration_id: z.number(),
+});
