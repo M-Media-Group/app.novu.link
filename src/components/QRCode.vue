@@ -4,8 +4,8 @@ import LinkReady from "@/assets/linkReady.png";
 
 import QRCodeStyling, { type FileExtension } from "qr-code-styling";
 import type { PropType } from "vue";
-import { getRedirectQrCodeDataUrl } from "@/useRedirects";
 import type { QRDesign } from "@/types/qrDesign";
+import { getRedirectQrCodeDataUrl } from "@/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   /** The UUID of the redirect. If not passed, the rendered data will be to the SPA URL */

@@ -15,6 +15,7 @@ import {
 import { apiServiceCall } from "../apiServiceCall";
 
 import $bus, { eventTypes } from "@/eventBus/events";
+import { baseUrl } from "@/services/apiClient";
 
 export const createRedirect = async (
   /**
@@ -154,4 +155,17 @@ export const unsubscribe = async (
   );
   $bus.$emit(eventTypes.unsubscribed);
   return response;
+};
+
+export const getRedirectUrl = async (redirectId: string) => {
+  return `${baseUrl}/l/${redirectId}`;
+};
+
+export const getRedirectQrCodeDataUrl = (
+  redirectId: string,
+  designId?: string | number
+) => {
+  return `${getRedirectUrl(redirectId)}?nl_qr${
+    designId ? `&nl_d=${designId}` : ""
+  }`;
 };

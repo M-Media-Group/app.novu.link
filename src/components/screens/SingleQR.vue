@@ -1,13 +1,16 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
-import { deleteRedirect } from "@/repositories/redirect/redirectRepository";
+import {
+  deleteRedirect,
+  getRedirectUrl,
+} from "@/repositories/redirect/redirectRepository";
 
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
-import { type PropType, type Ref, computed, ref } from "vue";
+import { type PropType, type Ref, computed, onMounted, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import type { Alert, Endpoint, Placement, Webhook } from "@/types/redirect";
@@ -30,7 +33,6 @@ import type { QRDesign } from "@/types/qrDesign";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
-import { getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
 
 import QRIntegrations from "../QR/QRIntegrations.vue";
@@ -380,7 +382,11 @@ watch(
   }
 );
 
-const magicLink = getRedirectUrl(props.redirectId);
+const magicLink = ref<string | null>(null);
+
+onMounted(async () => {
+  magicLink.value = await getRedirectUrl(props.redirectId);
+});
 
 const QRDestinations = defineAsyncComponent(
   () => import("@/components/QR/QRDestinations.vue")
