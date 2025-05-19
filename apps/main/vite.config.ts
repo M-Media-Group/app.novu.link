@@ -6,7 +6,7 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), basicSsl()],
+  plugins: [vue()],
   server: {
     host: true, // needed for the Docker Container port mapping to work
     proxy: {},

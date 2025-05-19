@@ -7,7 +7,7 @@ import router from "./router";
 // Event bus listeners
 import "./eventBus/listeners/index";
 
-import VueGtagPlugin from "vue-gtag";
+import { configure } from "vue-gtag";
 import VueHotjar from "vue-hotjar-next";
 
 import "./assets/main.css";
@@ -57,17 +57,10 @@ app.use(
   router
 );
 
-app.use(
-  VueGtagPlugin,
-  {
-    enabled: import.meta.env.PROD,
-    bootstrap: import.meta.env.PROD,
-    appName: import.meta.env.VITE_APP_NAME,
-    config: { id: import.meta.env.VITE_GA_MEASUREMENT_ID },
-    pageTrackerEnabled: false,
-  },
-  router
-);
+configure({
+  tagId: import.meta.env.VITE_GA_MEASUREMENT_ID,
+  initMode: import.meta.env.PROD ? "auto" : "manual",
+});
 
 app.use(VueHotjar, {
   id: Number(import.meta.env.VITE_HOTJAR_MEASUREMENT_ID),
