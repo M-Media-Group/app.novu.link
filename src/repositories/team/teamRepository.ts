@@ -22,12 +22,16 @@ export const getUserTeams = async () => {
 export const updateTeam = async (
   data: z.infer<typeof updateTeamRequestSchema>
 ) => {
-  return await apiServiceCall(
-    `/api/v1/teams/${data.id}`,
+  const response = await apiServiceCall(
+    `/teams/${data.id}`,
     "put",
     data,
     updateTeamRequestSchema
   );
+
+  $bus.$emit(eventTypes.updated_team, data.id);
+
+  return response;
 };
 
 export const switchTeam = async (

@@ -21,6 +21,7 @@ export enum eventTypes {
   changed_theme = "changed_theme",
   created_team = "created_team",
   changed_team = "changed_team",
+  updated_team = "updated_team",
   set_active_team = "set_active_team",
   confirmed_willingness_to_start_subscription = "confirmed_willingness_to_start_subscription",
   started_subscription = "started_subscription",
