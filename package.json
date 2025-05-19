@@ -36,5 +36,14 @@
     "engines": {
         "node": ">=20.0.0"
     },
-    "packageManager": "npm@9.6.6"
+    "packageManager": "npm@9.6.6",
+    "pre-commit": [
+        "lint",
+        "type-check"
+    ],
+    "pre-push": [
+        "translation-key-check",
+        "test:unit:coverage",
+        "test:visual:ci"
+    ]
 }
