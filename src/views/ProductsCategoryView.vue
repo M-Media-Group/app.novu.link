@@ -22,8 +22,7 @@ const {
   formatPrice,
   getAllImages,
   loadedProduct,
-
-  searchTerm,
+  handleProductSelect,
   minProductsToTriggerLoadMore,
 } = useProducts();
 
@@ -60,20 +59,9 @@ window.onscroll = async () => {
 
 const primaryProductHeading = useTemplateRef("primaryProductHeading");
 
-const handleProductSelect = (product: Product) => {
-  loadedProduct.value = product;
-  primaryProductHeading.value?.scrollIntoView();
-};
-
 const showBuyNow = ref(false);
 
 const resultsSection = ref();
-
-const handleCategoryClick = (category: string) => {
-  searchTerm.value = category;
-  // smooth scroll to the search
-  resultsSection.value?.scrollIntoView({ behavior: "smooth" });
-};
 </script>
 <template>
   <section class="fulscreen-width-container hero-sectin">

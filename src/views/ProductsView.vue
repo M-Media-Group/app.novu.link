@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 import CreateProductOrder from "@/forms/CreateProductOrder.vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
@@ -27,6 +27,7 @@ const {
   selectedAttributes,
   searchTerm,
   minProductsToTriggerLoadMore,
+  handleProductSelect,
 } = useProducts();
 
 minProductsToTriggerLoadMore.value = 3;
@@ -40,34 +41,6 @@ onMounted(async () => {
   // Load a random product
   handleProductSelect(
     products.value[Math.floor(Math.random() * products.value.length)]
-  );
-});
-
-const displayAbleProducts = computed(() => {
-  // Interject a loading card every 20 products
-  return products.value.flatMap((product, index) =>
-    index % 12 === 0
-      ? [
-          {
-            id: `loading-${index}`,
-            name: "Free Integrated Novu.Link QR Code",
-            price: "0",
-            image: image,
-            merchant: "Novu.Link",
-            description:
-              "We offer your QR Code to be printed on any of our products for free",
-            short_description:
-              "We offer your QR Code to be printed on any of our products for free",
-            prices: {
-              min: 0,
-              max: 0,
-              currency: "EUR",
-            },
-            attributes: {},
-          },
-          product,
-        ]
-      : product
   );
 });
 
@@ -88,20 +61,9 @@ window.onscroll = async () => {
 
 const primaryProductHeading = useTemplateRef("primaryProductHeading");
 
-const handleProductSelect = (product: Product) => {
-  loadedProduct.value = product;
-  primaryProductHeading.value?.scrollIntoView();
-};
-
 const showBuyNow = ref(false);
 
 const resultsSection = ref();
-
-const handleCategoryClick = (category: string) => {
-  searchTerm.value = category;
-  // smooth scroll to the search
-  resultsSection.value?.scrollIntoView({ behavior: "smooth" });
-};
 </script>
 <template>
   <section class="fulscreen-width-container hero-section">

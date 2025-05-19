@@ -283,6 +283,10 @@ export const useProducts = () => {
       null;
   };
 
+  const handleProductSelect = (product: Product) => {
+    loadedProduct.value = product;
+  };
+
   const searchTerm = ref("");
 
   /**
@@ -344,5 +348,6 @@ export const useProducts = () => {
     filteredProducts,
     allAttributes,
     searchTerm,
+    handleProductSelect,
   };
 };
