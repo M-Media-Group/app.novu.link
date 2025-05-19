@@ -82,11 +82,11 @@ export const getProductsRequestSchema = z.object({
 export const createOrderRequestSchema = z.object({
   redirect_uuid: z.string(),
   quantity: z.number(),
-  merchant: z.any(), // Replace with a more specific schema if you know the shape
+  merchant: z.string(), // Replace with a more specific schema if you know the shape
   include_qr_code_subscription: z.boolean(),
   include_consultation: z.boolean(),
   attributes: z.array(
     z.record(z.string(), z.union([z.string(), z.array(z.string())]))
   ), // Replace with a more specific schema if known
-  product_id: z.string(),
+  product_id: z.string().or(z.number()),
 });
