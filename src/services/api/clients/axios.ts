@@ -1,8 +1,14 @@
 // Configure an Axios instance
-import axios, { AxiosError, type AxiosInstance, isAxiosError } from "axios";
+import axios, {
+  AxiosError,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  isAxiosError,
+} from "axios";
 import type { UnifiedError } from "../apiServiceErrorHandler";
 import i18n from "@/locales/i18n";
 import router from "@/router";
+import type { HttpClient } from "./genericHttpClient";
 
 export const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -114,4 +120,23 @@ export const errorHandler = <T extends Partial<UnifiedError>>(
   return unifiedError;
 };
 
-export default apiClient;
+export const axiosHttpClient: HttpClient = {
+  async get<T>(url: string, options?: AxiosRequestConfig) {
+    const response = await apiClient.get<T>(url, options);
+    return response.data;
+  },
+  async post<T>(url: string, data?: any, options?: AxiosRequestConfig) {
+    const response = await apiClient.post<T>(url, data, options);
+    return response.data;
+  },
+  async put<T>(url: string, data?: any, options?: AxiosRequestConfig) {
+    const response = await apiClient.put<T>(url, data, options);
+    return response.data;
+  },
+  async delete<T>(url: string, options?: AxiosRequestConfig) {
+    const response = await apiClient.delete<T>(url, options);
+    return response.data;
+  },
+};
+
+export default axiosHttpClient;

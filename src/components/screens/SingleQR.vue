@@ -1,6 +1,6 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import {
   deleteRedirect,
   getRedirectUrl,

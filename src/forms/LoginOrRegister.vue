@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
 import BaseForm from "@/forms/BaseForm.vue";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 
 import { useUserStore } from "@/stores/user";
 import { nextTick, reactive, ref } from "vue";

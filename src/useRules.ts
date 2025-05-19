@@ -2,7 +2,7 @@ import { type Ref, computed, onMounted, ref, watchEffect } from "vue";
 import type { CommonRuleProperties, RuleModel, Rules } from "@/types/rule";
 import { debounce } from "@/helpers/debounce";
 import i18n from "@/locales/i18n";
-import { assertIsUnifiedError } from "./services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "./services/api/apiServiceErrorHandler";
 import { getRules, testRule } from "./repositories/rule/ruleRepository";
 
 const rules = ref<Partial<Rules> | null>(null);

@@ -1,5 +1,8 @@
-import { apiService, handleError } from "@/services/apiClient";
-import { isUnifiedError } from "@/services/apiServiceErrorHandler";
+import apiService from "@/services/apiClient";
+import {
+  handleError,
+  isUnifiedError,
+} from "@/services/api/apiServiceErrorHandler";
 import type { ZodSchema } from "zod";
 
 export const apiServiceCall = async <
@@ -13,7 +16,7 @@ export const apiServiceCall = async <
     : undefined,
   requestSchema?: ReqSchema,
   responseSchema?: ResSchema,
-  clientOptions?: unknown
+  clientOptions?: object
 ): Promise<ResSchema extends ZodSchema<infer ResType> ? ResType : any> => {
   try {
     const parsedData = requestSchema ? requestSchema.parse(data) : data;

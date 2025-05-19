@@ -12,7 +12,7 @@ import {
   updateRedirectEndpointResponseSchema,
   updateRedirectRequestSchema,
 } from "./redirectSchema";
-import { apiServiceCall } from "../apiServiceCall";
+import { apiServiceCall } from "../../services/api/apiServiceCall";
 
 import $bus from "@/eventBus/events";
 import { baseUrl } from "@/services/apiClient";

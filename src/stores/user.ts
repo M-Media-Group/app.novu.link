@@ -2,7 +2,7 @@ import { type Ref, ref } from "vue";
 import { defineStore } from "pinia";
 
 import type { User } from "@/types/user";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 
 import {
   checkEmail as checkEmailUser,

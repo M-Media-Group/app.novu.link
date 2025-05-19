@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
 import {
   deleteRedirectEndpoint,

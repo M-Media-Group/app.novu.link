@@ -10,7 +10,7 @@ import {
   useSlots,
   useTemplateRef,
 } from "vue";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import { useForm } from "@/composables/useForm";
 
 // Prop of submit text

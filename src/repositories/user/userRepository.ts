@@ -15,7 +15,7 @@ import {
   sendPasswordResetRequestSchema,
   updateRequestSchema,
 } from "./userSchema";
-import { apiServiceCall } from "../apiServiceCall";
+import { apiServiceCall } from "../../services/api/apiServiceCall";
 
 import $bus from "@/eventBus/events";
 

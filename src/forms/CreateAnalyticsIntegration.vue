@@ -4,7 +4,7 @@ import BaseForm from "./BaseForm.vue";
 import type { selectOptionObject } from "@/types/listItem";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import {
   createAnalyticsIntegration,
   getSupportedAnalyticsIntegrations,

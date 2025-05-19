@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { apiServiceCall } from "../apiServiceCall";
+import { apiServiceCall } from "../../services/api/apiServiceCall";
 
 import $bus from "@/eventBus/events";
 

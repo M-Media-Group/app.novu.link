@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { apiServiceCall } from "../apiServiceCall";
+import { apiServiceCall } from "../../services/api/apiServiceCall";
 import {
   createAlertRequestSchema,
   getAlertsResponseSchema,

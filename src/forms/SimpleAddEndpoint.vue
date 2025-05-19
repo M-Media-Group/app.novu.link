@@ -9,7 +9,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
-import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
 import { addRedirectEndpoint } from "@/repositories/redirect/redirectRepository";
 
