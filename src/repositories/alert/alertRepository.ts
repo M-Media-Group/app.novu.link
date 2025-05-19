@@ -5,7 +5,7 @@ import {
   getAlertsResponseSchema,
 } from "./alertSchema";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const getAlerts = async () => {
   return await apiServiceCall(
@@ -27,7 +27,7 @@ export const createAlert = async (
     createAlertRequestSchema
   );
 
-  $bus.$emit(eventTypes.created_alert);
+  $bus.$emit("created_alert");
 
   return response;
 };

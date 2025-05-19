@@ -6,7 +6,7 @@ import {
   getQrDesignLogosResponseSchema,
 } from "./qrdesignSchema";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const createQrDesign = async (
   data: Partial<z.infer<typeof createQrDesignRequestSchema>>
@@ -18,7 +18,7 @@ export const createQrDesign = async (
     createQrDesignRequestSchema
   );
 
-  $bus.$emit(eventTypes.created_qr_design);
+  $bus.$emit("created_qr_design");
 
   return response;
 };

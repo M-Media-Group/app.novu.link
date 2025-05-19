@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SingleQR from "@/components/screens/SingleQR.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
@@ -136,31 +136,31 @@ onMounted(() => {
     getData();
   }
 
-  $bus.$on(eventTypes.started_subscription, getData);
-  $bus.$on(eventTypes.unsubscribed, getData);
-  $bus.$on(eventTypes.updated_redirect, getData);
-  $bus.$on(eventTypes.updated_endpoint, getData);
-  $bus.$on(eventTypes.deleted_endpoint, getData);
-  $bus.$on(eventTypes.deleted_redirect, redirectToCreate);
-  $bus.$on(eventTypes.set_active_team, getData);
-  $bus.$on(eventTypes.created_qr_design, getData);
-  $bus.$on(eventTypes.created_webhook, getData);
-  $bus.$on(eventTypes.created_alert, getData);
-  $bus.$on(eventTypes.tested_redirect, incrementClicks);
+  $bus.$on("started_subscription", getData);
+  $bus.$on("unsubscribed", getData);
+  $bus.$on("updated_redirect", getData);
+  $bus.$on("updated_endpoint", getData);
+  $bus.$on("deleted_endpoint", getData);
+  $bus.$on("deleted_redirect", redirectToCreate);
+  $bus.$on("set_active_team", getData);
+  $bus.$on("created_qr_design", getData);
+  $bus.$on("created_webhook", getData);
+  $bus.$on("created_alert", getData);
+  $bus.$on("tested_redirect", incrementClicks);
 });
 
 onUnmounted(() => {
-  $bus.$off(eventTypes.started_subscription, getData);
-  $bus.$off(eventTypes.unsubscribed, getData);
-  $bus.$off(eventTypes.updated_redirect, getData);
-  $bus.$off(eventTypes.updated_endpoint, getData);
-  $bus.$off(eventTypes.deleted_endpoint, getData);
-  $bus.$off(eventTypes.deleted_redirect, redirectToCreate);
-  $bus.$off(eventTypes.set_active_team, getData);
-  $bus.$off(eventTypes.created_qr_design, getData);
-  $bus.$off(eventTypes.created_webhook, getData);
-  $bus.$off(eventTypes.created_alert, getData);
-  $bus.$off(eventTypes.tested_redirect, incrementClicks);
+  $bus.$off("started_subscription", getData);
+  $bus.$off("unsubscribed", getData);
+  $bus.$off("updated_redirect", getData);
+  $bus.$off("updated_endpoint", getData);
+  $bus.$off("deleted_endpoint", getData);
+  $bus.$off("deleted_redirect", redirectToCreate);
+  $bus.$off("set_active_team", getData);
+  $bus.$off("created_qr_design", getData);
+  $bus.$off("created_webhook", getData);
+  $bus.$off("created_alert", getData);
+  $bus.$off("tested_redirect", incrementClicks);
 });
 
 const timerLength = 60 * 3;

@@ -1,6 +1,5 @@
 import { type App, inject } from "vue";
 import EventBus from "type-safe-event-bus";
-import type { EventTypesPayloads } from "type-safe-event-bus";
 import type { RouteLocationNormalized } from "vue-router";
 
 declare module "type-safe-event-bus" {
@@ -58,10 +57,6 @@ declare module "type-safe-event-bus" {
     created_product_order: void;
   }
 }
-
-export const eventTypes = Object.fromEntries(
-  Object.keys({} as EventTypesPayloads).map((key) => [key, key])
-) as { [K in keyof EventTypesPayloads]: K };
 
 export const eventsBusKey = Symbol.for("eventsBusKey");
 

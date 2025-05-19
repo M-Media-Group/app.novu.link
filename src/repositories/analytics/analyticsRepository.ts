@@ -10,7 +10,7 @@ import {
   toggleRedirectAnalyticsIntegrationRequestSchema,
 } from "./analyticsSchema";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const getAnalyticsIntegrations = async () => {
   return await apiServiceCall(
@@ -43,7 +43,7 @@ export const createAnalyticsIntegration = async (
     createAnalyticsIntegrationRequestSchema
   );
 
-  $bus.$emit(eventTypes.created_analytics_integration);
+  $bus.$emit("created_analytics_integration");
 
   return response;
 };

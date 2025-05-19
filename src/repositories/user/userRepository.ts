@@ -17,7 +17,7 @@ import {
 } from "./userSchema";
 import { apiServiceCall } from "../apiServiceCall";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const login = async (data: z.infer<typeof loginRequestSchema>) => {
   const response = await apiServiceCall(
@@ -26,7 +26,7 @@ export const login = async (data: z.infer<typeof loginRequestSchema>) => {
     data,
     loginRequestSchema
   );
-  $bus.$emit(eventTypes.logged_in);
+  $bus.$emit("logged_in");
   return response;
 };
 
@@ -37,7 +37,7 @@ export const register = async (data: z.infer<typeof registerRequestSchema>) => {
     data,
     registerRequestSchema
   );
-  $bus.$emit(eventTypes.registered);
+  $bus.$emit("registered");
   return respone;
 };
 
@@ -50,7 +50,7 @@ export const requestOtp = async (
     data,
     requestOtpRequestSchema
   );
-  $bus.$emit(eventTypes.sent_otp);
+  $bus.$emit("sent_otp");
   return respone;
 };
 
@@ -66,11 +66,11 @@ export const confirmOtp = async (
       user_created: z.boolean(),
     })
   );
-  $bus.$emit(eventTypes.confirmed_otp);
+  $bus.$emit("confirmed_otp");
   if (response.user_created) {
-    $bus.$emit(eventTypes.registered);
+    $bus.$emit("registered");
   } else {
-    $bus.$emit(eventTypes.logged_in);
+    $bus.$emit("logged_in");
   }
   return response;
 };
@@ -95,7 +95,7 @@ export const sendPasswordResetEmail = async (
     data,
     sendPasswordResetEmailRequestSchema
   );
-  $bus.$emit(eventTypes.sent_reset_password_email);
+  $bus.$emit("sent_reset_password_email");
   return response;
 };
 
@@ -108,7 +108,7 @@ export const sendPasswordReset = async (
     data,
     sendPasswordResetRequestSchema
   );
-  $bus.$emit(eventTypes.reset_password);
+  $bus.$emit("reset_password");
   return response;
 };
 
@@ -121,7 +121,7 @@ export const confirmPassword = async (
     data,
     sendPasswordResetRequestSchema
   );
-  $bus.$emit(eventTypes.confirmed_password);
+  $bus.$emit("confirmed_password");
   return response;
 };
 
@@ -139,7 +139,7 @@ export const shouldConfirmPassword = async () => {
 
 export const logout = async () => {
   const response = await apiServiceCall("/logout", "post");
-  $bus.$emit(eventTypes.logged_out);
+  $bus.$emit("logged_out");
   return response;
 };
 
@@ -150,7 +150,7 @@ export const update = async (data: z.infer<typeof updateRequestSchema>) => {
     data,
     updateRequestSchema
   );
-  $bus.$emit(eventTypes.updated_user);
+  $bus.$emit("updated_user");
   return response;
 };
 
@@ -173,7 +173,7 @@ export const createPersonalAccessToken = async (
     data,
     createPersonalAccessTokenRequestSchema
   );
-  $bus.$emit(eventTypes.created_personal_access_token);
+  $bus.$emit("created_personal_access_token");
   return response;
 };
 
@@ -184,7 +184,7 @@ export const deletePersonalAccessToken = async (
     `/user/personal-access-tokens/${data.id}`,
     "delete"
   );
-  $bus.$emit(eventTypes.deleted_personal_access_token);
+  $bus.$emit("deleted_personal_access_token");
   return response;
 };
 

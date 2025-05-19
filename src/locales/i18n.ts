@@ -2,7 +2,7 @@ import { nextTick } from "vue";
 import { type I18n, createI18n } from "vue-i18n";
 import { setLocaleToUse, setMetaAttributes } from "@m-media/vue3-meta-tags";
 import router from "@/router";
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 /**
  * The supported locales in the app. Note that the first locale in this array is the default locale.
@@ -88,7 +88,7 @@ export async function setI18nLanguage(
 
   // Emit an event to let the app know that the language has changed, if the emit param is true
   if (emit) {
-    $bus.$emit(eventTypes.changed_locale, locale);
+    $bus.$emit("changed_locale", locale);
   }
 }
 

@@ -5,7 +5,7 @@ import CardElement from "@/components/CardElement.vue";
 import type { Dashboard } from "@/types/dashboard";
 import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import LineChart from "@/components/charts/LineChart.vue";
 import { getDashboard } from "@/repositories/misc/miscRepository";
 
@@ -28,7 +28,7 @@ onMounted(async () => {
   getData();
 });
 
-$bus.$on(eventTypes.changed_team, getData);
+$bus.$on("changed_team", getData);
 
 const itemData = computed(() => ({
   items: [
@@ -97,7 +97,7 @@ const nextItemToComplete = computed(() => {
 
 // If the URL has the ?verified=1 query parameter, show a success message
 if (window.location.search.includes("verified=1")) {
-  $bus.$emit(eventTypes.confirmed_email);
+  $bus.$emit("confirmed_email");
 }
 
 const barChartData = computed(() => {

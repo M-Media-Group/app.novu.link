@@ -16,7 +16,7 @@ export const getSupportedWebhookEvents = async () => {
   );
 };
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const createWebhook = async (
   data: Partial<z.infer<typeof createWebhookRequestSchema>>
@@ -28,7 +28,7 @@ export const createWebhook = async (
     createWebhookRequestSchema
   );
 
-  $bus.$emit(eventTypes.created_webhook);
+  $bus.$emit("created_webhook");
 
   return response;
 };

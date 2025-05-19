@@ -7,7 +7,7 @@ import {
   updateTeamRequestSchema,
 } from "./teamSchema";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const getUserTeams = async () => {
   return await apiServiceCall(
@@ -29,7 +29,7 @@ export const updateTeam = async (
     updateTeamRequestSchema
   );
 
-  $bus.$emit(eventTypes.updated_team, data.id);
+  $bus.$emit("updated_team", data.id);
 
   return response;
 };
@@ -44,7 +44,7 @@ export const switchTeam = async (
     switchTeamRequestSchema
   );
 
-  $bus.$emit(eventTypes.changed_team, data.team_id);
+  $bus.$emit("changed_team", data.team_id);
 
   return response;
 };
@@ -59,7 +59,7 @@ export const createTeam = async (
     createTeamRequestSchema
   );
 
-  $bus.$emit(eventTypes.created_team);
+  $bus.$emit("created_team");
 
   return response;
 };

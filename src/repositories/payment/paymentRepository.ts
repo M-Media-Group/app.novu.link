@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { apiServiceCall } from "../apiServiceCall";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const getPaymentIntent = async () => {
   return await apiServiceCall(
@@ -30,6 +30,6 @@ export const addPaymentMethod = async (data: z.infer<typeof interf>) => {
     data,
     interf
   );
-  $bus.$emit(eventTypes.added_payment_method);
+  $bus.$emit("added_payment_method");
   return response;
 };

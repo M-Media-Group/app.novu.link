@@ -12,7 +12,7 @@ const t = i18n.global.t;
 import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, type Ref, computed, onMounted, ref } from "vue";
 import TabNav from "../TabNav.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import type { Alert, Endpoint, Placement, Webhook } from "@/types/redirect";
 import type { selectOption } from "@/types/listItem";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
@@ -178,7 +178,7 @@ const copyToClipboard = (text: string) => {
   }
 
   navigator.clipboard.writeText(text);
-  $bus.$emit(eventTypes.copied_redirect);
+  $bus.$emit("copied_redirect");
 
   if (copiedTimeout.value) {
     clearTimeout(copiedTimeout.value);
@@ -199,7 +199,7 @@ const downloadQRCode = () => {
   link.download = `${props.redirectName}.${selectedFileType.value}`;
   link.target = "_blank";
   link.click();
-  $bus.$emit(eventTypes.downloaded_redirect_qr_code);
+  $bus.$emit("downloaded_redirect_qr_code");
 };
 
 const printMagicLink = () => {
@@ -476,7 +476,7 @@ const handleInputUpdated = (data: QRDesign) => {
 
 const testLink = () => {
   testClicks.value++;
-  $bus.$emit(eventTypes.tested_redirect);
+  $bus.$emit("tested_redirect");
 };
 </script>
 

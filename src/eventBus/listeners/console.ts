@@ -1,7 +1,22 @@
 import type { ListenersMap } from "type-safe-event-bus";
-import { eventTypes } from "../events";
 
 const options = {} as any;
+
+const eventTypes = {
+  enabled_analytics: void 0,
+  disabled_analytics: void 0,
+  went_offline: void 0,
+  came_online: void 0,
+  viewed_page: void 0,
+  logged_in: void 0,
+  logged_out: void 0,
+  sent_reset_password_email: void 0,
+  reset_password: void 0,
+  confirmed_password: void 0,
+  confirmed_email: void 0,
+  updated_user: void 0,
+  registered: void 0,
+};
 
 if (import.meta.env.DEV) {
   for (const option in eventTypes) {

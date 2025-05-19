@@ -1,5 +1,4 @@
 import { SUPPORT_LOCALES } from "@/locales/i18n";
-import { eventTypes } from "../events";
 import i18n from "@/locales/i18n";
 import type { ListenersMap } from "type-safe-event-bus";
 
@@ -182,7 +181,7 @@ class BrowserNotification {
 }
 
 export default {
-  [eventTypes.sent_reset_password_email]: () => {
+  ["sent_reset_password_email"]: () => {
     new CustomNotification(
       "success",
       t("We've sent you an email with a link to reset your password."),
@@ -190,7 +189,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.created_redirect]: () => {
+  ["created_redirect"]: () => {
     new CustomNotification(
       "success",
       t("Magic link created successfully."),
@@ -198,7 +197,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.deleted_redirect]: () => {
+  ["deleted_redirect"]: () => {
     new CustomNotification(
       "success",
       t("Magic link deleted successfully."),
@@ -206,7 +205,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.created_endpoint]: () => {
+  ["created_endpoint"]: () => {
     new CustomNotification(
       "success",
       t("Destination added successfully."),
@@ -214,7 +213,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.deleted_endpoint]: () => {
+  ["deleted_endpoint"]: () => {
     new CustomNotification(
       "success",
       t("Destination deleted successfully."),
@@ -222,7 +221,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.registered]: () => {
+  ["registered"]: () => {
     new CustomNotification(
       "success",
       t("Welcome to Novu.Link! Confirm your email to unlock all the features."),
@@ -230,7 +229,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.logged_in]: () => {
+  ["logged_in"]: () => {
     new CustomNotification(
       "success",
       t("Welcome back!"),
@@ -238,7 +237,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.copied_redirect]: () => {
+  ["copied_redirect"]: () => {
     new CustomNotification(
       "success",
       t("Magic link copied to clipboard."),
@@ -246,7 +245,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.sent_otp]: () => {
+  ["sent_otp"]: () => {
     new CustomNotification(
       "success",
       t("We've sent you a one-time login code."),
@@ -254,7 +253,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.confirmed_email]: () => {
+  ["confirmed_email"]: () => {
     new CustomNotification(
       "success",
       t("Email confirmed!"),
@@ -262,7 +261,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.started_subscription]: () => {
+  ["started_subscription"]: () => {
     new CustomNotification(
       "success",
       t("Subscription started successfully."),
@@ -270,7 +269,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.unsubscribed]: () => {
+  ["unsubscribed"]: () => {
     new CustomNotification(
       "success",
       t("You have been unsubscribed."),
@@ -278,7 +277,7 @@ export default {
       5000
     ).show();
   },
-  [eventTypes.created_product_order]: () => {
+  ["created_product_order"]: () => {
     new CustomNotification(
       "success",
       t(

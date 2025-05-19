@@ -9,7 +9,7 @@ import {
 import { baseUrl } from "@/services/apiClient";
 import { parseStreamedResponse } from "@/helpers/streamers";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 
 export const getProduct = async (
   data?: z.infer<typeof getProductRequestSchema>
@@ -66,6 +66,6 @@ export const createOrder = async (
     data,
     createOrderRequestSchema
   );
-  $bus.$emit(eventTypes.created_product_order);
+  $bus.$emit("created_product_order");
   return response;
 };

@@ -9,7 +9,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import CreateAnalyticsIntegration from "@/forms/CreateAnalyticsIntegration.vue";
 import type { AnalyticsIntegration } from "@/types/analyticsIntegrations";
 import BaseButton from "@/components/BaseButton.vue";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
+import { useEventsBus } from "@/eventBus/events";
 import {
   deleteAnalyticsIntegration,
   getAnalyticsIntegrations,
@@ -45,11 +45,11 @@ const $bus = useEventsBus();
 onMounted(() => {
   getCurrentIntegration();
 
-  $bus.$on(eventTypes.created_analytics_integration, getCurrentIntegration);
+  $bus.$on("created_analytics_integration", getCurrentIntegration);
 });
 
 onUnmounted(() => {
-  $bus.$off(eventTypes.created_analytics_integration, getCurrentIntegration);
+  $bus.$off("created_analytics_integration", getCurrentIntegration);
 });
 </script>
 <template>

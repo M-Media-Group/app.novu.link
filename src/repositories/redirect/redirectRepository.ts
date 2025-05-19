@@ -14,7 +14,7 @@ import {
 } from "./redirectSchema";
 import { apiServiceCall } from "../apiServiceCall";
 
-import $bus, { eventTypes } from "@/eventBus/events";
+import $bus from "@/eventBus/events";
 import { baseUrl } from "@/services/apiClient";
 
 export const createRedirect = async (
@@ -30,7 +30,7 @@ export const createRedirect = async (
     createRedirectRequestSchema,
     createRedirectResponseSchema
   );
-  $bus.$emit(eventTypes.created_redirect);
+  $bus.$emit("created_redirect");
   return response;
 };
 
@@ -65,7 +65,7 @@ export const updateRedirect = async (
     data,
     updateRedirectRequestSchema
   );
-  $bus.$emit(eventTypes.updated_redirect, data.id);
+  $bus.$emit("updated_redirect", data.id);
   return response;
 };
 
@@ -79,7 +79,7 @@ export const deleteRedirect = async (
     undefined,
     undefined
   );
-  $bus.$emit(eventTypes.deleted_redirect, data.id);
+  $bus.$emit("deleted_redirect", data.id);
   return response;
 };
 
@@ -93,7 +93,7 @@ export const addRedirectEndpoint = async (
     addRedirectEndpointRequestSchema,
     undefined
   );
-  $bus.$emit(eventTypes.created_endpoint);
+  $bus.$emit("created_endpoint");
   return response;
 };
 
@@ -107,7 +107,7 @@ export const updateRedirectEndpoint = async (
     updateRedirectEndpointRequestSchema,
     updateRedirectEndpointResponseSchema
   );
-  $bus.$emit(eventTypes.updated_endpoint, data.endpoint_id!);
+  $bus.$emit("updated_endpoint", data.endpoint_id!);
   return response;
 };
 
@@ -121,14 +121,14 @@ export const deleteRedirectEndpoint = async (
     undefined,
     undefined
   );
-  $bus.$emit(eventTypes.deleted_endpoint, data.endpoint_id);
+  $bus.$emit("deleted_endpoint", data.endpoint_id);
   return response;
 };
 
 export const startSubscription = async (
   data: z.infer<typeof startSubscriptionRequestSchema>
 ) => {
-  $bus.$emit(eventTypes.confirmed_willingness_to_start_subscription);
+  $bus.$emit("confirmed_willingness_to_start_subscription");
 
   const response = await apiServiceCall(
     `/api/v1/redirects/${data.id}/subscription`,
@@ -138,7 +138,7 @@ export const startSubscription = async (
     undefined
   );
 
-  $bus.$emit(eventTypes.started_subscription);
+  $bus.$emit("started_subscription");
 
   return response;
 };
@@ -153,7 +153,7 @@ export const unsubscribe = async (
     undefined,
     undefined
   );
-  $bus.$emit(eventTypes.unsubscribed);
+  $bus.$emit("unsubscribed");
   return response;
 };
 
