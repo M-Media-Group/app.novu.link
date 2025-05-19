@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { deleteRedirectEndpoint, updateRedirectEndpoint } from "@/useRedirects";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
+import {
+  deleteRedirectEndpoint,
+  updateRedirectEndpoint,
+} from "@/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   redirectId: {
@@ -44,7 +47,10 @@ onMounted(() => {
 const deleteEndpoint = async () => {
   loadingDelete.value = true;
   try {
-    await deleteRedirectEndpoint(props.redirectId, props.endpointId);
+    await deleteRedirectEndpoint({
+      id: props.redirectId,
+      endpoint_id: props.endpointId,
+    });
   } catch (error) {
     assertIsUnifiedError(error);
     return error.originalError;
@@ -62,8 +68,10 @@ const deleteEndpoint = async () => {
     @success="emit('success')"
     :submitFn="
       async () =>
-        await updateRedirectEndpoint(props.redirectId, props.endpointId, {
-          endpoint: endpointUrl as string,
+        await updateRedirectEndpoint({
+          id: props.redirectId,
+          endpoint_id: props.endpointId,
+          endpoint: endpointUrl ?? undefined,
         })
     "
   >

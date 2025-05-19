@@ -7,10 +7,11 @@ import { useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
-import { addRedirectEndpoint } from "@/useRedirects";
+
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
+import { addRedirectEndpoint } from "@/repositories/redirect/redirectRepository";
 
 const $bus = useEventsBus();
 
@@ -51,7 +52,8 @@ const startConfirming = async () => {
 // The submit function. If there is just the email, check if the email is valid. If it is not, set the register mode. If it is, set the login mode.
 const submitForm = async () => {
   try {
-    await addRedirectEndpoint(props.redirectId, {
+    await addRedirectEndpoint({
+      id: props.redirectId,
       endpoint: endpointUrl.value ?? undefined,
 
       /** @note the below type assertion is not really true (the values may still be undefined), but thats OK because Zod will cath it */

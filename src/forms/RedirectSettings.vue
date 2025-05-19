@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { updateRedirect } from "@/useRedirects";
+import { updateRedirect } from "@/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -47,7 +47,8 @@ const submitForm = async () => {
     return;
   }
 
-  await updateRedirect(props.redirectId, {
+  await updateRedirect({
+    id: props.redirectId,
     name: name.value,
   });
 

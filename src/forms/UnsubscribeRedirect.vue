@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { unsubscribe } from "@/useRedirects";
+import { unsubscribe } from "@/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   redirectId: {
@@ -19,7 +19,7 @@ const emit = defineEmits(["success"]);
   <base-form
     ref="baseFormRef"
     @success="emit('success')"
-    :submitFn="async () => await unsubscribe(props.redirectId)"
+    :submitFn="async () => await unsubscribe({ id: props.redirectId })"
     :submitText="$t('Unsubscribe')"
     :submitButtonClasses="['delete']"
   >

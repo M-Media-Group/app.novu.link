@@ -1,6 +1,7 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
+import { deleteRedirect } from "@/repositories/redirect/redirectRepository";
 
 const t = i18n.global.t;
 </script>
@@ -29,7 +30,7 @@ import type { QRDesign } from "@/types/qrDesign";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
-import { deleteRedirect, getRedirectUrl } from "@/useRedirects";
+import { getRedirectUrl } from "@/useRedirects";
 import { defineAsyncComponent, watch } from "vue";
 
 import QRIntegrations from "../QR/QRIntegrations.vue";
@@ -403,7 +404,7 @@ const emit = defineEmits(["success"]);
 
 const deleteCurrentRedirect = async () => {
   isLoading.value = true;
-  await deleteRedirect(props.redirectId)
+  await deleteRedirect({ id: props.redirectId })
     .catch((error) => {
       assertIsUnifiedError(error);
       alert(

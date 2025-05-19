@@ -97,7 +97,7 @@ export const addRedirectEndpoint = async (
 };
 
 export const updateRedirectEndpoint = async (
-  data: z.infer<typeof updateRedirectEndpointRequestSchema>
+  data: Partial<z.infer<typeof updateRedirectEndpointRequestSchema>>
 ) => {
   const response = await apiServiceCall(
     `/api/v1/redirects/${data.id}/endpoints/${data.endpoint_id}`,

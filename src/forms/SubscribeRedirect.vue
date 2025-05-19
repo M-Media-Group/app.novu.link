@@ -1,7 +1,7 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
-import { startSubscription } from "@/useRedirects";
+import { startSubscription } from "@/repositories/redirect/redirectRepository";
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">
@@ -42,7 +42,9 @@ const submitForm = async () => {
     return;
   }
   try {
-    await startSubscription(props.redirectId);
+    await startSubscription({
+      id: props.redirectId,
+    });
   } catch (error) {
     assertIsUnifiedError(error);
     if (error?.message?.includes("invalid payment method")) {
