@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type PropType, type Ref, computed, ref, watch } from "vue";
+import { type PropType, computed, reactive, ref, toRefs, watch } from "vue";
 import BaseForm from "./BaseForm.vue";
 import TabNav from "@/components/TabNav.vue";
 import type { HexColor, QRDesign } from "@/types/qrDesign";
@@ -9,6 +9,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { eventTypes, useEventsBus } from "@/eventBus/events";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { apiService } from "@/services/apiClient";
+import { getContrastRatio } from "@/helpers/colors";
 
 const props = defineProps({
   /** The redirect uuid */
@@ -32,25 +33,35 @@ const props = defineProps({
 });
 
 const $bus = useEventsBus();
-
 const modal = ref();
 
-const name = ref("") as Ref<QRDesign["name"]>;
-const color = ref("#000000") as Ref<HexColor>;
-const backgroundColor = ref("#ffffff") as Ref<HexColor>;
-const blockShape = ref("square") as Ref<QRDesign["block_shape"]>;
-const cornerDotShape = ref("square") as Ref<QRDesign["corner_dot_shape"]>;
-const cornerShape = ref("square") as Ref<QRDesign["corner_shape"]>;
-const errorCorrectionLevel = ref("medium") as Ref<
-  QRDesign["error_correction_level"]
->;
-const roundBlockSizeMode = ref("margin") as Ref<
-  QRDesign["round_block_size_mode"]
->;
+const state = reactive({
+  name: "" as QRDesign["name"],
+  color: "#000000" as HexColor,
+  backgroundColor: "#ffffff" as HexColor,
+  blockShape: "square" as QRDesign["block_shape"],
+  cornerDotShape: "square" as QRDesign["corner_dot_shape"],
+  cornerShape: "square" as QRDesign["corner_shape"],
+  errorCorrectionLevel: "medium" as QRDesign["error_correction_level"],
+  roundBlockSizeMode: "margin" as QRDesign["round_block_size_mode"],
+  logo: null as QRDesign["logo"],
+  logoSize: 0 as QRDesign["logo_size"],
+  logoPunchout: true as QRDesign["logo_punchout_background"],
+});
 
-const logo = ref(null) as Ref<QRDesign["logo"]>;
-const logoSize = ref(0) as Ref<QRDesign["logo_size"]>;
-const logoPunchout = ref(true) as Ref<QRDesign["logo_punchout_background"]>;
+const {
+  name,
+  color,
+  backgroundColor,
+  blockShape,
+  cornerDotShape,
+  cornerShape,
+  errorCorrectionLevel,
+  roundBlockSizeMode,
+  logo,
+  logoSize,
+  logoPunchout,
+} = toRefs(state);
 
 const openTabs = ref(["1"]);
 
@@ -117,45 +128,6 @@ watch(
 const hasSufficientContranstRatio = computed(() => {
   return getContrastRatio(color.value, backgroundColor.value) >= 3;
 });
-
-const getContrastRatio = (color1: HexColor, color2: HexColor) => {
-  const luminance1 = getLuminance(color1);
-  const luminance2 = getLuminance(color2);
-
-  return (
-    (Math.max(luminance1, luminance2) + 0.05) /
-    (Math.min(luminance1, luminance2) + 0.05)
-  );
-};
-
-const getLuminance = (color: HexColor) => {
-  const rgb = hexToRgb(color);
-  const srgb = rgb.map((c) => {
-    c /= 255;
-    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-  });
-
-  return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
-};
-
-const hexToRgb = (hex: HexColor) => {
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(
-    shorthandRegex,
-    (m, r, g, b) => r + r + g + g + b + b
-  ) as HexColor;
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) {
-    throw new Error("Invalid hex color");
-  }
-
-  return [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16),
-  ];
-};
 
 const handleLogoFile = (event: Event) => {
   const target = event.target as HTMLInputElement;
