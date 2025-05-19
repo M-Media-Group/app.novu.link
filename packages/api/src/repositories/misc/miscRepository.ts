@@ -1,4 +1,4 @@
-import { apiServiceCall } from "../../services/api/apiServiceCall";
+import { apiServiceCall } from "./service/apiServiceCall/apiServiceCall";
 import { getDashboardResponseSchema } from "./miscSchema";
 
 export const getDashboard = async () => {

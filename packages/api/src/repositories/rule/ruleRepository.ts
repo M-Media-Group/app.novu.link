@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { apiServiceCall } from "../../services/api/apiServiceCall";
+
 import {
   getRulesRequestSchema,
   getRulesResponseSchema,
   testRuleRequestSchema,
   testRuleResponseSchema,
 } from "./ruleSchema";
+import { apiServiceCall } from "src/services/apiServiceCall";
 
 export const testRule = async (
   data: Partial<z.infer<typeof testRuleRequestSchema>>

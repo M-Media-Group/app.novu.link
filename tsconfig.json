@@ -5,6 +5,9 @@
             "path": "./packages/types"
         },
         {
+            "path": "./packages/api"
+        },
+        {
             "path": "./apps/main"
         }
     ]

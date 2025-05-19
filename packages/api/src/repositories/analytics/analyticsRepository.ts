@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { apiServiceCall } from "../../services/api/apiServiceCall";
+import { apiServiceCall } from "./service/apiServiceCall/apiServiceCall";
 import {
   createAnalyticsIntegrationRequestSchema,
   deleteAnalyticsIntegrationRequestSchema,

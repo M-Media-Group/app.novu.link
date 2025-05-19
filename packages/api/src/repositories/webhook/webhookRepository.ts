@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { apiServiceCall } from "../../services/api/apiServiceCall";
+import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
 
 import {
   createWebhookRequestSchema,
