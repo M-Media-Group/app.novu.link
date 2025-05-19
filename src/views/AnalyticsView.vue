@@ -51,10 +51,14 @@ onMounted(() => {
 });
 
 const clickData = computed(() => {
-  return data.value
-    .map((item) => ({ name: item.name, count: item.clicks_count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, parseInt(filterValue.value[0]));
+  return (
+    data.value
+      .map((item) => ({ name: item.name, count: item.clicks_count ?? 0 }))
+      .sort((a, b) => (b.count ?? 0) - (a.count ?? 0))
+      .slice(0, parseInt(filterValue.value[0]))
+      // Filter out items with undefined count
+      .filter((item) => item.count !== undefined)
+  );
 });
 
 const lineChartData = computed(() => {
@@ -312,7 +316,7 @@ const flipAxis = ref(false);
     </hgroup>
 
     <bar-chart
-      v-if="clickData[0]?.count > 0"
+      v-if="clickData[0]?.count && clickData[0]?.count > 0"
       :clickData="clickData"
     ></bar-chart>
     <div class="placeholder-chart" v-else>

@@ -6,10 +6,10 @@ export interface Analytics {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
-  clicks_count: number;
-  endpoints_count: number;
-  unique_clicks_count: number;
-  todays_clicks_count: number;
+  clicks_count?: number;
+  endpoints_count?: number;
+  unique_clicks_count?: number;
+  todays_clicks_count?: number;
   clicks_by_time_of_day?: ClicksByTimeOfDay[];
   click_referers?: ClickReferer[];
   click_countries?: ClickCountry[];

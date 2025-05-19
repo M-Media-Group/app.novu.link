@@ -72,12 +72,14 @@ export const getRedirectsAnalyticsRequestSchema = z.object({
 export const getRedirectsAnalyticsResponseSchema = z.tuple([
   z.array(
     nestedRedirect.merge(
-      z.object({
-        clicks_count: z.number(),
-        endpoints_count: z.number(),
-        unique_clicks_count: z.number(),
-        todays_clicks_count: z.number(),
-      })
+      z
+        .object({
+          clicks_count: z.number(),
+          endpoints_count: z.number(),
+          unique_clicks_count: z.number(),
+          todays_clicks_count: z.number(),
+        })
+        .partial()
     )
   ),
   z.array(z.array(z.number())),
