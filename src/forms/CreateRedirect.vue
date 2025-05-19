@@ -146,6 +146,7 @@ if (props.defaultEndpointValue !== "") {
     :submitButtonClasses="buttonClasses"
     @success="handleSuccess"
     :submitFn="submitForm"
+    :enableValidateFocusedElement="!inline"
   >
     <template v-if="showNameInput">
       <label for="name" v-show="!inline">{{ $t("Magic link name") }}</label

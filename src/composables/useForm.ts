@@ -116,16 +116,17 @@ const resetCustomValidityOnInputs = (formElement: HTMLFormElement) => {
   });
 };
 
-const checkValidityOnAllInputs = (formElement: HTMLFormElement) => {
+const checkValidityOnAllInputs = (
+  formElement: HTMLFormElement,
+  checkEvenWhenFocused = false
+) => {
   // For each element in the form, check if it's valid
   callActionsOnAllInputs(formElement, (element) => {
     // If the element is invalid, add the invalid class
     if (
       !element.validity.valid &&
-      !element.validity.valueMissing
-
-      // Not sure why below line was here in the first place @todo investigate
-      // !isElementInFocus(element)
+      !element.validity.valueMissing &&
+      (checkEvenWhenFocused || !isElementInFocus(element))
     ) {
       setErrorMessageOnElement(element);
     } else {
@@ -188,9 +189,10 @@ const setInputErrors = (
 
 export const useForm = (formElement: Ref<HTMLFormElement | null>) => {
   const formIsValid = ref(false);
+  const validateFocusedElement = ref(false);
 
   const checkValidity = (formElement: HTMLFormElement) => {
-    checkValidityOnAllInputs(formElement);
+    checkValidityOnAllInputs(formElement, validateFocusedElement.value);
 
     formIsValid.value = formElement?.checkValidity() ?? false;
   };
@@ -219,5 +221,6 @@ export const useForm = (formElement: Ref<HTMLFormElement | null>) => {
     focusOnFirstInput: () => focusOnFirstInput(formElement.value!),
     focusOnFirstEmptyInput: () => focusOnFirstEmptyInput(formElement.value!),
     isElementInFocus,
+    validateFocusedElement,
   };
 };

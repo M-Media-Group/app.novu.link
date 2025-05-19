@@ -67,6 +67,12 @@ const props = defineProps({
     type: Function as PropType<() => Promise<T>>,
     required: false,
   },
+
+  /** Whether the form should validate the focused element or not. */
+  enableValidateFocusedElement: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits<{
@@ -130,7 +136,10 @@ const {
   focusOnFirstEmptyInput,
   setSuccessOnInputs,
   handleInput,
+  validateFocusedElement,
 } = useForm(formElement);
+
+validateFocusedElement.value = props.enableValidateFocusedElement;
 
 // The updated event happens anytime there is input or the slots change
 onUpdated(async () => {
