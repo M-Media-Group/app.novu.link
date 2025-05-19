@@ -68,4 +68,17 @@ export const createQrDesignRequestSchema = schema.extend({
   redirect_uuid: z.string(),
 });
 
-export const getQrDesignLogosResponseSchema = z.array(schema);
+export const getQrDesignLogosResponseSchema = z.array(
+  schema
+    .pick({
+      created_at: true,
+      id: true,
+      logo: true,
+      name: true,
+    })
+    .required({
+      id: true,
+      logo: true,
+      name: true,
+    })
+);

@@ -6,7 +6,6 @@ import { onMounted, provide, ref, watch } from "vue";
 import image from "@/assets/undraw_share_link.svg";
 import TabNav from "@/components/TabNav.vue";
 import { assetUrl, loadData } from "@/helpers/dataLoader";
-import type { QRDesign } from "@/types/qrDesign";
 import { getQrDesignLogos } from "@/repositories/qrdesign/qrdesignRepository";
 
 const { locale } = useI18n();
@@ -51,7 +50,14 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
   }));
 };
 
-const logos = ref<QRDesign[]>([]);
+const logos = ref<
+  {
+    created_at?: Date;
+    id: number;
+    logo: string | null;
+    name: string | null;
+  }[]
+>([]);
 
 onMounted(async () => {
   logos.value = (await getQrDesignLogos()) ?? [];
