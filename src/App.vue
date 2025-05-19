@@ -6,17 +6,28 @@ import { navIsLoading } from "./router";
 import { useTeamStore } from "./stores/team";
 import NavBar from "@/components/NavBar.vue";
 import { useTeamEventListeners } from "./composables/useTeamEventListeners";
+import { watch } from "vue";
+import { useUserEventListeners } from "./composables/useUserEventListeners";
 
 // Using the store, attempt to get the current user
 const user = useUserStore();
 const team = useTeamStore();
 
 if (!user.attemptedToFetchUser) {
-  user.getUser();
-
+  useUserEventListeners();
   useTeamEventListeners();
-  team.getUserTeams();
+  user.getUser();
 }
+
+watch(
+  () => user.isAuthenticated,
+  (authenticated) => {
+    if (authenticated === true) {
+      team.getUserTeams();
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

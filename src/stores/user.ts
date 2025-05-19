@@ -2,7 +2,6 @@ import { type Ref, ref } from "vue";
 import { defineStore } from "pinia";
 
 import type { User } from "@/types/user";
-import { eventTypes, useEventsBus } from "@/eventBus/events";
 import { assertIsUnifiedError } from "@/services/apiServiceErrorHandler";
 
 import {
@@ -31,7 +30,6 @@ export const useUserStore = defineStore("user", () => {
   const user = ref<User | null>(null);
   const attemptedToFetchUser = ref(false);
 
-  const $bus = useEventsBus();
   // A promise that returns true when isLoading is false and attemptedToFetchUser is true
   const isReady = new Promise((resolve) => {
     const interval = setInterval(() => {
@@ -42,19 +40,6 @@ export const useUserStore = defineStore("user", () => {
     }, 10);
   }).then(() => {
     return true;
-  });
-
-  $bus.$on(eventTypes.logged_in, () => {
-    getUser();
-  });
-
-  $bus.$on(eventTypes.registered, () => {
-    getUser();
-  });
-
-  $bus.$on(eventTypes.logged_out, () => {
-    isAuthenticated.value = false;
-    user.value = null;
   });
 
   // The userEmail is meant for keeping email state across auth pages, for example when going from login to forgot-password page
@@ -77,6 +62,7 @@ export const useUserStore = defineStore("user", () => {
       if (error.status === 401) {
         isAuthenticated.value = false;
         user.value = null;
+        console.log("User not authenticated");
         return;
       }
       throw error;
@@ -209,6 +195,12 @@ export const useUserStore = defineStore("user", () => {
     return true;
   }
 
+  async function logoutInStore() {
+    isAuthenticated.value = false;
+    user.value = null;
+    attemptedToFetchUser.value = false;
+  }
+
   return {
     isAuthenticated,
     checkEmail,
@@ -233,5 +225,6 @@ export const useUserStore = defineStore("user", () => {
     deletePersonalAccessToken,
     requestOtp,
     confirmOtp,
+    logoutInStore,
   };
 });
