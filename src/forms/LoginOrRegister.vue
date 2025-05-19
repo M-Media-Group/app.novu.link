@@ -21,9 +21,6 @@ const checkedEmail = ref(false);
 // Is the user registering or logging in?
 const isRegistering = ref(false);
 
-// The error message
-const errorMessage = ref("");
-
 const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
@@ -38,7 +35,6 @@ const checkEmail = async () => {
 
   isRegistering.value = !response;
 
-  errorMessage.value = "";
   checkedEmail.value = true;
 };
 
