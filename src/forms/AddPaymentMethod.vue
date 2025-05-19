@@ -150,10 +150,11 @@ const addPaymentMethod = async () => {
           throw new Error("Error adding payment method");
         }
         emit("success");
-        form.processing = false;
       })
       .catch((error) => {
         form.error = error.response.data.message;
+      })
+      .finally(() => {
         form.processing = false;
       });
   }
