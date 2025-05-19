@@ -30,7 +30,6 @@ export const updateTeam = async (
   );
 
   $bus.$emit("updated_team", data.id);
-
   return response;
 };
 

@@ -14,7 +14,7 @@ export const useTeamEventListeners = () => {
   $bus.$on("added_payment_method", store.getUserTeams);
 
   $bus.$on("updated_team", (id: number) => {
-    store.setNewestTeamAsActive();
+    store.getUserTeams();
   });
 
   $bus.$on("changed_team", (id: number) => {

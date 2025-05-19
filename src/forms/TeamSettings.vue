@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { useTeamStore } from "@/stores/team";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import BaseForm from "./BaseForm.vue";
 
 const teamStore = useTeamStore();
 
-const name = ref(teamStore.activeTeam?.name);
+const name = ref<string>();
+
+watch(
+  () => teamStore.activeTeam?.name,
+  (newName) => {
+    name.value = newName;
+  },
+  { immediate: true }
+);
 
 const baseFormRef = ref();
 

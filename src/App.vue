@@ -17,6 +17,7 @@ onMounted(async () => {
   if (!user.attemptedToFetchUser) {
     useUserEventListeners();
     useTeamEventListeners();
+
     user.getUser();
 
     await user.isReady;

@@ -18,8 +18,6 @@ import {
 const userStore = useUserStore();
 const teamStore = useTeamStore();
 
-teamStore.getUserTeams();
-
 const addingNewPaymentMethod = ref(false);
 
 const accessTokens = ref<PersonalAccessToken[]>([]);
