@@ -4,6 +4,8 @@ import {
   createAnalyticsIntegrationRequestSchema,
   deleteAnalyticsIntegrationRequestSchema,
   getAnalyticsIntegrationsResponseSchema,
+  getRedirectsAnalyticsRequestSchema,
+  getRedirectsAnalyticsResponseSchema,
   getSupportedAnalyticsIntegrationsResponseSchema,
   toggleRedirectAnalyticsIntegrationRequestSchema,
 } from "./analyticsSchema";
@@ -75,5 +77,17 @@ export const createRedirectAnalyticsIntegration = async (
     "post",
     data,
     toggleRedirectAnalyticsIntegrationRequestSchema
+  );
+};
+
+export const getRedirectsAnalytics = async (
+  data: z.infer<typeof getRedirectsAnalyticsRequestSchema>
+) => {
+  return await apiServiceCall(
+    `/api/v1/redirects/analytics`,
+    "get",
+    data,
+    getRedirectsAnalyticsRequestSchema,
+    getRedirectsAnalyticsResponseSchema
   );
 };

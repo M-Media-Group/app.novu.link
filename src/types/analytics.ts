@@ -5,7 +5,7 @@ export interface Analytics {
   enable_analytics: boolean;
   created_at: Date;
   updated_at: Date;
-  deleted_at: null;
+  deleted_at: Date | null;
   clicks_count: number;
   endpoints_count: number;
   unique_clicks_count: number;

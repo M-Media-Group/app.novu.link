@@ -11,10 +11,11 @@ import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@/helpers/urlFormatter";
 import { useI18n } from "vue-i18n";
 import HeatMap from "@/components/charts/HeatMap.vue";
-import { apiService } from "@/services/apiClient";
 
-const data = ref([] as Analytics[]);
-const heatmapData = ref([] as number[][]);
+import { getRedirectsAnalytics } from "@/repositories/analytics/analyticsRepository";
+
+const data = ref<Analytics[]>([]);
+const heatmapData = ref<number[][]>([]);
 
 const loading = ref(false);
 
@@ -30,19 +31,16 @@ const getData = async (startDate?: string, endDate?: string) => {
     "languages",
   ];
 
-  const response = await apiService.get<[Analytics[], any]>(
-    "/api/v1/redirects/analytics",
-    {
-      params: {
-        // Needs to be passed as an array
-        withCount,
-        with: withData,
-        startDate: startDate ? `${startDate}T00:00:00` : undefined,
-        // Make the end date the last hour of the day
-        endDate: endDate ? `${endDate}T23:59:59` : undefined,
-      },
-    }
-  );
+  const response = await getRedirectsAnalytics({
+    params: {
+      // Needs to be passed as an array
+      withCount,
+      with: withData,
+      startDate: startDate ? `${startDate}T00:00:00` : undefined,
+      // Make the end date the last hour of the day
+      endDate: endDate ? `${endDate}T23:59:59` : undefined,
+    },
+  });
   data.value = response[0];
   heatmapData.value = response[1];
   loading.value = false;

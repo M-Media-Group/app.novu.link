@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { getRedirectsResponseSchema } from "../redirect/redirectSchema";
+import {
+  getRedirectsResponseSchema,
+  nestedRedirect,
+} from "../redirect/redirectSchema";
 import { teamSchema } from "../team/teamSchema";
 
 export const supportedIntegrationFieldsSchema = z.object({
@@ -55,4 +58,27 @@ export const getSupportedAnalyticsIntegrationsResponseSchema = z.array(
 export const toggleRedirectAnalyticsIntegrationRequestSchema = z.object({
   redirect_id: z.string(),
   integration_id: z.number(),
+});
+
+export const getRedirectsAnalyticsRequestSchema = z.object({
+  params: z.object({
+    withCount: z.array(z.string()).optional(),
+    with: z.array(z.string()).optional(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+  }),
+});
+
+export const getRedirectsAnalyticsResponseSchema = z.object({
+  0: z.array(
+    nestedRedirect.merge(
+      z.object({
+        clicks_count: z.number(),
+        endpoints_count: z.number(),
+        unique_clicks_count: z.number(),
+        todays_clicks_count: z.number(),
+      })
+    )
+  ),
+  1: z.array(z.array(z.number())),
 });

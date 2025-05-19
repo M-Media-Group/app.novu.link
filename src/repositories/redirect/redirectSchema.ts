@@ -114,6 +114,18 @@ export const updateRedirectEndpointRequestSchema = z
   })
   .merge(generalEndpointRequestSchema);
 
+export const nestedRedirect = z.object({
+  uuid: z.string(),
+  team_id: z.number(),
+  name: z.string(),
+  enable_analytics: z.boolean(),
+  created_at: coercedDate,
+  updated_at: coercedDate,
+  deleted_at: coercedDate.nullable(),
+  subscribed_at: coercedDate,
+  remaining_clicks: z.number(),
+});
+
 export const updateRedirectEndpointResponseSchema = z.object({
   id: z.number(),
   endpoint: z.string().url(),
@@ -125,17 +137,7 @@ export const updateRedirectEndpointResponseSchema = z.object({
   updated_at: coercedDate,
   last_scraped_at: coercedDate.nullable(),
   last_http_code: z.number().nullable(),
-  redirect: z.object({
-    uuid: z.string(),
-    team_id: z.number(),
-    name: z.string(),
-    enable_analytics: z.boolean(),
-    created_at: coercedDate,
-    updated_at: coercedDate,
-    deleted_at: coercedDate.nullable(),
-    subscribed_at: coercedDate,
-    remaining_clicks: z.number(),
-  }),
+  redirect: nestedRedirect,
 });
 
 export const addRedirectEndpointRequestSchema = z
