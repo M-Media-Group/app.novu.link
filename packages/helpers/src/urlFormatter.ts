@@ -14,7 +14,7 @@ export function hasProtocol(url: string): boolean {
  * @param {any} url
  * @returns {string}
  */
-export function removeProtocol(url: any): string {
+export function removeProtocol(url: string): string {
   // If the url is not a string, return it as is
   if (typeof url !== "string") {
     return url;
@@ -61,8 +61,13 @@ export function looksLikeStartingWithProtocol(url: string): boolean {
   url = url.toLowerCase().trim();
 
   //   If it does not start with "h" or "H" return false
-  if (!url.startsWith("h") && !url.startsWith("H")) {
+  if (!url.startsWith("h")) {
     return false;
+  }
+
+  // If no more letters, return true
+  if (url.length < 2) {
+    return true;
   }
 
   //   if the second letter is not a "t" or "T" return false
@@ -70,9 +75,17 @@ export function looksLikeStartingWithProtocol(url: string): boolean {
     return false;
   }
 
+  if (url.length < 3) {
+    return true;
+  }
+
   // if the third letter is not a "t" or "T" return false
   if (!url[2]?.startsWith("t")) {
     return false;
+  }
+
+  if (url.length < 4) {
+    return true;
   }
 
   // if the fourth letter is not a "p" or "P" return false
@@ -80,19 +93,42 @@ export function looksLikeStartingWithProtocol(url: string): boolean {
     return false;
   }
 
+  if (url.length < 5) {
+    return true;
+  }
+
   // If the fifth letter is not a ":" or "s" return false
-  if (!url[4]?.startsWith(":") && !url[4].startsWith("s")) {
+  if (!url[4]?.startsWith(":") && !url[4]?.startsWith("s")) {
     return false;
   }
 
+  if (url.length < 6) {
+    return true;
+  }
+
   //   If the sixth letter is not a ":" or "/" return false
-  if (!url[5]?.startsWith(":") && !url[5].startsWith("/")) {
+  if (!url[5]?.startsWith(":") && !url[5]?.startsWith("/")) {
     return false;
+  }
+
+  if (url.length < 7) {
+    return true;
   }
 
   // If the seventh letter is not a "/" return false
   if (!url[6]?.startsWith("/")) {
     return false;
+  }
+
+  if (url.length < 8) {
+    return true;
+  }
+
+  // If we are using https, the next letter should be a "/", else it can be anything
+  if (url[4]?.startsWith("s")) {
+    if (!url[7]?.startsWith("/")) {
+      return false;
+    }
   }
 
   return true;

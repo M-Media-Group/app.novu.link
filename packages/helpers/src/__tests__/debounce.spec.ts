@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { debounce } from "../debounce";
+import { debounce } from "../debounce.js";
 
 describe("Debounce Function", () => {
   it("uses the correct function params from the last call when debouncing", () => {

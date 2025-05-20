@@ -1,3 +1,10 @@
+enum Unit {
+ minute = "minute",
+   hour = "hour",
+  day = "day",
+ week = "week",
+}
+
 /**
  * This function takes a Date object, and using new Intl.RelativeTimeFormat, returns a string representing the relative time between the input date and the current date. It returns a string like "in 5 days" or "3 months ago" based on the difference between the input date and the current date.
  *
@@ -48,25 +55,25 @@ export const relativeTime = (date: Date | string, locale: string | readonly stri
   return rtf.format(months, "month");
 };
 
-export const selectBestUnit = (minutes: number): string => {
+export const selectBestUnit = (minutes: number): Unit => {
   if (minutes % 10080 === 0) {
-    return "week";
+    return Unit.week;
   } else if (minutes % 1440 === 0) {
-    return "day";
+    return Unit.day;
   } else if (minutes % 60 === 0) {
-    return "hour";
+    return Unit.hour;
   } else {
-    return "minute";
+    return Unit.minute;
   }
 };
 
-export const computeMinutesToUnit = (minutes: number, unit: string): number => {
+export const computeMinutesToUnit = (minutes: number, unit: Unit) => {
   switch (unit) {
-    case "hour":
+    case Unit.hour:
       return minutes / 60;
-    case "day":
+    case Unit.day:
       return minutes / 1440;
-    case "week":
+    case Unit.week:
       return minutes / 10080;
     default:
       return minutes;
@@ -82,9 +89,11 @@ export const computeMinutesToUnit = (minutes: number, unit: string): number => {
 export const formatMinutes = (minutes: number, locale = navigator.languages): string => {
   const unit = selectBestUnit(minutes);
 
-  return new Intl.NumberFormat(locale, {
+  const mutableLocale = Array.isArray(locale) ? locale[0] : locale;
+
+  return new Intl.NumberFormat(mutableLocale, {
     style: "unit",
-    unit,
+    unit: unit.toString(),
     unitDisplay: "long",
   }).format(computeMinutesToUnit(minutes, unit));
 };

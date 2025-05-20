@@ -3,12 +3,12 @@
  * @param code
  * @returns
  */
-export const isError = (code: number) => {
+export const isError = (code: number): boolean => {
   return (
     code &&
     // These are errors
     (code >= 400 || code < 200) &&
     // These are not errors that the user should be concerned about
     !(code === 429 || code === 401 || code === 204 || code === 403)
-  );
+  ) || code === 0;
 };

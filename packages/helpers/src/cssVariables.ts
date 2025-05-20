@@ -1,4 +1,4 @@
-import { hsl2rgb } from "./colors";
+import { hsl2rgb } from "./colors.js";
 
 /** Get the value of a CSS variable. Apply some extra logic useful for Stripe, like coverting > 100% to pixels, and converting hsl to rgb. */
 export const getCssVarForStripe = (cssVariable: string): string => {
@@ -19,14 +19,14 @@ export const getCssVarForStripe = (cssVariable: string): string => {
 
   // If the computedColor starts with hsl, convert it to rgb
   if (computedValue.startsWith("hsl")) {
-    const hsl = computedValue.replace("hsl(", "").replace(")", "").split(",");
+    const hsl = computedValue.replace("hsl(", "").replace(")", "").replaceAll("%", "").split(",").map((c) => parseInt(c.trim()));
     const rgb = hsl2rgb(
-      parseInt(hsl[0]),
-      parseInt(hsl[1]) / 100,
-      parseInt(hsl[2]) / 100
+      hsl[0],
+      hsl[1] / 100,
+      hsl[2] / 100
     );
-    const rgbIn255Scale = rgb.map((c) => Math.round(c * 255));
-    return `rgb(${rgbIn255Scale.join(",")})`;
+
+    return `rgb(${rgb.join(",")})`;
   }
 
   return computedValue;

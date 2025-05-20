@@ -8,8 +8,7 @@ export const normaliseOptions = (
 
   // We will use a straight for loop for performance
   const normalisedOptions = [];
-  for (let i = 0; i < options.length; i++) {
-    const option = options[i];
+  for (const option of options) {
     if (typeof option === "string") {
       normalisedOptions.push({
         id: option,
@@ -64,8 +63,7 @@ export const orderOptionsBySelectedFirst = (
     }
 
     // run a fast find with loop and index access
-    for (let i = 0; i < selected.length; i++) {
-      const selectedValue = selected[i];
+    for (const selectedValue of selected) {
       if (a[key] == selectedValue) {
         return -1;
       }

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { relativeTime } from "../relativeTime";
+import { relativeTime } from "../relativeTime.js";
 
 describe("relativeTime", () => {
   // Mock Date.now to have consistent test results

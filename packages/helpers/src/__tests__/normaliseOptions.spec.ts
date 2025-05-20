@@ -4,7 +4,7 @@ import {
   filterOptions,
   normaliseOptions,
   orderOptionsBySelectedFirst,
-} from "../normaliseOptions";
+} from "../normaliseOptions.js";
 
 describe("filterOptions Functions", () => {
   // We need a retry here because the performance.now can be flakey

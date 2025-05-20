@@ -3,11 +3,11 @@ import {
   convertPercentToPixels,
   convertRemToPixels,
   getCssVarForStripe,
-} from "../cssVariables";
+} from "../cssVariables.js";
 import { beforeEach, describe, expect, it } from "vitest";
 
 // Mock the getComputedStyle function
-const mockGetComputedStyle = (value: string = "mocked value") => {
+const mockGetComputedStyle = (value = "mocked value") => {
   const originalGetComputedStyle = window.getComputedStyle;
   window.getComputedStyle = () =>
     ({

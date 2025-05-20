@@ -1,3 +1,6 @@
+type Product = Record<string | number | symbol, unknown>;
+type ProductsArray = Product[];
+
 // Utility to clean the JSON string fragments
 export const cleanJSONString = (str: string) => {
   if (str.endsWith(",")) str = str.slice(0, -1);
@@ -9,12 +12,12 @@ export const cleanJSONString = (str: string) => {
 // Updated utility to handle streamed response, pushing results into the local products array
 export const parseStreamedResponse = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
-  productsArray: any[]
+  productsArray: ProductsArray
 ) => {
   const decoder = new TextDecoder("utf-8");
   let accumulatedData = "";
 
-  // eslint-disable-next-line no-constant-condition
+
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
@@ -45,13 +48,13 @@ export const parseStreamedResponse = async (
 };
 
 // Updated parseRemainingData to use the local products array
-export const parseRemainingData = (data: string, productsArray: any[]) => {
+export const parseRemainingData = (data: string, productsArray: ProductsArray) => {
   try {
     data = cleanJSONString(data);
     if (!data || data === "[]") return;
 
     const lastProductsArray = JSON.parse(`[${data}]`);
-    lastProductsArray.forEach((product: any) => {
+    lastProductsArray.forEach((product: Product) => {
       productsArray.push(product); // Use the local array
     });
   } catch (error) {

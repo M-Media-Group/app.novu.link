@@ -1,6 +1,7 @@
 /** This function debounces a function
  *
- * @example ```ts
+ * @example
+ * ```ts
  * const debounced = debounce(() => console.log('Hello World'), 300);
  * debounced(); // This will log 'Hello World' after 300ms
  * ```
@@ -9,10 +10,14 @@
  * @param delay - The delay in milliseconds
  * @param leading - If the function should be called on the leading edge or the trailing edge (first-in triggers the function vs last-in triggers the function)
  */
-export const debounce = (fn: Function, delay = 300, leading = false) => {
+export function debounce<T extends (...args: unknown[]) => void>(
+  fn: T,
+  delay = 300,
+  leading = false
+): (...args: Parameters<T>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-  return (...args: any[]) => {
+  return (...args: Parameters<T>) => {
     if (leading && !timeoutId) {
       fn(...args);
     }
@@ -22,7 +27,8 @@ export const debounce = (fn: Function, delay = 300, leading = false) => {
       if (!leading) {
         fn(...args);
       }
-      timeoutId = undefined; // Reset timeoutId after function execution
+      timeoutId = undefined;
     }, delay);
   };
-};
+}
+
