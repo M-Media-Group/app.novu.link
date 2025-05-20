@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { apiServiceCall } from "./service/apiServiceCall/apiServiceCall";
+
 import {
   createAnalyticsIntegrationRequestSchema,
   deleteAnalyticsIntegrationRequestSchema,
@@ -10,7 +10,7 @@ import {
   toggleRedirectAnalyticsIntegrationRequestSchema,
 } from "./analyticsSchema";
 
-import $bus from "@/eventBus/events";
+import { apiServiceCall } from "src/services/apiServiceCall";
 
 export const getAnalyticsIntegrations = async () => {
   return await apiServiceCall(
@@ -43,7 +43,6 @@ export const createAnalyticsIntegration = async (
     createAnalyticsIntegrationRequestSchema
   );
 
-  $bus.$emit("created_analytics_integration");
 
   return response;
 };

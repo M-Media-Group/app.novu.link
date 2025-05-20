@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { updateRedirect } from "@/repositories/redirect/redirectRepository";
+import { updateRedirect } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */

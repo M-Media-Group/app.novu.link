@@ -4,7 +4,7 @@ import { debounce } from "@/helpers/debounce";
 import {
   getProduct,
   streamProducts,
-} from "@/repositories/product/productRepository";
+} from "../../../../packages/api/src/repositories/product/productRepository";
 
 const products = ref([] as Product[]);
 const currentPage = ref(1);

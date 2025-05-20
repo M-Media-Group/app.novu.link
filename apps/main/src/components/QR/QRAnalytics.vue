@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LineChart from "@/components/charts/LineChart.vue";
 import CardElement from "@/components/CardElement.vue";
-import { removeProtocol } from "@/helpers/urlFormatter";
+import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { type PropType, computed } from "vue";
 import HeatMap from "@/components/charts/HeatMap.vue";

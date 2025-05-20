@@ -9,7 +9,7 @@ import { useUrlFormatter } from "@/composables/useUrlFormatter";
 import {
   createWebhook,
   getSupportedWebhookEvents,
-} from "@/repositories/webhook/webhookRepository";
+} from "../../../../packages/api/src/repositories/webhook/webhookRepository";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */

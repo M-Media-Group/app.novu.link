@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
 
 import $bus from "@/eventBus/events";
+import { apiServiceCall } from "src/services/apiServiceCall";
 
 export const getPaymentIntent = async () => {
   return await apiServiceCall(

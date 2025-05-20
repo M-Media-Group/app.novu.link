@@ -6,7 +6,7 @@ import { useUrlFormatter } from "@/composables/useUrlFormatter";
 import {
   deleteRedirectEndpoint,
   updateRedirectEndpoint,
-} from "@/repositories/redirect/redirectRepository";
+} from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   redirectId: {

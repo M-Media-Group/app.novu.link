@@ -4,7 +4,7 @@ import { type PropType, onMounted, ref } from "vue";
 import type { Redirect } from "@novulink/types";
 import type { selectOptionObject } from "@novulink/types";
 import CreateRedirect from "@/forms/CreateRedirect.vue";
-import { getRedirects } from "@/repositories/redirect/redirectRepository";
+import { getRedirects } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   modelValue: {

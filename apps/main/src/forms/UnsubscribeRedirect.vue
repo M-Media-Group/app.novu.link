@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { unsubscribe } from "@/repositories/redirect/redirectRepository";
+import { unsubscribe } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const props = defineProps({
   redirectId: {

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import EditEndpoint from "@/components/modals/EditEndpoint.vue";
 import CardElement from "@/components/CardElement.vue";
-import { removeProtocol } from "@/helpers/urlFormatter";
+import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import type { PropType } from "vue";
 import type { Endpoint } from "@novulink/types";
 import { parseRuleGroup } from "@/useRules";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
-import { isError } from "@/helpers/httpCodes";
+import { isError } from "@novulink/helpers/httpCodes";
 import { useI18n } from "vue-i18n";
 
 const props = defineProps({

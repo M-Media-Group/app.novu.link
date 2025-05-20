@@ -1,4 +1,4 @@
-import { hsl2rgb } from "@/helpers/colors";
+import { hsl2rgb } from "./colors";
 
 /** Get the value of a CSS variable. Apply some extra logic useful for Stripe, like coverting > 100% to pixels, and converting hsl to rgb. */
 export const getCssVarForStripe = (cssVariable: string): string => {

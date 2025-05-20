@@ -1,7 +1,7 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
 import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
-import { startSubscription } from "@/repositories/redirect/redirectRepository";
+import { startSubscription } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">

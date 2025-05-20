@@ -8,7 +8,7 @@ import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import {
   createAnalyticsIntegration,
   getSupportedAnalyticsIntegrations,
-} from "@/repositories/analytics/analyticsRepository";
+} from "../../../../packages/api/src/repositories/analytics/analyticsRepository";
 
 const id = ref("" as AnalyticsIntegration["external_id"]);
 const secret = ref("" as string);

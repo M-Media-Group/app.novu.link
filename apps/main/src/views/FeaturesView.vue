@@ -4,7 +4,7 @@ import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { provide, ref, watch } from "vue";
 import image from "@/assets/undraw_features_overview_re_2w78.svg";
-import { loadData } from "@/helpers/dataLoader";
+import { loadData } from "@novulink/helpers/dataLoader";
 
 const { locale } = useI18n();
 

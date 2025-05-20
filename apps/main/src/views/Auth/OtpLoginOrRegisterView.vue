@@ -4,7 +4,7 @@ import router from "@/router";
 import { ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import LinkReady from "@/assets/linkReady.png";
-import { loadData } from "@/helpers/dataLoader";
+import { loadData } from "@novulink/helpers/dataLoader";
 import { watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/stores/user";

@@ -8,7 +8,7 @@ import { ref } from "vue";
 import type { AnalyticsIntegration } from "@novulink/types";
 
 import ToggleAnalyticsIntegration from "@/forms/ToggleAnalyticsIntegration.vue";
-import { getAnalyticsIntegrations } from "@/repositories/analytics/analyticsRepository";
+import { getAnalyticsIntegrations } from "@novulink/api";
 
 defineProps({
   redirectId: {

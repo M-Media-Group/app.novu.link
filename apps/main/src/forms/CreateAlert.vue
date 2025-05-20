@@ -2,11 +2,11 @@
 import { computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 
-import { formatMinutes, formatToMinutes } from "@/helpers/relativeTime";
+import { formatMinutes, formatToMinutes } from "@novulink/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
-import { createAlert } from "@/repositories/alert/alertRepository";
+import { createAlert } from "../../../../packages/api/src/repositories/alert/alertRepository";
 
 const props = defineProps({
   /** If the form should autofocus */

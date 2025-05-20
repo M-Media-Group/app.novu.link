@@ -4,7 +4,7 @@ import type { PropType } from "vue";
 import type { Alert } from "@novulink/types";
 import CreateAlert from "@/forms/CreateAlert.vue";
 import BaseBadge from "@/components/BaseBadge.vue";
-import { formatMinutes, relativeTime } from "@/helpers/relativeTime";
+import { formatMinutes, relativeTime } from "@novulink/helpers/relativeTime";
 
 defineProps({
   redirectId: {
@@ -75,7 +75,7 @@ defineProps({
           <ul v-if="alert.logs && alert.logs.length">
             <li v-for="log in alert.logs" :key="log.id">
               {{ $t("Triggered") }} {{ relativeTime(log.triggered_at) }}:
-              {{ $t(log.status) }} {{ relativeTime(log.updated_at) }}
+              {{ $t(log.status) }} {{ relativeTime(log.updated_at, $i18n.locale) }}
               <base-badge v-if="log.status === 'pending'">{{
                 $t("New")
               }}</base-badge>

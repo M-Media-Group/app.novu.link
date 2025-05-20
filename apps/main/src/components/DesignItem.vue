@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
 import type { QRDesign } from "@novulink/types";
-import { relativeTime } from "@/helpers/relativeTime";
+import { relativeTime } from "@novulink/helpers/relativeTime";
 import BaseBadge from "./BaseBadge.vue";
 import QRCode from "./QRCode.vue";
 
@@ -83,7 +83,7 @@ defineProps({
           {{
             $t("Updated") +
             " " +
-            (design.updated_at ? relativeTime(design.updated_at) : "")
+            (design.updated_at ? relativeTime(design.updated_at, $i18n.locale) : "")
           }}
           <template v-if="design.was_automatically_generated">
             · {{ $t("Automatically generated") }}

@@ -10,13 +10,13 @@ import {
 } from "vue";
 import { loadStripe } from "@stripe/stripe-js";
 import { StripeElement, StripeElements } from "vue-stripe-js";
-import { getCssVarForStripe } from "@/helpers/cssVariables";
+import { getCssVarForStripe } from "@novulink/helpers/cssVariables";
 import { useI18n } from "vue-i18n";
 import BaseForm from "@/forms/BaseForm.vue";
 import {
   addPaymentMethod as addPaymentMethodRepo,
   getPaymentIntent,
-} from "@/repositories/payment/paymentRepository";
+} from "../../../../packages/api/src/repositories/payment/paymentRepository";
 
 defineProps({
   showLabel: {
@@ -235,7 +235,7 @@ const focusOnInput = () => {
       :aria-busy="!elementReady"
       data-cy="add-payment-input"
       :elements-options="{
-        locale: $i18n.locale,
+        locale: $i18n.locale as StripeElementLocale,
         appearance: {
           variables: appearanceVariables,
         },

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import CardElement from "@/components/CardElement.vue";
-import { removeProtocol } from "@/helpers/urlFormatter";
+import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import type { PropType } from "vue";
 import type { Placement } from "@novulink/types";
-import { relativeTime } from "@/helpers/relativeTime";
+import { relativeTime } from "@novulink/helpers/relativeTime";
 
 defineProps({
   redirectId: {
@@ -52,7 +52,7 @@ defineProps({
       :loading="isLoading"
       :title="removeProtocol(placement.url)"
       :subtitle="
-        $t('Last confirmed') + ' ' + relativeTime(placement.last_confirmed_at)
+        $t('Last confirmed') + ' ' + relativeTime(placement.last_confirmed_at, $i18n.locale)
       "
       :badges="
         [

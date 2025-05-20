@@ -15,8 +15,8 @@ import type { selectOption } from "@novulink/types";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
-import { getContrastRatio } from "@/helpers/colors";
-import { createQrDesign } from "@/repositories/qrdesign/qrdesignRepository";
+import { getContrastRatio } from "@novulink/helpers/colors";
+import { createQrDesign } from "../../../../packages/api/src/repositories/qrdesign/qrdesignRepository";
 
 const props = defineProps({
   /** The redirect uuid */

@@ -10,7 +10,7 @@ import type { Redirect } from "@novulink/types";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import type { Gate } from "@m-media/vue3-gate-keeper";
-import { createOrder } from "@/repositories/product/productRepository";
+import { createOrder } from "../../../../packages/api/src/repositories/product/productRepository";
 
 const props = defineProps({
   /** The redirect ids. If passed, the selector will be hidden */

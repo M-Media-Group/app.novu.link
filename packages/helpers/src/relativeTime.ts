@@ -1,17 +1,15 @@
-import i18n from "../locales/i18n";
-
 /**
  * This function takes a Date object, and using new Intl.RelativeTimeFormat, returns a string representing the relative time between the input date and the current date. It returns a string like "in 5 days" or "3 months ago" based on the difference between the input date and the current date.
  *
  * @param date - The date to compare to the current date
  * @returns A string representing the relative time between the input date and the current date
  */
-export const relativeTime = (date: Date | string): string => {
+export const relativeTime = (date: Date | string, locale: string | readonly string[] = navigator.languages): string => {
   if (typeof date === "string") {
     date = new Date(date);
   }
 
-  const rtf = new Intl.RelativeTimeFormat(i18n.global.locale.value, {
+  const rtf = new Intl.RelativeTimeFormat(locale, {
     numeric: "auto",
   });
 
@@ -81,10 +79,10 @@ export const computeMinutesToUnit = (minutes: number, unit: string): number => {
  * @param minutes
  * @returns A string representing the number of minutes in a human-readable format
  */
-export const formatMinutes = (minutes: number): string => {
+export const formatMinutes = (minutes: number, locale = navigator.languages): string => {
   const unit = selectBestUnit(minutes);
 
-  return new Intl.NumberFormat(i18n.global.locale.value, {
+  return new Intl.NumberFormat(locale, {
     style: "unit",
     unit,
     unitDisplay: "long",

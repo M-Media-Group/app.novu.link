@@ -2,9 +2,9 @@
 import { onMounted, ref } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import type { Alert } from "@novulink/types";
-import { formatMinutes } from "@/helpers/relativeTime";
+import { formatMinutes } from "@novulink/helpers/relativeTime";
 import BaseButton from "@/components/BaseButton.vue";
-import { getAlerts } from "@/repositories/alert/alertRepository";
+import { getAlerts } from "../../../../packages/api/src/repositories/alert/alertRepository";
 
 const isLoading = ref(true);
 

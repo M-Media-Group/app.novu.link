@@ -4,11 +4,11 @@ const t = i18n.global.t;
 </script>
 
 <script setup lang="ts">
-import { debounce } from "@/helpers/debounce";
+import { debounce } from "@novulink/helpers/debounce";
 import {
   filterOptions,
   orderOptionsBySelectedFirst,
-} from "@/helpers/normaliseOptions";
+} from "@novulink/helpers/normaliseOptions";
 import { useMultiselect } from "@/composables/useMultiselect";
 import type { selectOption } from "@novulink/types";
 import BaseBadge from "./BaseBadge.vue";

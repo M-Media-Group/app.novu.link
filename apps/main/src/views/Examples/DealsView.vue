@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // @ts-nocheck
 import { computed, ref, shallowRef } from "vue";
-import { debounce } from "@/helpers/debounce";
+import { debounce } from "@novulink/helpers/debounce";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import BaseForm from "@/forms/BaseForm.vue";
 import CardElement from "@/components/CardElement.vue";

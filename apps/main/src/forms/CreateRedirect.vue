@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 import { useTeamStore } from "@/stores/team";
 import type { Redirect } from "@novulink/types";
 import { useUrlFormatter } from "@/composables/useUrlFormatter";
-import { createRedirect } from "@/repositories/redirect/redirectRepository";
+import { createRedirect } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const $bus = useEventsBus();
 

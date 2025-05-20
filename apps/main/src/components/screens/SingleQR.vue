@@ -4,7 +4,7 @@ import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
 import {
   deleteRedirect,
   getRedirectUrl,
-} from "@/repositories/redirect/redirectRepository";
+} from "../../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const t = i18n.global.t;
 </script>
@@ -28,7 +28,7 @@ import BaseBadge from "@/components/BaseBadge.vue";
 import BaseModal from "@/components/modals/BaseModal.vue";
 
 import type { FileExtension } from "qr-code-styling";
-import { isError } from "@/helpers/httpCodes";
+import { isError } from "@novulink/helpers/httpCodes";
 import type { QRDesign } from "@novulink/types";
 
 import BackgroundConfetti from "@/components/BackgroundConfetti.vue";

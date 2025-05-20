@@ -21,7 +21,7 @@ import {
   sendPasswordResetEmail as sendPasswordResetEmailUser,
   shouldConfirmPassword,
   update as updateUser,
-} from "@/repositories/user/userRepository";
+} from "../../../../packages/api/src/repositories/user/userRepository";
 
 export const useUserStore = defineStore("user", () => {
   // the state of the user

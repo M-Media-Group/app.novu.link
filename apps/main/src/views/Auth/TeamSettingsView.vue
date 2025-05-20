@@ -13,7 +13,7 @@ import { useEventsBus } from "@/eventBus/events";
 import {
   deleteAnalyticsIntegration,
   getAnalyticsIntegrations,
-} from "@/repositories/analytics/analyticsRepository";
+} from "../../../../../packages/api/src/repositories/analytics/analyticsRepository";
 
 const userStore = useUserStore();
 const teamStore = useTeamStore();

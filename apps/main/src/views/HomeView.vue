@@ -5,8 +5,8 @@ import { useI18n } from "vue-i18n";
 import { onMounted, provide, ref, watch } from "vue";
 import image from "@/assets/undraw_share_link.svg";
 import TabNav from "@/components/TabNav.vue";
-import { assetUrl, loadData } from "@/helpers/dataLoader";
-import { getQrDesignLogos } from "@/repositories/qrdesign/qrdesignRepository";
+import { assetUrl, loadData } from "@novulink/helpers/dataLoader";
+import { getQrDesignLogos } from "../../../../packages/api/src/repositories/qrdesign/qrdesignRepository";
 
 const { locale } = useI18n();
 

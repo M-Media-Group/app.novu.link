@@ -7,7 +7,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import { useEventsBus } from "@/eventBus/events";
 import LineChart from "@/components/charts/LineChart.vue";
-import { getDashboard } from "@/repositories/misc/miscRepository";
+import { getDashboard } from "../../../../packages/api/src/repositories/misc/miscRepository";
 
 const data = ref<Dashboard | null>(null);
 

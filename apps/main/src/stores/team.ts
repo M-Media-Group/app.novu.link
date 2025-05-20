@@ -6,7 +6,7 @@ import {
   getUserTeams as getUserTeamsRepo,
   switchTeam,
   updateTeam,
-} from "@/repositories/team/teamRepository";
+} from "@novulink/api";
 
 export const useTeamStore = defineStore("team", () => {
   const activeTeamId = ref<Team["id"] | null>(null);

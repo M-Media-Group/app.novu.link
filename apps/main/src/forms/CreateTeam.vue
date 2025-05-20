@@ -2,7 +2,7 @@
 import { useTeamStore } from "@/stores/team";
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { createTeam } from "@/repositories/team/teamRepository";
+import { createTeam } from "../../../../packages/api/src/repositories/team/teamRepository";
 
 const teamStore = useTeamStore();
 

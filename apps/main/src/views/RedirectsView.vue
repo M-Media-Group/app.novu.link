@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import type { Redirect } from "@novulink/types";
 import CardElement from "@/components/CardElement.vue";
-import { removeProtocol } from "@/helpers/urlFormatter";
+import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import QRCode from "@/components/QRCode.vue";
-import { getRedirects } from "@/repositories/redirect/redirectRepository";
+import { getRedirects } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
 
 const redirects = ref([] as Redirect[]);
 const isLoading = ref(true);

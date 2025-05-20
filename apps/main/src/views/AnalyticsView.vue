@@ -8,11 +8,11 @@ import CardElement from "@/components/CardElement.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import type { selectOption } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
-import { removeProtocol } from "@/helpers/urlFormatter";
+import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import { useI18n } from "vue-i18n";
 import HeatMap from "@/components/charts/HeatMap.vue";
 
-import { getRedirectsAnalytics } from "@/repositories/analytics/analyticsRepository";
+import { getRedirectsAnalytics } from "../../../../packages/api/src/repositories/analytics/analyticsRepository";
 
 const data = ref<Analytics[]>([]);
 const heatmapData = ref<number[][]>([]);

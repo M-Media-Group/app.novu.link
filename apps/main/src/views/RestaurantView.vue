@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import TabNav from "@/components/TabNav.vue";
-import { assetUrl, loadData } from "@/helpers/dataLoader";
+import { assetUrl, loadData } from "@novulink/helpers/dataLoader";
 
 const { locale } = useI18n();
 

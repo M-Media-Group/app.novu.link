@@ -5,7 +5,7 @@ import type { AnalyticsIntegration } from "@novulink/types";
 import {
   createRedirectAnalyticsIntegration,
   deleteRedirectAnalyticsIntegration,
-} from "@/repositories/analytics/analyticsRepository";
+} from "../../../../packages/api/src/repositories/analytics/analyticsRepository";
 
 const props = defineProps({
   redirectId: {
