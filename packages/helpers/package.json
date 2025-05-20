@@ -13,6 +13,7 @@
         "generate:docs": "typedoc --plugin typedoc-plugin-missing-exports"
     },
     "exports": {
+        "./urlFormatter": "./src/urlFormatter.ts",
         "./*": {
             "import": "./src/*.ts",
             "exclude": [

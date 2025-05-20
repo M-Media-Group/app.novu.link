@@ -1,4 +1,4 @@
-type FlattenedValue = string | string[];
+type FlattenedValue = string | string[] | object;
 
 function has<
   T extends string,
@@ -43,9 +43,12 @@ export function hasProperty<
 };
 
 
+
 /**
  * Recursively flattens a nested object into dot notation,
  * stopping at a specific key (default "_errors").
+ *
+ * Used primarily to unify error messages from different sources.
  *
  * @example
  * ```ts
@@ -56,36 +59,38 @@ export function hasProperty<
  * };
  * ```
  */
-export const flattenObjectToDotNotationWithArrayAndStopAtKey = (
-  obj: unknown,
+export function flattenObjectToDotNotationWithArrayAndStopAtKey<
+  T extends Record<string, FlattenedValue>
+>(
+  obj: T,
   parentKey = "",
   result: Record<string, FlattenedValue> = {},
   stopKey = "_errors"
-): Record<string, FlattenedValue> => {
-  if (typeof obj !== "object" || obj === null) {
-    return result;
-  }
-
-  if (Array.isArray(obj)) {
-    obj.forEach((item, idx) => {
-      const newKey = parentKey ? `${parentKey}.${idx}` : `${idx}`;
-      flattenObjectToDotNotationWithArrayAndStopAtKey(item, newKey, result, stopKey);
-    });
-    return result;
-  }
-
-  for (const key of Object.keys(obj)) {
-    const value = (obj as Record<string, unknown>)[key];
+): Record<string, FlattenedValue> {
+  for (const key in obj) {
+    const value = obj[key];
     const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+    // If the value is an empty array, skip it
+    if (Array.isArray(value) && value.length === 0) {
+      continue;
+    }
 
     if (key === stopKey) {
       result[parentKey] = value as FlattenedValue;
-      // Stop further flattening at this branch
-      return result;
-    } else if (typeof value === "object" && value !== null) {
-      flattenObjectToDotNotationWithArrayAndStopAtKey(value, newKey, result, stopKey);
+      continue;
     }
-    else {
+
+    if (Array.isArray(value)) {
+      result[newKey] = value as FlattenedValue;
+    } else if (typeof value === "object" && value !== null) {
+      flattenObjectToDotNotationWithArrayAndStopAtKey(
+        value as Record<string, FlattenedValue>,
+        newKey,
+        result,
+        stopKey
+      );
+    } else {
       result[newKey] = value as FlattenedValue;
     }
   }
