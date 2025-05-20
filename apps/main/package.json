@@ -2,7 +2,7 @@
   "name": "@novulink/main",
   "version": "0.0.0",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.15.0"
   },
   "packageManager": "npm@11.4.0",
   "scripts": {
@@ -20,7 +20,7 @@
     "test:visual:ci": "npm run build-storybook  --quiet && START_SERVER_AND_TEST_INSECURE=1 start-server-and-test 'http-server ./storybook-static -p 3001 --silent' http://localhost:3001 'npm run test:visual --ci'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "translate": "vue-translation-manager translate",
     "translation-key-check": "vue-translation-manager validate",
     "test:all": "run-p coverage test:e2e test:visual:ci",
@@ -48,6 +48,11 @@
     "zod": "^3.25.4"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.9",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.27.0",
+    "@novulink/eslint-config": "*",
+    "@novulink/types": "*",
     "@pinia/testing": "^1.0.1",
     "@rushstack/eslint-patch": "^1.11.0",
     "@storybook/addon-a11y": "^8.6.14",
@@ -95,13 +100,13 @@
     "storybook-addon-mock": "^5.0.0",
     "storybook-vue3-router": "^5.0.0",
     "turbo": "^2.5.3",
-    "typescript": "^5.8",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1",
     "vite": "^6.3",
     "vitest": "^3.1.4",
     "vue-stripe-js": "^2.0.2",
     "vue-translation-manager": "^1.2.0",
-    "vue-tsc": "^2.2",
-    "@novulink/types": "*"
+    "vue-tsc": "^2.2"
   },
   "pre-commit": [
     "lint",
