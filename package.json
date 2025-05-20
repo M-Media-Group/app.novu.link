@@ -1,8 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "dev": "turbo dev",
-        "dev-http": "turbo dev-http",
+        "dev": "nx run-many -t dev",
+        "dev-http": "nx run-many -t dev-http",
         "build": "nx run-many -t build",
         "preview": "nx run-many -t preview",
         "preview:new": "nx run-many -t preview:new",
@@ -25,7 +25,6 @@
         "test:visual:update": "nx run-many -t test:visual:update"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.27.0",
         "@nx/vite": "^21.0.3",
         "@nx/web": "21.0.3",

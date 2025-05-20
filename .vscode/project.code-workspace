@@ -1,0 +1,44 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../"
+    },
+    {
+      "name": "main",
+      "path": "../apps/main"
+    },
+    {
+      "name": "helpers",
+      "path": "../packages/helpers"
+    },
+    {
+      "name": "api",
+      "path": "../packages/api"
+    },
+    {
+      "name": "types",
+      "path": "../packages/types"
+    },
+    {
+      "name": "vue-composables",
+      "path": "../packages/composables"
+    },
+    {
+      "name": "eslint-config",
+      "path": "../packages/eslint-config"
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "node_modules/": true,
+      "packages/": true,
+      "apps/": true,
+      ".turbo/": true,
+      ".nx/": true,
+      "dist/": true,
+      "docs/": true,
+    },
+    "nxConsole.generateAiAgentRules": true,
+  }
+}

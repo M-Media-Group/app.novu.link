@@ -11,10 +11,12 @@ import storybook from 'eslint-plugin-storybook'
 
 export default tseslint.config(
   {
-    ignores: ["dist/**",
+    ignores: [
+      "dist/**",
       "node_modules/**",
       "'!.storybook'",
-      "storybook-static/**"]
+      "storybook-static/**"
+    ]
   },
   eslint.configs.recommended,
   tseslint.configs.recommended,
@@ -114,11 +116,5 @@ export default tseslint.config(
       ecmaVersion: "latest",
       parserOptions: {},
     },
-    ignores: [
-      "dist/**",
-      "node_modules/**",
-      "'!.storybook'",
-      "storybook-static/**",
-    ],
   }
 );

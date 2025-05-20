@@ -10,14 +10,15 @@
  * @param delay - The delay in milliseconds
  * @param leading - If the function should be called on the leading edge or the trailing edge (first-in triggers the function vs last-in triggers the function)
  */
-export function debounce<T extends (...args: unknown[]) => void>(
-  fn: T,
+
+export function debounce<Args extends unknown[]>(
+  fn: (...args: Args) => void,
   delay = 300,
   leading = false
-): (...args: Parameters<T>) => void {
+): (...args: Args) => void {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
-  return (...args: Parameters<T>) => {
+  return (...args) => {
     if (leading && !timeoutId) {
       fn(...args);
     }
