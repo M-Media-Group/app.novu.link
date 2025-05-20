@@ -1,84 +1,20 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "targetDefaults": {
-    "dev": {
-      "cache": false
-    },
-    "dev-http": {
-      "cache": false
-    },
-    "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "{projectRoot}/dist/**"
-      ],
-      "cache": true
-    },
-    "build-only": {
-      "dependsOn": [
-        "^build-only"
-      ],
-      "outputs": [
-        "{projectRoot}/dist/**"
-      ],
-      "cache": true
-    },
-    "preview": {
-      "cache": true
-    },
-    "preview:new": {
-      "cache": true
-    },
-    "test:unit:coverage": {
-      "cache": true
-    },
-    "test:unit": {
-      "cache": true
-    },
-    "test:unit:update": {
-      "cache": true
-    },
-    "test:e2e": {
-      "cache": true
-    },
-    "test:e2e:dev": {
-      "cache": true
-    },
-    "test:visual:dev:ci": {
-      "cache": true
-    },
-    "test:visual:ci": {
-      "cache": true
-    },
-    "test:visual:dev": {
-      "cache": true
-    },
-    "test:visual": {
-      "cache": true
-    },
-    "test:visual:update": {
-      "cache": true
-    },
-    "test:all": {
-      "cache": true
-    },
-    "type-check": {
-      "cache": true
-    },
-    "lint": {
-      "cache": true
-    },
-    "translate": {
-      "cache": true
-    },
-    "translation-key-check": {
-      "cache": true
-    },
-    "build-storybook": {
-      "cache": true
+  "defaultBase": "master",
+  "plugins": [
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "vite:dev",
+        "previewTargetName": "vite:preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
     }
-  },
-  "defaultBase": "master"
+  ]
 }

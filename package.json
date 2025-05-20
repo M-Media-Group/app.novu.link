@@ -25,17 +25,26 @@
         "test:visual:update": "nx run-many -t test:visual:update"
     },
     "devDependencies": {
+        "@eslint/eslintrc": "^3.3.1",
+        "@eslint/js": "^9.27.0",
+        "@nx/vite": "^21.0.3",
+        "@nx/web": "21.0.3",
+        "@vitest/ui": "^3.0.0",
+        "jiti": "2.4.2",
+        "npm": "^11.4.0",
+        "nx": "21.0.3",
         "pre-commit": "^1.2.2",
         "pre-push": "^0.1.4",
         "turbo": "latest",
-        "nx run-many -t": "21.0.3"
+        "vite": "^6.0.0",
+        "vitest": "^3.0.0"
     },
     "workspaces": [
         "apps/*",
         "packages/*"
     ],
     "engines": {
-        "node": ">=20.0.0"
+        "node": ">=22.15.0"
     },
     "packageManager": "npm@11.4.0",
     "pre-commit": [
