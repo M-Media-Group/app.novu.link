@@ -1,42 +1,43 @@
 {
-    "name": "@novulink/helpers",
-    "version": "0.0.1",
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "build": "tsc --noEmit",
-        "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
-        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
-        "test:unit:coverage": "vitest  --environment jsdom --root src/ run --coverage",
-        "test:unit": "vitest --environment jsdom --root src/",
-        "test:unit:update": "vitest --environment jsdom --root src/ --update",
-        "generate:docs": "typedoc --plugin typedoc-plugin-missing-exports"
-    },
-    "exports": {
-        "./urlFormatter": "./src/urlFormatter.ts",
-        "./hasMethod": "./src/hasMethod.ts",
-        "./normaliseOptions": "./src/normaliseOptions.ts",
-        "./debounce": "./src/debounce.ts",
-        "./streamers": "./src/streamers.ts",
-        "./dataLoader": "./src/dataLoader.ts",
-        "./relativeTime": "./src/relativeTime.ts",
-        "./colors": "./src/colors.ts",
-        "./cssVariables": "./src/cssVariables.ts",
-        "./httpCodes": "./src/httpCodes.ts"
-    },
-    "engines": {
-        "node": ">=22.15.0"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.27.0",
-        "@novulink/eslint-config": "*",
-        "@novulink/types": "*",
-        "@vitest/coverage-v8": "^3.1.4",
-        "eslint": "^9.27.0",
-        "eslint-plugin-only-warn": "^1.1.0",
-        "typedoc": "^0.28.4",
-        "typedoc-plugin-missing-exports": "^4.0.0",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.32.1"
-    }
+  "name": "@novulink/helpers",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "test:unit:coverage": "vitest  --environment jsdom --root src/ run --coverage",
+    "test:unit": "vitest --environment jsdom --root src/",
+    "test:unit:update": "vitest --environment jsdom --root src/ --update",
+    "generate:docs": "typedoc --plugin typedoc-plugin-missing-exports"
+  },
+  "exports": {
+    "./urlFormatter": "./src/urlFormatter.ts",
+    "./hasMethod": "./src/hasMethod.ts",
+    "./normaliseOptions": "./src/normaliseOptions.ts",
+    "./debounce": "./src/debounce.ts",
+    "./streamers": "./src/streamers.ts",
+    "./dataLoader": "./src/dataLoader.ts",
+    "./relativeTime": "./src/relativeTime.ts",
+    "./colors": "./src/colors.ts",
+    "./cssVariables": "./src/cssVariables.ts",
+    "./httpCodes": "./src/httpCodes.ts",
+    "./confetti": "./src/confetti.ts"
+  },
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@novulink/eslint-config": "*",
+    "@novulink/types": "*",
+    "@vitest/coverage-v8": "^3.1.4",
+    "eslint": "^9.27.0",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "typedoc": "^0.28.4",
+    "typedoc-plugin-missing-exports": "^4.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1"
+  }
 }
