@@ -107,9 +107,14 @@ function getContrastColor(rgb: string) {
     <table>
       <tbody>
         <!-- Table Rows with Label Column -->
-        <tr v-for="(row, i) in matrix" :key="i">
+        <tr
+          v-for="(row, i) in matrix"
+          :key="i"
+        >
           <!-- Label Column (Row Number) -->
-          <td class="label-column">{{ xLabels[i] ?? i + 1 }}</td>
+          <td class="label-column">
+            {{ xLabels[i] ?? i + 1 }}
+          </td>
 
           <!-- Heatmap Cells -->
           <td
@@ -126,12 +131,12 @@ function getContrastColor(rgb: string) {
 
         <!-- Label Row at the Bottom -->
         <tr>
-          <td></td>
+          <td />
           <!-- Empty cell for alignment -->
           <td
-            class="label-row"
             v-for="(col, j) in matrix[0]"
             :key="'label-' + j"
+            class="label-row"
           >
             {{ yLabels[j] ?? j + 1 }}
           </td>

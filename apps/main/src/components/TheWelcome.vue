@@ -12,7 +12,7 @@ const handlePaymentOk = () => {
   alert("action here on ok payment");
 };
 
-const attemptOk = (success: () => any, fail: () => any, shouldPass: any) => {
+const attemptOk = (success: () => unknown, fail: () => unknown, shouldPass: unknown) => {
   return shouldPass ? success() : fail();
 };
 </script>
@@ -45,8 +45,12 @@ const attemptOk = (success: () => any, fail: () => any, shouldPass: any) => {
             )
           }}
         </p>
-        <base-button @click="attemptOk(success, fail, false)">Fail</base-button>
-        <base-button @click="attemptOk(success, fail, true)">Ok</base-button>
+        <base-button @click="attemptOk(success, fail, false)">
+          Fail
+        </base-button>
+        <base-button @click="attemptOk(success, fail, true)">
+          Ok
+        </base-button>
       </template>
     </confirms-gate>
 
@@ -55,16 +59,16 @@ const attemptOk = (success: () => any, fail: () => any, shouldPass: any) => {
       :gate="['auth', 'confirmedPassword', 'hasPaymentMethod']"
       @confirmed="handleAuthenticated"
     >
-      <base-button
-        >Do action when authed, confirmedPassword, and
-        hasPaymentMethod</base-button
-      >
+      <base-button>
+        Do action when authed, confirmedPassword, and
+        hasPaymentMethod
+      </base-button>
     </confirms-gate>
 
     <confirms-payment-method @confirmed="handlePaymentOk">
-      <template v-slot="{ isConfirming }">
-        <base-button :aria-busy="isConfirming"
-          >Do action when payment method confirmed
+      <template #default="{ isConfirming }">
+        <base-button :aria-busy="isConfirming">
+          Do action when payment method confirmed
         </base-button>
       </template>
     </confirms-payment-method>

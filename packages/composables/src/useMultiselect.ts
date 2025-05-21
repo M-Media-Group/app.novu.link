@@ -1,84 +1,80 @@
 import { normaliseOptions } from "@novulink/helpers/normaliseOptions";
-import type { normalisedOptionObject, selectOption } from "@novulink/types";
+import type {
+  NormalisedOptionObject,
+  PossibleRecord,
+  SelectOption,
+  SelectOptionObject,
+} from "@novulink/types";
 import { computed, toRaw } from "vue";
 
-export interface requiredProps {
-  options: selectOption[];
-  displayKey: "id" | "render";
-  multiple: boolean;
+export interface RequiredProps<T extends PossibleRecord> {
+  options: SelectOption<T>[];
+  displayKey: keyof NormalisedOptionObject<SelectOptionObject<T>>;
   modelValue: string[];
-  modelKey: "id" | "render";
+  modelKey: keyof NormalisedOptionObject<SelectOptionObject<T>>;
+  multiple: boolean;
 }
 
-export type requiredEmits = (
+export type RequiredEmits = (
   evt: "update:modelValue",
   args_0: string[]
 ) => void;
 
-// A composable for a multiselect component
-export function useMultiselect(props: requiredProps, emit: requiredEmits) {
-  // Using the pattern below rather than a computed value gives us a 2x performance improvement
+/**
+ * A composable for a multiselect component
+ */
+export function useMultiselect<T extends PossibleRecord>(
+  props: RequiredProps<T>,
+  emit: RequiredEmits
+) {
+  type Normalised = NormalisedOptionObject<SelectOptionObject<T>>;
 
-  // eslint-disable-next-line no-secrets/no-secrets
-  // Using toRaw so that its not so deeply reactive, this gives us a 10x performance boost. @see and thank https://www.reddit.com/r/vuejs/comments/1bg4266/comment/kv6yece/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-  const normalisedOptions = computed(() => {
+  const normalisedOptions = computed<Normalised[]>(() => {
     return normaliseOptions(toRaw(props.options));
   });
 
-  // The selecteable options, which are the ones that are not disabled
-  const selecteableOptions = computed(() => {
-    return normalisedOptions.value.filter((option) => !option.disabled);
-  });
+  const selectableOptions = computed(() =>
+    normalisedOptions.value.filter((option) => !option.disabled)
+  );
 
-  const getLabel = (option: selectOption) => {
-    if (typeof option === "string") return option;
-    return option[props.displayKey];
+  const getLabel = (option: Normalised): string => {
+    const value = option[props.displayKey];
+    return typeof value === "string" ? value : value?.toString() ?? "";
   };
 
-  /**
-   *
-   * @param newValue
-   * @param valueSelected If the value should be marked as selected or not in the mode value. Of you want the user to be toggle the value on/off with multiple clicks on the same value, set this to false
-   * @param existingValueIndex the value index to update - this is useful if you want to update a specific value in the array
-   * @returns
-   */
   const updateModelValue = (
     newValue: string | null,
     valueSelected = true,
-    existingValueIndex = false as number | false
+    existingValueIndex: number | false = false
   ) => {
-    if (!newValue) {
-      return;
-    }
+    if (!newValue) return;
 
     if ((!props.modelValue || !props.multiple) && valueSelected) {
       emit("update:modelValue", [newValue]);
       return;
     }
 
-    let newPages: string[] = [];
+    let newValues: string[];
 
-    // If we are updating a specific value in the array
     if (existingValueIndex !== false) {
-      newPages = [...props.modelValue];
-      newPages[existingValueIndex] = newValue;
+      newValues = [...props.modelValue];
+      newValues[existingValueIndex] = newValue;
     } else {
-      // Always emit the full array of selected page IDs
-      newPages = props.modelValue.includes(newValue)
+      newValues = props.modelValue.includes(newValue)
         ? props.modelValue.filter((id) => id !== newValue)
         : [...props.modelValue, newValue];
     }
 
-    emit("update:modelValue", newPages);
+    emit("update:modelValue", newValues);
   };
 
-  const isOptionSelected = (option: normalisedOptionObject) => {
-    return props.modelValue.includes(option[props.modelKey].toString());
+  const isOptionSelected = (option: Normalised): boolean => {
+    return props.modelValue.includes(String(option[props.modelKey]));
   };
 
   const selectAllOptions = () => {
-    const allIds = selecteableOptions.value.map(
-      (option) => option[props.modelKey]
+    const allIds = selectableOptions.value.map((option) =>
+      String(option[props.modelKey])
     );
     emit("update:modelValue", allIds);
   };
@@ -88,7 +84,7 @@ export function useMultiselect(props: requiredProps, emit: requiredEmits) {
   };
 
   const toggleAllOptions = () => {
-    if (props.modelValue.length === selecteableOptions.value.length) {
+    if (props.modelValue.length === selectableOptions.value.length) {
       return unselectAllOptions();
     }
     return selectAllOptions();
@@ -96,7 +92,7 @@ export function useMultiselect(props: requiredProps, emit: requiredEmits) {
 
   return {
     normalisedOptions,
-    selecteableOptions,
+    selectableOptions,
     getLabel,
     updateModelValue,
     isOptionSelected,

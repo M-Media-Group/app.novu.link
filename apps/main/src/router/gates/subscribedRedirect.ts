@@ -1,5 +1,5 @@
 import { useTeamStore } from "@/stores/team";
-import { getRedirect } from "@/repositories/redirect/redirectRepository";
+import { getRedirect } from "@novulink/api";
 import { baseGate } from "@m-media/vue3-gate-keeper";
 
 export default class extends baseGate {
@@ -25,7 +25,7 @@ export default class extends baseGate {
       if (redirect?.subscribed_at === null) {
         throw new Error("Not subscribed");
       }
-    } catch (error) {
+    } catch {
       return this.fail();
     }
   }

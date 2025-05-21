@@ -172,7 +172,7 @@ export const WithSingleDestinationEditModalOpen: Story = {
   },
 
   // Click action
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const editButton = canvas.getByText("example.com/my/path");
     await editButton.click();

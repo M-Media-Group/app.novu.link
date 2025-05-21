@@ -22,7 +22,7 @@ export const Default: Story = {};
 
 export const InsufficentContrast: Story = {
   // Change the foreground color to white
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     // Get the element with the text "Shape" in it
     const canvas = within(canvasElement);
 
@@ -48,7 +48,7 @@ export const InsufficentContrast: Story = {
 };
 
 export const ShapePage: Story = {
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     // Get the element with the text "Shape" in it
     const canvas = within(canvasElement);
 
@@ -63,7 +63,7 @@ export const ShapePage: Story = {
 };
 
 export const LogoPage: Story = {
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     // Get the element with the text "Shape" in it
     const canvas = within(canvasElement);
 
@@ -78,7 +78,7 @@ export const LogoPage: Story = {
 };
 
 export const NamePage: Story = {
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     // Get the element with the text "Shape" in it
     const canvas = within(canvasElement);
 
@@ -93,7 +93,7 @@ export const NamePage: Story = {
 };
 
 export const AdvancedPage: Story = {
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     // Get the element with the text "Shape" in it
     const canvas = within(canvasElement);
 
@@ -108,7 +108,7 @@ export const AdvancedPage: Story = {
 };
 
 export const NameModal: Story = {
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement }) => {
     // Get the element with the text "Shape" in it
     const canvas = within(canvasElement);
 

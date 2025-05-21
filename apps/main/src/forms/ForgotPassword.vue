@@ -22,23 +22,26 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
-    @success="emit('success')"
-    :submitFn="submitForm"
+    :submit-fn="submitForm"
     :disabled="success"
     :submit-text="$t('Send a new password')"
+    @success="emit('success')"
   >
     <label for="email">{{ $t("Email") }}</label>
     <input
-      type="email"
       id="email"
+      v-model="userStore.userEmail"
+      type="email"
       name="email"
       :placeholder="$t('Email')"
-      v-model="userStore.userEmail"
       :disabled="success"
       autofocus
       required
-    />
-    <small v-if="success" class="success">{{
+    >
+    <small
+      v-if="success"
+      class="success"
+    >{{
       $t("If the account exists an email has been sent!")
     }}</small>
   </base-form>

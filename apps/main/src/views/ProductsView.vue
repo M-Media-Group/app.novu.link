@@ -4,7 +4,7 @@ import { onMounted, ref, useTemplateRef } from "vue";
 import CreateProductOrder from "@/forms/CreateProductOrder.vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import BaseButton from "@/components/BaseButton.vue";
-import { useProducts } from "@/composables/useProducts";
+import { useProducts } from "@novulink/vue-composables/useProducts";
 import type { Product } from "@novulink/types";
 import BaseBadge from "@/components/BaseBadge.vue";
 import ProductCardElement from "@/components/ProductCardElement.vue";
@@ -80,19 +80,19 @@ const resultsSection = ref();
     </hgroup>
     <div class="two-column-grid category-images">
       <router-link to="/products/categories/jackets">
-        <img :src="skierImage" />
+        <img :src="skierImage">
         <h2>Jackets</h2>
       </router-link>
       <router-link to="/products/categories/hoodies">
-        <img :src="skaterQr" />
+        <img :src="skaterQr">
         <h2>Hoodies</h2>
       </router-link>
       <router-link to="/products/categories/mugs">
-        <img :src="businessQr" />
+        <img :src="businessQr">
         <h2>Mugs</h2>
       </router-link>
       <router-link to="/products/categories/stickers">
-        <img :src="storefrontQr" />
+        <img :src="storefrontQr">
         <h2>Stickers</h2>
       </router-link>
     </div>
@@ -104,6 +104,7 @@ const resultsSection = ref();
     <div class="two-column-grid">
       <div>
         <div
+          v-if="loadedProduct"
           class="images overflow-auto"
           style="
             height: 100%;
@@ -111,7 +112,6 @@ const resultsSection = ref();
             border-radius: var(--pico-border-radius);
             margin-bottom: var(--pico-spacing);
           "
-          v-if="loadedProduct"
         >
           <img
             v-for="img in getAllImages(loadedProduct).map((image) => ({
@@ -123,7 +123,7 @@ const resultsSection = ref();
             class="full-width"
             :alt="img.alt"
             loading="lazy"
-          />
+          >
         </div>
         <!-- An image caption saying its not the actual product -->
 
@@ -144,7 +144,7 @@ const resultsSection = ref();
             :alt="img.alt"
             height="32"
             style="object-fit: contain; height: 96px; width: auto"
-          />
+          >
         </div>
       </div>
       <div>
@@ -156,7 +156,7 @@ const resultsSection = ref();
             <template
               v-if="
                 loadedProduct?.prices?.min?.priceWithTax !==
-                loadedProduct?.prices?.max?.priceWithTax
+                  loadedProduct?.prices?.max?.priceWithTax
               "
             >
               {{ $t("From") }}
@@ -179,15 +179,15 @@ const resultsSection = ref();
         </hgroup>
         <div v-show="!showBuyNow">
           <base-button
-            @click="showBuyNow = true"
             class="full-width"
             :disabled="!loadedProduct.is_in_stock"
+            @click="showBuyNow = true"
           >
             {{ loadedProduct.is_in_stock ? $t("Buy now") : $t("Out of stock") }}
           </base-button>
           <p style="white-space: pre-line">
-            {{ loadedProduct.description }}<br />• Advanced Novu.Link QR Code
-            printed in high quality<br />• Changeable destinations even after
+            {{ loadedProduct.description }}<br>• Advanced Novu.Link QR Code
+            printed in high quality<br>• Changeable destinations even after
             print, for free
           </p>
           <small>
@@ -198,22 +198,22 @@ const resultsSection = ref();
         </div>
         <div v-show="showBuyNow">
           <p>
-            <a @click="showBuyNow = false" class="back-link"
-              >← Back to product</a
-            >
+            <a
+              class="back-link"
+              @click="showBuyNow = false"
+            >← Back to product</a>
           </p>
           <create-product-order
-            :productIds="[loadedProduct.id]"
+            :product-ids="[loadedProduct.id]"
             @success="showBuyNow = false"
           />
         </div>
-        <hr />
+        <hr>
         <small>
           Fulfilled by
           <a
             href="https://www.printful.com/print-on-demand/a/583122:ccf515ea17b07bdf388ebbff9f76827b"
-            >{{ loadedProduct.merchant }}</a
-          >
+          >{{ loadedProduct.merchant }}</a>
         </small>
       </div>
     </div>
@@ -223,7 +223,10 @@ const resultsSection = ref();
     class="fulscreen-width-container hero-section"
     data-theme="light"
   >
-    <div class="two-column-grid" style="height: 100dvh">
+    <div
+      class="two-column-grid"
+      style="height: 100dvh"
+    >
       <div
         class="gl-animate-skeleton-loader images overflow-auto"
         style="
@@ -232,29 +235,45 @@ const resultsSection = ref();
           border-radius: var(--pico-border-radius);
           margin-bottom: var(--pico-spacing);
         "
-      ></div>
+      />
       <div>
-        <div class="gl-animate-skeleton-loader" style="height: 2rem"></div>
-        <div class="gl-animate-skeleton-loader" style="height: 1rem"></div>
+        <div
+          class="gl-animate-skeleton-loader"
+          style="height: 2rem"
+        />
+        <div
+          class="gl-animate-skeleton-loader"
+          style="height: 1rem"
+        />
       </div>
     </div>
   </section>
-  <section class="results three-column-grid" ref="resultsSection">
+  <section
+    ref="resultsSection"
+    class="results three-column-grid"
+  >
     <div>
       <hgroup>
         <h2>Explore 1320 products</h2>
         <p>Our most popular products</p>
       </hgroup>
-      <input type="search" v-model="searchTerm" placeholder="Search products" />
+      <input
+        v-model="searchTerm"
+        type="search"
+        placeholder="Search products"
+      >
       <details>
         <summary>
           Filters {{ selectedAttributes.map((x) => x.value).join(", ") }}
         </summary>
         <div v-if="allAttributes">
-          <template v-for="options in allAttributes" :key="options.name">
+          <template
+            v-for="options in allAttributes"
+            :key="options.name"
+          >
             <label for="size">{{ options.name }}</label>
             <dropdown-select
-              :modelValue="
+              :model-value="
                 selectedAttributes
                   .filter((x) => x.name === options.name)
                   .map((x) =>
@@ -262,19 +281,19 @@ const resultsSection = ref();
                   )
                   .filter(Boolean)
               "
-              @update:modelValue="
-                handleSelectedAttribute(
-                  `${options.name}`,
-                  $event?.[0] as string
-                )
-              "
               :options="
                 typeof options.value === 'string'
                   ? [options.value]
                   : options.value
               "
-              :visibleLimit="100"
+              :visible-limit="100"
               :clearable="true"
+              @update:model-value="
+                handleSelectedAttribute(
+                  `${options.name}`,
+                  $event?.[0] as string
+                )
+              "
             />
           </template>
         </div>
@@ -282,8 +301,9 @@ const resultsSection = ref();
     </div>
     <product-card-element
       v-for="product in filteredProducts"
-      :product="product"
       :key="product.id"
+      :product="product"
+      :inline="false"
       @click="
         handleProductSelect(product as Product);
         primaryProductHeading?.scrollIntoView({
@@ -291,7 +311,6 @@ const resultsSection = ref();
           block: 'start',
         });
       "
-      :inline="false"
     />
 
     <template v-if="isLoading">

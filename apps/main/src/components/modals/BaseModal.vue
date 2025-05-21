@@ -104,15 +104,19 @@ defineExpose({
 });
 </script>
 <template>
-  <slot name="trigger" :openModal="openModal" :isOpen="isModalOpen">
+  <slot
+    name="trigger"
+    :open-modal="openModal"
+    :is-open="isModalOpen"
+  >
     <!-- Button to trigger the modal -->
     <base-button
       v-if="showTrigger"
       :data-target="modalId"
-      @click="openModal()"
       :aria-busy="isModalOpen"
       type="button"
       :class="triggerClasses"
+      @click="openModal()"
     >
       {{ triggerText ?? title }}
     </base-button>
@@ -128,20 +132,25 @@ defineExpose({
     <card-element :title="title">
       <template #headerActions>
         <a
+          v-if="showCloseInHeader"
           href="#close"
           :aria-label="$t('Close')"
           class="close"
           :data-target="modalId"
           @click.prevent="closeModal()"
-          v-if="showCloseInHeader"
-        >
-        </a>
+        />
       </template>
       <div>
-        <slot></slot>
+        <slot />
       </div>
-      <template #footer v-if="showFooter || $slots.footer">
-        <slot name="footer" :closeModal="closeModal">
+      <template
+        v-if="showFooter || $slots.footer"
+        #footer
+      >
+        <slot
+          name="footer"
+          :close-modal="closeModal"
+        >
           <base-button
             class="secondary"
             :data-target="modalId"
@@ -149,7 +158,10 @@ defineExpose({
           >
             {{ $t("Cancel") }}
           </base-button>
-          <base-button :data-target="modalId" @click.prevent="closeModal()">
+          <base-button
+            :data-target="modalId"
+            @click.prevent="closeModal()"
+          >
             {{ $t("Confirm") }}
           </base-button>
         </slot>

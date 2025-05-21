@@ -23,15 +23,21 @@ setFollow(false);
         }}
       </p>
       <div class="two-column-grid">
-        <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
+        <base-button to="/">
+          {{ $t("Go to the homepage") }}
+        </base-button>
         <base-button
           class="secondary"
           href="https://blog.novu.link/disabled-links-for-safety/"
           target="_blank"
-          >{{ $t("Learn more") }}</base-button
         >
+          {{ $t("Learn more") }}
+        </base-button>
       </div>
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

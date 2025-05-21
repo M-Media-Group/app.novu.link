@@ -1,5 +1,5 @@
-import { UnifiedError } from "./apiServiceErrorHandler.js";
-import { HttpClient } from "./clients/genericHttpClient.js";
+import type { UnifiedError } from "./apiServiceErrorHandler.js";
+import type { HttpClient } from "./clients/genericHttpClient.js";
 import { EventBus } from "type-safe-event-bus";
 
 let baseUrl: string | null = null;

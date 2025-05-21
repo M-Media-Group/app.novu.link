@@ -5,6 +5,11 @@ import type { User } from "@novulink/types";
 import type { Team } from "@novulink/types";
 
 defineProps({
+  /** The app name */
+  appName: {
+    type: String,
+    required: true,
+  },
   isLoading: {
     type: Boolean,
     required: false,
@@ -33,8 +38,6 @@ const teamDetailsElement = ref();
 
 const isOpen = ref(false);
 
-const appName = import.meta.env.VITE_APP_NAME;
-
 const emit = defineEmits<{
   "switch-team": [number];
 }>();
@@ -46,46 +49,58 @@ const blur = () => {
 };
 </script>
 <template>
-  <nav v-show="!isOpen" aria-label="Primary">
+  <nav
+    v-show="!isOpen"
+    aria-label="Primary"
+  >
     <ul>
       <li>
         <router-link
           :to="!!user ? '/dashboard' : '/'"
           aria-roledescription="logo"
           aria-label="Click the logo to go home"
-          ><strong>{{ appName }}</strong></router-link
         >
+          <strong>{{ appName }}</strong>
+        </router-link>
       </li>
     </ul>
     <ul>
       <li>
-        <base-button @click="blur()" to="/redirects/create">
+        <base-button
+          to="/redirects/create"
+          @click="blur()"
+        >
           {{ $t("New magic link") }}
         </base-button>
       </li>
       <li v-if="!!!user">
-        <router-link to="/login">{{ $t("Login") }}</router-link>
+        <router-link to="/login">
+          {{ $t("Login") }}
+        </router-link>
       </li>
       <li>
         <base-button
           class="outline"
-          @click="isOpen = !isOpen"
           aria-label="Open the menu"
+          @click="isOpen = !isOpen"
         >
           <span aria-hidden="true">☰</span>
         </base-button>
       </li>
     </ul>
   </nav>
-  <aside v-show="isOpen" class="container">
+  <aside
+    v-show="isOpen"
+    class="container"
+  >
     <nav aria-label="Aside">
       <ul>
         <template v-if="!!user">
           <!-- The users team settings -->
           <li :aria-busy="isLoading">
             <details
-              ref="teamDetailsElement"
               v-show="!isLoading"
+              ref="teamDetailsElement"
               class="dropdown"
             >
               <summary :aria-busy="isLoading">
@@ -93,26 +108,33 @@ const blur = () => {
               </summary>
               <ul @click="blur()">
                 <li>
-                  <router-link to="/team/settings">{{
-                    $t("Team Settings")
-                  }}</router-link>
+                  <router-link to="/team/settings">
+                    {{
+                      $t("Team Settings")
+                    }}
+                  </router-link>
                 </li>
                 <li>
-                  <router-link to="/teams/create">{{
-                    $t("Create New Team")
-                  }}</router-link>
+                  <router-link to="/teams/create">
+                    {{
+                      $t("Create New Team")
+                    }}
+                  </router-link>
                 </li>
                 <!-- Divider -->
                 <li>
-                  <hr />
+                  <hr>
                 </li>
                 <!-- Switch teams section -->
 
-                <li v-for="singleTeam in teams" :key="singleTeam.id">
+                <li
+                  v-for="singleTeam in teams"
+                  :key="singleTeam.id"
+                >
                   <a
                     href="#"
                     @click.prevent="emit('switch-team', singleTeam.id)"
-                    >{{ singleTeam.name ?? $t("Your Team") }}
+                  >{{ singleTeam.name ?? $t("Your Team") }}
                     {{ singleTeam.id === team?.id ? " (Active)" : "" }}
                   </a>
                 </li>
@@ -120,38 +142,66 @@ const blur = () => {
             </details>
           </li>
           <li>
-            <router-link to="/dashboard" @click="blur()">{{
-              $t("Dashboard")
-            }}</router-link>
+            <router-link
+              to="/dashboard"
+              @click="blur()"
+            >
+              {{
+                $t("Dashboard")
+              }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/redirects" @click="blur()">{{
-              $t("Magic links")
-            }}</router-link>
+            <router-link
+              to="/redirects"
+              @click="blur()"
+            >
+              {{
+                $t("Magic links")
+              }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/analytics" @click="blur()">{{
-              $t("Analytics")
-            }}</router-link>
+            <router-link
+              to="/analytics"
+              @click="blur()"
+            >
+              {{
+                $t("Analytics")
+              }}
+            </router-link>
           </li>
 
           <li>
-            <router-link to="/products" @click="blur()">{{
-              $t("Shop QR Products")
-            }}</router-link>
+            <router-link
+              to="/products"
+              @click="blur()"
+            >
+              {{
+                $t("Shop QR Products")
+              }}
+            </router-link>
           </li>
 
           <li :aria-busy="isLoading">
-            <details ref="detailsElement" v-show="!isLoading" class="dropdown">
+            <details
+              v-show="!isLoading"
+              ref="detailsElement"
+              class="dropdown"
+            >
               <summary :aria-busy="isLoading">
                 {{ user.name ?? $t("My Account") }}
               </summary>
               <ul @click="blur()">
                 <li>
-                  <router-link to="/settings">{{ $t("Settings") }}</router-link>
+                  <router-link to="/settings">
+                    {{ $t("Settings") }}
+                  </router-link>
                 </li>
                 <li>
-                  <router-link to="/logout">{{ $t("Logout") }}</router-link>
+                  <router-link to="/logout">
+                    {{ $t("Logout") }}
+                  </router-link>
                 </li>
               </ul>
             </details>
@@ -159,45 +209,78 @@ const blur = () => {
         </template>
         <template v-else>
           <li>
-            <router-link to="/" @click="blur()">{{ $t("Home") }}</router-link>
+            <router-link
+              to="/"
+              @click="blur()"
+            >
+              {{ $t("Home") }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/features" @click="blur()">{{
-              $t("Features")
-            }}</router-link>
+            <router-link
+              to="/features"
+              @click="blur()"
+            >
+              {{
+                $t("Features")
+              }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/pricing" @click="blur()">{{
-              $t("Pricing")
-            }}</router-link>
+            <router-link
+              to="/pricing"
+              @click="blur()"
+            >
+              {{
+                $t("Pricing")
+              }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/products" @click="blur()">{{
-              $t("Shop QR Products")
-            }}</router-link>
+            <router-link
+              to="/products"
+              @click="blur()"
+            >
+              {{
+                $t("Shop QR Products")
+              }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/login" @click="blur()">{{
-              $t("Login")
-            }}</router-link>
+            <router-link
+              to="/login"
+              @click="blur()"
+            >
+              {{
+                $t("Login")
+              }}
+            </router-link>
           </li>
           <li>
-            <router-link to="/sign-up" @click="blur()">{{
-              $t("Sign up")
-            }}</router-link>
+            <router-link
+              to="/sign-up"
+              @click="blur()"
+            >
+              {{
+                $t("Sign up")
+              }}
+            </router-link>
           </li>
         </template>
         <li>
-          <base-button @click="blur()" to="/redirects/create">
+          <base-button
+            to="/redirects/create"
+            @click="blur()"
+          >
             {{ $t("New magic link") }}
           </base-button>
         </li>
       </ul>
     </nav>
     <base-button
-      @click="isOpen = !isOpen"
       aria-label="Close the menu"
       class="outline close"
+      @click="isOpen = !isOpen"
     >
       <span aria-hidden="true">✖</span>
     </base-button>

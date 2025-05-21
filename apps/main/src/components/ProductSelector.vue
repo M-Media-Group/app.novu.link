@@ -2,8 +2,8 @@
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import { type PropType, computed, onMounted, ref } from "vue";
 import type { Product } from "@novulink/types";
-import type { selectOptionObject } from "@novulink/types";
-import { useProducts } from "@/composables/useProducts";
+import type { SelectOptionObject } from "@novulink/types";
+import { useProducts } from "@novulink/vue-composables/useProducts";
 
 const props = defineProps({
   modelValue: {
@@ -39,7 +39,7 @@ const searchTerm = ref("");
 
 const { products, loadMoreProducts, isLoading, formatPrice } = useProducts();
 
-const productOptions = computed((): selectOptionObject[] =>
+const productOptions = computed(() =>
   products.value.map(
     (product: Product) =>
       ({
@@ -54,7 +54,7 @@ const productOptions = computed((): selectOptionObject[] =>
             product.prices.currency
           ),
         },
-      } as selectOptionObject)
+      } as SelectOptionObject)
   )
 );
 
@@ -84,23 +84,22 @@ const handleReachedEndOfList = async () => {
 </script>
 <template>
   <dropdown-select
+    v-model:is-open="isOpenValueSelector"
+    v-model:search="searchTerm"
     :options="productOptions"
     :aria-busy="isLoading"
     :searchable="productOptions.length > 10"
-    v-model:is-open="isOpenValueSelector"
-    v-model:search="searchTerm"
-    :showSelectedFirst="true"
-    :modelValue="[`${modelValue}`]"
-    @update:modelValue="handleSelect"
+    :show-selected-first="true"
+    :model-value="[`${modelValue}`]"
     :required="required"
     :autofocus="true"
+    @update:model-value="handleSelect"
     @reached-end-of-list="handleReachedEndOfList"
   >
     <template
       #optionSlot="{
         option,
-
-        multiple,
+        multiple: slotMultiple,
         updateModelValue,
         checked,
         value,
@@ -109,24 +108,24 @@ const handleReachedEndOfList = async () => {
     >
       <label>
         <input
-          :type="multiple ? 'checkbox' : 'radio'"
+          :type="slotMultiple ? 'checkbox' : 'radio'"
           :disabled="option.disabled"
           :value="value"
           :checked="checked"
-          @click="updateModelValue"
           tabindex="0"
           :visibleLimit="100"
-        />
+          @click="updateModelValue"
+        >
 
         <img
           loading="lazy"
-          :src="option.raw.image"
+          :src="option.raw?.image ? `${option.raw?.image}` : undefined"
           style="height: 64px"
           alt=""
-        />
+        >
         {{ label }}
-        <br />
-        <small>{{ option.raw.price }} EUR - {{ option.raw.description }}</small>
+        <br>
+        <small>{{ option.raw?.price }} EUR - {{ option.raw?.description }}</small>
       </label>
     </template>
   </dropdown-select>

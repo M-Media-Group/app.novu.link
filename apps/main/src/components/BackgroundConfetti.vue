@@ -69,24 +69,25 @@ interface Velocity {
 }
 
 class Confetto {
-  randomModifier: number;
-  color: { front: string; back: string };
-  dimensions: Dimensions;
-  position: Position;
-  rotation: number;
-  scale: Scale;
-  velocity: Velocity;
+  randomModifier = 0;
+  color: { front: string; back: string } = { front: "", back: "" };
+  dimensions: Dimensions = { x: 0, y: 0 };
+  position: Position = { x: 0, y: 0 };
+  rotation = 0;
+  scale: Scale = { x: 1, y: 1 };
+  velocity: Velocity = { x: 0, y: 0 };
 
   constructor() {
     this.randomModifier = randomRange(0, 99);
     this.color = colors[Math.floor(randomRange(0, colors.length))];
     this.dimensions = { x: randomRange(5, 9), y: randomRange(8, 15) };
+    if (!canvas.value) return;
     this.position = {
       x: randomRange(
-        canvas.value!.width / 2 - canvas.value!.offsetWidth / 4,
-        canvas.value!.width / 2 + canvas.value!.offsetWidth / 4
+        canvas.value.width / 2 - canvas.value.offsetWidth / 4,
+        canvas.value.width / 2 + canvas.value.offsetWidth / 4
       ),
-      y: randomRange(canvas.value!.height, 0),
+      y: randomRange(canvas.value.height, 0),
     };
     this.rotation = randomRange(0, 2 * Math.PI);
     this.scale = { x: 1, y: 1 };
@@ -122,7 +123,7 @@ const render = () => {
 
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
 
-  confetti.forEach((confetto, index) => {
+  confetti.forEach((confetto) => {
     const width = confetto.dimensions.x * confetto.scale.x;
     const height = confetto.dimensions.y * confetto.scale.y;
 
@@ -165,7 +166,7 @@ onMounted(() => {
 defineExpose({ initBurst });
 </script>
 <template>
-  <canvas ref="canvas"></canvas>
+  <canvas ref="canvas" />
 </template>
 <style scoped>
 /* Canvas takes up whole screen background */

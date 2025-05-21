@@ -35,12 +35,12 @@ const props = defineProps({
     default: null,
   },
   lineChartData: {
-    type: Array as PropType<Array<{ name: string; count: number }> | null>,
+    type: Array as PropType<{ name: string; count: number }[] | null>,
     required: false,
     default: null,
   },
   barChartData: {
-    type: Array as PropType<Array<{ name: string; count: number }> | null>,
+    type: Array as PropType<{ name: string; count: number }[] | null>,
     required: false,
     default: null,
   },
@@ -90,25 +90,23 @@ const percentChange = computed(() => {
       :subtitle="
         clicksSameTimeYesterday !== null && percentChange !== null
           ? `${percentChange > 0 ? '+' : ''}${percentChange}% ${$t(
-              'Scans today'
-            )}`
+            'Scans today'
+          )}`
           : $t('Scans today')
       "
-      :loadingOn="['title']"
-    >
-    </card-element>
+      :loading-on="['title']"
+    />
 
     <card-element
       :loading="isLoading"
       :title="clicksAllTime !== null ? `${clicksAllTime}` : '--'"
       :subtitle="$t('Scans all time')"
-      :loadingOn="['title']"
-    >
-    </card-element>
+      :loading-on="['title']"
+    />
   </div>
   <template v-if="subscribed">
     <card-element
-      :loadingOn="['title']"
+      :loading-on="['title']"
       :title="
         barChartData !== null
           ? `${barChartData.reduce((sum, item) => sum + item.count, 0)}`
@@ -120,13 +118,17 @@ const percentChange = computed(() => {
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
         style="height: 240px"
-      ></div>
+      />
       <line-chart
         v-else-if="barChartData && barChartData.length > 0"
-        :clickData="barChartData"
+        :click-data="barChartData"
         height="240px"
       />
-      <div v-else class="placeholder-chart" style="height: 240px">
+      <div
+        v-else
+        class="placeholder-chart"
+        style="height: 240px"
+      >
         {{ $t("No data available") }}
       </div>
     </card-element>
@@ -136,24 +138,23 @@ const percentChange = computed(() => {
       :title="removeProtocol(bestEndpoint)"
       :subtitle="$t('Best performing destination')"
       :loading="isLoading"
-      :loadingOn="['title']"
-    >
-    </card-element>
+      :loading-on="['title']"
+    />
 
     <card-element
       :title="$t('Heatmap')"
       :subtitle="$t('Scans by day of week and time of day')"
-      :loadingOn="['title']"
+      :loading-on="['title']"
     >
       <div
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
-      ></div>
+      />
 
       <heat-map
         v-else-if="heatmapData?.length > 0"
         :matrix="heatmapData"
-        :xLabels="[
+        :x-labels="[
           $t('Sunday'),
           $t('Monday'),
           $t('Tuesday'),
@@ -164,7 +165,10 @@ const percentChange = computed(() => {
         ]"
       />
 
-      <div v-else class="placeholder-chart">
+      <div
+        v-else
+        class="placeholder-chart"
+      >
         {{ $t("No data available") }}
       </div>
     </card-element>
@@ -176,19 +180,27 @@ const percentChange = computed(() => {
       <div
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
-      ></div>
+      />
       <line-chart
         v-else-if="lineChartData && lineChartData.length > 0"
-        :clickData="lineChartData"
+        :click-data="lineChartData"
       />
-      <div v-else class="placeholder-chart">
+      <div
+        v-else
+        class="placeholder-chart"
+      >
         {{ $t("No data available") }}
       </div>
     </card-element>
 
-    <base-button class="full-width" to="/analytics">{{
-      $t("Go to advanced analytics")
-    }}</base-button>
+    <base-button
+      class="full-width"
+      to="/analytics"
+    >
+      {{
+        $t("Go to advanced analytics")
+      }}
+    </base-button>
   </template>
   <template v-else>
     <confirms-gate
@@ -198,7 +210,7 @@ const percentChange = computed(() => {
           'Additional destinations and design changes are free after you subscribe.'
         )
       "
-      :allowBackgroundClickToClose="false"
+      :allow-background-click-to-close="false"
       :gate="[
         'confirmedEmailOrPhone',
         {
@@ -212,8 +224,8 @@ const percentChange = computed(() => {
       ]"
     >
       <base-button class="full-width">
-        {{ $t("Enable advanced analytics") }}</base-button
-      >
+        {{ $t("Enable advanced analytics") }}
+      </base-button>
     </confirms-gate>
 
     <card-element
@@ -221,7 +233,10 @@ const percentChange = computed(() => {
       :subtitle="$t('Scans in the last x minutes', [30])"
       :badges="[$t('Pro')]"
     >
-      <div class="placeholder-chart" style="height: 240px">
+      <div
+        class="placeholder-chart"
+        style="height: 240px"
+      >
         <p>
           {{
             $t(

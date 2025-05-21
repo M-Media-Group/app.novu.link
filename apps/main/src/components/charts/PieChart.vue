@@ -15,13 +15,16 @@ defineProps({
 </script>
 
 <template>
-  <base-chart :clickData="clickData" :combineData="true">
+  <base-chart
+    :click-data="clickData"
+    :combine-data="true"
+  >
     <template #default="{ data, options, handleClick, style }">
       <Pie
         :data="data"
         :options="options"
-        @click="handleClick"
         :style="style"
+        @click="handleClick"
       />
     </template>
   </base-chart>

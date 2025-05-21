@@ -52,7 +52,15 @@ const isConfirming = ref(false);
 
 const interceptedByGate = ref("");
 
-const runGates = useGateKeeper() as Function;
+type RunGatesFunction = (arg1: string | Gate | (string | Gate)[]) => {
+  handle: () => Promise<{
+    data: boolean | string;
+    gate: string;
+  }>;
+};
+
+const runGates = useGateKeeper() as RunGatesFunction;
+
 
 const getGateDataFromProps = (
   gateName: string
@@ -129,15 +137,15 @@ defineExpose({
   <span>
     <span @click.prevent="startConfirming">
       <!-- @slot This is the slot for the trigger of the confirmation. You can use this to create a button or any other element to trigger the confirmation. It will be wrapped in a click handler that will trigger the confirmation modal. -->
-      <slot :isConfirming="isConfirming" />
+      <slot :is-confirming="isConfirming" />
     </span>
 
     <base-modal
       ref="modal"
       :title="getGateDataFromProps(interceptedByGate)?.title ?? title"
-      :showTrigger="false"
-      :showFooter="false"
-      :allowBackgroundClickToClose="allowBackgroundClickToClose"
+      :show-trigger="false"
+      :show-footer="false"
+      :allow-background-click-to-close="allowBackgroundClickToClose"
       @closed="isConfirming = false"
     >
       <p v-if="description">
@@ -152,8 +160,8 @@ defineExpose({
         <component
           :is="ConfirmationElement"
           v-if="formToUse && modal?.isModalOpen"
-          @success="startConfirming"
           v-bind="getGateDataFromProps(interceptedByGate)"
+          @success="startConfirming"
         />
       </slot>
     </base-modal>

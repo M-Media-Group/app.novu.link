@@ -49,9 +49,9 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
+    :submit-fn="submitForm"
+    submit-text="Save"
     @success="emit('success')"
-    :submitFn="submitForm"
-    submitText="Save"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
@@ -59,16 +59,16 @@ const submitForm = async () => {
     <!-- Name, Surname, and new password inputs NOTE THE PATTERN - needed to trigger validity on non-dirty (script added) inputs, see https://stackoverflow.com/a/53261163/7410951 -->
     <label for="name">{{ $t("Team Name") }}</label>
     <input
-      type="text"
       id="name"
+      v-model="name"
+      type="text"
       name="name"
       :placeholder="$t('Team Name')"
-      v-model="name"
       minlength="2"
       pattern=".{2,}"
       autofocus
       required
-    />
+    >
     <!-- </TransitionGroup> -->
   </base-form>
 </template>

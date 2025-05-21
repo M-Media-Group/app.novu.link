@@ -29,14 +29,17 @@ defineProps({
     <card-element>
       <simple-add-endpoint
         v-if="redirectId"
-        :redirectId="redirectId"
-        :isSubscribable="isSubscribable"
+        :redirect-id="redirectId"
+        :is-subscribable="isSubscribable"
         @success="$router.push(`/redirects/${redirectId}`)"
       />
       <div v-else>
         <p>{{ $t("No redirect ID provided") }}</p>
       </div>
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

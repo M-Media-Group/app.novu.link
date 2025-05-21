@@ -41,22 +41,22 @@ const handleConfirmed = () => {
 <template>
   <span>
     <span @click.prevent="startConfirming">
-      <slot :isConfirming="isConfirming" />
+      <slot :is-confirming="isConfirming" />
     </span>
 
     <base-modal
       ref="modal"
       :title="$t('Edit destination')"
-      :showTrigger="false"
-      :showFooter="false"
+      :show-trigger="false"
+      :show-footer="false"
       @closed="isConfirming = false"
     >
       <edit-endpoint
-        :redirectId="redirectId"
-        :endpointId="endpointId"
-        :currentUrl="currentUrl"
+        :redirect-id="redirectId"
+        :endpoint-id="endpointId"
+        :current-url="currentUrl"
+        :show-delete="showDelete"
         @success="handleConfirmed"
-        :showDelete="showDelete"
       />
     </base-modal>
   </span>

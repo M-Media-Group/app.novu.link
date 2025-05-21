@@ -39,14 +39,18 @@ defineProps({
 </script>
 
 <template>
-  <base-chart :clickData="clickData" :combineData="true" :height="height">
+  <base-chart
+    :click-data="clickData"
+    :combine-data="true"
+    :height="height"
+  >
     <template #default="{ data, options, handleClick, style }">
       <Line
         :data="data"
         :options="options"
-        @click="handleClick"
         :style="style"
         aria-label="Chart"
+        @click="handleClick"
       />
     </template>
   </base-chart>

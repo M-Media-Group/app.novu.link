@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
-  type requiredEmits,
-  type requiredProps,
+  type RequiredEmits,
+  type RequiredProps,
   useMultiselect,
 } from "../useMultiselect.js";
 
@@ -13,7 +13,7 @@ const emit = vi.spyOn(
     },
   },
   "emit"
-) as unknown as requiredEmits;
+) as unknown as RequiredEmits;
 
 describe("useMultiselect", () => {
   // Mock props and emit function
@@ -27,7 +27,7 @@ describe("useMultiselect", () => {
     multiple: true,
     modelValue: ["1"],
     modelKey: "id",
-  } as requiredProps;
+  } as RequiredProps<undefined>;
 
   it("should compute normalisedOptions correctly", async () => {
     const { normalisedOptions } = useMultiselect(props, emit);
@@ -38,9 +38,9 @@ describe("useMultiselect", () => {
     ]);
   });
 
-  it("should compute selecteableOptions correctly", async () => {
-    const { selecteableOptions } = useMultiselect(props, emit);
-    expect(selecteableOptions.value).toEqual([
+  it("should compute selectableOptions correctly", async () => {
+    const { selectableOptions } = useMultiselect(props, emit);
+    expect(selectableOptions.value).toEqual([
       { id: "1", render: "Option 1", disabled: false },
       { id: "3", render: "Option 3", disabled: false },
     ]);

@@ -3,12 +3,13 @@ import SingleQR from "@/components/screens/SingleQR.vue";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTeamStore } from "@/stores/team";
-import { getRedirect } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
+import { getRedirect } from "@novulink/api";
 import type { Endpoint } from "@novulink/types";
 import { useQuery } from "@tanstack/vue-query";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@novulink/api";
 
 import { useRedirectEventListeners } from "@/composables/useRedirectEventListeners";
+import { useTimer } from "@novulink/vue-composables/useTimer";
 
 const router = useRouter();
 
@@ -26,11 +27,13 @@ const singleQRElement = ref();
 
 const bestEndpoint = ref(undefined as Endpoint["endpoint"] | undefined);
 
-const { isPending, data, error, refetch } = useQuery({
+const { isPending, data, refetch } = useQuery({
   queryKey: ["redirects", props.redirectId],
   queryFn: async () => {
     try {
-      return await getRedirect({ id: props.redirectId });
+      const result = await getRedirect({ id: props.redirectId });
+      localClicks.value = 0;
+      return result;
     } catch (error) {
       assertIsUnifiedError(error);
       if (error.status === 404) {
@@ -40,22 +43,6 @@ const { isPending, data, error, refetch } = useQuery({
   },
 });
 
-const timerLength = 60 * 3;
-
-/**
- * A timer that shows a countdown (mm:ss)
- */
-const timer = ref(timerLength);
-
-const startTimer = () => {
-  const interval = setInterval(() => {
-    timer.value -= 1;
-    if (timer.value <= 0) {
-      clearInterval(interval);
-    }
-  }, 1000);
-};
-
 const convertSecondsToMinutes = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
@@ -64,7 +51,7 @@ const convertSecondsToMinutes = (seconds: number) => {
 
 const localClicks = ref(0);
 
-useRedirectEventListeners(refetch, localClicks);
+useRedirectEventListeners(() => refetch(), localClicks);
 
 const clicksAllTime = computed(() => {
   // Sum of all clicks from all endpoints
@@ -79,6 +66,10 @@ const clicksAllTime = computed(() => {
     }, 0) ?? 0)
   );
 });
+
+const timerLength = 60 * 3;
+
+const {timer} = useTimer(timerLength);
 </script>
 <template>
   <!-- <nav aria-label="breadcrumb">
@@ -96,7 +87,10 @@ const clicksAllTime = computed(() => {
       </ul>
     </nav> -->
   <hgroup>
-    <h1 v-if="isPending" class="gl-animate-skeleton-loader"></h1>
+    <h1
+      v-if="isPending"
+      class="gl-animate-skeleton-loader"
+    />
     <h1 v-else-if="!teamStore.activeTeam">
       {{
         $t("Link ready to use. time left to claim it.", {
@@ -104,22 +98,31 @@ const clicksAllTime = computed(() => {
         })
       }}
     </h1>
-    <h1 v-else>{{ data?.name ?? $t("Magic link") }}</h1>
+    <h1 v-else>
+      {{ data?.name ?? $t("Magic link") }}
+    </h1>
     <p v-if="teamStore.activeTeam">
-      <router-link to="/redirects">Default Campaign</router-link>
+      <router-link to="/redirects">
+        Default Campaign
+      </router-link>
     </p>
   </hgroup>
-  <progress v-if="!teamStore.activeTeam" :value="timer" :max="timerLength" />
+  <progress
+    v-if="!teamStore.activeTeam"
+    :value="timer"
+    :max="timerLength"
+  />
   <single-q-r
-    :showTitle="false"
-    :redirectName="data?.name"
+    v-bind="$props"
+    ref="singleQRElement"
+    :show-title="false"
+    :redirect-name="data?.name"
     :subscribed="
       teamStore.activeTeam?.is_billing_exempt || !!data?.subscribed_at
     "
-    v-bind="$props"
-    :clicksToday="localClicks + (data?.todays_clicks_count ?? 0)"
-    :clicksAllTime="clicksAllTime"
-    :bestEndpoint="bestEndpoint"
+    :clicks-today="localClicks + (data?.todays_clicks_count ?? 0)"
+    :clicks-all-time="clicksAllTime"
+    :best-endpoint="bestEndpoint"
     :endpoints="data?.endpoints"
     :placements="data?.sources"
     :designs="data?.qr_designs"
@@ -128,9 +131,8 @@ const clicksAllTime = computed(() => {
     :loading="isPending"
     :authenticated="!!teamStore.activeTeam"
     :description="teamStore.activeTeam ? undefined : ''"
-    :clicksSameTimeYesterday="data?.yesterdays_clicks_up_to_now_count"
-    :remainingClicks="data?.remaining_clicks"
-    :heatmapData="data?.heatmap"
-    ref="singleQRElement"
+    :clicks-same-time-yesterday="data?.yesterdays_clicks_up_to_now_count"
+    :remaining-clicks="data?.remaining_clicks"
+    :heatmap-data="data?.heatmap"
   />
 </template>

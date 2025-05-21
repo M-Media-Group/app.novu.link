@@ -17,10 +17,15 @@ const nonAuthedRoutes = allRoutes.filter(
     <h1>Sitemap</h1>
     <h2>Public</h2>
     <ul>
-      <li v-for="route in nonAuthedRoutes" :key="route.path">
-        <router-link :to="route.path">{{
-          route.meta.title ?? route.name
-        }}</router-link>
+      <li
+        v-for="route in nonAuthedRoutes"
+        :key="route.path"
+      >
+        <router-link :to="route.path">
+          {{
+            route.meta.title ?? route.name
+          }}
+        </router-link>
       </li>
     </ul>
   </div>

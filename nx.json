@@ -15,6 +15,77 @@
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
       }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "eslint:lint"
+      }
+    },
+    {
+      "plugin": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "e2e",
+        "openTargetName": "open-cypress",
+        "componentTestingTargetName": "component-test",
+        "ciTargetName": "e2e-ci"
+      }
     }
-  ]
+  ],
+  "targetDefaults": {
+    "build-only": {
+      "dependsOn": [
+        "^build-only"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
+    "build": {
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "cache": true
+    },
+    "test:unit:coverage": {
+      "outputs": [
+        "{projectRoot}/coverage"
+      ],
+      "cache": true
+    },
+    "build-storybook": {
+      "outputs": [
+        "{projectRoot}/storybook-static"
+      ],
+      "cache": true
+    },
+    "generate:docs": {
+      "outputs": [
+        "{projectRoot}/docs"
+      ],
+      "cache": true
+    },
+    "test:e2e": {
+      "cache": true
+    },
+    "test:visual:ci": {
+      "cache": true
+    },
+    "type-check": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "translate": {
+      "cache": true
+    },
+    "translation-key-check": {
+      "cache": true
+    },
+    "test:visual": {
+      "cache": true
+    }
+  }
 }

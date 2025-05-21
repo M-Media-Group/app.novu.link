@@ -35,7 +35,7 @@ const meta: Meta<typeof RedirectSelector> = {
     ],
   },
 
-  // @ts-ignore
+  // @ts-expect-error as the decorators are not typed
   decorators: [sharedDecorators],
 
   // Use a custom render template so we can see the modelValue

@@ -29,7 +29,7 @@ type Story = StoryObj<typeof BaseModal>;
 export const Default: Story = {};
 
 export const DefaultOpened: Story = {
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(
       () => expect(canvas.queryByText("Cancel")).not.toBeVisible(),

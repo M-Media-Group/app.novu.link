@@ -4,20 +4,13 @@ import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { provide, ref, watch } from "vue";
 import image from "@/assets/undraw_online_payments_re_y8f2.svg";
+import { loadData } from "@novulink/helpers/dataLoader";
 
 const { locale } = useI18n();
 
-const featureData = ref([] as any[]);
-const faqData = ref([] as any[]);
-
-const pricingData = ref([] as any[]);
-
-// Load the features from the correct locale
-const loadData = (dataset = "features", localeToUse = locale.value) => {
-  return import(`@/data/${dataset}/${localeToUse}.json`).then(
-    (module) => module.default
-  );
-};
+const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const faqData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const pricingData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
 
 watch(
   locale,
@@ -42,7 +35,10 @@ provide("showExpandedFooter", true);
 </script>
 
 <template>
-  <section id="externalLinks" class="two-column-grid hero-section">
+  <section
+    id="externalLinks"
+    class="two-column-grid hero-section"
+  >
     <hgroup>
       <h1>{{ $t("Pricing that scales with you") }}</h1>
       <p>
@@ -50,12 +46,15 @@ provide("showExpandedFooter", true);
       </p>
       <create-redirect
         :autofocus="false"
-        :showNameInput="false"
+        :show-name-input="false"
         :inline="true"
-      ></create-redirect>
+      />
     </hgroup>
 
-    <img :src="image" alt="Link shortener" />
+    <img
+      :src="image"
+      alt="Link shortener"
+    >
   </section>
 
   <section id="pricing">
@@ -66,19 +65,28 @@ provide("showExpandedFooter", true);
       </p>
     </hgroup>
     <div class="three-column-grid">
-      <card-element v-for="pricing in pricingData" :key="pricing.id">
+      <card-element
+        v-for="pricing in pricingData"
+        :key="(pricing.id as number)"
+      >
         <hgroup>
           <h3>{{ pricing.name }}</h3>
           <p>{{ pricing.price }}</p>
         </hgroup>
         <p>{{ pricing.description }}</p>
         <ul>
-          <li v-for="feature in pricing.features" :key="feature.id">
+          <li
+            v-for="feature in (pricing.features as Array<{ id: number }>)"
+            :key="feature.id"
+          >
             <p>{{ feature }}</p>
           </li>
         </ul>
         <!-- Scroll to top button "Get started" -->
-        <button type="button" @click="scrollToTop">
+        <button
+          type="button"
+          @click="scrollToTop"
+        >
           {{ $t("Get started") }}
         </button>
       </card-element>
@@ -96,23 +104,32 @@ provide("showExpandedFooter", true);
         </tr>
       </thead>
       <tbody>
-        <tr v-for="feature in featureData" :key="feature.id">
+        <tr
+          v-for="feature in featureData"
+          :key="feature.id as number"
+        >
           <td>
             {{ feature.name }}
             <span :data-tooltip="feature.description">?</span>
           </td>
           <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
-          <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
+          <td>{{ (feature.min_subscription as number) >= 0 ? $t("Yes") : "-" }}</td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <section id="faq" class="two-column-grid">
+  <section
+    id="faq"
+    class="two-column-grid"
+  >
     <h2>{{ $t("FAQ") }}</h2>
     <!-- For FAQ we will use a details -->
     <div>
-      <details v-for="faq in faqData" :key="faq.id">
+      <details
+        v-for="faq in faqData"
+        :key="(faq.id as number)"
+      >
         <summary>{{ faq.name }}</summary>
         <p>{{ faq.description }}</p>
       </details>
@@ -132,7 +149,7 @@ provide("showExpandedFooter", true);
       </p>
     </hgroup>
     <card-element>
-      <create-redirect :autofocus="false"></create-redirect>
+      <create-redirect :autofocus="false" />
     </card-element>
   </section>
 </template>

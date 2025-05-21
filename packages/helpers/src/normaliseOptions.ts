@@ -1,13 +1,13 @@
-import type { normalisedOptionObject, selectOption } from "@novulink/types";
+import type { NormalisedOptionObject, PossibleRecord, SelectOption, SelectOptionObject } from "@novulink/types";
 
 /** Since we support either a callback or a string, we need to normalize the options to always have a render function */
-export const normaliseOptions = (
-  options?: selectOption[]
-): normalisedOptionObject[] => {
+export const normaliseOptions = <T extends PossibleRecord>(
+  options?: SelectOption<T>[]
+): NormalisedOptionObject<SelectOptionObject<T>>[] => {
   if (!options) return [];
 
   // We will use a straight for loop for performance
-  const normalisedOptions = [];
+  const normalisedOptions: NormalisedOptionObject<SelectOptionObject<T>>[] = [];
   for (const option of options) {
     if (typeof option === "string") {
       normalisedOptions.push({
@@ -27,50 +27,63 @@ export const normaliseOptions = (
   return normalisedOptions;
 };
 
-export const filterOptions = (
-  options: ReturnType<typeof normaliseOptions>,
+/**
+ * Filter options by a given search string and key
+ */
+export const filterOptions = <T extends PossibleRecord>(
+  options: NormalisedOptionObject<SelectOptionObject<T>>[],
   value: string,
-  key = "render" as keyof ReturnType<typeof normaliseOptions>[0]
-) => {
-  // If the value is empty or the key is unsupported, return all options
-  if (value.trim() === "" || key === "raw") {
+  key: keyof NormalisedOptionObject<SelectOptionObject<T>> = "render"
+): NormalisedOptionObject<SelectOptionObject<T>>[] => {
+  if (!value.trim() || key === "raw") {
     return options;
   }
 
   const lowercaseValue = value.toLowerCase();
 
   return options.filter((option) => {
-    const optionValue = option[key];
+    const fieldValue = option[key];
 
-    // If the option value is a boolean, return all options
-    if (typeof optionValue === "boolean" || typeof optionValue === "number") {
-      return optionValue.toString() === lowercaseValue;
+    if (fieldValue == null) return false;
+
+    if (typeof fieldValue === "string") {
+      return fieldValue.toLowerCase().includes(lowercaseValue);
     }
 
-    return optionValue && optionValue.toLowerCase().includes(lowercaseValue);
+    return fieldValue.toString().toLowerCase().includes(lowercaseValue);
   });
 };
 
-export const orderOptionsBySelectedFirst = (
-  options: ReturnType<typeof normaliseOptions>,
+/**
+ * Orders options by placing selected ones first, preserving original order otherwise
+ */
+export const orderOptionsBySelectedFirst = <T extends PossibleRecord>(
+  options: NormalisedOptionObject<SelectOptionObject<T>>[],
   selected: string[],
-  key = "render" as keyof ReturnType<typeof normaliseOptions>[0]
-) => {
-  return options.sort((a, b) => {
-    // If the value is empty, return all options
-    if (selected.length === 0) {
-      return 0;
-    }
+  key: keyof NormalisedOptionObject<SelectOptionObject<T>> = "render"
+): NormalisedOptionObject<SelectOptionObject<T>>[] => {
+  if (selected.length === 0) return [...options];
 
-    // run a fast find with loop and index access
-    for (const selectedValue of selected) {
-      if (a[key] == selectedValue) {
-        return -1;
-      }
-      if (b[key] == selectedValue) {
-        return 1;
-      }
-    }
+  const selectedSet = new Set(selected);
+
+  return [...options].sort((a, b) => {
+    const aSelected = selectedSet.has(String(a[key]));
+    const bSelected = selectedSet.has(String(b[key]));
+
+    if (aSelected && !bSelected) return -1;
+    if (!aSelected && bSelected) return 1;
     return 0;
   });
+};
+
+/**
+ * Computes the tab options from data
+ * @param featuresByGroupData
+ * @returns
+ */
+export const computeTabOptions = <T extends PossibleRecord>(data: T[]): SelectOption<T>[] => {
+  return data.map((item) => ({
+    render: item?.name as string,
+    id: item?.id as number,
+  }));
 };

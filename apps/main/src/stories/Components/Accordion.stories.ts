@@ -16,9 +16,8 @@ const meta: Meta<HTMLDetailsElementCustom> = {
 
   render: ({ title, open, role, optionText }) => ({
     template: `<details ${open ? "open" : ""}><summary
-    ${
-      role ? `role="${role}"` : ""
-    }>${title}</summary><p>${optionText}</p></details>`,
+    ${role ? `role="${role}"` : ""
+      }>${title}</summary><p>${optionText}</p></details>`,
   }),
 
   argTypes: {
@@ -58,7 +57,7 @@ export const OpenWithOverflow: Story = {
     title: overflowFixture.text_without_spaces,
     optionText: overflowFixture.text,
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const summary = canvas.getByText(overflowFixture.text_without_spaces);
 
@@ -76,8 +75,7 @@ export const AccordionInAccordion: Story = {
     optionText: "This is a parent accordion",
   },
   render: ({ title, open, optionText }) => ({
-    template: `<details ${
-      open ? "open" : ""
-    }><summary>${title}</summary><details><summary>Child Accordion</summary><p>${optionText}</p></details><details><summary>Child Accordion 2</summary><p>${optionText}</p></details></details>`,
+    template: `<details ${open ? "open" : ""
+      }><summary>${title}</summary><details><summary>Child Accordion</summary><p>${optionText}</p></details><details><summary>Child Accordion 2</summary><p>${optionText}</p></details></details>`,
   }),
 };

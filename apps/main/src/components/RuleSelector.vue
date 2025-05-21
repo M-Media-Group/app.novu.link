@@ -148,44 +148,44 @@ const handleSelect = async (event: string[]) => {
 </script>
 <template>
   <dropdown-select
-    :options="ruleOptions"
-    v-model:isOpen="isOpenRuleSelector"
+    v-model:is-open="isOpenRuleSelector"
     v-model:search="ruleSelectorSearchTerm"
+    :options="ruleOptions"
     :placeholder="$t('Rule')"
-    :modelValue="modelValue.rule ? [modelValue.rule] : undefined"
-    @update:modelValue="handleRuleChange($event[0] as keyof Rules)"
+    :model-value="modelValue.rule ? [modelValue.rule] : undefined"
     :aria-busy="isLoading"
     :required="required"
-    :showSelectedFirst="true"
+    :show-selected-first="true"
     searchable
     :autofocus="true"
     name="rule"
+    @update:model-value="handleRuleChange($event[0] as keyof Rules)"
   >
     <template #optionSlot="{ option, updateModelValue }">
       <label>
         <input
           type="radio"
           :checked="modelValue.rule === option.id"
-          @click="updateModelValue"
           :disabled="isLoading"
           :value="option.id"
           tabindex="0"
-        />
+          @click="updateModelValue"
+        >
         {{ option.render }}
-        <small class="helptext">{{ option.raw.description }}</small>
+        <small class="helptext">{{ option.raw?.description }}</small>
       </label>
     </template>
   </dropdown-select>
 
   <select
     v-show="selectedRule"
-    :value="modelValue.operator"
-    @change="handleOperatorChange(($event.target as HTMLSelectElement).value)"
-    :placeholder="$t('Operator')"
     ref="operatorInput"
+    :value="modelValue.operator"
+    :placeholder="$t('Operator')"
     name="operator"
     :required="required"
     aria-label="Operator"
+    @change="handleOperatorChange(($event.target as HTMLSelectElement).value)"
   >
     <option
       v-for="operator in allowedOperators"
@@ -199,11 +199,14 @@ const handleSelect = async (event: string[]) => {
   <template
     v-if="
       selectedRule?.valueType === 'select' &&
-      formattedAllowedValues &&
-      formattedAllowedValues.length > 0
+        formattedAllowedValues &&
+        formattedAllowedValues.length > 0
     "
   >
     <dropdown-select
+      ref="valueInput"
+      v-model:is-open="isOpenValueSelector"
+      v-model:search="valueSelectorSearchTerm"
       :options="
         formattedAllowedValues.map((value) => {
           return {
@@ -212,35 +215,31 @@ const handleSelect = async (event: string[]) => {
           };
         })
       "
-      :modelValue="modelValue.value ? [modelValue.value] : undefined"
-      @update:modelValue="handleSelect"
+      :model-value="modelValue.value ? [modelValue.value] : undefined"
       :placeholder="$t('Value')"
       :aria-busy="isLoading"
-      v-model:is-open="isOpenValueSelector"
       :searchable="formattedAllowedValues.length > 5"
-      v-model:search="valueSelectorSearchTerm"
-      ref="valueInput"
-      :showSelectedFirst="true"
+      :show-selected-first="true"
       autofocus
       name="value"
       :required="required"
-    >
-    </dropdown-select>
+      @update:model-value="handleSelect"
+    />
   </template>
   <template v-else-if="selectedRule?.valueType === 'checkbox'">
     <label>
       <input
+        ref="valueInput"
         type="checkbox"
         :value="modelValue.value"
+        :disabled="isLoading"
+        name="value"
         @change="
           handleValueChange(
             ($event.target as HTMLInputElement).checked ? 'true' : 'false'
           )
         "
-        :disabled="isLoading"
-        name="value"
-        ref="valueInput"
-      />
+      >
       {{ $t("Is true") }}
     </label>
     <!-- <small v-if="errors?.value" class="error">
@@ -249,24 +248,24 @@ const handleSelect = async (event: string[]) => {
   </template>
   <template v-else-if="selectedRule && modelValue.operator">
     <input
+      id="valueInputId"
+      ref="valueInput"
       :value="modelValue.value"
-      @input="handleValueChange(($event.target as HTMLInputElement).value)"
       :type="selectedRule.valueType"
       :placeholder="$t('Value')"
-      ref="valueInput"
       :pattern="allowedInputPattern"
-      id="valueInputId"
       :list="selectedRule.value + '-datalist'"
       autofocus
       name="value"
       :required="required"
-    />
+      @input="handleValueChange(($event.target as HTMLInputElement).value)"
+    >
   </template>
   <small
     v-if="
       (selectedRule?.value || modelValue.value) &&
-      modelValue.operator &&
-      userWouldPass !== null
+        modelValue.operator &&
+        userWouldPass !== null
     "
   >
     {{ $t("Your value is valid.") }}
@@ -307,7 +306,7 @@ const handleSelect = async (event: string[]) => {
       v-for="allowedValue in formattedAllowedValues"
       :key="allowedValue.key"
       :value="allowedValue.key"
-    ></option>
+    />
   </datalist>
 </template>
 <style>

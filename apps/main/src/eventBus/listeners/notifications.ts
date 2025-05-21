@@ -8,11 +8,11 @@ class CustomNotification {
   browserElement!: HTMLElement;
 
   constructor(
-    public type: string = "default",
+    public type = "default",
     public message: string,
     public modes: string[] = ["log"],
-    public duration: number = 3500,
-    public fallback: string = "browser",
+    public duration = 3500,
+    public fallback = "browser",
     public callback?: () => void
   ) {
     this.type = type;
@@ -69,7 +69,7 @@ class PushNotification {
     public requireInteraction: boolean | undefined = undefined,
     public silent: boolean | undefined = undefined,
     public timestamp: number | undefined = undefined,
-    public actions: any[] | undefined = undefined
+    public actions: unknown[] | undefined = undefined
   ) {
     this.title = title;
     this.body = body;
@@ -142,8 +142,8 @@ class BrowserNotification {
 
   constructor(
     public message: string,
-    public duration: number = 3500,
-    public type: string = "default"
+    public duration = 3500,
+    public type = "default"
   ) {
     // find or create the element in the document
     this.browserElement =

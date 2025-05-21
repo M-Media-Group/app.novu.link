@@ -2,7 +2,7 @@ type FlattenedValue = string | string[] | object;
 
 function has<
   T extends string,
-  Obj extends Record<string, unknown> = Record<string, unknown>,
+  Obj extends Record<T, unknown> = Record<T, unknown>,
 >(
   el: unknown,
   method: T,
@@ -21,7 +21,7 @@ function has<
  */
 export function hasMethod<
   T extends string,
-  Obj extends Record<string, unknown> = Record<string, unknown>
+  Obj extends Record<T, unknown> = Record<T, unknown>,
 >(
   el: unknown,
   method: T
@@ -34,7 +34,7 @@ export function hasMethod<
  */
 export function hasProperty<
   T extends string,
-  Obj extends Record<string, unknown> = Record<string, unknown>
+  Obj extends Record<T, unknown> = Record<T, unknown>,
 >(
   el: unknown,
   method: T

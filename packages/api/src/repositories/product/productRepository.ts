@@ -55,6 +55,7 @@ export const streamProducts = async (
   }
   const reader = response.body?.getReader();
   if (reader) {
+    // @ts-expect-error the productsArray may be a partial array
     await parseStreamedResponse(reader, productsArray); // Pass local products array for streaming
   }
   return productsArray;

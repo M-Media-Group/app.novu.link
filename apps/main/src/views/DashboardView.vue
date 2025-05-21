@@ -7,7 +7,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import { useEventsBus } from "@/eventBus/events";
 import LineChart from "@/components/charts/LineChart.vue";
-import { getDashboard } from "../../../../packages/api/src/repositories/misc/miscRepository";
+import { getDashboard } from "@novulink/api";
 
 const data = ref<Dashboard | null>(null);
 
@@ -155,9 +155,15 @@ const barChartData = computed(() => {
     <card-element :loading="isLoading">
       <h2>{{ $t("Account progress") }}</h2>
       <div>{{ $t("percent complete", [accountProgress]) }}</div>
-      <progress :value="accountProgress" max="100"></progress>
+      <progress
+        :value="accountProgress"
+        max="100"
+      />
       <ol>
-        <li :key="index" v-for="(item, index) in itemData.items">
+        <li
+          v-for="(item, index) in itemData.items"
+          :key="index"
+        >
           <component
             :is="item.completed ? 's' : 'router-link'"
             :to="item.href"
@@ -172,9 +178,10 @@ const barChartData = computed(() => {
       class="full-width"
       :disabled="isLoading"
       :to="nextItemToComplete?.href"
-      >{{ $t(nextItemToComplete?.text ?? "Loading...") }}</base-button
-    ></template
-  >
+    >
+      {{ $t(nextItemToComplete?.text ?? "Loading...") }}
+    </base-button>
+  </template>
 
   <div class="two-column-grid">
     <div class="two-column-grid mobile-grid">
@@ -205,10 +212,10 @@ const barChartData = computed(() => {
       :loading="isLoading"
       :subtitle="
         $t('Best magic link') +
-        ' - ' +
-        (data?.bestRedirect?.clicks_count ?? '') +
-        ' ' +
-        $t('Scans all time').toLocaleLowerCase()
+          ' - ' +
+          (data?.bestRedirect?.clicks_count ?? '') +
+          ' ' +
+          $t('Scans all time').toLocaleLowerCase()
       "
       :title="data?.bestRedirect?.name ?? '-'"
     />
@@ -216,7 +223,7 @@ const barChartData = computed(() => {
 
   <div class="two-column-grid three-two-grid">
     <card-element
-      :loadingOn="['title']"
+      :loading-on="['title']"
       :badges="data?.hasBillableRedirects !== true ? [$t('Pro')] : []"
       :title="
         barChartData !== null && data?.hasBillableRedirects
@@ -229,7 +236,7 @@ const barChartData = computed(() => {
         v-if="isLoading"
         class="placeholder-chart gl-animate-skeleton-loader"
         style="height: 240px"
-      ></div>
+      />
       <div
         v-else-if="!data?.hasBillableRedirects"
         class="placeholder-chart"
@@ -245,10 +252,14 @@ const barChartData = computed(() => {
       </div>
       <line-chart
         v-else-if="barChartData && barChartData.length > 0"
-        :clickData="barChartData"
+        :click-data="barChartData"
         height="240px"
       />
-      <div v-else class="placeholder-chart" style="height: 240px">
+      <div
+        v-else
+        class="placeholder-chart"
+        style="height: 240px"
+      >
         {{ $t("No data available") }}
       </div>
     </card-element>
@@ -258,7 +269,10 @@ const barChartData = computed(() => {
       :badges="[$t('Beta')]"
       :subtitle="$t('Active Countries', [30])"
     >
-      <div class="placeholder-chart" style="height: 240px">
+      <div
+        class="placeholder-chart"
+        style="height: 240px"
+      >
         <p>
           {{
             $t(
@@ -274,6 +288,7 @@ const barChartData = computed(() => {
     class="full-width"
     to="/analytics"
     :disabled="data?.hasBillableRedirects !== true"
-    >{{ $t("Go to advanced analytics") }}</base-button
   >
+    {{ $t("Go to advanced analytics") }}
+  </base-button>
 </template>

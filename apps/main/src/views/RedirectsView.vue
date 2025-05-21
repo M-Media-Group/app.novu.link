@@ -6,7 +6,7 @@ import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import BaseButton from "@/components/BaseButton.vue";
 import { useI18n } from "vue-i18n";
 import QRCode from "@/components/QRCode.vue";
-import { getRedirects } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
+import { getRedirects } from "@novulink/api";
 
 const redirects = ref([] as Redirect[]);
 const isLoading = ref(true);
@@ -31,7 +31,7 @@ const defaultEndpoint = (redirect: Redirect) => {
   )?.endpoint;
   if (!defaultEndpoint) {
     // just grab the first endpoint if there is no default
-    return removeProtocol(redirect.endpoints?.[0].endpoint);
+    return removeProtocol(redirect.endpoints?.[0].endpoint ?? "");
   }
   return removeProtocol(defaultEndpoint);
 };
@@ -51,7 +51,9 @@ const redirectBadges = (redirect: Redirect) => {
   <nav aria-label="breadcrumb">
     <ul>
       <li>
-        <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+        <router-link to="/dashboard">
+          {{ $t("Dashboard") }}
+        </router-link>
       </li>
       <li>
         {{ $t("Magic links") }}
@@ -66,47 +68,47 @@ const redirectBadges = (redirect: Redirect) => {
   <template v-if="isLoading">
     <card-element
       v-for="index in 5"
+      :key="index"
       :title="$t('Magic links')"
       :subtitle="$t('Magic links')"
       :loading="true"
-      :key="index"
-    ></card-element>
+    />
   </template>
   <card-element
     v-for="redirect in redirects"
     :key="redirect.uuid"
-    @click="$router.push(`/redirects/${redirect.uuid}`)"
     :title="redirect.name"
     :subtitle="
       redirect.todays_clicks_count +
-      ' ' +
-      $t('Scans today').toLocaleLowerCase() +
-      ' - ' +
-      // Defaults to
-      defaultEndpoint(redirect) +
-      (redirect.endpoints && redirect.endpoints?.length > 1
-        ? ' + ' + (redirect.endpoints.length - 1) + ' ' + $t('more')
-        : '')
+        ' ' +
+        $t('Scans today').toLocaleLowerCase() +
+        ' - ' +
+        // Defaults to
+        defaultEndpoint(redirect) +
+        (redirect.endpoints && redirect.endpoints?.length > 1
+          ? ' + ' + (redirect.endpoints.length - 1) + ' ' + $t('more')
+          : '')
     "
     :badges="redirectBadges(redirect)"
+    @click="$router.push(`/redirects/${redirect.uuid}`)"
   >
     <template #headerActions>
       <q-r-code
         class="design-preview__qr"
-        :redirectId="redirect.uuid"
-        :designId="redirect.default_qr_design?.id"
+        :redirect-id="redirect.uuid"
+        :design-id="redirect.default_qr_design?.id"
         :dimensions="64"
-        :errorCorrectionLevel="
+        :error-correction-level="
           redirect.default_qr_design?.error_correction_level
         "
-        :blockShape="redirect.default_qr_design?.block_shape"
-        :cornerDotShape="redirect.default_qr_design?.corner_dot_shape"
-        :cornerShape="redirect.default_qr_design?.corner_shape"
-        :roundBlockSizeMode="redirect.default_qr_design?.round_block_size_mode"
-        :logoPunchout="redirect.default_qr_design?.logo_punchout_background"
-        :backgroundColor="redirect.default_qr_design?.background_color"
+        :block-shape="redirect.default_qr_design?.block_shape"
+        :corner-dot-shape="redirect.default_qr_design?.corner_dot_shape"
+        :corner-shape="redirect.default_qr_design?.corner_shape"
+        :round-block-size-mode="redirect.default_qr_design?.round_block_size_mode"
+        :logo-punchout="redirect.default_qr_design?.logo_punchout_background"
+        :background-color="redirect.default_qr_design?.background_color"
         :color="redirect.default_qr_design?.color"
-        :logoDataUrl="redirect.default_qr_design?.logo"
+        :logo-data-url="redirect.default_qr_design?.logo"
       />
     </template>
   </card-element>

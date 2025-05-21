@@ -90,19 +90,23 @@ const toggleUsePhone = async () => {
 };
 </script>
 <template>
-  <label v-if="inline && !isOnOtpPage" :for="usePhone ? 'phone' : 'email'">
+  <label
+    v-if="inline && !isOnOtpPage"
+    :for="usePhone ? 'phone' : 'email'"
+  >
     {{ usePhone ? $t("Phone number (starting with +)") : $t("Email") }}
   </label>
   <label v-else-if="inline">
     {{ $t("One-time password") }}
   </label>
   <base-form
-    ref="baseFormRef"
     v-if="isOnOtpPage"
-    @success="emit('success')"
-    :submitFn="validateOtp"
+    ref="baseFormRef"
+    :submit-fn="validateOtp"
     :inline="inline"
-    ><p v-show="!inline">
+    @success="emit('success')"
+  >
+    <p v-show="!inline">
       {{ $t("Enter the code you received.") }}
       {{
         !usePhone
@@ -110,12 +114,15 @@ const toggleUsePhone = async () => {
           : $t("Check your phone.")
       }}
     </p>
-    <label for="otp" v-show="!inline">OTP</label>
+    <label
+      v-show="!inline"
+      for="otp"
+    >OTP</label>
     <input
+      v-model="otpCode"
       type="text"
       name="otp"
       required
-      v-model="otpCode"
       inputmode="numeric"
       pattern="[0-9]*"
       minlength="6"
@@ -123,69 +130,92 @@ const toggleUsePhone = async () => {
       :placeholder="$t('One-time password')"
       :autofocus="autofocus"
       @input="baseFormRef?.submit()"
-    />
+    >
 
-    <template #after-submit v-if="userStore.userEmail || userStore.userPhone">
+    <template
+      v-if="userStore.userEmail || userStore.userPhone"
+      #after-submit
+    >
       <!-- Resend code link -->
-      <a href="#" @click.prevent="makeOtpRequest">{{
+      <a
+        href="#"
+        @click.prevent="makeOtpRequest"
+      >{{
         $t("Resend code to", [
           !usePhone ? userStore.userEmail : userStore.userPhone,
         ])
       }}</a>
-      <br />
+      <br>
       <!-- Go back -->
-      <a href="#" @click.prevent="isOnOtpPage = false"> {{ $t("Go back") }} </a>
+      <a
+        href="#"
+        @click.prevent="isOnOtpPage = false"
+      > {{ $t("Go back") }} </a>
     </template>
   </base-form>
   <base-form
     v-else
     ref="baseFormRef"
-    :submitFn="makeOtpRequest"
+    :submit-fn="makeOtpRequest"
     :inline="inline"
     :autofocus="autofocus"
-    :submitText="submitText"
+    :submit-text="submitText"
   >
     <template v-if="!usePhone">
-      <label for="email" v-show="!inline">{{ $t("Email") }}</label>
+      <label
+        v-show="!inline"
+        for="email"
+      >{{ $t("Email") }}</label>
       <input
         id="email"
+        ref="phoneInput"
+        v-model="userStore.userEmail"
         type="email"
         name="email"
         required
         :autofocus="autofocus"
-        v-model="userStore.userEmail"
-        ref="phoneInput"
         autocomplete="email"
         :placeholder="$t('Email')"
         data-hj-allow
-      />
+      >
     </template>
     <template v-else>
-      <label for="phone" v-show="!inline">{{
+      <label
+        v-show="!inline"
+        for="phone"
+      >{{
         $t("Phone number (starting with +)")
       }}</label>
       <input
         id="phone"
+        ref="phoneInput"
+        v-model="userStore.userPhone"
         type="tel"
         name="phone_number"
         inputmode="tel"
         required
         :autofocus="autofocus"
-        v-model="userStore.userPhone"
         autocomplete="tel"
         pattern="^\+[0-9]{1,15}$"
         minlength="7"
         maxlength="16"
         :placeholder="$t('Phone number')"
-        ref="phoneInput"
         data-hj-allow
-      />
+      >
     </template>
     <template #after-submit>
-      <a v-if="!usePhone" href="#" @click.prevent="toggleUsePhone">{{
+      <a
+        v-if="!usePhone"
+        href="#"
+        @click.prevent="toggleUsePhone"
+      >{{
         $t("Use phone instead")
       }}</a>
-      <a v-else href="#" @click.prevent="toggleUsePhone">{{
+      <a
+        v-else
+        href="#"
+        @click.prevent="toggleUsePhone"
+      >{{
         $t("Use email instead")
       }}</a>
     </template>

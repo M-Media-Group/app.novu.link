@@ -52,12 +52,11 @@ export const sharedInputArgs = {
 };
 
 export const sharedDecorators = (
-  story: any,
+  story: unknown,
   { args }: { args: typeof sharedInputArgs }
 ) => ({
-  template: `${
-    args.labelText ? `<label for="input">${args.labelText}</label>` : ""
-  }<story />
+  template: `${args.labelText ? `<label for="input">${args.labelText}</label>` : ""
+    }<story />
       ${args.helpText ? `<small>${args.helpText}</small>` : ""}`,
 });
 

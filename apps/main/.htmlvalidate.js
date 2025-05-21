@@ -1,6 +1,6 @@
-const { defineConfig } = require("html-validate");
+import { defineConfig } from "html-validate";
 
-module.exports = defineConfig({
+export default defineConfig({
   plugins: ["html-validate-vue"],
   extends: ["html-validate:recommended", "html-validate-vue:recommended"],
   elements: ["html5"],

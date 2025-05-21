@@ -12,6 +12,7 @@ const meta: Meta<typeof DropdownSelect> = {
 
   tags: ["autodocs"],
 
+  // @ts-expect-error as the component is not typed here when passed to storybook
   component: DropdownSelect,
 
   render: (args) => ({
@@ -42,7 +43,7 @@ const meta: Meta<typeof DropdownSelect> = {
     options: ["Option 1", "Option 2", "Option 3"],
   },
 
-  // @ts-ignore
+  // @ts-expect-error as the decorators are not typed
   decorators: [sharedDecorators],
 };
 
@@ -129,7 +130,7 @@ export const WithCheckboxesAndHundredOptions: Story = {
       render: `Option ${i}`,
     })),
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Click on the summary to open the dropdown
@@ -234,7 +235,7 @@ export const WithInputsInOptionSlot: Story = {
   },
 
   //  We need to actually render HTML/slots
-  render: ({ optionSlot, ...args }) => ({
+  render: ({ ...args }) => ({
     components: { DropdownSelect },
     setup() {
       return { args };

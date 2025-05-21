@@ -1,10 +1,10 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@novulink/api";
 import {
   deleteRedirect,
   getRedirectUrl,
-} from "../../../../../packages/api/src/repositories/redirect/redirectRepository";
+} from "@novulink/api";
 
 const t = i18n.global.t;
 </script>
@@ -14,7 +14,7 @@ import { type PropType, type Ref, computed, onMounted, ref } from "vue";
 import TabNav from "../TabNav.vue";
 import { useEventsBus } from "@/eventBus/events";
 import type { Alert, Endpoint, Placement, Webhook } from "@novulink/types";
-import type { selectOption } from "@novulink/types";
+import type { SelectOption } from "@novulink/types";
 import RedirectSettings from "@/forms/RedirectSettings.vue";
 import QRCode from "@/components/QRCode.vue";
 import QRAnalytics from "@/components/QR/QRAnalytics.vue";
@@ -157,6 +157,7 @@ const props = defineProps({
   remainingClicks: {
     type: Number,
     required: false,
+    default: undefined,
   },
 
   /** The heatmap data (weekdays / hours) */
@@ -169,7 +170,7 @@ const props = defineProps({
 
 const isLoading = ref(false);
 
-const copiedTimeout = ref<NodeJS.Timeout | null>(null);
+const copiedTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const copyToClipboard = (text: string) => {
   if (!navigator.clipboard) {
@@ -481,11 +482,16 @@ const testLink = () => {
 </script>
 
 <template>
-  <background-confetti ref="confetti" :fireOnLoad="false" />
+  <background-confetti
+    ref="confetti"
+    :fire-on-load="false"
+  />
   <div class="two-column-grid four-two-grid flex-start reverse">
     <div class="main-grid-display sticky-on-desktop">
       <hgroup class="smaller-gap">
-        <h2 v-if="showTitle">{{ title }}</h2>
+        <h2 v-if="showTitle">
+          {{ title }}
+        </h2>
         <p>{{ description }}</p>
       </hgroup>
 
@@ -496,51 +502,63 @@ const testLink = () => {
         >
           <summary>
             <q-r-code
-              :redirectId="props.redirectId"
-              :designId="selectedDesignId"
+              :redirect-id="props.redirectId"
+              :design-id="selectedDesignId"
               :color="color"
-              :backgroundColor="backgroundColor"
-              :logoDataUrl="logoDataUrl"
-              :logoPunchout="logoPunchout"
-              :blockShape="blockShape"
-              :cornerShape="cornerShape"
-              :cornerDotShape="cornerDotShape"
-              :errorCorrectionLevel="errorCorrectionLevel"
-              @update="qrCodeDataURL = $event"
+              :background-color="backgroundColor"
+              :logo-data-url="logoDataUrl"
+              :logo-punchout="logoPunchout"
+              :block-shape="blockShape"
+              :corner-shape="cornerShape"
+              :corner-dot-shape="cornerDotShape"
+              :error-correction-level="errorCorrectionLevel"
               :loading="(isLoading || loading) && !props.redirectId"
-              :fileType="selectedFileType"
+              :file-type="selectedFileType"
+              @update="qrCodeDataURL = $event"
             />
           </summary>
           <ul>
             <li>
-              <a href="#" @click.prevent="downloadQRCode">{{
+              <a
+                href="#"
+                @click.prevent="downloadQRCode"
+              >{{
                 $t("Download QR code")
               }}</a>
             </li>
             <li v-if="magicLink">
               <a
+                v-if="!copiedTimeout"
                 href="#"
                 @click.prevent="copyToClipboard(magicLink)"
-                v-if="!copiedTimeout"
-                >{{ $t("Copy magic link") }}</a
-              >
-              <a href="#" v-else>{{ $t("Copied!") }}</a>
+              >{{ $t("Copy magic link") }}</a>
+              <a
+                v-else
+                href="#"
+              >{{ $t("Copied!") }}</a>
             </li>
             <li v-if="magicLink">
-              <a :href="magicLink" target="_blank" @click="testLink">{{
+              <a
+                :href="magicLink"
+                target="_blank"
+                @click="testLink"
+              >{{
                 $t("Test link")
               }}</a>
             </li>
             <li>
               <!-- Print button -->
-              <router-link to="/products"
-                >{{ $t("Order and print on cups, t-shirts, and more") }}
+              <router-link to="/products">
+                {{ $t("Order and print on cups, t-shirts, and more") }}
                 <base-badge>{{ $t("New") }}</base-badge>
               </router-link>
             </li>
             <li>
               <!-- Print button -->
-              <a href="#" @click.prevent="printMagicLink">{{ $t("Print") }}</a>
+              <a
+                href="#"
+                @click.prevent="printMagicLink"
+              >{{ $t("Print") }}</a>
             </li>
           </ul>
         </details>
@@ -558,7 +576,7 @@ const testLink = () => {
           <otp-login-or-register
             :inline="true"
             :autofocus="false"
-            :submitText="$t('Claim link')"
+            :submit-text="$t('Claim link')"
           />
         </card-element>
 
@@ -571,8 +589,9 @@ const testLink = () => {
             target="_blank"
             class="full-width"
             @click="testLink"
-            >{{ $t("Test link") }}</base-button
           >
+            {{ $t("Test link") }}
+          </base-button>
         </template>
 
         <template
@@ -594,7 +613,7 @@ const testLink = () => {
                 'Additional destinations and design changes are free after you subscribe.'
               )
             "
-            :allowBackgroundClickToClose="false"
+            :allow-background-click-to-close="false"
             :gate="[
               'confirmedEmailOrPhone',
               {
@@ -608,8 +627,8 @@ const testLink = () => {
             ]"
           >
             <base-button class="full-width contrast">
-              {{ $t("Re-enable magic link") }}</base-button
-            >
+              {{ $t("Re-enable magic link") }}
+            </base-button>
           </confirms-gate>
         </template>
 
@@ -619,16 +638,18 @@ const testLink = () => {
             name: 'add-endpoint',
             params: { redirectId: props.redirectId },
           }"
-          >{{
+        >
+          {{
             subscribed
               ? $t("Add more free destinations")
               : $t("Add more destinations to same code")
-          }}</base-button
-        >
+          }}
+        </base-button>
       </div>
     </div>
     <div class="main-grid-display">
       <tab-nav
+        v-model="openTabs"
         :options="
           [
             { render: $t('Analytics'), id: '1' },
@@ -651,93 +672,91 @@ const testLink = () => {
               : undefined,
             { render: $t('Integrations'), id: '6' },
             { render: $t('Settings'), id: '5' },
-          ].filter(Boolean) as selectOption[]
+          ].filter(Boolean) as SelectOption[]
         "
-        v-model="openTabs"
         @click="scrollUp($event.target)"
-      >
-      </tab-nav>
+      />
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('1')"
+        class="main-grid-display smaller-gap"
       >
         <q-r-analytics
-          :redirectId="redirectId"
-          :clicksToday="!authenticated ? undefined : clicksToday"
-          :clicksSameTimeYesterday="
+          :redirect-id="redirectId"
+          :clicks-today="!authenticated ? undefined : clicksToday"
+          :clicks-same-time-yesterday="
             !authenticated ? undefined : clicksSameTimeYesterday ?? undefined
           "
-          :lineChartData="!authenticated ? undefined : lineChartData"
-          :barChartData="!authenticated ? undefined : barChartData"
-          :clicksAllTime="!authenticated ? undefined : clicksAllTime"
-          :bestEndpoint="!authenticated ? undefined : bestEndpoint"
-          :isLoading="isLoading || loading"
+          :line-chart-data="!authenticated ? undefined : lineChartData"
+          :bar-chart-data="!authenticated ? undefined : barChartData"
+          :clicks-all-time="!authenticated ? undefined : clicksAllTime"
+          :best-endpoint="!authenticated ? undefined : bestEndpoint"
+          :is-loading="isLoading || loading"
           :subscribed="subscribed"
-          :heatmapData="!authenticated ? undefined : heatmapData"
+          :heatmap-data="!authenticated ? undefined : heatmapData"
         />
       </div>
 
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('2')"
+        class="main-grid-display smaller-gap"
       >
         <q-r-destinations
-          :redirectId="redirectId"
+          :redirect-id="redirectId"
           :endpoints="endpoints"
-          :isLoading="isLoading || loading"
+          :is-loading="isLoading || loading"
           :subscribed="subscribed"
         />
       </div>
 
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('3')"
+        class="main-grid-display smaller-gap"
       >
         <q-r-placements
-          :redirectId="redirectId"
+          :redirect-id="redirectId"
           :placements="placements"
-          :isLoading="isLoading || loading"
+          :is-loading="isLoading || loading"
           :subscribed="subscribed"
         />
       </div>
 
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('4')"
+        class="main-grid-display smaller-gap"
       >
         <q-r-designs
-          :redirectId="redirectId"
+          :redirect-id="redirectId"
           :designs="designs"
-          :isLoading="isLoading || loading"
+          :is-loading="isLoading || loading"
           :subscribed="subscribed"
           @input_updated="handleInputUpdated"
         />
       </div>
 
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('6')"
+        class="main-grid-display smaller-gap"
       >
         <q-r-integrations
-          :redirectId="redirectId"
-          :isLoading="isLoading || loading"
+          :redirect-id="redirectId"
+          :is-loading="isLoading || loading"
           :subscribed="subscribed"
           :webhooks="webhooks"
         />
       </div>
 
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('5')"
+        class="main-grid-display smaller-gap"
       >
         <card-element :loading="isLoading || loading">
           <hgroup>
             <h3>{{ $t("Link settings") }}</h3>
           </hgroup>
           <redirect-settings
-            :redirectId="props.redirectId"
-            :redirectName="props.redirectName ?? undefined"
-            :showLabel="true"
+            :redirect-id="props.redirectId"
+            :redirect-name="props.redirectName ?? undefined"
+            :show-label="true"
           />
         </card-element>
         <card-element :loading="isLoading || loading">
@@ -753,11 +772,11 @@ const testLink = () => {
               {{
                 subscribed
                   ? $t(
-                      "Remove advanced analytics, multiple destinations, and custom designs"
-                    )
+                    "Remove advanced analytics, multiple destinations, and custom designs"
+                  )
                   : $t(
-                      "Enable advanced analytics, multiple destinations, and custom designs"
-                    )
+                    "Enable advanced analytics, multiple destinations, and custom designs"
+                  )
               }}
             </p>
           </hgroup>
@@ -769,7 +788,7 @@ const testLink = () => {
                   'Additional destinations and design changes are free after you subscribe.'
                 )
               "
-              :allowBackgroundClickToClose="false"
+              :allow-background-click-to-close="false"
               :gate="[
                 'confirmedEmailOrPhone',
                 {
@@ -783,13 +802,19 @@ const testLink = () => {
               ]"
             >
               <base-button class="full-width">
-                {{ $t("Subscribe") }}</base-button
-              >
+                {{ $t("Subscribe") }}
+              </base-button>
             </confirms-gate>
           </template>
-          <confirms-subscription-end v-else :redirectId="props.redirectId">
-            <template v-slot="{ isConfirming }">
-              <base-button :aria-busy="isConfirming" class="outline">
+          <confirms-subscription-end
+            v-else
+            :redirect-id="props.redirectId"
+          >
+            <template #default="{ isConfirming }">
+              <base-button
+                :aria-busy="isConfirming"
+                class="outline"
+              >
                 {{ $t("Unsubscribe") }}
               </base-button>
             </template>
@@ -810,29 +835,36 @@ const testLink = () => {
           </p>
           <base-modal
             v-else
-            :triggerText="$t('Delete Magic Link')"
+            :trigger-text="$t('Delete Magic Link')"
             :title="$t('Are you sure you want to delete this magic link?')"
-            :triggerClasses="['delete']"
+            :trigger-classes="['delete']"
           >
             <p>{{ $t("This action cannot be undone.") }}</p>
             <template #footer="{ closeModal }">
-              <base-button @click="closeModal">{{ $t("Cancel") }}</base-button>
-              <base-button class="delete" @click="deleteCurrentRedirect">{{
-                $t("Delete forever")
-              }}</base-button>
+              <base-button @click="closeModal">
+                {{ $t("Cancel") }}
+              </base-button>
+              <base-button
+                class="delete"
+                @click="deleteCurrentRedirect"
+              >
+                {{
+                  $t("Delete forever")
+                }}
+              </base-button>
             </template>
           </base-modal>
         </card-element>
       </div>
 
       <div
-        class="main-grid-display smaller-gap"
         v-show="openTabs.includes('7')"
+        class="main-grid-display smaller-gap"
       >
         <q-r-alerts
           :alerts="alerts"
-          :redirectId="redirectId"
-          :isLoading="isLoading || loading"
+          :redirect-id="redirectId"
+          :is-loading="isLoading || loading"
           :subscribed="subscribed"
         />
       </div>

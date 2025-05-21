@@ -15,23 +15,29 @@ const handleLocaleChange = (locale: string) => {
       <li>
         <select
           name="dark-mode"
-          @change="setTheme(($event.target as HTMLSelectElement).value)"
           aria-label="Dark Mode toggle"
           :value="theme"
+          @change="setTheme(($event.target as HTMLSelectElement).value)"
         >
-          <option value="system">{{ $t("Auto") }}</option>
-          <option value="light">{{ $t("Light") }}</option>
-          <option value="dark">{{ $t("Dark") }}</option>
+          <option value="system">
+            {{ $t("Auto") }}
+          </option>
+          <option value="light">
+            {{ $t("Light") }}
+          </option>
+          <option value="dark">
+            {{ $t("Dark") }}
+          </option>
         </select>
       </li>
       <li>
         <select
           v-model="$i18n.locale"
           name="locales"
+          aria-label="locale"
           @change="
             handleLocaleChange(($event.target as HTMLSelectElement).value)
           "
-          aria-label="locale"
         >
           <option
             v-for="locale in SUPPORT_LOCALES"

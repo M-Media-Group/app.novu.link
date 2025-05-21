@@ -7,7 +7,7 @@ import axios, {
 } from "axios";
 
 import type { HttpClient } from "./genericHttpClient.js";
-import { UnifiedError } from "../apiServiceErrorHandler.js";
+import type { UnifiedError } from "../apiServiceErrorHandler.js";
 import { getBaseUrl } from "../apiClient.js";
 
 interface LaraveErrorResponse { message?: string; errors?: Record<string, string[]>; }

@@ -1,9 +1,9 @@
 import { type Ref, computed, onMounted, ref, watchEffect } from "vue";
 import type { CommonRuleProperties, RuleModel, Rules } from "@novulink/types";
-import { debounce } from "@/helpers/debounce";
+import { debounce } from "@novulink/helpers/debounce";
 import i18n from "@/locales/i18n";
-import { assertIsUnifiedError } from "./services/api/apiServiceErrorHandler";
-import { getRules, testRule } from "../../../packages/api/src/repositories/rule/ruleRepository";
+import { assertIsUnifiedError } from "@novulink/api";
+import { getRules, testRule } from "@novulink/api";
 
 const rules = ref<Partial<Rules> | null>(null);
 

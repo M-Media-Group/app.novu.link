@@ -23,8 +23,7 @@ const userStore = useUserStore();
   <base-form
     ref="baseFormRef"
     :disabled="success"
-    @success="emit('success')"
-    :submitFn="
+    :submit-fn="
       async () => {
         await userStore.sendPasswordReset({
           email,
@@ -34,19 +33,23 @@ const userStore = useUserStore();
         });
       }
     "
+    @success="emit('success')"
   >
     <label for="password">{{ $t("New password") }}</label>
     <input
+      v-model="password"
       type="password"
       name="password"
       :placeholder="$t('New password')"
-      v-model="password"
       :disabled="success"
       autofocus
       autocomplete="new-password"
       required
-    />
-    <small v-if="success" class="success">{{
+    >
+    <small
+      v-if="success"
+      class="success"
+    >{{
       $t("You can now log in with your new password!")
     }}</small>
   </base-form>

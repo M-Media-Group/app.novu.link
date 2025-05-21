@@ -88,7 +88,7 @@ const formatSubtitle = (endpoint: Endpoint) => {
   <template v-if="isLoading">
     <card-element :loading="isLoading">
       <hgroup>
-        <h3></h3>
+        <h3 />
       </hgroup>
     </card-element>
   </template>
@@ -100,24 +100,27 @@ const formatSubtitle = (endpoint: Endpoint) => {
         subscribed
           ? $t('Add free destinations')
           : $t(
-              'Your single QR code can take customers to multiple destinations based on rules you choose, like time of day or location.'
-            )
+            'Your single QR code can take customers to multiple destinations based on rules you choose, like time of day or location.'
+          )
       "
       :to="{
         name: 'add-endpoint',
         params: { redirectId: redirectId },
       }"
       :badges="subscribed ? undefined : [$t('Pro')]"
-    >
-    </card-element>
+    />
   </template>
-  <template v-else v-for="(endpoint, index) in endpoints" :key="endpoint.id">
+  <template
+    v-for="(endpoint, index) in endpoints"
+    v-else
+    :key="endpoint.id"
+  >
     <edit-endpoint
       v-if="endpoint.id && endpoint.redirect_uuid"
-      :redirectId="endpoint.redirect_uuid"
-      :endpointId="endpoint.id"
-      :currentUrl="endpoint.endpoint"
-      :showDelete="!isDefaultEndpoint(endpoint)"
+      :redirect-id="endpoint.redirect_uuid"
+      :endpoint-id="endpoint.id"
+      :current-url="endpoint.endpoint"
+      :show-delete="!isDefaultEndpoint(endpoint)"
     >
       <card-element
         :loading="isLoading"
@@ -144,7 +147,10 @@ const formatSubtitle = (endpoint: Endpoint) => {
           >
             {{ $t("Learn more") }}
           </a>
-          <base-button class="contrast" style="margin-bottom: 0">
+          <base-button
+            class="contrast"
+            style="margin-bottom: 0"
+          >
             {{ $t("Edit URL") }}
           </base-button>
         </template>
@@ -155,8 +161,7 @@ const formatSubtitle = (endpoint: Endpoint) => {
           <span
             :data-tooltip="$t('Percent of your customers that end up here')"
             class="no-wrap"
-            >{{ getClickPercentage(endpoint) }}%</span
-          >
+          >{{ getClickPercentage(endpoint) }}%</span>
         </template>
       </card-element>
     </edit-endpoint>
@@ -165,10 +170,10 @@ const formatSubtitle = (endpoint: Endpoint) => {
     <confirms-gate
       v-if="
         redirectId &&
-        !subscribed &&
-        index === 0 &&
-        endpoints &&
-        endpoints.length > 1
+          !subscribed &&
+          index === 0 &&
+          endpoints &&
+          endpoints.length > 1
       "
       :title="$t('Activate other destinations')"
       :description="
@@ -176,7 +181,7 @@ const formatSubtitle = (endpoint: Endpoint) => {
           'Additional destinations and design changes are free after you subscribe.'
         )
       "
-      :allowBackgroundClickToClose="false"
+      :allow-background-click-to-close="false"
       :gate="[
         'confirmedEmailOrPhone',
         {
@@ -189,9 +194,11 @@ const formatSubtitle = (endpoint: Endpoint) => {
         },
       ]"
     >
-      <base-button class="full-width">{{
-        $t("Activate other destinations")
-      }}</base-button>
+      <base-button class="full-width">
+        {{
+          $t("Activate other destinations")
+        }}
+      </base-button>
     </confirms-gate>
   </template>
   <base-button
@@ -201,10 +208,11 @@ const formatSubtitle = (endpoint: Endpoint) => {
       params: { redirectId: redirectId },
     }"
     :loading="isLoading"
-    >{{
+  >
+    {{
       subscribed
         ? $t("Add more free destinations")
         : $t("Add more destinations to same code")
-    }}</base-button
-  >
+    }}
+  </base-button>
 </template>

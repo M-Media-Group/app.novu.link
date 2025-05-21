@@ -4,17 +4,11 @@ import CardElement from "@/components/CardElement.vue";
 import { useI18n } from "vue-i18n";
 import { ref, watch } from "vue";
 import image from "@/assets/undraw_intense_feeling_ft-9-s.svg";
+import { loadData } from "@novulink/helpers/dataLoader";
 
 const { locale } = useI18n();
 
-const testimonialData = ref([] as any[]);
-
-// Load the features from the correct locale
-const loadData = (dataset = "features", localeToUse = locale.value) => {
-  return import(`@/data/${dataset}/${localeToUse}.json`).then(
-    (module) => module.default
-  );
-};
+const testimonialData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
 
 watch(
   locale,
@@ -28,7 +22,10 @@ watch(
 </script>
 
 <template>
-  <section id="externalLinks" class="two-column-grid hero-section">
+  <section
+    id="externalLinks"
+    class="two-column-grid hero-section"
+  >
     <hgroup>
       <h1>{{ $t("Customers love us") }}</h1>
       <p>
@@ -42,13 +39,16 @@ watch(
       <label>{{ $t("Try for yourself") }}</label>
       <create-redirect
         :autofocus="false"
-        :showNameInput="false"
+        :show-name-input="false"
         :inline="true"
-        :showLabel="false"
-      ></create-redirect>
+        :show-label="false"
+      />
     </hgroup>
 
-    <img :src="image" alt="Link shortener" />
+    <img
+      :src="image"
+      alt="Link shortener"
+    >
   </section>
 
   <section id="testimonials">
@@ -59,10 +59,15 @@ watch(
       </p>
     </hgroup>
     <ul class="three-column-grid">
-      <li v-for="testimonial in testimonialData" :key="testimonial.id">
+      <li
+        v-for="testimonial in testimonialData"
+        :key="(testimonial.id as number)"
+      >
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
-          <p v-if="testimonial.subtitle">{{ testimonial.subtitle }}</p>
+          <p v-if="testimonial.subtitle">
+            {{ testimonial.subtitle }}
+          </p>
         </hgroup>
         <p>{{ testimonial.description }}</p>
       </li>
@@ -82,7 +87,7 @@ watch(
       </p>
     </hgroup>
     <card-element>
-      <create-redirect :autofocus="false"></create-redirect>
+      <create-redirect :autofocus="false" />
     </card-element>
   </section>
 </template>

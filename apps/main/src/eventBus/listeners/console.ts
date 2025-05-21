@@ -1,6 +1,6 @@
 import type { ListenersMap } from "type-safe-event-bus";
 
-const options = {} as any;
+const options = {} as ListenersMap;
 
 const eventTypes = {
   enabled_analytics: void 0,
@@ -16,11 +16,12 @@ const eventTypes = {
   confirmed_email: void 0,
   updated_user: void 0,
   registered: void 0,
-};
+  updated_redirect: void 0,
+} satisfies ListenersMap;
 
 if (import.meta.env.DEV) {
   for (const option in eventTypes) {
-    options[option] = (e: any) => {
+    options[(option as keyof ListenersMap)] = (e: unknown) => {
       console.log("event", option, e);
     };
   }

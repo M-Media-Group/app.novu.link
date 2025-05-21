@@ -1,57 +1,63 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "nx run-many -t dev",
-        "dev-http": "nx run-many -t dev-http",
-        "build": "nx run-many -t build",
-        "preview": "nx run-many -t preview",
-        "preview:new": "nx run-many -t preview:new",
-        "test:unit:coverage": "nx run-many -t test:unit:coverage",
-        "test:unit": "nx run-many -t test:unit",
-        "test:unit:update": "nx run-many -t test:unit:update",
-        "test:e2e": "nx run-many -t test:e2e",
-        "test:e2e:dev": "nx run-many -t test:e2e:dev",
-        "test:visual:dev:ci": "nx run-many -t test:visual:dev:ci",
-        "test:visual:ci": "nx run-many -t test:visual:ci",
-        "build-only": "nx run-many -t build-only",
-        "type-check": "nx run-many -t type-check",
-        "lint": "nx run-many -t lint",
-        "translate": "nx run-many -t translate",
-        "translation-key-check": "nx run-many -t translation-key-check",
-        "test:all": "nx run-many -t test:all",
-        "test:visual:dev": "nx run-many -t test:visual:dev",
-        "build-storybook": "nx run-many -t build-storybook",
-        "test:visual": "nx run-many -t test:visual",
-        "test:visual:update": "nx run-many -t test:visual:update"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.27.0",
-        "@nx/vite": "^21.0.3",
-        "@nx/web": "21.0.3",
-        "@vitest/ui": "^3.0.0",
-        "jiti": "2.4.2",
-        "npm": "^11.4.0",
-        "nx": "21.0.3",
-        "pre-commit": "^1.2.2",
-        "pre-push": "^0.1.4",
-        "vite": "^6.0.0",
-        "vitest": "^3.0.0"
-    },
-    "workspaces": [
-        "apps/*",
-        "packages/*"
-    ],
-    "engines": {
-        "node": ">=22.15.0"
-    },
-    "packageManager": "npm@11.4.0",
-    "pre-commit": [
-        "lint",
-        "type-check"
-    ],
-    "pre-push": [
-        "translation-key-check",
-        "test:unit:coverage",
-        "test:visual:ci"
-    ]
+  "private": true,
+  "scripts": {
+    "dev": "nx run-many -t dev",
+    "dev-http": "nx run-many -t dev-http",
+    "build": "nx run-many -t build",
+    "preview": "nx run-many -t preview",
+    "preview:new": "nx run-many -t preview:new",
+    "test:unit:coverage": "nx run-many -t test:unit:coverage",
+    "test:unit": "nx run-many -t test:unit",
+    "test:unit:update": "nx run-many -t test:unit:update",
+    "test:e2e": "nx run-many -t test:e2e",
+    "test:e2e:dev": "nx run-many -t test:e2e:dev",
+    "test:visual:dev:ci": "nx run-many -t test:visual:dev:ci",
+    "test:visual:ci": "nx run-many -t test:visual:ci",
+    "build-only": "nx run-many -t build-only",
+    "type-check": "nx run-many -t type-check",
+    "lint": "nx run-many -t lint",
+    "translate": "nx run-many -t translate",
+    "translation-key-check": "nx run-many -t translation-key-check",
+    "test:all": "nx run-many -t test:all",
+    "test:visual:dev": "nx run-many -t test:visual:dev",
+    "build-storybook": "nx run-many -t build-storybook",
+    "test:visual": "nx run-many -t test:visual",
+    "test:visual:update": "nx run-many -t test:visual:update"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@nx/cypress": "^21.0.4",
+    "@nx/eslint": "21.0.4",
+    "@nx/storybook": "^21.0.4",
+    "@nx/vite": "^21.0.3",
+    "@nx/web": "21.0.3",
+    "@vitest/ui": "^3.0.0",
+    "cypress": "^14.2.1",
+    "eslint": "~8.57.0",
+    "jiti": "2.4.2",
+    "npm": "^11.4.0",
+    "nx": "21.0.4",
+    "pre-commit": "^1.2.2",
+    "pre-push": "^0.1.4",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "packageManager": "npm@11.4.0",
+  "pre-commit": [
+    "lint",
+    "type-check"
+  ],
+  "pre-push": [
+    "translation-key-check",
+    "test:unit:coverage",
+    "test:visual:ci"
+  ],
+  "dependencies": {}
 }

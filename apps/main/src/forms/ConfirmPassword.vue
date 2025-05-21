@@ -19,28 +19,33 @@ const userStore = useUserStore();
   <base-form
     v-if="userStore.isAuthenticated"
     ref="baseFormRef"
-    @success="emit('success')"
     :disabled="success"
-    :submitFn="
+    :submit-fn="
       async () => {
         await userStore.confirmPassword({ password });
       }
     "
+    @success="emit('success')"
   >
     <label for="password">{{ $t("Password") }}</label>
     <input
+      v-model="password"
       type="password"
       name="password"
       :placeholder="$t('Password')"
-      v-model="password"
       :disabled="success"
       autofocus
       auto-complete="current-password"
       required
-    />
-    <small v-if="success" class="success">{{
+    >
+    <small
+      v-if="success"
+      class="success"
+    >{{
       $t("You can now log in with your new password!")
     }}</small>
   </base-form>
-  <div v-else>{{ $t("Login or sign up to continue") }}</div>
+  <div v-else>
+    {{ $t("Login or sign up to continue") }}
+  </div>
 </template>

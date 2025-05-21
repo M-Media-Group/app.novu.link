@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { teamSchema } from "../team/teamSchema";
-import { getUserResponseSchema } from "../user/userSchema";
+import { teamSchema } from "../team/teamSchema.js";
+import { getUserResponseSchema } from "../user/userSchema.js";
 
 export type HexColor = `#${string}`;
 

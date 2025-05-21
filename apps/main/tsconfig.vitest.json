@@ -4,10 +4,15 @@
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
     "composite": true,
-    "lib": [],
+    "skipLibCheck": true,
+    "lib": [
+      "es2021"
+    ],
     "types": [
       "node",
-      "jsdom"
+      "jsdom",
+      "html-validate/vitest",
+      "html-validate/jest" // Weird - we have to also import it to not see TS errors in the IDE
     ]
   }
 }

@@ -24,7 +24,7 @@ describe("NavBar", () => {
     expect(wrapper.text()).toContain("Login");
     expect(wrapper.text()).toContain("Sign up");
 
-    // @ts-ignore an ambient declaration file doesnt seem to work to add toHTMLValidate @todo and check
+
     expect(wrapper.html()).toHTMLValidate();
 
     // Expect the snapshot to match
@@ -33,9 +33,10 @@ describe("NavBar", () => {
   it("renders properly when logged in", async () => {
     const wrapper = mount(NavBar, {
       props: {
+        appName: "Novu.Link",
         user: {
           id: 1,
-        } as any,
+        } as never,
       },
       global: {
         plugins: [
@@ -51,7 +52,7 @@ describe("NavBar", () => {
     expect(wrapper.text()).toContain("Logout");
     expect(wrapper.text()).toContain("Settings");
 
-    // @ts-ignore an ambient declaration file doesnt seem to work to add toHTMLValidate @todo and check
+
     expect(wrapper.html()).toHTMLValidate();
 
     // Expect the snapshot to match

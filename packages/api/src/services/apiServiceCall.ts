@@ -4,7 +4,7 @@ import {
 } from "./apiServiceErrorHandler.js";
 import type { ZodTypeAny, input, output } from "zod";
 import { getApiClient } from './apiClient.js';
-import { HttpClient } from "./clients/genericHttpClient.js";
+import type { HttpClient } from "./clients/genericHttpClient.js";
 
 export const apiServiceCall = async <
   ReqSchema extends ZodTypeAny | undefined,

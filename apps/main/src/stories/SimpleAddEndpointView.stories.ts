@@ -54,7 +54,9 @@ export const WithUserData: Story = {
         ...userFixture,
         created_at: new Date(),
         updated_at: new Date(),
-      } as any;
+        email_verified_at: new Date(),
+        phone_number_verified_at: new Date(),
+      };
 
       return { args };
     },

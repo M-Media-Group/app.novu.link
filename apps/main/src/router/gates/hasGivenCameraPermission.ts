@@ -12,7 +12,9 @@ export default class extends baseGate {
 
     return await navigator.mediaDevices
       .getUserMedia({ video: true })
-      .then(() => {})
+      .then(() => {
+        console.log("Camera permission granted");
+      })
       .catch(() => {
         alert("You must give us camera permissions to continue.");
         return this.fail();

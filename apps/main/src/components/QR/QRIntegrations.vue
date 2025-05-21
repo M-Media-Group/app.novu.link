@@ -53,11 +53,14 @@ getIntegrations();
         </tr>
       </thead>
       <tbody>
-        <tr v-for="integration in analyticsIntegrations" :key="integration.id">
+        <tr
+          v-for="integration in analyticsIntegrations"
+          :key="integration.id"
+        >
           <td>{{ integration.name ?? "-" }} ({{ integration.type }})</td>
           <td>
             <toggle-analytics-integration
-              :redirectId="redirectId"
+              :redirect-id="redirectId"
               :integration="integration"
               @success="getIntegrations"
             />
@@ -72,7 +75,10 @@ getIntegrations();
         )
       }}
     </p>
-    <base-button to="/team/settings" class="full-width">
+    <base-button
+      to="/team/settings"
+      class="full-width"
+    >
       {{ $t("Add a new integration") }}
     </base-button>
   </card-element>
@@ -80,17 +86,17 @@ getIntegrations();
   <template v-if="isLoading">
     <card-element :loading="isLoading">
       <hgroup>
-        <h3></h3>
+        <h3 />
       </hgroup>
     </card-element>
   </template>
   <template v-else>
     <card-element
+      v-if="webhooks && webhooks.length > 0"
       :loading="isLoading"
       :title="$t('Your webhooks')"
       :subtitle="$t('Send data to your server when a QR code is scanned')"
       :badges="!subscribed ? [$t('Pro')] : []"
-      v-if="webhooks && webhooks.length > 0"
     >
       <section
         v-for="webhook in webhooks"
@@ -98,7 +104,9 @@ getIntegrations();
         aria-labelledby="webhook-{{ webhook.id }}"
         :class="{ disabled: !subscribed }"
       >
-        <h4 id="webhook-{{ webhook.id }}">{{ webhook.url }}</h4>
+        <h4 id="webhook-{{ webhook.id }}">
+          {{ webhook.url }}
+        </h4>
         <details>
           <summary>{{ $t("View details") }}</summary>
           <div>
@@ -107,7 +115,10 @@ getIntegrations();
             </p>
             <h4>{{ $t("Events") }}</h4>
             <ul>
-              <li v-for="event in webhook.event_types" :key="event">
+              <li
+                v-for="event in webhook.event_types"
+                :key="event"
+              >
                 {{ event }}
               </li>
             </ul>
@@ -123,6 +134,6 @@ getIntegrations();
     :subtitle="$t('Send data to your server when a QR code is scanned')"
     :badges="!subscribed ? [$t('Pro')] : []"
   >
-    <create-webhook :redirectId="redirectId" />
+    <create-webhook :redirect-id="redirectId" />
   </card-element>
 </template>

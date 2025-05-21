@@ -50,35 +50,52 @@ defineProps({
 <template>
   <!-- @todo the animation breaks with component, need to fix. It works when article is direct child or when <template> (from Vue) is used, but not with <component>, even with an :is to a Vue template -->
   <component
-    v-if="!loading"
     :is="to ? 'router-link' : Transition"
+    v-if="!loading"
     :to="to ? to : undefined"
   >
     <article v-bind="$attrs">
-      <div class="images overflow-auto" v-if="images" tabindex="0">
+      <div
+        v-if="images"
+        class="images overflow-auto"
+        tabindex="0"
+      >
         <img
           v-for="image in images"
+          :key="image.alt"
           :src="image.src"
           :alt="image.alt"
-          :key="image.alt"
           loading="lazy"
-        />
+        >
       </div>
 
       <header v-if="title || subtitle || $slots.headerActions || $slots.header">
         <slot name="header">
           <hgroup>
-            <component :is="`h${titleHeadingLevel}`" v-if="title"
-              >{{ title }}
+            <component
+              :is="`h${titleHeadingLevel}`"
+              v-if="title"
+            >
+              {{ title }}
               <template v-if="badges && badges.length">
-                <base-badge v-for="badge in badges" :key="badge">{{
-                  badge
-                }}</base-badge>
+                <base-badge
+                  v-for="badge in badges"
+                  :key="badge"
+                >
+                  {{
+                    badge
+                  }}
+                </base-badge>
               </template>
             </component>
-            <p v-if="subtitle">{{ subtitle }}</p>
+            <p v-if="subtitle">
+              {{ subtitle }}
+            </p>
           </hgroup>
-          <div class="actions" v-if="$slots.headerActions">
+          <div
+            v-if="$slots.headerActions"
+            class="actions"
+          >
             <!-- @slot This is the slot for the header actions - which is on the right side of the card in the header. -->
             <slot name="headerActions" />
           </div>
@@ -92,35 +109,50 @@ defineProps({
       </footer>
     </article>
   </component>
-  <article v-else v-bind="$attrs">
-    <div class="images" v-if="images?.length">
-      <div class="gl-animate-skeleton-loader" style="height: 100%"></div>
+  <article
+    v-else
+    v-bind="$attrs"
+  >
+    <div
+      v-if="images?.length"
+      class="images"
+    >
+      <div
+        class="gl-animate-skeleton-loader"
+        style="height: 100%"
+      />
     </div>
     <header v-if="title || subtitle || $slots.headerActions || $slots.header">
       <div style="width: 100%">
         <div
-          class="gl-animate-skeleton-loader"
           v-if="title"
-          style="height: 24px"
-        ></div>
-        <div
           class="gl-animate-skeleton-loader"
+          style="height: 24px"
+        />
+        <div
           v-if="subtitle"
+          class="gl-animate-skeleton-loader"
           style="width: 40%"
-        ></div>
+        />
       </div>
       <div
-        class="gl-animate-skeleton-loader actions"
         v-if="$slots.headerActions"
+        class="gl-animate-skeleton-loader actions"
         style="width: 10%; height: 27px"
-      ></div>
+      />
     </header>
     <template v-if="$slots.default">
-      <div class="gl-animate-skeleton-loader"></div>
-      <div class="gl-animate-skeleton-loader" style="width: 95%"></div>
+      <div class="gl-animate-skeleton-loader" />
+      <div
+        class="gl-animate-skeleton-loader"
+        style="width: 95%"
+      />
     </template>
     <footer v-if="$slots.footer">
-      <div class="gl-animate-skeleton-loader" style="width: 10%"></div>
+      <div
+        class="gl-animate-skeleton-loader"
+        style="width: 10%"
+      />
     </footer>
   </article>
 </template>

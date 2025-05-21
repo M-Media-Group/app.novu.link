@@ -13,7 +13,7 @@ import { useEventsBus } from "@/eventBus/events";
 import {
   deleteAnalyticsIntegration,
   getAnalyticsIntegrations,
-} from "../../../../../packages/api/src/repositories/analytics/analyticsRepository";
+} from "@novulink/api";
 
 const userStore = useUserStore();
 const teamStore = useTeamStore();
@@ -50,10 +50,16 @@ onUnmounted(() => {
 </script>
 <template>
   <h1>{{ $t("My Team") }}</h1>
-  <card-element :titleHeadingLevel="2" :title="$t('Settings')">
-    <team-settings></team-settings>
+  <card-element
+    :title-heading-level="2"
+    :title="$t('Settings')"
+  >
+    <team-settings />
   </card-element>
-  <card-element :titleHeadingLevel="2" :title="$t('Payment methods')">
+  <card-element
+    :title-heading-level="2"
+    :title="$t('Payment methods')"
+  >
     <div v-if="teamStore.activeTeam?.pm_type">
       <p>
         {{ $t("Default payment method") }}:
@@ -72,16 +78,16 @@ onUnmounted(() => {
       "
     />
     <button
-      data-cy="add-payment-button"
       v-else
-      @click="addingNewPaymentMethod = true"
+      data-cy="add-payment-button"
       type="button"
+      @click="addingNewPaymentMethod = true"
     >
       {{ $t("Add a payment method") }}
     </button>
   </card-element>
   <card-element
-    :titleHeadingLevel="2"
+    :title-heading-level="2"
     :title="$t('Analytics Integrations')"
     :subtitle="$t('Integrations with analytics services')"
   >
@@ -111,7 +117,7 @@ onUnmounted(() => {
                 role="switch"
                 aria-label="switch"
                 :checked="integration.debug"
-              />
+              >
             </td>
 
             <td>
@@ -130,6 +136,6 @@ onUnmounted(() => {
     <h3 v-if="analyticsIntegrations.length">
       {{ $t("Add a new integration") }}
     </h3>
-    <create-analytics-integration></create-analytics-integration>
+    <create-analytics-integration />
   </card-element>
 </template>

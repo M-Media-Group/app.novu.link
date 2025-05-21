@@ -83,25 +83,27 @@ defineExpose<{ startConfirming: () => void }>({ startConfirming });
   <base-modal
     ref="modal"
     :title="title"
+    :trigger-classes="['delete']"
+    :trigger-text="submitText"
     @closed="isConfirming = false"
-    :triggerClasses="['delete']"
-    :triggerText="submitText"
   >
     <p v-if="description">
       {{ description }}
     </p>
     <template #footer="{ closeModal }">
-      <base-button @click="closeModal">{{ $t("Cancel") }}</base-button>
+      <base-button @click="closeModal">
+        {{ $t("Cancel") }}
+      </base-button>
 
       <unsubscribe-redirect
         v-if="modal?.isModalOpen"
-        :redirectId="redirectId"
-        :submitText="submitText"
-        @success="handleConfirmed"
+        :redirect-id="redirectId"
+        :submit-text="submitText"
         style="
           display: inline-block;
           margin-left: calc(var(--pico-spacing) * 0.5);
         "
+        @success="handleConfirmed"
       />
     </template>
   </base-modal>

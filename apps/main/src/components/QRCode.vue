@@ -5,7 +5,7 @@ import LinkReady from "@/assets/linkReady.png";
 import QRCodeStyling, { type FileExtension } from "qr-code-styling";
 import type { PropType } from "vue";
 import type { QRDesign } from "@novulink/types";
-import { getRedirectQrCodeDataUrl } from "@/repositories/redirect/redirectRepository";
+import { getRedirectQrCodeDataUrl } from "@novulink/api";
 
 const props = defineProps({
   /** The UUID of the redirect. If not passed, the rendered data will be to the SPA URL */
@@ -237,14 +237,14 @@ watch(
     v-if="!isReady || loading"
     class="gl-animate-skeleton-loader"
     :style="{ height: dimensions + 'px', width: dimensions + 'px' }"
-  ></div>
+  />
   <img
     v-else
     :height="dimensions"
     :width="dimensions"
     :src="qrCodeDataURL ?? imgSrc ?? LinkReady"
     alt="QR code"
-  />
+  >
 </template>
 <style scoped>
 /* The image should be 100% to a maximum of 400px */

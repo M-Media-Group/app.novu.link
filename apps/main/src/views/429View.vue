@@ -10,5 +10,7 @@ import BaseButton from "@/components/BaseButton.vue";
       )
     }}
   </p>
-  <base-button to="/">{{ $t("Home") }}</base-button>
+  <base-button to="/">
+    {{ $t("Home") }}
+  </base-button>
 </template>

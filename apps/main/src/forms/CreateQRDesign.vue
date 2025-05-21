@@ -11,12 +11,12 @@ import {
 import BaseForm from "./BaseForm.vue";
 import TabNav from "@/components/TabNav.vue";
 import type { HexColor, QRDesign } from "@novulink/types";
-import type { selectOption } from "@novulink/types";
+import type { SelectOption } from "@novulink/types";
 import BaseModal from "@/components/modals/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import { getContrastRatio } from "@novulink/helpers/colors";
-import { createQrDesign } from "../../../../packages/api/src/repositories/qrdesign/qrdesignRepository";
+import { createQrDesign } from "@novulink/api";
 
 const props = defineProps({
   /** The redirect uuid */
@@ -152,20 +152,21 @@ const handleSuccess = () => {
 <template>
   <base-form
     ref="baseFormRef"
+    :submit-fn="submitForm"
+    :show-submit-button="showSubmitButton"
     @success="handleSuccess"
-    :submitFn="submitForm"
-    :showSubmitButton="showSubmitButton"
   >
     <tab-nav
+      v-model="openTabs"
       class="qr-design-nav"
       :options="
         [
           includePages.includes('color')
             ? {
-                render: $t('Color'),
-                id: '1',
-                badge: !hasSufficientContranstRatio ? $t('Fix now') : undefined,
-              }
+              render: $t('Color'),
+              id: '1',
+              badge: !hasSufficientContranstRatio ? $t('Fix now') : undefined,
+            }
             : undefined,
 
           includePages.includes('shape')
@@ -178,19 +179,18 @@ const handleSuccess = () => {
 
           includePages.includes('name')
             ? {
-                render: $t('Name'),
-                id: '5',
-                badge: !name || name.length < 2 ? $t('Required') : undefined,
-              }
+              render: $t('Name'),
+              id: '5',
+              badge: !name || name.length < 2 ? $t('Required') : undefined,
+            }
             : undefined,
 
           includePages.includes('advanced')
             ? { render: $t('Advanced'), id: '4' }
             : undefined,
-        ].filter(Boolean) as selectOption[]
+        ].filter(Boolean) as SelectOption[]
       "
-      v-model="openTabs"
-    ></tab-nav>
+    />
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 
@@ -200,16 +200,25 @@ const handleSuccess = () => {
       v-show="openTabs.includes('1')"
     >
       <label for="color">{{ $t("Color") }}</label>
-      <input id="color" type="color" v-model="color" name="color" required />
+      <input
+        id="color"
+        v-model="color"
+        type="color"
+        name="color"
+        required
+      >
       <label for="background_color">{{ $t("Background color") }}</label>
       <input
         id="background_color"
-        type="color"
         v-model="backgroundColor"
+        type="color"
         name="background_color"
         required
-      />
-      <div class="input" v-show="!hasSufficientContranstRatio">
+      >
+      <div
+        v-show="!hasSufficientContranstRatio"
+        class="input"
+      >
         {{
           $t("The contrast ratio is too low. The QR code may not be scannable.")
         }}
@@ -220,37 +229,64 @@ const handleSuccess = () => {
       v-show="openTabs.includes('2')"
     >
       <label for="shape">{{ $t("Shape") }}</label>
-      <select name="shape" id="shape" v-model="blockShape" required>
-        <option value="circle">{{ $t("Circle") }}</option>
-        <option value="rounded">{{ $t("Rounded") }}</option>
-        <option value="extra-rounded">{{ $t("Extra Rounded") }}</option>
-        <option value="classy">{{ $t("Classy") }}</option>
-        <option value="classy-rounded">{{ $t("Classy Rounded") }}</option>
-        <option value="square">{{ $t("Square") }}</option>
+      <select
+        id="shape"
+        v-model="blockShape"
+        name="shape"
+        required
+      >
+        <option value="circle">
+          {{ $t("Circle") }}
+        </option>
+        <option value="rounded">
+          {{ $t("Rounded") }}
+        </option>
+        <option value="extra-rounded">
+          {{ $t("Extra Rounded") }}
+        </option>
+        <option value="classy">
+          {{ $t("Classy") }}
+        </option>
+        <option value="classy-rounded">
+          {{ $t("Classy Rounded") }}
+        </option>
+        <option value="square">
+          {{ $t("Square") }}
+        </option>
       </select>
 
       <label for="cornerDotShape">{{ $t("Corner dot shape") }}</label>
       <!-- Circle or square -->
       <select
-        name="cornerDotShape"
         id="cornerDotShape"
         v-model="cornerDotShape"
+        name="cornerDotShape"
         required
       >
-        <option value="circle">{{ $t("Circle") }}</option>
-        <option value="square">{{ $t("Square") }}</option>
+        <option value="circle">
+          {{ $t("Circle") }}
+        </option>
+        <option value="square">
+          {{ $t("Square") }}
+        </option>
       </select>
 
       <label for="cornerShape">{{ $t("Corner shape") }}</label>
       <select
-        name="cornerShape"
         id="cornerShape"
         v-model="cornerShape"
+        name="cornerShape"
         required
       >
-        <option value="circle">{{ $t("Circle") }}</option>
-        <option value="rounded">{{ $t("Rounded") }}</option>
-        <option value="square">{{ $t("Square") }}</option>
+        <option value="circle">
+          {{ $t("Circle") }}
+        </option>
+        <option value="rounded">
+          {{ $t("Rounded") }}
+        </option>
+        <option value="square">
+          {{ $t("Square") }}
+        </option>
       </select>
     </fieldset>
 
@@ -263,28 +299,27 @@ const handleSuccess = () => {
         id="logoFile"
         type="file"
         accept="image/*"
-        @change="handleLogoFile"
         name="logoFile"
-      />
+        @change="handleLogoFile"
+      >
       <label for="logoSize">{{ $t("Logo size") }}</label>
       <input
         id="logoSize"
-        type="number"
         v-model="logoSize"
+        type="number"
         name="logoSize"
         min="0"
         max="100"
         required
-      />
-      <label for="logoPunchout"
-        >{{ $t("Logo punchout") }}
+      >
+      <label for="logoPunchout">{{ $t("Logo punchout") }}
         <!-- Radio for yes / no -->
         <input
           id="logoPunchout"
-          type="checkbox"
           v-model="logoPunchout"
+          type="checkbox"
           name="logoPunchout"
-        />
+        >
       </label>
     </fieldset>
 
@@ -296,28 +331,44 @@ const handleSuccess = () => {
         $t("Error correction level")
       }}</label>
       <select
-        name="errorCorrectionLevel"
         id="errorCorrectionLevel"
         v-model="errorCorrectionLevel"
+        name="errorCorrectionLevel"
         required
       >
-        <option value="low">{{ $t("Low") }}</option>
-        <option value="medium">{{ $t("Medium") }}</option>
-        <option value="quartile">{{ $t("Quartile") }}</option>
-        <option value="high">{{ $t("High") }}</option>
+        <option value="low">
+          {{ $t("Low") }}
+        </option>
+        <option value="medium">
+          {{ $t("Medium") }}
+        </option>
+        <option value="quartile">
+          {{ $t("Quartile") }}
+        </option>
+        <option value="high">
+          {{ $t("High") }}
+        </option>
       </select>
 
       <label for="roundBlockSizeMode">{{ $t("Round block size mode") }}</label>
       <select
-        name="roundBlockSizeMode"
         id="roundBlockSizeMode"
         v-model="roundBlockSizeMode"
+        name="roundBlockSizeMode"
         required
       >
-        <option value="margin">{{ $t("Margin") }}</option>
-        <option value="enlarge">{{ $t("Enlarge") }}</option>
-        <option value="shrink">{{ $t("Shrink") }}</option>
-        <option value="none">{{ $t("None") }}</option>
+        <option value="margin">
+          {{ $t("Margin") }}
+        </option>
+        <option value="enlarge">
+          {{ $t("Enlarge") }}
+        </option>
+        <option value="shrink">
+          {{ $t("Shrink") }}
+        </option>
+        <option value="none">
+          {{ $t("None") }}
+        </option>
       </select>
     </fieldset>
 
@@ -327,41 +378,51 @@ const handleSuccess = () => {
     >
       <label for="name">{{ $t("Design Name") }}</label>
       <input
-        type="text"
         id="name"
+        v-model="name"
+        type="text"
         name="name"
         :placeholder="$t('Design Name')"
-        v-model="name"
         minlength="2"
         pattern=".{2,}"
         autofocus
         autocomplete="off"
         required
-      />
+      >
     </fieldset>
 
     <!-- </TransitionGroup> -->
-    <template #submit="{ isLoading, submit }" v-if="showSubmitButton">
-      <base-modal title="Create design" ref="modal" class="full-width">
+    <template
+      v-if="showSubmitButton"
+      #submit="{ isLoading, submit }"
+    >
+      <base-modal
+        ref="modal"
+        title="Create design"
+        class="full-width"
+      >
         <template #trigger="{ openModal }">
-          <base-button @click.prevent="openModal" type="submit">
+          <base-button
+            type="submit"
+            @click.prevent="openModal"
+          >
             {{ $t("Create design") }}
           </base-button>
         </template>
         <fieldset>
           <label for="nameModal">{{ $t("Design Name") }}</label>
           <input
-            type="text"
             id="nameModal"
+            v-model="name"
+            type="text"
             name="name"
             :placeholder="$t('Design Name')"
-            v-model="name"
             minlength="2"
             pattern=".{2,}"
             autofocus
             autocomplete="off"
             required
-          />
+          >
         </fieldset>
         <template #footer>
           <confirms-gate
@@ -371,13 +432,18 @@ const handleSuccess = () => {
                 'Additional destinations and design changes are free after you subscribe.'
               )
             "
-            :allowBackgroundClickToClose="false"
+            :allow-background-click-to-close="false"
             :gate="['confirmedEmailOrPhone']"
             @confirmed="submit()"
           >
-            <base-button :disabled="!name || isLoading" type="submit">{{
-              $t("Create design")
-            }}</base-button>
+            <base-button
+              :disabled="!name || isLoading"
+              type="submit"
+            >
+              {{
+                $t("Create design")
+              }}
+            </base-button>
           </confirms-gate>
         </template>
       </base-modal>

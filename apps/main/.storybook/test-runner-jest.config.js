@@ -1,11 +1,11 @@
-const { getJestConfig } = require('@storybook/test-runner');
+import { getJestConfig } from '@storybook/test-runner';
 
 const testRunnerConfig = getJestConfig();
 
 /**
  * @type {import('@jest/types').Config.InitialOptions}
  */
-module.exports = {
+export default {
     // The default Jest configuration comes from @storybook/test-runner
     ...testRunnerConfig,
     /** Add your own overrides below

@@ -2,14 +2,11 @@
 import BaseForm from "@/forms/BaseForm.vue";
 import { type PropType, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useEventsBus } from "@/eventBus/events";
 import { useI18n } from "vue-i18n";
 import { useTeamStore } from "@/stores/team";
 import type { Redirect } from "@novulink/types";
-import { useUrlFormatter } from "@/composables/useUrlFormatter";
-import { createRedirect } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
-
-const $bus = useEventsBus();
+import { createRedirect } from "@novulink/api";
+import { useUrlFormatter } from "@novulink/vue-composables/useUrlFormatter";
 
 const emit = defineEmits<{
   success: [Redirect["uuid"]];
@@ -132,27 +129,40 @@ if (props.defaultEndpointValue !== "") {
 }
 </script>
 <template>
-  <label for="default_endpoint" v-show="inline && showLabel">
+  <label
+    v-show="inline && showLabel"
+    for="default_endpoint"
+  >
     {{ $t("Go to") }}
   </label>
   <base-form
+    ref="baseFormRef"
     :autofocus="autofocus"
-    :submitText="
+    :submit-text="
       inline ? $t('New magic link') : $t('Create a free permanent magic link')
     "
-    ref="baseFormRef"
     :inline="inline"
-    :submitButtonClasses="buttonClasses"
+    :submit-button-classes="buttonClasses"
+    :submit-fn="submitForm"
+    :enable-validate-focused-element="!inline"
     @success="handleSuccess"
-    :submitFn="submitForm"
-    :enableValidateFocusedElement="!inline"
   >
     <template v-if="showNameInput">
-      <label for="name" v-show="!inline">{{ $t("Magic link name") }}</label
-      ><input id="name" type="text" required v-model="name" />
+      <label
+        v-show="!inline"
+        for="name"
+      >{{ $t("Magic link name") }}</label><input
+        id="name"
+        v-model="name"
+        type="text"
+        required
+      >
     </template>
-    <label for="default_endpoint" v-show="!inline"> {{ $t("Go to") }} </label
-    ><input
+    <label
+      v-show="!inline"
+      for="default_endpoint"
+    > {{ $t("Go to") }} </label><input
+      v-model="endpointUrl"
       name="default_endpoint"
       type="url"
       inputmode="url"
@@ -162,11 +172,10 @@ if (props.defaultEndpointValue !== "") {
       data-hj-allow=""
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?(\?.*)?(#.*)?"
       required
-      v-model="endpointUrl"
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "
-    />
+    >
     <small v-show="!inline">
       {{ $t("This is where your magic link will redirect to by default.") }}
       {{ $t("Example") }}: <code>https://example.com</code>.

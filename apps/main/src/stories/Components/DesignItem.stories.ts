@@ -22,7 +22,8 @@ const meta: Meta<typeof DesignItem> = {
   },
   args: {
     redirectId: "1234",
-    design: redirectsFixture[0].qr_designs![0] as any as QRDesign,
+    // @ts-expect-error we can be sure it is defined below
+    design: redirectsFixture[0].qr_designs[0] as unknown as QRDesign,
   },
   // Wrap the story in a <ul> element
   decorators: [

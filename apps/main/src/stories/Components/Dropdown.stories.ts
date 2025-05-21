@@ -11,20 +11,16 @@ const meta: Meta<HTMLDetailsElementCustom> = {
 
   render: (args) => ({
     template: `<summary
-    ${args.role ? `role="${args.role}"` : ""} ${
-      args.ariaInvalid ? `aria-invalid="${args.ariaInvalid}"` : ""
-    }>${args.title}</summary><ul><li><a href="#">${
-      args.optionText
-    }</a></li><li><a href="#">${args.optionText}</a></li><li><a href="#">${
-      args.optionText
-    }</a></li></ul>`,
+    ${args.role ? `role="${args.role}"` : ""} ${args.ariaInvalid ? `aria-invalid="${args.ariaInvalid}"` : ""
+      }>${args.title}</summary><ul><li><a href="#">${args.optionText
+      }</a></li><li><a href="#">${args.optionText}</a></li><li><a href="#">${args.optionText
+      }</a></li></ul>`,
   }),
 
   decorators: [
     (story, { args }) => ({
-      template: `<details ${
-        args.open ? "open" : ""
-      } class="dropdown"><story /></details>
+      template: `<details ${args.open ? "open" : ""
+        } class="dropdown"><story /></details>
       `,
     }),
   ],
@@ -82,7 +78,7 @@ export const OpenWithOverflow: Story = {
     title: overflowFixture.text_without_spaces,
     optionText: overflowFixture.text,
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const summary = canvas.getByText(overflowFixture.text_without_spaces);
 
@@ -164,7 +160,7 @@ export const WithCheckboxes: Story = {
   </ul>`,
   }),
 
-  play: async ({ canvasElement, args }: any) => {
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const checkboxes = canvas.getAllByRole("checkbox");
 

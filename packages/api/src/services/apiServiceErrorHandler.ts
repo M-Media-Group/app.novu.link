@@ -17,6 +17,8 @@ export interface UnifiedError {
   status?: number;
   /** The original error object. */
   originalError: unknown; // Keep a reference to the original error
+  /** The operation during which the error occurred. */
+  operation: string;
 }
 
 /**
@@ -53,6 +55,7 @@ export const handleError = (
   let unifiedError: Partial<UnifiedError> = {
     type: "unknown",
     originalError: error,
+    operation,
   };
 
   if (isClientError(error)) {
@@ -72,19 +75,6 @@ export const handleError = (
   }
 
   getEventBus()?.$emit("http_error", unifiedError);
-  console.log("Got general error:", unifiedError, "got event bus:", getEventBus());
-
-  const isDev = import.meta.env.MODE === "development";
-
-  if (isDev) {
-    console.error(
-      `Error during ${operation}: Status ${unifiedError.status || "N/A"
-      } - Message: ${unifiedError.message}`,
-      unifiedError.originalError,
-      "Full Error Details:",
-      unifiedError
-    );
-  }
 
   throw unifiedError; // Throw the structured error
 };

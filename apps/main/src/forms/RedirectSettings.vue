@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { updateRedirect } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
+import { updateRedirect } from "@novulink/api";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -58,22 +58,29 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <base-form ref="baseFormRef" :submitFn="submitForm" submitText="Save">
+  <base-form
+    ref="baseFormRef"
+    :submit-fn="submitForm"
+    submit-text="Save"
+  >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
 
     <!-- Name, Surname, and new password inputs NOTE THE PATTERN - needed to trigger validity on non-dirty (script added) inputs, see https://stackoverflow.com/a/53261163/7410951 -->
-    <label for="name" v-show="showLabel">{{ $t("Magic link name") }}</label>
+    <label
+      v-show="showLabel"
+      for="name"
+    >{{ $t("Magic link name") }}</label>
     <input
+      v-model="name"
       type="text"
       name="name"
       :placeholder="$t('Magic link name')"
-      v-model="name"
       minlength="2"
       pattern=".{2,}"
       autofocus
       required
-    />
+    >
     <!-- </TransitionGroup> -->
   </base-form>
 </template>

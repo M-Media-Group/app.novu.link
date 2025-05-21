@@ -4,6 +4,8 @@ import { setLocaleToUse, setMetaAttributes } from "@m-media/vue3-meta-tags";
 import router from "@/router";
 import $bus from "@/eventBus/events";
 
+type typedI18n = I18n<Record<string, unknown>, Record<string, unknown>, Record<string, unknown>, string, false>;
+
 /**
  * The supported locales in the app. Note that the first locale in this array is the default locale.
  */
@@ -20,7 +22,7 @@ export const bestGuessLocale =
 /**
  * Set the current app locale to the best-guessed locale
  */
-export function setBestGuessLocale(i18n: I18n<{}, {}, {}, string, false>) {
+export function setBestGuessLocale(i18n: typedI18n) {
   let locale = bestGuessLocale;
   // If the locale is not supported, fallback to English
   if (!SUPPORT_LOCALES.includes(locale)) {
@@ -56,7 +58,7 @@ export function setupI18n() {
 
 // @todo: opportunity to refactor - parts of this code does not / should not run on first page load (e.g. when its called from setupI18n)
 export async function setI18nLanguage(
-  i18n: I18n<{}, {}, {}, string, false>,
+  i18n: typedI18n,
   locale: string,
   emit = true
 ) {
@@ -96,7 +98,7 @@ export async function setI18nLanguage(
  * Load the JSON locale files dynamically from the locales/ folder
  */
 export async function loadLocaleMessages(
-  i18n: { global: { setLocaleMessage: (arg0: any, arg1: any) => void } },
+  i18n: I18n,
   locale: string
 ) {
   if (!SUPPORT_LOCALES.includes(locale)) {

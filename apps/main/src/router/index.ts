@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { type RouteLocationNormalizedGeneric, type RouteLocationNormalizedLoadedGeneric, createRouter, createWebHistory } from "vue-router";
 import $bus from "@/eventBus/events";
 import authRoutes from "./authRoutes";
 
@@ -199,7 +199,7 @@ const router = createRouter({
       name: "nsfw-redirect",
       component: () => import("../views/NsfwRedirectView.vue"),
       // This path requires a redirectTo query parameter. If it is not present, redirect to the home page.
-      beforeEnter(to: any, from: any, next: any) {
+      beforeEnter(to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedLoadedGeneric, next: (arg?: unknown) => void) {
         if (to.query.redirectTo) {
           next();
         } else {
@@ -212,7 +212,7 @@ const router = createRouter({
       name: "products/category",
       component: () => import("../views/ProductsCategoryView.vue"),
       props: true,
-      beforeEnter(to: any, from: any, next: any) {
+      beforeEnter(to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedLoadedGeneric, next: (arg?: unknown) => void) {
         if (to.params.category === "all") {
           next({ name: "products" });
         } else {
@@ -246,12 +246,14 @@ const router = createRouter({
       name: "NotFound",
       component: () => import("../views/404View.vue"),
     },
-  ].concat(authRoutes as any),
+
+    // @ts-expect-error the routes are not typed
+  ].concat(authRoutes as unknown),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     } else if (to.meta.scrollPosition) {
-      return to.meta.scrollPosition as any;
+      return to.meta.scrollPosition as { top: 0 };
     } else {
       return { top: 0 };
     }

@@ -4,14 +4,14 @@ export interface Product {
   image: string;
   description: string;
   short_description: string;
-  brand?: string | null;
-  model?: string | null;
+  brand?: string | null | undefined;
+  model?: string | null | undefined;
   merchant: string;
   locale: string;
   is_in_stock: boolean;
   quantities: Quantities;
   attributes: Attribute[];
-  attributes_filtered?: Attribute[];
+  attributes_filtered?: Attribute[] | undefined;
   variants: Variant[];
   prices: {
     min: Price;

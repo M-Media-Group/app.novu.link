@@ -4,7 +4,7 @@ import CardElement from "@/components/CardElement.vue";
 import type { Alert } from "@novulink/types";
 import { formatMinutes } from "@novulink/helpers/relativeTime";
 import BaseButton from "@/components/BaseButton.vue";
-import { getAlerts } from "../../../../packages/api/src/repositories/alert/alertRepository";
+import { getAlerts } from "@novulink/api";
 
 const isLoading = ref(true);
 
@@ -21,7 +21,9 @@ onMounted(async () => {
       <nav aria-label="breadcrumb">
         <ul>
           <li>
-            <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+            <router-link to="/dashboard">
+              {{ $t("Dashboard") }}
+            </router-link>
           </li>
           <li>
             {{ $t("Alerts") }}
@@ -32,23 +34,29 @@ onMounted(async () => {
         <h1>{{ $t("Alerts") }}</h1>
       </hgroup>
     </div>
-    <base-button to="/alerts/create" class="full-width">{{
-      $t("Create a new alert")
-    }}</base-button>
+    <base-button
+      to="/alerts/create"
+      class="full-width"
+    >
+      {{
+        $t("Create a new alert")
+      }}
+    </base-button>
   </div>
 
   <template v-if="isLoading">
     <card-element
       v-for="index in 5"
+      :key="index"
       :title="$t('Alerts links')"
       :subtitle="$t('Alerts links')"
       :loading="true"
-      :key="index"
     />
   </template>
   <template v-else>
     <card-element
       v-for="alert in results"
+      :key="alert.id"
       :title="alert.redirect?.name"
       :subtitle="
         $t(
@@ -62,9 +70,7 @@ onMounted(async () => {
         )
       "
       :to="`/redirects/${alert.redirect_uuid}`"
-      :key="alert.id"
       :class="{ disabled: !alert.redirect?.subscribed_at }"
-    >
-    </card-element>
+    />
   </template>
 </template>

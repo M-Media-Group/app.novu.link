@@ -29,14 +29,14 @@ const AddPaymentMethod = defineAsyncComponent(
 <template>
   <span>
     <span @click.prevent="startConfirming">
-      <slot :isConfirming="isConfirming" />
+      <slot :is-confirming="isConfirming" />
     </span>
 
     <base-modal
       ref="modal"
       :title="$t('Add a payment method')"
-      :showTrigger="false"
-      :showFooter="false"
+      :show-trigger="false"
+      :show-footer="false"
       @closed="isConfirming = false"
     >
       <add-payment-method

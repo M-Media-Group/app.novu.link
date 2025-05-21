@@ -5,7 +5,7 @@ import type { AnalyticsIntegration } from "@novulink/types";
 import {
   createRedirectAnalyticsIntegration,
   deleteRedirectAnalyticsIntegration,
-} from "../../../../packages/api/src/repositories/analytics/analyticsRepository";
+} from "@novulink/api";
 
 const props = defineProps({
   redirectId: {
@@ -29,12 +29,14 @@ const submitForm = async () => {
     (r) => r.uuid === props.redirectId
   );
 
-  shouldDelete
-    ? deleteRedirectAnalyticsIntegration({
+  if (shouldDelete) {
+    deleteRedirectAnalyticsIntegration({
         redirect_id: props.redirectId,
         integration_id: props.integration.id,
       })
-    : createRedirectAnalyticsIntegration({
+      return;
+  }
+  createRedirectAnalyticsIntegration({
         redirect_id: props.redirectId,
         integration_id: props.integration.id,
       });
@@ -44,9 +46,9 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
+    :submit-fn="submitForm"
+    :show-submit-button="false"
     @success="emit('success')"
-    :submitFn="submitForm"
-    :showSubmitButton="false"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
@@ -56,9 +58,9 @@ const submitForm = async () => {
       type="checkbox"
       role="switch"
       aria-label="switch"
-      @click="baseFormRef?.submit()"
       :checked="!!integration.redirects?.find((r) => r.uuid === redirectId)"
-    />
+      @click="baseFormRef?.submit()"
+    >
     <!-- </TransitionGroup> -->
   </base-form>
 </template>

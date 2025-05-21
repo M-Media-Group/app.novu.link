@@ -34,16 +34,28 @@ const resendEmail = async () => {
           )
         }}
       </p>
-      <p class="success" v-if="emailSent">
+      <p
+        v-if="emailSent"
+        class="success"
+      >
         {{ $t("A new email has been sent to you.") }}
       </p>
-      <base-form v-else :submit-text="$t('Resend email')" @submit="resendEmail">
+      <base-form
+        v-else
+        :submit-text="$t('Resend email')"
+        @submit="resendEmail"
+      >
         <template #after-submit>
           <!-- Change email -->
-          <router-link to="/settings">{{ $t("Change email") }}</router-link>
+          <router-link to="/settings">
+            {{ $t("Change email") }}
+          </router-link>
         </template>
       </base-form>
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

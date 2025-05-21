@@ -8,24 +8,11 @@ import { loadData } from "@novulink/helpers/dataLoader";
 import { watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUserStore } from "@/stores/user";
+import { useTimer } from "@novulink/vue-composables/useTimer";
 
 const timerLength = 60 * 3;
 
-/**
- * A timer that shows a countdown (mm:ss)
- */
-const timer = ref(timerLength);
-
-const startTimer = () => {
-  const interval = setInterval(() => {
-    timer.value -= 1;
-    if (timer.value <= 0) {
-      clearInterval(interval);
-    }
-  }, 1000);
-};
-
-startTimer();
+const {timer} = useTimer(timerLength);
 
 const convertSecondsToMinutes = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -35,7 +22,7 @@ const convertSecondsToMinutes = (seconds: number) => {
 
 const { locale } = useI18n();
 
-const featureData = ref([] as any[]);
+const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
 
 watch(
   locale,
@@ -62,7 +49,12 @@ watch(
 </script>
 <template>
   <section class="main-grid-display smaller-gap">
-    <img height="200" width="200" :src="LinkReady" alt="Link Ready" />
+    <img
+      height="200"
+      width="200"
+      :src="LinkReady"
+      alt="Link Ready"
+    >
     <hgroup>
       <h1>
         {{
@@ -79,9 +71,12 @@ watch(
         }}
       </p>
     </hgroup>
-    <progress :value="timer" :max="timerLength" />
+    <progress
+      :value="timer"
+      :max="timerLength"
+    />
 
-    <card-element :titleHeadingLevel="2">
+    <card-element :title-heading-level="2">
       <otp-login-or-register />
     </card-element>
   </section>
@@ -99,9 +94,9 @@ watch(
     <div class="three-column-grid">
       <card-element
         v-for="feature in featureData"
-        :key="feature.id"
-        :title="feature.name"
-        :subtitle="feature.description"
+        :key="feature.id as string"
+        :title="`${feature.name}`"
+        :subtitle="`${feature.description}`"
         :badges="feature.min_subscription === 0 ? [$t('Free')] : []"
         class="height-100"
       />

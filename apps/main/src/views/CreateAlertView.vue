@@ -7,10 +7,14 @@ import CreateAlert from "@/forms/CreateAlert.vue";
   <nav aria-label="breadcrumb">
     <ul>
       <li>
-        <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+        <router-link to="/dashboard">
+          {{ $t("Dashboard") }}
+        </router-link>
       </li>
       <li>
-        <router-link to="/alerts">{{ $t("Alerts") }}</router-link>
+        <router-link to="/alerts">
+          {{ $t("Alerts") }}
+        </router-link>
       </li>
       <li>{{ $t("Create a new alert") }}</li>
     </ul>
@@ -23,6 +27,9 @@ import CreateAlert from "@/forms/CreateAlert.vue";
     <card-element :title="$t('Create a new alert')">
       <create-alert />
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

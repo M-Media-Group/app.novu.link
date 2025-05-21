@@ -2,11 +2,8 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 import type { Team } from "@novulink/types";
-import {
-  getUserTeams as getUserTeamsRepo,
-  switchTeam,
-  updateTeam,
-} from "@novulink/api";
+import { getUserTeams as getUserTeamsRepo, switchTeam, updateTeam } from "@novulink/api";
+
 
 export const useTeamStore = defineStore("team", () => {
   const activeTeamId = ref<Team["id"] | null>(null);

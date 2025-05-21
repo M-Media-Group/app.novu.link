@@ -241,6 +241,10 @@ export const useProducts = () => {
       return;
     }
 
+    if (!loadedProduct.value) {
+      return;
+    }
+
     // Select the first value for each attribute
     Object.keys(loadedProduct.value.attributes).forEach((attributeName) => {
       handleSelectedAttribute(

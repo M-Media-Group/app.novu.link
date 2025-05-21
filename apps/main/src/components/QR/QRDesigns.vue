@@ -49,20 +49,23 @@ const defaultDesign = {
 </script>
 <template>
   <template v-if="designs && designs.length > 0">
-    <card-element :loading="isLoading" :title="$t('Your designs')">
+    <card-element
+      :loading="isLoading"
+      :title="$t('Your designs')"
+    >
       <ul>
         <design-item
-          :redirectId="redirectId"
+          :redirect-id="redirectId"
           :design="defaultDesign"
           @update:checked="emitInputUpdated(defaultDesign)"
-        ></design-item>
+        />
         <design-item
           v-for="design in designs"
           :key="design.id"
           :design="design"
-          :redirectId="redirectId"
+          :redirect-id="redirectId"
           @update:checked="emitInputUpdated(design)"
-        ></design-item>
+        />
       </ul>
     </card-element>
   </template>
@@ -73,15 +76,15 @@ const defaultDesign = {
     class="design-card"
   >
     <create-q-r-design
-      :redirectId="redirectId"
-      :includePages="['color', 'shape', 'advanced']"
+      :redirect-id="redirectId"
+      :include-pages="['color', 'shape', 'advanced']"
       @input_updated="emit('input_updated', $event)"
-    ></create-q-r-design>
+    />
   </card-element>
   <template v-if="isLoading">
     <card-element :loading="isLoading">
       <hgroup>
-        <h3></h3>
+        <h3 />
       </hgroup>
     </card-element>
   </template>
@@ -94,8 +97,7 @@ const defaultDesign = {
           'Create and save designs for your magic links. You can use them across all your magic links in your team.'
         )
       "
-    >
-    </card-element>
+    />
   </template>
 </template>
 <style scoped>

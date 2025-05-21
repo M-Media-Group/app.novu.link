@@ -34,13 +34,13 @@ bc.onmessage = (event) => {
 };
 
 export default {
-  logged_in: (e: any) => {
+  logged_in: (e: unknown) => {
     bc.postMessage({
       type: "logged_in",
       data: e,
     });
   },
-  logged_out: (e: any) => {
+  logged_out: (e: unknown) => {
     bc.postMessage({
       type: "logged_out",
       data: e,
@@ -58,7 +58,7 @@ export default {
       data: e,
     });
   },
-  confirmed_email: (e: any) => {
+  confirmed_email: (e: unknown) => {
     bc.postMessage({
       type: "confirmed_email",
       data: e,

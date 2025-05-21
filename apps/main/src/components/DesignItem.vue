@@ -36,29 +36,29 @@ defineProps({
 <template>
   <li
     :key="design.id"
-    @click="emit('update:checked', !checked)"
     class="design-preview input"
     role="button"
     tabindex="0"
     aria-label="Design preview for {{ design.name || $t('Untitled design') }}"
+    @click="emit('update:checked', !checked)"
     @keydown.enter="emit('update:checked', !checked)"
     @keydown.space.prevent="emit('update:checked', !checked)"
   >
     <figure>
       <q-r-code
         class="design-preview__qr"
-        :redirectId="redirectId"
-        :designId="design.id"
+        :redirect-id="redirectId"
+        :design-id="design.id"
         :size="100"
-        :errorCorrectionLevel="design.error_correction_level"
-        :blockShape="design.block_shape"
-        :cornerDotShape="design.corner_dot_shape"
-        :cornerShape="design.corner_shape"
-        :roundBlockSizeMode="design.round_block_size_mode"
-        :logoPunchout="design.logo_punchout_background"
-        :backgroundColor="design.background_color"
+        :error-correction-level="design.error_correction_level"
+        :block-shape="design.block_shape"
+        :corner-dot-shape="design.corner_dot_shape"
+        :corner-shape="design.corner_shape"
+        :round-block-size-mode="design.round_block_size_mode"
+        :logo-punchout="design.logo_punchout_background"
+        :background-color="design.background_color"
         :color="design.color"
-        :logoDataUrl="design.logo"
+        :logo-data-url="design.logo"
       />
       <figcaption class="design-preview__text">
         <hgroup>
@@ -82,8 +82,8 @@ defineProps({
         <small>
           {{
             $t("Updated") +
-            " " +
-            (design.updated_at ? relativeTime(design.updated_at, $i18n.locale) : "")
+              " " +
+              (design.updated_at ? relativeTime(design.updated_at, $i18n.locale) : "")
           }}
           <template v-if="design.was_automatically_generated">
             · {{ $t("Automatically generated") }}

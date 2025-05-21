@@ -1,7 +1,7 @@
 import type { ListenersMap } from "type-safe-event-bus";
 
 export default {
-  logged_in: (e: any) => {
+  logged_in: (e: unknown) => {
     // Send a postMessage event
     window.parent.postMessage(
       {

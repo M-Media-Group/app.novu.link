@@ -3,14 +3,14 @@ import i18n from "@/locales/i18n";
 const t = i18n.global.t;
 </script>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends PossibleRecord = PossibleRecord">
 import { debounce } from "@novulink/helpers/debounce";
 import {
   filterOptions,
   orderOptionsBySelectedFirst,
 } from "@novulink/helpers/normaliseOptions";
-import { useMultiselect } from "@/composables/useMultiselect";
-import type { selectOption } from "@novulink/types";
+import { useMultiselect } from "@novulink/vue-composables/useMultiselect";
+import type { PossibleRecord, SelectOption } from "@novulink/types";
 import BaseBadge from "./BaseBadge.vue";
 
 import { type PropType, computed, nextTick, onMounted, ref, watch } from "vue";
@@ -36,7 +36,7 @@ const props = defineProps({
 
   /** The passed options */
   options: {
-    type: Array as PropType<selectOption[]>,
+    type: Array as PropType<SelectOption<T>[]>,
     default: () => [],
   },
 
@@ -178,17 +178,17 @@ const emit = defineEmits<{
 
 const {
   normalisedOptions,
-  selecteableOptions,
+  selectableOptions,
   getLabel,
   isOptionSelected,
   toggleAllOptions,
   updateModelValue,
   unselectAllOptions,
-} = useMultiselect(props, emit);
+} = useMultiselect<T>(props, emit);
 
 const setModelValue = (
   event: Event,
-  existingValue = false as number | false
+  existingValue: number | false = false
 ) => {
   const target = event.target as HTMLInputElement;
   const value = target.value;
@@ -201,7 +201,7 @@ const filteredOptions = computed(() => {
 
   if (!props.searchLocally) return normalisedOptions.value;
 
-  const data = filterOptions(normalisedOptions.value, props.search);
+  const data = filterOptions<T>(normalisedOptions.value, props.search);
 
   if (data.length < 2) {
     reachedEndOfListDebounced();
@@ -217,7 +217,7 @@ const orderedOptions = computed(() => {
     return filteredOptions.value;
   }
 
-  return orderOptionsBySelectedFirst(
+  return orderOptionsBySelectedFirst<T>(
     filteredOptions.value,
     props.modelValue,
     props.modelKey
@@ -229,7 +229,7 @@ const showSelectAll = computed(() => {
   if (!props.multiple) return false;
   // If we are in search, we don't show it because we don't want to confuse the user user about what is being selected
   if (props.search) return false;
-  if (!selecteableOptions.value) return false;
+  if (!selectableOptions.value) return false;
   return true;
 });
 
@@ -263,7 +263,7 @@ const setupDropdownList = () => {
 const searchInput = ref<HTMLInputElement | null>(null);
 
 /** A dunction to handle the opening of the results. If the search is present, we autofocus the search input. Note, there is a `ToggleEvent` type that should work but doesnt pass the TS linting with `TS2304: Cannot find name 'ToggleEvent'.`. */
-const openResults = async (value: any) => {
+const openResults = async (value: {newState: string}) => {
   if (!value) return;
 
   // If the value is not the same as the current value, emit the event
@@ -374,10 +374,10 @@ defineExpose({ focus, setCustomValidity, setAttribute });
 </script>
 <template>
   <details
+    ref="dropdown"
     class="dropdown"
     :open="props.isOpen"
     @toggle="openResults"
-    ref="dropdown"
   >
     <summary
       :role="props.role"
@@ -391,28 +391,28 @@ defineExpose({ focus, setCustomValidity, setAttribute });
     <ul ref="dropdownList">
       <li v-if="props.searchable">
         <input
+          ref="searchInput"
           type="search"
           :value="props.search"
-          @input="
-            $emit('update:search', ($event.target as HTMLInputElement).value)
-          "
           :aria-busy="props.ariaBusy"
           :placeholder="props.searchPlaceholder"
           :aria-label="props.searchPlaceholder"
           :autofocus="props.autofocus"
-          ref="searchInput"
-        />
+          @input="
+            $emit('update:search', ($event.target as HTMLInputElement).value)
+          "
+        >
       </li>
       <li v-if="showSelectAll">
         <label>
           <input
             type="checkbox"
-            :checked="props.modelValue.length === selecteableOptions?.length"
-            @click="toggleAllOptions"
+            :checked="props.modelValue.length === selectableOptions?.length"
             :disabled="props.disabled"
             value="all"
             tabindex="0"
-          />
+            @click="toggleAllOptions"
+          >
           {{ props.selectAllText }}
         </label>
       </li>
@@ -420,8 +420,8 @@ defineExpose({ focus, setCustomValidity, setAttribute });
       <li v-if="props.clearable && props.modelValue.length > 0">
         <button
           type="button"
-          @click="unselectAllOptions"
           :disabled="props.disabled"
+          @click="unselectAllOptions"
         >
           {{ props.clearText }}
         </button>
@@ -435,8 +435,8 @@ defineExpose({ focus, setCustomValidity, setAttribute });
           name="optionSlot"
           :option="option"
           :checked="isOptionSelected(option)"
-          :updateModelValue="setModelValue"
-          :modelValue="props.modelValue"
+          :update-model-value="setModelValue"
+          :model-value="props.modelValue"
           :index="index"
           :value="option[modelKey]"
           :multiple="props.multiple"
@@ -448,9 +448,9 @@ defineExpose({ focus, setCustomValidity, setAttribute });
               :disabled="option.disabled || props.disabled"
               :value="option[modelKey]"
               :checked="isOptionSelected(option)"
-              @click="setModelValue"
               tabindex="0"
-            />
+              @click="setModelValue"
+            >
             {{ getLabel(option) }}
             <base-badge v-if="option.badge !== undefined">{{
               option.badge === true ? "" : option.badge
@@ -459,7 +459,12 @@ defineExpose({ focus, setCustomValidity, setAttribute });
         </slot>
       </li>
 
-      <li v-if="ariaBusy" aria-busy="true">{{ props.loadingText }}</li>
+      <li
+        v-if="ariaBusy"
+        aria-busy="true"
+      >
+        {{ props.loadingText }}
+      </li>
       <!-- if the results are limited because of the visible limit, but there are more filteredResults, show a message -->
       <li v-if="filteredOptions.length > props.visibleLimit">
         {{ props.searchEncouragement }}

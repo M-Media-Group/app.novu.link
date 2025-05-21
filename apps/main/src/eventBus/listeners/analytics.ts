@@ -3,7 +3,7 @@ import type { ListenersMap } from "type-safe-event-bus";
 
 // Define fbq for Facebook Pixel as a function (declare it)
 /** @todo add fbq types */
-declare function fbq(...args: any[]): void;
+declare function fbq(...args: unknown[]): void;
 
 export default {
   enabled_analytics: () => {
@@ -14,7 +14,7 @@ export default {
     event("analytics_opt_out", {});
     optOut();
   },
-  viewed_page: (to: any) => {
+  viewed_page: () => {
     // pageview(to); // To confirm, seems Google is auto-tracking this
     // fbq("track", "PageView"); // To confirm, it is likely done automatically already by using the history listener
   },
@@ -49,7 +49,7 @@ export default {
   started_subscription: () => {
     // generate a random transaction id based on time
     const transactionId = `T${Date.now()}${Math.floor(Math.random() * 1000)}`;
-    event("purchase",{
+    event("purchase", {
       transaction_id: transactionId,
       value: 36,
       currency: "EUR",

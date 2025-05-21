@@ -56,7 +56,9 @@ export const Default: Story = {
         ...userFixture,
         created_at: new Date(),
         updated_at: new Date(),
-      } as any;
+        email_verified_at: new Date(),
+        phone_number_verified_at: new Date(),
+      };
 
       team.teams = teamsFixture;
 
@@ -64,7 +66,7 @@ export const Default: Story = {
     },
     template: "<add-payment-method v-bind='args' />",
   }),
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Confirm the submit button is there

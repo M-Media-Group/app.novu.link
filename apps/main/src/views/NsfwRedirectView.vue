@@ -26,7 +26,10 @@ if (!redirectTo) {
     </p>
   </hgroup>
   <div class="two-column-grid">
-    <card-element :title="$t('NSFW link')" :subtitle="redirectTo ?? ''">
+    <card-element
+      :title="$t('NSFW link')"
+      :subtitle="redirectTo ?? ''"
+    >
       <p>
         {{
           $t(
@@ -35,15 +38,21 @@ if (!redirectTo) {
         }}
       </p>
       <div class="two-column-grid">
-        <base-button to="/">{{ $t("Go to the homepage") }}</base-button>
+        <base-button to="/">
+          {{ $t("Go to the homepage") }}
+        </base-button>
         <base-button
           class="secondary"
           :href="redirectTo"
           rel="noopener noreferrer"
-          >{{ $t("Continue to the link") }}</base-button
         >
+          {{ $t("Continue to the link") }}
+        </base-button>
       </div>
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

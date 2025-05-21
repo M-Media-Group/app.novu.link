@@ -8,7 +8,7 @@ import {
   ref,
   useTemplateRef,
 } from "vue";
-import { loadStripe } from "@stripe/stripe-js";
+import { type StripeCardElement, loadStripe } from "@stripe/stripe-js";
 import { StripeElement, StripeElements } from "vue-stripe-js";
 import { getCssVarForStripe } from "@novulink/helpers/cssVariables";
 import { useI18n } from "vue-i18n";
@@ -16,7 +16,8 @@ import BaseForm from "@/forms/BaseForm.vue";
 import {
   addPaymentMethod as addPaymentMethodRepo,
   getPaymentIntent,
-} from "../../../../packages/api/src/repositories/payment/paymentRepository";
+} from "@novulink/api";
+import { hasMethod } from "@novulink/helpers/hasMethod";
 
 defineProps({
   showLabel: {
@@ -46,7 +47,7 @@ const form = reactive({
 
 const emit = defineEmits(["success"]);
 
-const handleStripeInput = async (event: { complete: any }) => {
+const handleStripeInput = async (event: { complete: boolean }) => {
   paymentInfoComplete.value = !!event.complete;
   if (paymentInfoComplete.value === true) {
     // Scroll to bottom
@@ -58,8 +59,8 @@ const handleStripeInput = async (event: { complete: any }) => {
 };
 
 const stripeLoaded = ref(false);
-const elms = useTemplateRef<any>("elms");
-const card = useTemplateRef<any>("card");
+const elms = useTemplateRef("elms");
+const card = useTemplateRef("card");
 
 const clientSecret = ref();
 
@@ -105,14 +106,17 @@ const addPaymentMethod = async () => {
 
   form.processing = true;
 
-  const cardElement = card.value?.stripeElement;
+  const cardElement = card.value?.stripeElement as StripeCardElement;
 
-  const result:
-    | {
-        error: { message: string };
-        setupIntent: { payment_method: string };
-      }
-    | undefined = await elms.value?.instance.confirmCardSetup(
+  if (!cardElement) {
+    form.error = t(
+      "There was an error with the card element. Please try again."
+    );
+    form.processing = false;
+    return;
+  }
+
+  const result = await elms.value?.instance?.confirmCardSetup(
     clientSecret.value,
     {
       payment_method: {
@@ -135,7 +139,7 @@ const addPaymentMethod = async () => {
 
   // Handle result.error or result.token
   if (result.error) {
-    form.error = result.error.message;
+    form.error = result.error.message || t("There was an error with the payment intent. Please try again.");
     alert(form.error);
     form.processing = false;
   } else {
@@ -143,7 +147,19 @@ const addPaymentMethod = async () => {
       return;
     }
 
-    addPaymentMethodRepo(result.setupIntent)
+    const paymentMethod = result.setupIntent.payment_method
+
+    if (!paymentMethod) {
+      form.error = t(
+        "There was an error with the payment intent. Please try again."
+      );
+      form.processing = false;
+      return;
+    }
+
+    const paymentMethodId = typeof paymentMethod === "string" ? paymentMethod : paymentMethod.id
+
+    addPaymentMethodRepo({payment_method: paymentMethodId})
       .then((response) => {
         // If the response is false, pass to the next catch
         if (!response) {
@@ -206,7 +222,10 @@ const handleElementReady = async () => {
 };
 
 const focusOnInput = () => {
-  card.value?.stripeElement.focus();
+  const element = card.value?.stripeElement;
+  if (hasMethod(element, "focus")) {
+    element.focus();
+  }
 };
 </script>
 
@@ -214,42 +233,45 @@ const focusOnInput = () => {
   <base-form
     v-if="userStore.isAuthenticated"
     ref="baseFormRef"
-    @submit="addPaymentMethod"
     :disabled="
       success || !stripeLoaded || !elementReady || !paymentInfoComplete
     "
     :is-loading="form.processing || !stripeLoaded"
     data-cy="add-payment-form"
-    :submitText="submitText"
+    :submit-text="submitText"
+    @submit="addPaymentMethod"
   >
-    <label v-if="showLabel" @click="focusOnInput()">{{
+    <label
+      v-if="showLabel"
+      @click="focusOnInput()"
+    >{{
       $t("Add a payment method")
     }}</label>
     <stripe-elements
-      @click="focusOnInput()"
-      class="input"
       v-if="stripeLoaded"
       v-slot="{ elements }"
       ref="elms"
+      class="input"
       :stripe-key="stripeKey"
       :aria-busy="!elementReady"
       data-cy="add-payment-input"
       :elements-options="{
-        locale: $i18n.locale as StripeElementLocale,
+        // locale: $i18n.locale,
         appearance: {
           variables: appearanceVariables,
         },
       }"
+      @click="focusOnInput()"
     >
       <stripe-element
         v-show="elementReady"
         ref="card"
         :elements="elements"
-        @change="handleStripeInput($event)"
-        @ready="handleElementReady"
         :options="{
           style: elementStyle,
         }"
+        @change="handleStripeInput($event)"
+        @ready="handleElementReady"
       />
     </stripe-elements>
     <!-- this v-else input prevents layout shift while the above Stripe Elements are loading-->
@@ -259,7 +281,9 @@ const focusOnInput = () => {
       disabled
       placeholder="Card number"
       :aria-busy="true"
-    />
+    >
   </base-form>
-  <div v-else>{{ $t("Login or sign up to continue") }}</div>
+  <div v-else>
+    {{ $t("Login or sign up to continue") }}
+  </div>
 </template>

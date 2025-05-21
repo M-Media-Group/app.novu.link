@@ -30,13 +30,13 @@ defineProps({
 </script>
 
 <template>
-  <base-chart :clickData="clickData">
+  <base-chart :click-data="clickData">
     <template #default="{ data, options, handleClick, style }">
       <bar
         :data="data"
         :options="options"
-        @click="handleClick"
         :style="style"
+        @click="handleClick"
       />
     </template>
   </base-chart>

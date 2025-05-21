@@ -46,18 +46,18 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
-    :submitFn="submitForm"
-    submitText="Create a new API token"
+    :submit-fn="submitForm"
+    submit-text="Create a new API token"
     :autofocus="autofocus"
-    :isLoading="userStore.isLoading"
+    :is-loading="userStore.isLoading"
   >
     <label for="name">{{ $t("New token name") }}</label>
     <input
+      v-model="tokenName"
       type="text"
       name="name"
       :placeholder="$t('Token name')"
       required
-      v-model="tokenName"
-    />
+    >
   </base-form>
 </template>

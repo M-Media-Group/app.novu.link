@@ -13,6 +13,9 @@ const meta: Meta<typeof NavBar> = {
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   //  Set the router "user.isAuthenticated" to true. We will useUserStore to set the user to authenticated
+  args: {
+    appName: "Novu.Link",
+  },
 };
 
 export default meta;
@@ -24,17 +27,17 @@ type Story = StoryObj<typeof NavBar>;
  */
 export const LoggedIn: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as the user is not typed (date vs string params)
     user: userFixture,
   },
 };
 
 export const DropdownOpen: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as the user is not typed (date vs string params)
     user: userFixture,
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // There should be no logout text visible. It will be in the dom, but not visible
@@ -56,7 +59,7 @@ export const DropdownOpen: Story = {
           {
             // There is some flakey behavior with the a11y tests color contrast, I think due to the "play" timing and the timing of the opening of the dropdown + maybe the switching of light/dark modes. Need to investigagte, for now we disable it here speciically
             id: "color-contrast",
-            any: ["a"],
+            unknown: ["a"],
           },
         ],
       },
@@ -68,7 +71,6 @@ export const DropdownOpen: Story = {
 
 export const Loading: Story = {
   args: {
-    // @ts-ignore
     isLoading: true,
   },
 };

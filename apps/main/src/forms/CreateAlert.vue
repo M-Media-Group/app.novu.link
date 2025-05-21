@@ -6,13 +6,14 @@ import { formatMinutes, formatToMinutes } from "@novulink/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
-import { createAlert } from "../../../../packages/api/src/repositories/alert/alertRepository";
+import { createAlert } from "@novulink/api";
 
 const props = defineProps({
   /** If the form should autofocus */
   redirectId: {
     type: String,
     required: false,
+    default: undefined,
   },
 });
 
@@ -53,77 +54,109 @@ const { RedirectSelector, activeRedirectId } =
 <template>
   <base-form
     ref="baseFormRef"
-    @succeess="emit('success')"
-    :submitFn="submitForm"
+    :submit-fn="submitForm"
     :disabled="!activeRedirectId"
+    @succeess="emit('success')"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
     <template v-if="!redirectId">
       <label for="redirect_id">{{ $t("Magic link") }}</label>
       <redirect-selector
-        :modelValue="activeRedirectId ? [activeRedirectId] : []"
-        @update:modelValue="$event[0] ? (activeRedirectId = $event[0]) : null"
-      ></redirect-selector>
+        :model-value="activeRedirectId ? [activeRedirectId] : []"
+        @update:model-value="$event[0] ? (activeRedirectId = $event[0]) : null"
+      />
     </template>
 
     <!-- Choose Scan Type -->
     <label for="scan_type">{{ $t("Scan Type") }}</label>
-    <select id="scan_type" name="scan_type" required v-model="scanType">
-      <option value="successful">{{ $t("Successful Scans") }}</option>
-      <option value="failed">{{ $t("Failed Scans") }}</option>
-      <option value="all">{{ $t("All Scans") }}</option>
+    <select
+      id="scan_type"
+      v-model="scanType"
+      name="scan_type"
+      required
+    >
+      <option value="successful">
+        {{ $t("Successful Scans") }}
+      </option>
+      <option value="failed">
+        {{ $t("Failed Scans") }}
+      </option>
+      <option value="all">
+        {{ $t("All Scans") }}
+      </option>
     </select>
 
     <!-- Choose Condition (Above or Below Target) -->
     <label for="condition">{{ $t("Condition") }}</label>
-    <select id="condition" name="condition" required v-model="condition">
-      <option value=">">{{ $t(">") }}</option>
-      <option value="<">{{ $t("<") }}</option>
+    <select
+      id="condition"
+      v-model="condition"
+      name="condition"
+      required
+    >
+      <option value=">">
+        {{ $t(">") }}
+      </option>
+      <option value="<">
+        {{ $t("<") }}
+      </option>
     </select>
 
     <!-- Set Target Number -->
     <label for="target_number">{{ $t("Target Scans") }}</label>
     <input
-      type="number"
       id="target_number"
+      v-model="targetNumber"
+      type="number"
       name="target_number"
       required
-      v-model="targetNumber"
       min="1"
-    />
+    >
 
     <!-- Set Time Window -->
     <label for="time_duration">{{ $t("Time Window") }}</label>
     <fieldset role="group">
       <input
-        type="number"
         id="time_duration"
+        v-model="timeDuration"
+        type="number"
         name="time_duration"
         required
         aria-describedby="time_window_helper"
-        v-model="timeDuration"
         min="1"
-      />
+      >
 
       <!-- Choose Time Unit -->
-      <label for="time_unit" style="display: none">{{}}</label>
+      <label
+        for="time_unit"
+        style="display: none"
+      >{{}}</label>
       <select
         id="time_unit"
+        v-model="timeUnit"
         name="time_unit"
         required
         aria-describedby="time_window_helper"
-        v-model="timeUnit"
         :aria-label="$t('Unit of Time')"
       >
-        <option value="minutes">{{ $t("Minutes") }}</option>
-        <option value="hours">{{ $t("Hours") }}</option>
-        <option value="days">{{ $t("Days") }}</option>
+        <option value="minutes">
+          {{ $t("Minutes") }}
+        </option>
+        <option value="hours">
+          {{ $t("Hours") }}
+        </option>
+        <option value="days">
+          {{ $t("Days") }}
+        </option>
       </select>
     </fieldset>
 
     <!-- Helper text to explain the purpose -->
-    <small id="time_window_helper" style="display: block; margin-top: 8px">
+    <small
+      id="time_window_helper"
+      style="display: block; margin-top: 8px"
+    >
       {{
         $t(
           "If in the last {time} {more/less} {count} {type} scans occur, trigger the alert",
@@ -139,13 +172,12 @@ const { RedirectSelector, activeRedirectId } =
     <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
         :title="$t('Enable alerts')"
-        @confirmed="submit()"
         :description="
           $t(
             'Additional destinations and design changes are free after you subscribe.'
           )
         "
-        :allowBackgroundClickToClose="false"
+        :allow-background-click-to-close="false"
         :gate="[
           'confirmedEmailOrPhone',
           {
@@ -157,6 +189,7 @@ const { RedirectSelector, activeRedirectId } =
             },
           },
         ]"
+        @confirmed="submit()"
       >
         <base-button
           class="full-width"
@@ -164,8 +197,8 @@ const { RedirectSelector, activeRedirectId } =
           :aria-busy="isLoading"
           type="submit"
         >
-          {{ $t(submitText) }}</base-button
-        >
+          {{ $t(submitText) }}
+        </base-button>
       </confirms-gate>
     </template>
     <!-- </TransitionGroup> -->

@@ -50,7 +50,7 @@ const meta: Meta<typeof RuleSelector> = {
     ],
   },
 
-  // @ts-ignore
+  // @ts-expect-error as the decorators are not typed
   decorators: [sharedDecorators],
 
   // Use a custom render template so we can see the modelValue
@@ -81,7 +81,8 @@ export const NoValues: Story = {
 export const AllErrors: Story = {
   args: {
     modelValue: {
-      rule: "Bad value" as any,
+      // @ts-expect-error the error is being tested
+      rule: "Bad value",
       operator: "Bad value",
       value: "Bad value",
     },

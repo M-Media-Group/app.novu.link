@@ -1,5 +1,5 @@
-import { waitForPageReady, type TestRunnerConfig, getStoryContext } from '@storybook/test-runner';
-import { injectAxe, checkA11y, configureAxe } from 'axe-playwright';
+import { type TestRunnerConfig, getStoryContext, waitForPageReady } from '@storybook/test-runner';
+import { checkA11y, configureAxe, injectAxe } from 'axe-playwright';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 
 const customSnapshotsDir = `${process.cwd()}/__snapshots__`;

@@ -31,7 +31,7 @@ defineProps({
   <template v-if="isLoading">
     <card-element :loading="isLoading">
       <hgroup>
-        <h3></h3>
+        <h3 />
       </hgroup>
     </card-element>
   </template>
@@ -44,10 +44,13 @@ defineProps({
           'Track where you placed and shared your QR codes and magic links all in one place. As we find places where your link is shared, we\'ll show them here.'
         )
       "
-    >
-    </card-element>
+    />
   </template>
-  <template v-else v-for="placement in placements" :key="placement.id">
+  <template
+    v-for="placement in placements"
+    v-else
+    :key="placement.id"
+  >
     <card-element
       :loading="isLoading"
       :title="removeProtocol(placement.url)"

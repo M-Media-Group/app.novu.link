@@ -14,7 +14,7 @@ const meta: Meta<typeof BaseBadge> = {
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   argTypes: {
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: {
       control: "boolean",
       table: { category: "Props" },
@@ -43,7 +43,7 @@ const meta: Meta<typeof BaseBadge> = {
   }, // default value
 
   // Make sure the badge is visible in the canvas
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getAllByRole("status")[0];
     expect(badge).toBeVisible();
@@ -55,7 +55,7 @@ type Story = StoryObj<typeof BaseBadge>;
 
 export const Default: Story = {
   // The element should be a circle and have a role of status
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getByRole("status");
     expect(badge).toBeVisible();
@@ -72,7 +72,7 @@ export const Empty: Story = {
     default: "",
   },
   // The element should be a circle and have a role of status
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getByRole("status");
     expect(badge).toBeVisible();
@@ -91,7 +91,7 @@ export const MultiDigit: Story = {
 
 export const Busy: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: true,
   },
 };
@@ -99,7 +99,7 @@ export const Busy: Story = {
 export const EmptyBusy: Story = {
   args: {
     default: "",
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: true,
   },
 };
@@ -109,7 +109,7 @@ export const WithOverflowingText: Story = {
     default: overflowFixture.text,
   },
   // The text in the badge should not be overflowing the badge, and the badge should not be overflowing the screen
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getByRole("status");
     const badgeRect = badge.getBoundingClientRect();
@@ -127,7 +127,7 @@ export const WithOverflowingNoSpacesText: Story = {
     default: overflowFixture.text_without_spaces,
   },
   // The text in the badge should not be overflowing the badge, and the badge should not be overflowing the screen
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getByRole("status");
     const badgeRect = badge.getBoundingClientRect();
@@ -143,11 +143,11 @@ export const WithOverflowingNoSpacesText: Story = {
 export const LoadingWithOverflowingNoSpacesText: Story = {
   args: {
     default: overflowFixture.text_without_spaces,
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: true,
   },
   // The text in the badge should not be overflowing the badge, and the badge should not be overflowing the screen
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getByRole("status");
     const badgeRect = badge.getBoundingClientRect();
@@ -244,7 +244,6 @@ export const badgeAndButton: Story = {
 
 export const BadgeWithSVG: Story = {
   args: {
-    // @ts-ignore
     ariaLabel: "Heart",
     default: () => [
       h(
@@ -263,7 +262,7 @@ export const BadgeWithSVG: Story = {
     ],
   },
 
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const badge = canvas.getByRole("status");
 
@@ -282,7 +281,7 @@ export const BadgeWithSVG: Story = {
 export const BadgeWithSVGLoading: Story = {
   args: {
     ariaLabel: "Heart",
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: true,
     default: () => [
       h(
@@ -304,7 +303,6 @@ export const BadgeWithSVGLoading: Story = {
 
 export const BadgeWithSVGAndText: Story = {
   args: {
-    // @ts-ignore
     ariaLabel: "Heart",
     default: () => [
       h(

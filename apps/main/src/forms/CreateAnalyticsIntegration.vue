@@ -1,14 +1,14 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends PossibleRecord">
 import { computed, onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import type { selectOptionObject } from "@novulink/types";
+import type { PossibleRecord, SelectOptionObject } from "@novulink/types";
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import type { AnalyticsIntegration } from "@novulink/types";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@novulink/api";
 import {
   createAnalyticsIntegration,
   getSupportedAnalyticsIntegrations,
-} from "../../../../packages/api/src/repositories/analytics/analyticsRepository";
+} from "@novulink/api";
 
 const id = ref("" as AnalyticsIntegration["external_id"]);
 const secret = ref("" as string);
@@ -21,9 +21,9 @@ const baseFormRef = ref();
 
 const emit = defineEmits(["success"]);
 
-const allOptions = ref([] as selectOptionObject[]);
+const allOptions = ref<Awaited<ReturnType<typeof getOptions>> | null>(null);
 
-const getOptions = async (): Promise<selectOptionObject[]> => {
+const getOptions = async () => {
   try {
     const response = await getSupportedAnalyticsIntegrations();
 
@@ -43,14 +43,14 @@ onMounted(async () => {
   allOptions.value = await getOptions();
 });
 
-const selectedOption = ref(null as selectOptionObject["id"] | null);
+const selectedOption = ref<SelectOptionObject["id"] | null>(null);
 
 // idLabel computed from first selectedOption
 const idLabel = computed(() => {
   if (!selectedOption.value) {
     return "Select an integration";
   }
-  return allOptions.value.find((option) => option.id === selectedOption.value)
+  return allOptions.value?.find((option) => option.id === selectedOption.value)
     ?.raw?.fields?.id;
 });
 
@@ -58,7 +58,7 @@ const secretLabel = computed(() => {
   if (!selectedOption.value) {
     return "Select an integration";
   }
-  return allOptions.value.find((option) => option.id === selectedOption.value)
+  return allOptions.value?.find((option) => option.id === selectedOption.value)
     ?.raw?.fields?.secret;
 });
 
@@ -66,7 +66,7 @@ const helpLink = computed(() => {
   if (!selectedOption.value) {
     return "";
   }
-  return allOptions.value.find((option) => option.id === selectedOption.value)
+  return allOptions.value?.find((option) => option.id === selectedOption.value)
     ?.raw?.url;
 });
 
@@ -74,7 +74,7 @@ const debugCodeLabel = computed(() => {
   if (!selectedOption.value) {
     return "Select an integration";
   }
-  return allOptions.value.find((option) => option.id === selectedOption.value)
+  return allOptions.value?.find((option) => option.id === selectedOption.value)
     ?.raw?.fields?.debug_code;
 });
 
@@ -82,7 +82,7 @@ const debugCodeHelpLink = computed(() => {
   if (!selectedOption.value) {
     return "";
   }
-  return allOptions.value.find((option) => option.id === selectedOption.value)
+  return allOptions.value?.find((option) => option.id === selectedOption.value)
     ?.raw?.debug_url;
 });
 
@@ -102,10 +102,10 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
-    @succeess="emit('success')"
-    :submitFn="submitForm"
-    submitText="Save"
+    :submit-fn="submitForm"
+    submit-text="Save"
     :disabled="!selectedOption || !id || !secret"
+    @succeess="emit('success')"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
@@ -113,17 +113,18 @@ const submitForm = async () => {
     <!-- Name, Surname, and new password inputs NOTE THE PATTERN - needed to trigger validity on non-dirty (script added) inputs, see https://stackoverflow.com/a/53261163/7410951 -->
     <label for="service-summary">{{ $t("Service") }}</label>
     <dropdown-select
-      :modelValue="selectedOption ? [`${selectedOption}`] : []"
-      @update:modelValue="
+      v-if="allOptions && allOptions?.length > 0"
+      id="service"
+      v-model:is-open="isOpenAnalyticsServiceDropdown"
+      :model-value="selectedOption ? [`${selectedOption}`] : []"
+      :options="allOptions"
+      label="service"
+      required
+      @update:model-value="
         selectedOption = $event[0];
         isOpenAnalyticsServiceDropdown = false;
       "
-      :options="allOptions"
-      v-model:isOpen="isOpenAnalyticsServiceDropdown"
-      id="service"
-      label="service"
-      required
-    ></dropdown-select>
+    />
 
     <small>
       {{ $t("Need help? Read the analytics service docs") }}
@@ -138,49 +139,57 @@ const submitForm = async () => {
     </small>
 
     <template v-if="selectedOption">
-      <label for="id">{{ $t(idLabel) }}</label>
+      <label
+        v-if="idLabel"
+        for="id"
+      >{{ $t(idLabel) }}</label>
       <input
-        type="text"
         id="id"
-        name="id"
         v-model="id"
-        minlength="5"
-        pattern=".{5,}"
-        required
-      />
-
-      <label for="secret">{{ $t(secretLabel) }}</label>
-      <input
         type="text"
-        id="secret"
-        name="secret"
-        v-model="secret"
+        name="id"
         minlength="5"
         pattern=".{5,}"
         required
-      />
+      >
 
       <label
-        ><input type="checkbox" id="debug" name="debug" v-model="debug" />
+        v-if="secretLabel"
+        for="secret"
+      >{{ $t(secretLabel) }}</label>
+      <input
+        id="secret"
+        v-model="secret"
+        type="text"
+        name="secret"
+        minlength="5"
+        pattern=".{5,}"
+        required
+      >
+
+      <label><input
+               id="debug"
+               v-model="debug"
+               type="checkbox"
+               name="debug"
+             >
         {{ $t("Enable debug mode in the analytics service") }} -
         <a
           href="https://blog.novu.link/track-links-with-external-analytics-services/"
           target="_blank"
-          >{{ $t("Learn more") }}</a
-        ></label
-      >
+        >{{ $t("Learn more") }}</a></label>
 
       <template v-if="debug && debugCodeLabel">
         <label for="debugCode">{{ $t(debugCodeLabel) }}</label>
         <input
-          type="text"
           id="debugCode"
-          name="debugCode"
           v-model="debugCode"
+          type="text"
+          name="debugCode"
           minlength="5"
           pattern=".{5,}"
           required
-        />
+        >
         <small>
           {{ $t("Need help? Read the analytics service docs") }}
           <a
@@ -195,7 +204,12 @@ const submitForm = async () => {
       </template>
 
       <label for="name">{{ $t("Name") }}</label>
-      <input type="text" id="name" name="name" v-model="name" />
+      <input
+        id="name"
+        v-model="name"
+        type="text"
+        name="name"
+      >
       <small>{{
         $t(
           "Optional name to help you identify this integration. E.g. 'My BusinessName Facebook Pixel'"

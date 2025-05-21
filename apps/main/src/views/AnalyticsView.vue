@@ -6,13 +6,12 @@ import LineChart from "@/components/charts/LineChart.vue";
 import PieChart from "@/components/charts/PieChart.vue";
 import CardElement from "@/components/CardElement.vue";
 import DropdownSelect from "@/components/DropdownSelect.vue";
-import type { selectOption } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@novulink/helpers/urlFormatter";
 import { useI18n } from "vue-i18n";
 import HeatMap from "@/components/charts/HeatMap.vue";
 
-import { getRedirectsAnalytics } from "../../../../packages/api/src/repositories/analytics/analyticsRepository";
+import { getRedirectsAnalytics } from "@novulink/api";
 
 const data = ref<Analytics[]>([]);
 const heatmapData = ref<number[][]>([]);
@@ -216,6 +215,8 @@ const dropdownOptions = ref([
     id: "preset",
     raw: {
       label: t("Limit"),
+      type: "select",
+      max: today,
       options: [
         { label: "Top 5", value: 5 },
         { label: "Top 10", value: 10 },
@@ -233,6 +234,7 @@ const dropdownOptions = ref([
       label: t("From"),
       type: "date",
       max: today,
+      options: []
     },
   },
   {
@@ -242,9 +244,10 @@ const dropdownOptions = ref([
       label: t("To"),
       type: "date",
       max: today,
+      options: []
     },
   },
-] as selectOption[]);
+]);
 
 const filterValue = ref([
   "30",
@@ -256,7 +259,7 @@ const filterValue = ref([
 ]);
 
 // Watch for changes in the filter value
-watch(filterValue, ([_limit, fromDate, toDate]) => {
+watch(filterValue, ([, fromDate, toDate]) => {
   getData(fromDate, toDate);
 });
 
@@ -270,18 +273,18 @@ const flipAxis = ref(false);
     </hgroup>
     <div>
       <dropdown-select
+        v-model="filterValue"
         :options="dropdownOptions"
         placeholder="Filter"
-        v-model="filterValue"
         :multiple="true"
       >
         <template #optionSlot="{ option, updateModelValue, modelValue, index }">
-          <label :for="option.id">{{ option.raw.label }}</label>
-          <template v-if="option.render === 'preset'">
+          <label :for="option.id">{{ option.raw?.label }}</label>
+          <template v-if="option.render === 'preset' && option.raw?.options">
             <select
               :id="option.id"
-              @input="updateModelValue($event, index)"
               :value="modelValue[index]"
+              @input="updateModelValue($event, index)"
             >
               <option
                 v-for="preset in option.raw.options"
@@ -294,17 +297,17 @@ const flipAxis = ref(false);
           </template>
           <template v-else-if="option.render === 'button'">
             <base-button @click="updateModelValue($event, index)">
-              {{ option.raw.label }}
+              {{ option.raw?.label }}
             </base-button>
           </template>
           <input
             v-else
             :id="option.id"
-            :type="option.raw.type"
-            @input="updateModelValue($event, index)"
+            :type="option.raw?.type"
             :value="modelValue[index]"
-            :max="option.raw.max"
-          />
+            :max="option.raw?.max"
+            @input="updateModelValue($event, index)"
+          >
         </template>
       </dropdown-select>
     </div>
@@ -317,9 +320,12 @@ const flipAxis = ref(false);
 
     <bar-chart
       v-if="clickData[0]?.count && clickData[0]?.count > 0"
-      :clickData="clickData"
-    ></bar-chart>
-    <div class="placeholder-chart" v-else>
+      :click-data="clickData"
+    />
+    <div
+      v-else
+      class="placeholder-chart"
+    >
       <p>
         {{ $t("No data available") }}
       </p>
@@ -332,9 +338,12 @@ const flipAxis = ref(false);
     </hgroup>
     <line-chart
       v-if="lineChartData.reduce((acc, item) => acc + item.count, 0) > 0"
-      :clickData="lineChartData"
+      :click-data="lineChartData"
     />
-    <div class="placeholder-chart" v-else>
+    <div
+      v-else
+      class="placeholder-chart"
+    >
       <p>
         {{ $t("No data available") }}
       </p>
@@ -347,9 +356,12 @@ const flipAxis = ref(false);
     </hgroup>
     <bar-chart
       v-if="uniqueReferersAndClicks.length > 0"
-      :clickData="uniqueReferersAndClicks"
-    ></bar-chart>
-    <div class="placeholder-chart" v-else>
+      :click-data="uniqueReferersAndClicks"
+    />
+    <div
+      v-else
+      class="placeholder-chart"
+    >
       <p>
         {{ $t("No data available") }}
       </p>
@@ -363,9 +375,12 @@ const flipAxis = ref(false);
       </hgroup>
       <pie-chart
         v-if="uniqueCountries.length > 1"
-        :clickData="uniqueCountries"
-      ></pie-chart>
-      <div class="placeholder-chart" v-else>
+        :click-data="uniqueCountries"
+      />
+      <div
+        v-else
+        class="placeholder-chart"
+      >
         <p>
           {{ $t("No data available") }}
         </p>
@@ -378,9 +393,12 @@ const flipAxis = ref(false);
       </hgroup>
       <pie-chart
         v-if="uniqueLanguages.length > 0"
-        :clickData="uniqueLanguages"
-      ></pie-chart>
-      <div class="placeholder-chart" v-else>
+        :click-data="uniqueLanguages"
+      />
+      <div
+        v-else
+        class="placeholder-chart"
+      >
         <p>
           {{ $t("No data available") }}
         </p>
@@ -390,10 +408,13 @@ const flipAxis = ref(false);
   <card-element
     :title="$t('Heatmap')"
     :subtitle="$t('Scans by day of week and time of day')"
-    :loadingOn="['title']"
+    :loading-on="['title']"
   >
     <template #headerActions>
-      <button class="outline" @click="flipAxis = !flipAxis">
+      <button
+        class="outline"
+        @click="flipAxis = !flipAxis"
+      >
         {{ flipAxis ? $t("Flip axis") : $t("Flip axis") }}
       </button>
     </template>
@@ -401,12 +422,12 @@ const flipAxis = ref(false);
     <div
       v-if="loading"
       class="placeholder-chart gl-animate-skeleton-loader"
-    ></div>
+    />
 
     <heat-map
       v-else-if="heatmapData?.length > 0"
       :matrix="heatmapData"
-      :xLabels="[
+      :x-labels="[
         $t('Sunday'),
         $t('Monday'),
         $t('Tuesday'),
@@ -418,7 +439,11 @@ const flipAxis = ref(false);
       :flip-x-y="flipAxis"
     />
 
-    <div v-else class="placeholder-chart" style="height: 240px">
+    <div
+      v-else
+      class="placeholder-chart"
+      style="height: 240px"
+    >
       {{ $t("No data available") }}
     </div>
   </card-element>

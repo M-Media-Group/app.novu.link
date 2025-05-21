@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
-import { useUrlFormatter } from "@/composables/useUrlFormatter";
+import { assertIsUnifiedError } from "@novulink/api";
+import { useUrlFormatter } from "@novulink/vue-composables/useUrlFormatter";
 import {
   deleteRedirectEndpoint,
   updateRedirectEndpoint,
-} from "../../../../packages/api/src/repositories/redirect/redirectRepository";
+} from "@novulink/api";
 
 const props = defineProps({
   redirectId: {
@@ -64,9 +64,8 @@ const deleteEndpoint = async () => {
   <base-form
     v-if="endpointUrl"
     ref="baseFormRef"
-    :isLoading="loadingDelete"
-    @success="emit('success')"
-    :submitFn="
+    :is-loading="loadingDelete"
+    :submit-fn="
       async () =>
         await updateRedirectEndpoint({
           id: props.redirectId,
@@ -74,6 +73,7 @@ const deleteEndpoint = async () => {
           endpoint: endpointUrl ?? undefined,
         })
     "
+    @success="emit('success')"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
@@ -82,6 +82,7 @@ const deleteEndpoint = async () => {
     <label for="url">{{ $t("Go to") }}</label>
     <input
       ref="urlInput"
+      v-model="endpointUrl"
       type="url"
       inputmode="url"
       minlength="3"
@@ -89,17 +90,23 @@ const deleteEndpoint = async () => {
       name="endpoint"
       placeholder="https://test.com"
       data-hj-allow=""
-      v-model="endpointUrl"
       required
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?(\?.*)?(#.*)?"
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "
-    />
+    >
     <!-- </TransitionGroup> -->
-    <template #after-submit v-if="showDelete">
+    <template
+      v-if="showDelete"
+      #after-submit
+    >
       <!-- Delete endpoint a tag -->
-      <a href="#" @click.prevent="deleteEndpoint" class="delete">
+      <a
+        href="#"
+        class="delete"
+        @click.prevent="deleteEndpoint"
+      >
         {{ $t("Delete destination") }}
       </a>
     </template>

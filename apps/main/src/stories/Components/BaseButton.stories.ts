@@ -18,7 +18,7 @@ const meta: Meta<typeof BaseButton> = {
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   argTypes: {
-    // @ts-ignore
+    // @ts-expect-error as href is not an official prop
     href: {
       control: "text",
       table: { category: "Props" },
@@ -62,7 +62,7 @@ const meta: Meta<typeof BaseButton> = {
   }, // default value
 
   // Make sure the button is visible in the canvas
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getAllByRole("button")[0];
 
@@ -81,7 +81,7 @@ type Story = StoryObj<typeof BaseButton>;
  */
 export const UsingHref: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as href is not an official prop
     href: "/",
   },
 };
@@ -100,7 +100,7 @@ export const Disabled: Story = {
 
 export const Busy: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: true,
   },
 };
@@ -110,7 +110,7 @@ export const WithOverflowingText: Story = {
     default: overflowFixture.text,
   },
   // The text in the button should not be overflowing the button, and the button should not be overflowing the screen
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button");
     const buttonRect = button.getBoundingClientRect();
@@ -128,7 +128,7 @@ export const WithOverflowingNoSpacesText: Story = {
     default: overflowFixture.text_without_spaces,
   },
   // The text in the button should not be overflowing the button, and the button should not be overflowing the screen
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button");
     const buttonRect = button.getBoundingClientRect();
@@ -144,11 +144,11 @@ export const WithOverflowingNoSpacesText: Story = {
 export const LoadingWithOverflowingNoSpacesText: Story = {
   args: {
     default: overflowFixture.text_without_spaces,
-    // @ts-ignore
+    // @ts-expect-error as aria busy is not a prop
     ariaBusy: true,
   },
   // The text in the button should not be overflowing the button, and the button should not be overflowing the screen
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button");
     const buttonRect = button.getBoundingClientRect();
@@ -210,7 +210,7 @@ export const GroupedWithOverflowingText: Story = {
     }),
   ],
 
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const buttonGroup = canvas.getByRole("group");
     const buttonGroupRect = buttonGroup.getBoundingClientRect();
@@ -239,7 +239,7 @@ export const InputAndButton: Story = {
       </form>`,
     }),
   ],
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // The input and button should be the same height. We cannot guarantee the exact height if the text is long (something has to stretch so we don't overflow), but in this test, we have a very short text
@@ -256,7 +256,7 @@ export const InputAndButton: Story = {
 
 export const ButtonWithSVG: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as aria label is not a prop
     ariaLabel: "Heart",
     default: () => [
       h(
@@ -275,7 +275,7 @@ export const ButtonWithSVG: Story = {
     ],
   },
 
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button");
 
@@ -293,7 +293,7 @@ export const ButtonWithSVG: Story = {
 
 export const ButtonWithSVGLoading: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as aria label is not a prop
     ariaLabel: "Heart",
     ariaBusy: true,
     default: () => [
@@ -316,7 +316,7 @@ export const ButtonWithSVGLoading: Story = {
 
 export const ButtonWithSVGAndText: Story = {
   args: {
-    // @ts-ignore
+    // @ts-expect-error as aria label is not a prop
     ariaLabel: "Heart",
     default: () => [
       h(

@@ -2,8 +2,8 @@
 import type { PropType } from "vue";
 import BaseButton from "./BaseButton.vue";
 import BaseBadge from "./BaseBadge.vue";
-import type { selectOption } from "@novulink/types";
-import { useMultiselect } from "@/composables/useMultiselect";
+import type { SelectOption } from "@novulink/types";
+import { useMultiselect } from "@novulink/vue-composables/useMultiselect";
 
 const emit = defineEmits([
   /** The page the user has navigated to, either by clicking directly on a page or by using the previous and next buttons */
@@ -26,7 +26,7 @@ const props = defineProps({
 
   /** The pages to show in the tab nav */
   options: {
-    type: Array as PropType<selectOption[]>,
+    type: Array as PropType<SelectOption[]>,
     required: true,
   },
 
@@ -48,20 +48,28 @@ const { normalisedOptions, getLabel, isOptionSelected, updateModelValue } =
   useMultiselect(props, emit);
 </script>
 <template>
-  <nav aria-label="Tab Navigation" class="tab-nav">
+  <nav
+    aria-label="Tab Navigation"
+    class="tab-nav"
+  >
     <ul>
-      <li v-for="page in normalisedOptions" :key="page[modelKey]">
+      <li
+        v-for="page in normalisedOptions"
+        :key="page[modelKey]"
+      >
         <base-button
-          @click="updateModelValue(page[modelKey])"
           :aria-label="`Go to page ${page[modelKey]}`"
           :data-id="page[modelKey]"
           :class="{ active: isOptionSelected(page) }"
           :disabled="page.disabled"
+          @click="updateModelValue(page[modelKey])"
         >
           {{ getLabel(page) }}
-          <base-badge v-if="page.badge !== undefined">{{
-            page.badge === true ? "" : page.badge
-          }}</base-badge>
+          <base-badge v-if="page.badge !== undefined">
+            {{
+              page.badge === true ? "" : page.badge
+            }}
+          </base-badge>
         </base-button>
       </li>
     </ul>

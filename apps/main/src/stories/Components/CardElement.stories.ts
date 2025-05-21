@@ -86,11 +86,15 @@ export const ImagesOnly: Story = {
     ],
   },
 
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = canvasElement;
     // Get the card, which is an `article` tag
     const article = canvas.querySelector("article");
     const imagesSelector = canvas.querySelector(".images");
+
+    if (!article || !imagesSelector) {
+      throw new Error("Article or images selector not found");
+    }
 
     // Wait for each image to load
     await new Promise((resolve) => {
@@ -151,10 +155,15 @@ export const Everything: Story = {
     default: "Hello World",
     to: "/somewhere",
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = canvasElement;
     // Get the card, which is an `article` tag
     const card = canvas.querySelector("article");
+
+    if (!card) {
+      throw new Error("Card not found");
+    }
+
     // Ensure that the card does shows a pointer cursor
     expect(getComputedStyle(card).cursor).toBe("pointer");
   },
@@ -179,7 +188,7 @@ export const EverythingOverflowing: Story = {
     default: overflowFixture.text,
     to: "/somewhere",
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const article = canvas.getByRole("article");
     const articleRect = article.getBoundingClientRect();
@@ -209,7 +218,7 @@ export const EverythingOverflowingNoSpaces: Story = {
     default: overflowFixture.text_without_spaces,
     to: "/somewhere",
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const article = canvas.getByRole("article");
     const articleRect = article.getBoundingClientRect();
@@ -223,7 +232,7 @@ export const EverythingOverflowingNoSpaces: Story = {
 
     expectChildrenNotOverflowing(children, article);
 
-    // We check that any text directly in the article is not overflowing
+    // We check that unknown text directly in the article is not overflowing
     expectTextNotOverflowing(article);
   },
 };
@@ -268,10 +277,13 @@ export const NotClickable: Story = {
     default: "Hello World",
     to: undefined,
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = canvasElement;
     // Get the card, which is an `article` tag
     const card = canvas.querySelector("article");
+    if (!card) {
+      throw new Error("Card not found");
+    }
     // Ensure that the card does not show a pointer cursor
     expect(getComputedStyle(card).cursor).toBe("auto");
   },

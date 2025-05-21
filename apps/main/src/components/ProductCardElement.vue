@@ -2,7 +2,7 @@
 import type { PropType } from "vue";
 import type { Product } from "@novulink/types";
 import CardElement from "@/components/CardElement.vue";
-import { useProducts } from "@/composables/useProducts";
+import { useProducts } from "@novulink/vue-composables/useProducts";
 import BaseBadge from "@/components/BaseBadge.vue";
 
 defineProps({
@@ -41,9 +41,9 @@ const { formatPrice } = useProducts();
     :subtitle="
       product.prices?.min?.price !== 0
         ? formatPrice(
-            product.prices?.min?.priceWithTax,
-            product.prices?.min?.currencyCode
-          ) + ' incl. VAT'
+          product.prices?.min?.priceWithTax,
+          product.prices?.min?.currencyCode
+        ) + ' incl. VAT'
         : 'Free'
     "
     style="height: 100%"
@@ -53,7 +53,10 @@ const { formatPrice } = useProducts();
 
     <footer v-if="Object.keys(product.attributes).length > 0">
       Customise:
-      <base-badge v-for="attribute in product.attributes" :key="attribute.name">
+      <base-badge
+        v-for="attribute in product.attributes"
+        :key="attribute.name"
+      >
         {{ attribute.name }}
       </base-badge>
     </footer>

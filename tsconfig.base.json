@@ -4,13 +4,17 @@
         "module": "NodeNext",
         "strict": true,
         "lib": [
-            "es2021",
+            "es2021"
         ],
         "moduleResolution": "NodeNext",
         "composite": true,
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "noFallthroughCasesInSwitch": true, // Prevent accidental case fall-throughs
+        "noImplicitOverride": true, // Forces use of `override` keyword
+        // "noPropertyAccessFromIndexSignature": true, // Catches bugs in index signature usage
+        "exactOptionalPropertyTypes": true // More accurate optional prop typing
     }
 }

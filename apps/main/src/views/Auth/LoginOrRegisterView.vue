@@ -23,9 +23,12 @@ watch(
 <template>
   <h1>{{ $t("Authenticate") }}</h1>
   <div class="two-column-grid">
-    <card-element :titleHeadingLevel="2">
+    <card-element :title-heading-level="2">
       <login-or-register />
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

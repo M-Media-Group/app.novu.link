@@ -39,7 +39,9 @@ export const WithUserAlreadyAuthenticated: Story = {
         ...userFixture,
         created_at: new Date(),
         updated_at: new Date(),
-      } as any;
+        email_verified_at: new Date(),
+        phone_number_verified_at: new Date(),
+      };
     },
     template: "<loginOrRegisterView />",
   }),
@@ -59,7 +61,7 @@ export const OnRegisterScreen: Story = {
     ],
   },
 
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // First we fill the field with the user email
     const emailField = canvas.getByPlaceholderText("Email");

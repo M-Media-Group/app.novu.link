@@ -4,13 +4,13 @@ import BaseForm from "./BaseForm.vue";
 import RedirectSelector from "@/components/RedirectSelector.vue";
 import ProductSelector from "@/components/ProductSelector.vue";
 import { watch } from "vue";
-import { useProducts } from "@/composables/useProducts";
+import { useProducts } from "@novulink/vue-composables/useProducts";
 import type { Product } from "@novulink/types";
 import type { Redirect } from "@novulink/types";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import type { Gate } from "@m-media/vue3-gate-keeper";
-import { createOrder } from "../../../../packages/api/src/repositories/product/productRepository";
+import { createOrder } from "@novulink/api";
 
 const props = defineProps({
   /** The redirect ids. If passed, the selector will be hidden */
@@ -108,11 +108,11 @@ const gates = computed(() => {
 <template>
   <base-form
     ref="baseFormRef"
-    @succeess="emit('success')"
-    :submitFn="submitForm"
-    submitText="Buy now"
+    :submit-fn="submitForm"
+    submit-text="Buy now"
     :disabled="isLoadingProduct || localRedirectIds.length === 0"
-    :isLoading="isLoadingProduct"
+    :is-loading="isLoadingProduct"
+    @succeess="emit('success')"
   >
     <label for="redirect">QR Code to Print on Product</label>
     <redirect-selector
@@ -122,25 +122,32 @@ const gates = computed(() => {
     />
     <product-selector
       v-if="!productIds"
-      v-model="localProductIds"
       ref="productSelectorElement"
+      v-model="localProductIds"
       required
     />
     <template v-if="loadedProduct?.attributes">
-      <template v-for="options in loadedProduct.attributes" :key="options.name">
+      <template
+        v-for="options in loadedProduct.attributes"
+        :key="options.name"
+      >
         <label for="size">{{ options.name }}</label>
         <select
           name="size"
           required
+          :aria-busy="isLoadingProduct"
           @change="
             handleSelectedAttribute(
               `${options.name}`,
               ($event.target as HTMLSelectElement).value
             )
           "
-          :aria-busy="isLoadingProduct"
         >
-          <option v-for="option in options.value" :value="option" :key="option">
+          <option
+            v-for="option in options.value"
+            :key="option"
+            :value="option"
+          >
             {{ option }}
           </option>
         </select>
@@ -149,13 +156,13 @@ const gates = computed(() => {
 
     <label for="quantity">Quantity</label>
     <input
-      type="number"
       id="quantity"
+      v-model="quantity"
+      type="number"
       name="quantity"
       min="1"
       required
-      v-model="quantity"
-    />
+    >
 
     <!-- Notes input -->
     <!-- Notes emoji:  -->
@@ -163,19 +170,19 @@ const gates = computed(() => {
       <summary>📝 Add order notes</summary>
       <textarea
         id="notes"
-        name="notes"
         v-model="notes"
+        name="notes"
         placeholder="Any notes for the designer?"
-      ></textarea>
+      />
     </details>
 
     <label>
       <input
-        type="checkbox"
         id="terms"
-        name="terms"
         v-model="includeQrCodeSubscription"
-      />
+        type="checkbox"
+        name="terms"
+      >
       {{
         $t(
           "Include QR Code subscription for advanced scan tracking, multiple destinations, custom alerts, and more."
@@ -185,11 +192,11 @@ const gates = computed(() => {
 
     <label>
       <input
-        type="checkbox"
         id="terms"
-        name="terms"
         v-model="includeConsultation"
-      />
+        type="checkbox"
+        name="terms"
+      >
       {{ $t("Include one to one design consultation.") }}
       {{
         $t(
@@ -200,14 +207,14 @@ const gates = computed(() => {
     <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
         :title="$t('Subscribe')"
-        @confirmed="submit()"
         :description="
           $t(
             'Additional destinations and design changes are free after you subscribe.'
           )
         "
-        :allowBackgroundClickToClose="false"
+        :allow-background-click-to-close="false"
         :gate="gates"
+        @confirmed="submit()"
       >
         <base-button
           class="full-width"
@@ -215,22 +222,24 @@ const gates = computed(() => {
           :aria-busy="isLoading"
           type="submit"
         >
-          {{ $t(submitText) }}</base-button
-        >
+          {{ $t(submitText) }}
+        </base-button>
       </confirms-gate>
     </template>
-    <template #after-submit v-if="selectedVariant?.prices[0]?.priceWithTax">
-      <small
-        >{{
-          formatPrice(
-            selectedVariant?.prices[0]?.priceWithTax,
-            selectedVariant?.prices[0]?.currencyCode
-          ) + " incl. VAT"
-        }}
+    <template
+      v-if="selectedVariant?.prices[0]?.priceWithTax"
+      #after-submit
+    >
+      <small>{{
+               formatPrice(
+                 selectedVariant?.prices[0]?.priceWithTax,
+                 selectedVariant?.prices[0]?.currencyCode
+               ) + " incl. VAT"
+             }}
         {{ selectedVariant?.name }} x
         {{ quantity }}
         <template v-if="loadedProduct?.prices.shipping">
-          <br />+
+          <br>+
           {{
             formatPrice(
               loadedProduct.prices.shipping,
@@ -240,10 +249,10 @@ const gates = computed(() => {
           worldwide shipping
         </template>
         <template v-if="includeQrCodeSubscription">
-          <br />+ €3 / month (billed annually) Magic Link
+          <br>+ €3 / month (billed annually) Magic Link
         </template>
         <template v-if="includeConsultation">
-          <br />+ €15 Pro Consulting
+          <br>+ €15 Pro Consulting
         </template>
       </small>
     </template>

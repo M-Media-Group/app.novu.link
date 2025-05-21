@@ -33,7 +33,7 @@ describe("Tab navigation", () => {
       expect(button.classes("active")).toBe(false);
     }
 
-    // @ts-ignore
+
     expect(wrapper.html()).toHTMLValidate();
 
     expect(wrapper.html()).toMatchSnapshot();

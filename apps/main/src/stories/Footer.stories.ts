@@ -29,7 +29,7 @@ export const Default: Story = {};
 
 export const OpenSelect: Story = {
   // We will play a click on the first dropdown, and select the second item
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Get the dropdown by name dark-mode
     const dropdown = canvas.getByDisplayValue("Light");

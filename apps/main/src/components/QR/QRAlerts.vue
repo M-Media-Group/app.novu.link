@@ -32,17 +32,17 @@ defineProps({
   <template v-if="isLoading">
     <card-element :loading="isLoading">
       <hgroup>
-        <h3></h3>
+        <h3 />
       </hgroup>
     </card-element>
   </template>
   <template v-else>
     <card-element
+      v-if="alerts && alerts.length > 0"
       :loading="isLoading"
       :title="$t('Your alerts')"
       :subtitle="$t('Get notified when key events happen on your QR code')"
       :badges="!subscribed ? [$t('Pro')] : []"
-      v-if="alerts && alerts.length > 0"
     >
       <section
         v-for="alert in alerts"
@@ -66,22 +66,30 @@ defineProps({
             <base-badge
               v-if="
                 alert.logs &&
-                alert.logs.length > 0 &&
-                alert.logs[0].status === 'pending'
+                  alert.logs.length > 0 &&
+                  alert.logs[0].status === 'pending'
               "
-              >{{ $t("Triggered") }}</base-badge
             >
+              {{ $t("Triggered") }}
+            </base-badge>
           </summary>
           <ul v-if="alert.logs && alert.logs.length">
-            <li v-for="log in alert.logs" :key="log.id">
+            <li
+              v-for="log in alert.logs"
+              :key="log.id"
+            >
               {{ $t("Triggered") }} {{ relativeTime(log.triggered_at) }}:
               {{ $t(log.status) }} {{ relativeTime(log.updated_at, $i18n.locale) }}
-              <base-badge v-if="log.status === 'pending'">{{
-                $t("New")
-              }}</base-badge>
+              <base-badge v-if="log.status === 'pending'">
+                {{
+                  $t("New")
+                }}
+              </base-badge>
             </li>
           </ul>
-          <p v-else>{{ $t("No events occured yet") }}</p>
+          <p v-else>
+            {{ $t("No events occured yet") }}
+          </p>
         </details>
       </section>
     </card-element>
@@ -93,6 +101,6 @@ defineProps({
     :subtitle="$t('Get notified when key events happen on your QR code')"
     :badges="!subscribed ? [$t('Pro')] : []"
   >
-    <create-alert :redirectId="redirectId" />
+    <create-alert :redirect-id="redirectId" />
   </card-element>
 </template>

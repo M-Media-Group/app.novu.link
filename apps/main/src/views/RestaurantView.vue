@@ -6,16 +6,17 @@ import { ref, watch } from "vue";
 import image from "@/assets/undraw_chef_cu-0-r.svg";
 import TabNav from "@/components/TabNav.vue";
 import { assetUrl, loadData } from "@novulink/helpers/dataLoader";
+import { computeTabOptions } from "@novulink/helpers/normaliseOptions";
 
 const { locale } = useI18n();
 
-const featureData = ref([] as any[]);
-const testimonialData = ref([] as any[]);
-const faqData = ref([] as any[]);
-const goodPointsData = ref([] as any[]);
-const painPointsData = ref([] as any[]);
-const pricingData = ref([] as any[]);
-const featuresByGroupData = ref([] as any[]);
+const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const testimonialData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const faqData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const goodPointsData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const painPointsData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const pricingData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const featuresByGroupData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
 
 const openTabs = ref(["1"]);
 
@@ -41,17 +42,13 @@ const scrollToTop = () => {
     behavior: "smooth",
   });
 };
-
-const computeTabOptions = (featuresByGroupData: any[]) => {
-  return featuresByGroupData.map((group) => ({
-    render: group.name,
-    id: group.id,
-  }));
-};
 </script>
 
 <template>
-  <section id="externalLinks" class="two-column-grid hero-section">
+  <section
+    id="externalLinks"
+    class="two-column-grid hero-section"
+  >
     <hgroup>
       <h1>{{ $t("Single QR code for breakfast, lunch, and dinner") }}</h1>
       <p>
@@ -63,12 +60,15 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
       </p>
       <create-redirect
         :autofocus="false"
-        :showNameInput="false"
+        :show-name-input="false"
         :inline="true"
-      ></create-redirect>
+      />
     </hgroup>
 
-    <img :src="image" alt="Link shortener" />
+    <img
+      :src="image"
+      alt="Link shortener"
+    >
   </section>
 
   <section id="testimonials">
@@ -83,11 +83,13 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
         v-for="testimonial in testimonialData
           .filter((item) => item.industry === 'food_and_beverage')
           .slice(0, 3)"
-        :key="testimonial.id"
+        :key="(testimonial.id as number)"
       >
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
-          <p v-if="testimonial.subtitle">{{ testimonial.subtitle }}</p>
+          <p v-if="testimonial.subtitle">
+            {{ testimonial.subtitle }}
+          </p>
         </hgroup>
         <p>{{ testimonial.description }}</p>
       </li>
@@ -106,16 +108,15 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
       </p>
     </hgroup>
     <tab-nav
-      :options="computeTabOptions(featuresByGroupData)"
       v-model="openTabs"
-    >
-    </tab-nav>
+      :options="computeTabOptions(featuresByGroupData)"
+    />
 
     <ul>
       <li
         v-for="goodPoint in featuresByGroupData"
-        :key="goodPoint.id"
         v-show="openTabs.includes(`${goodPoint.id}`)"
+        :key="(goodPoint.id as number)"
         class="two-column-grid three-two-grid"
       >
         <div>
@@ -124,7 +125,11 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
           </hgroup>
           <p>{{ goodPoint.description }}</p>
         </div>
-        <img :src="assetUrl(goodPoint.image)" alt="Novu.Link demo" />
+        <img
+          v-if="typeof goodPoint.image === 'string'"
+          :src="assetUrl(goodPoint.image)"
+          alt="Novu.Link demo"
+        >
       </li>
     </ul>
   </section>
@@ -137,19 +142,28 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
       </p>
     </hgroup>
     <div class="three-column-grid">
-      <card-element v-for="pricing in pricingData" :key="pricing.id">
+      <card-element
+        v-for="pricing in pricingData"
+        :key="(pricing.id as number)"
+      >
         <hgroup>
           <h3>{{ pricing.name }}</h3>
           <p>{{ pricing.price }}</p>
         </hgroup>
         <p>{{ pricing.description }}</p>
         <ul>
-          <li v-for="feature in pricing.features" :key="feature.id">
+          <li
+            v-for="feature in (pricing.features as Array<{ id: number }>)"
+            :key="feature.id"
+          >
             <p>{{ feature }}</p>
           </li>
         </ul>
         <!-- Scroll to top button "Get started" -->
-        <button type="button" @click="scrollToTop">
+        <button
+          type="button"
+          @click="scrollToTop"
+        >
           {{ $t("Get started") }}
         </button>
       </card-element>
@@ -167,23 +181,32 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="feature in featureData" :key="feature.id">
+        <tr
+          v-for="feature in featureData"
+          :key="(feature.id as number)"
+        >
           <td>
             {{ feature.name }}
             <span :data-tooltip="feature.description">?</span>
           </td>
           <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
-          <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
+          <td>{{ (feature.min_subscription as number) >= 0 ? $t("Yes") : "-" }}</td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <section id="faq" class="two-column-grid">
+  <section
+    id="faq"
+    class="two-column-grid"
+  >
     <h2>{{ $t("FAQ") }}</h2>
     <!-- For FAQ we will use a details -->
     <div>
-      <details v-for="faq in faqData" :key="faq.id">
+      <details
+        v-for="faq in faqData"
+        :key="(faq.id as number)"
+      >
         <summary>{{ faq.name }}</summary>
         <p>{{ faq.description }}</p>
       </details>
@@ -203,7 +226,7 @@ const computeTabOptions = (featuresByGroupData: any[]) => {
       </p>
     </hgroup>
     <card-element>
-      <create-redirect :autofocus="false"></create-redirect>
+      <create-redirect :autofocus="false" />
     </card-element>
   </section>
 </template>

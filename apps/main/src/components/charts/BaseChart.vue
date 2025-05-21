@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCssVarForStripe } from "@/helpers/cssVariables";
+import { getCssVarForStripe } from "@novulink/helpers/cssVariables";
 import {
   BarElement,
   CategoryScale,
@@ -95,17 +95,17 @@ const options = {
   },
 };
 
-const handleClick = (event: MouseEvent, items: any[]) => {
+const handleClick = (event: MouseEvent, items: unknown[]) => {
   console.log(event, items);
 };
 </script>
 
 <template>
   <slot
-    v-bind:datasets="datasets"
-    v-bind:data="data"
-    v-bind:options="options"
-    v-bind:handleClick="handleClick"
+    :datasets="datasets"
+    :data="data"
+    :options="options"
+    :handle-click="handleClick"
     :style="{ width: '100%', height }"
   />
 </template>

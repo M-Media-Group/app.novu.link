@@ -49,9 +49,9 @@ const submitForm = async () => {
 <template>
   <base-form
     ref="baseFormRef"
-    :isLoading="userStore.isLoading"
-    submitText="Save"
-    :submitFn="submitForm"
+    :is-loading="userStore.isLoading"
+    submit-text="Save"
+    :submit-fn="submitForm"
   >
     <!-- The form starts with just the email. The user presses a button and we check if we should show the register or login inputs -->
     <!-- <TransitionGroup> -->
@@ -59,41 +59,41 @@ const submitForm = async () => {
     <!-- Name, Surname, and new password inputs NOTE THE PATTERN - needed to trigger validity on non-dirty (script added) inputs, see https://stackoverflow.com/a/53261163/7410951 -->
     <label for="name">{{ $t("Name") }}</label>
     <input
-      type="text"
       id="name"
+      v-model="name"
+      type="text"
       name="name"
       :placeholder="$t('Name')"
-      v-model="name"
       minlength="2"
       pattern="\p{Alpha}{2,}"
       autofocus
       required
-    />
+    >
 
     <label for="phone_number">{{ $t("Phone number (starting with +)") }}</label>
     <input
-      type="tel"
       id="phone_number"
-      inputmode="tel"
       v-model="phone"
+      type="tel"
+      inputmode="tel"
       autocomplete="tel"
       pattern="^\+[0-9]{1,15}$"
       minlength="7"
       maxlength="16"
       :placeholder="$t('+339123456789')"
-    />
+    >
 
     <label for="email">{{ $t("Email") }}</label>
     <input
-      type="email"
       id="email"
+      v-model="email"
+      type="email"
       name="email"
       :placeholder="$t('Email')"
-      v-model="email"
       pattern="[^@]+@[^@]+\.[^@]+"
       autofocus
       required
-    />
+    >
 
     <small v-if="!userStore.user?.email_verified_at">
       {{ $t("Your email address is not verified.") }}

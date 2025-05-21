@@ -1,7 +1,7 @@
 <script lang="ts">
 import i18n from "@/locales/i18n";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
-import { startSubscription } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
+import { assertIsUnifiedError } from "@novulink/api";
+import { startSubscription } from "@novulink/api";
 const t = i18n.global.t;
 </script>
 <script setup lang="ts">
@@ -70,20 +70,20 @@ const handleSuccess = () => {
 <template>
   <base-form
     ref="baseFormRef"
-    @success="handleSuccess"
-    :submitFn="submitForm"
+    :submit-fn="submitForm"
     :disabled="success"
-    :showTrigger="false"
-    :showFooter="false"
-    :allowBackgroundClickToClose="false"
-    :showSubmitButton="!showAddForm"
-    :submitText="submitText"
+    :show-trigger="false"
+    :show-footer="false"
+    :allow-background-click-to-close="false"
+    :show-submit-button="!showAddForm"
+    :submit-text="submitText"
+    @success="handleSuccess"
   >
     <add-payment-method
       v-if="showAddForm"
+      :show-label="false"
+      :submit-text="submitText"
       @success="handleConfirmedWithPaymentMethod"
-      :showLabel="false"
-      :submitText="submitText"
     />
     <template v-else>
       <!-- Show current payment method, and a link to turn on the form to add-payment method -->

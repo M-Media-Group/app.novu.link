@@ -3,17 +3,14 @@ import { ref, useTemplateRef } from "vue";
 import BaseForm from "./BaseForm.vue";
 import RuleSelector from "@/components/RuleSelector.vue";
 import type { RuleModel } from "@novulink/types";
-import { useEventsBus } from "@/eventBus/events";
 
 import BaseButton from "@/components/BaseButton.vue";
 import { removeProtocol } from "@novulink/helpers/urlFormatter";
 
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
-import { useUrlFormatter } from "@/composables/useUrlFormatter";
-import { addRedirectEndpoint } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
-
-const $bus = useEventsBus();
+import { assertIsUnifiedError } from "@novulink/api";
+import { useUrlFormatter } from "@novulink/vue-composables/useUrlFormatter";
+import { addRedirectEndpoint } from "@novulink/api";
 
 const props = defineProps({
   /** The redirect ID to add the endpoint for */
@@ -107,22 +104,23 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
   <base-form
     v-else
     ref="baseFormRef"
-    @submit="startConfirming"
-    :submitText="$t('Add destination to QR code')"
+    :submit-text="$t('Add destination to QR code')"
     :autofocus="false"
+    :submit-fn="submitForm"
+    @submit="startConfirming"
     @success="emit('success')"
-    :submitFn="submitForm"
   >
     <label for="rule">{{ $t("If") }}</label>
     <rule-selector
-      required
       v-model="ruleData"
-      @valueSelected="focusOnUrl"
-      :redirectId="props.redirectId"
-    ></rule-selector>
+      required
+      :redirect-id="props.redirectId"
+      @value-selected="focusOnUrl"
+    />
     <label for="url">{{ $t("Go to") }}</label>
     <input
       ref="urlInput"
+      v-model="endpointUrl"
       type="url"
       inputmode="url"
       minlength="3"
@@ -130,31 +128,28 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
       name="endpoint"
       placeholder="https://test.com"
       data-hj-allow=""
-      v-model="endpointUrl"
       required
       pattern="(https?://)?([a-z0-9\-]+\.)+[a-z]{2,}(:[0-9]+)?(/.*)?"
       @input="
         debounceAddProtocolIfMissing(($event.target as HTMLInputElement).value)
       "
-    />
+    >
     <div v-if="fallbackUrl">
       {{ $t("Else fallback to", [removeProtocol(fallbackUrl)]) }}
     </div>
-    <br />
+    <br>
     <!-- </TransitionGroup> -->
 
     <template #submit="{ disabled, isLoading, submitText, submit }">
       <confirms-gate
         ref="subscriptionStartRef"
-        @confirmed="submit()"
-        @failed="handleFailedConfirmation"
         :title="$t('Activate destination')"
         :description="
           $t(
             'Additional destinations and design changes are free after you subscribe.'
           )
         "
-        :allowBackgroundClickToClose="false"
+        :allow-background-click-to-close="false"
         :gate="[
           'confirmedEmailOrPhone',
           {
@@ -166,8 +161,14 @@ const { endpointUrl, debounceAddProtocolIfMissing } = useUrlFormatter();
             },
           },
         ]"
+        @confirmed="submit()"
+        @failed="handleFailedConfirmation"
       >
-        <base-button :disabled="disabled" type="submit" :aria-busy="isLoading">
+        <base-button
+          :disabled="disabled"
+          type="submit"
+          :aria-busy="isLoading"
+        >
           {{ $t(submitText) }}
         </base-button>
       </confirms-gate>

@@ -2,9 +2,9 @@
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import { type PropType, onMounted, ref } from "vue";
 import type { Redirect } from "@novulink/types";
-import type { selectOptionObject } from "@novulink/types";
+import type { SelectOptionObject } from "@novulink/types";
 import CreateRedirect from "@/forms/CreateRedirect.vue";
-import { getRedirects } from "../../../../packages/api/src/repositories/redirect/redirectRepository";
+import { getRedirects } from "@novulink/api";
 
 const props = defineProps({
   modelValue: {
@@ -38,12 +38,12 @@ const isLoading = ref(false);
 
 const isOpenValueSelector = ref(false);
 
-const redirectOptions = ref([] as selectOptionObject[]);
+const redirectOptions = ref([] as SelectOptionObject[]);
 const searchTerm = ref("");
 
-const getTeamRedirects = async (): Promise<selectOptionObject[]> => {
+const getTeamRedirects = async (): Promise<SelectOptionObject[]> => {
   isLoading.value = true;
-  let data: selectOptionObject[] = [];
+  let data: SelectOptionObject[] = [];
 
   try {
     const response = await getRedirects();
@@ -54,7 +54,7 @@ const getTeamRedirects = async (): Promise<selectOptionObject[]> => {
           render: redirect.name,
           badge: redirect.subscribed_at ? undefined : "Not Subscribed",
           disabled: props.subscribedOnly && !redirect.subscribed_at,
-        } as selectOptionObject)
+        } as SelectOptionObject)
     );
 
     return data;
@@ -84,9 +84,9 @@ const emit = defineEmits<{
   <template v-if="!isLoading && redirectOptions.length === 0">
     <create-redirect
       :inline="true"
-      :showNameInput="false"
-      :showLabel="false"
-      :redirectOnSuccess="false"
+      :show-name-input="false"
+      :show-label="false"
+      :redirect-on-success="false"
       @success="
         ($event) => {
           redirectOptions.push({
@@ -100,17 +100,17 @@ const emit = defineEmits<{
   </template>
   <dropdown-select
     v-else
+    v-model:is-open="isOpenValueSelector"
+    v-model:search="searchTerm"
     name="redirect"
     :options="redirectOptions"
     :aria-busy="isLoading"
     :searchable="redirectOptions.length > 10"
-    v-model:is-open="isOpenValueSelector"
-    v-model:search="searchTerm"
-    :showSelectedFirst="true"
-    :modelValue="modelValue"
-    @update:modelValue="handleSelect"
+    :show-selected-first="true"
+    :model-value="modelValue"
     :required="required"
     :autofocus="true"
     :multiple="multiple"
+    @update:model-value="handleSelect"
   />
 </template>

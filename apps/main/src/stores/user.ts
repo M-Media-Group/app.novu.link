@@ -2,7 +2,7 @@ import { type Ref, ref } from "vue";
 import { defineStore } from "pinia";
 
 import type { User } from "@novulink/types";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
+import { assertIsUnifiedError } from "@novulink/api";
 
 import {
   checkEmail as checkEmailUser,
@@ -21,7 +21,7 @@ import {
   sendPasswordResetEmail as sendPasswordResetEmailUser,
   shouldConfirmPassword,
   update as updateUser,
-} from "../../../../packages/api/src/repositories/user/userRepository";
+} from "@novulink/api";
 
 export const useUserStore = defineStore("user", () => {
   // the state of the user
@@ -161,7 +161,7 @@ export const useUserStore = defineStore("user", () => {
       await sendPasswordResetEmailUser({
         email,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       assertIsUnifiedError(error);
       if (error.status === 422 && error.details) {
         error.details.password = error.details.email;

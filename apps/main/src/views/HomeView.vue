@@ -6,17 +6,18 @@ import { onMounted, provide, ref, watch } from "vue";
 import image from "@/assets/undraw_share_link.svg";
 import TabNav from "@/components/TabNav.vue";
 import { assetUrl, loadData } from "@novulink/helpers/dataLoader";
-import { getQrDesignLogos } from "../../../../packages/api/src/repositories/qrdesign/qrdesignRepository";
+import { getQrDesignLogos } from "@novulink/api";
+import { computeTabOptions } from "@novulink/helpers/normaliseOptions";
 
 const { locale } = useI18n();
 
-const featureData = ref([] as any[]);
-const testimonialData = ref([] as any[]);
-const faqData = ref([] as any[]);
-const goodPointsData = ref([] as any[]);
-const painPointsData = ref([] as any[]);
-const pricingData = ref([] as any[]);
-const featuresByGroupData = ref([] as any[]);
+const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const testimonialData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const faqData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const goodPointsData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const painPointsData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const pricingData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const featuresByGroupData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
 
 const openTabs = ref(["1"]);
 
@@ -41,13 +42,6 @@ const scrollToTop = () => {
     top: 0,
     behavior: "smooth",
   });
-};
-
-const computeTabOptions = (featuresByGroupData: any[]) => {
-  return featuresByGroupData.map((group) => ({
-    render: group.name,
-    id: group.id,
-  }));
 };
 
 const logos = ref<
@@ -82,13 +76,16 @@ provide("showExpandedFooter", true);
       </p>
       <create-redirect
         :autofocus="false"
-        :showNameInput="false"
+        :show-name-input="false"
         :inline="true"
-        :buttonClasses="['contrast']"
-      ></create-redirect>
+        :button-classes="['contrast']"
+      />
     </hgroup>
 
-    <img :src="image" alt="Link shortener" />
+    <img
+      :src="image"
+      alt="Link shortener"
+    >
     <div>
       <small>🔐 {{ $t("Trusted to link to:") }}</small>
       <div class="image-scroller">
@@ -98,7 +95,7 @@ provide("showExpandedFooter", true);
           :src="logo.logo!"
           alt="Logo"
           loading="lazy"
-        />
+        >
       </div>
     </div>
   </section>
@@ -113,18 +110,24 @@ provide("showExpandedFooter", true);
     <ul class="three-column-grid">
       <li
         v-for="testimonial in testimonialData.slice(0, 3)"
-        :key="testimonial.id"
+        :key="testimonial.id as string"
       >
         <hgroup>
           <h3>{{ testimonial.name }}</h3>
-          <p v-if="testimonial.subtitle">{{ testimonial.subtitle }}</p>
+          <p v-if="testimonial.subtitle">
+            {{ testimonial.subtitle }}
+          </p>
         </hgroup>
         <p>{{ testimonial.description }}</p>
       </li>
     </ul>
   </section>
 
-  <section id="goodPoints" class="fulscreen-width-container" data-theme="light">
+  <section
+    id="goodPoints"
+    class="fulscreen-width-container"
+    data-theme="light"
+  >
     <hgroup>
       <h2>{{ $t("How Novu.Link does even more") }}</h2>
       <p>
@@ -136,16 +139,15 @@ provide("showExpandedFooter", true);
       </p>
     </hgroup>
     <tab-nav
-      :options="computeTabOptions(featuresByGroupData)"
       v-model="openTabs"
-    >
-    </tab-nav>
+      :options="computeTabOptions(featuresByGroupData)"
+    />
 
     <ul>
       <li
         v-for="goodPoint in featuresByGroupData"
-        :key="goodPoint.id"
         v-show="openTabs.includes(`${goodPoint.id}`)"
+        :key="goodPoint.id as string"
         class="two-column-grid three-two-grid"
       >
         <div>
@@ -154,7 +156,10 @@ provide("showExpandedFooter", true);
           </hgroup>
           <p>{{ goodPoint.description }}</p>
         </div>
-        <img :src="assetUrl(goodPoint.image)" alt="Novu.Link demo" />
+        <img
+          :src="assetUrl(goodPoint.image as string)"
+          alt="Novu.Link demo"
+        >
       </li>
     </ul>
   </section>
@@ -163,30 +168,42 @@ provide("showExpandedFooter", true);
     <hgroup>
       <h2>{{ $t("Pricing") }}</h2>
       <p>
-        {{ $t("Billed anually. Cancel anytime") }}
+        {{ $t("Billed anually. Cancel Record<string, string | number | string[]>time") }}
       </p>
     </hgroup>
     <div class="three-column-grid">
-      <card-element v-for="pricing in pricingData" :key="pricing.id">
+      <card-element
+        v-for="pricing in pricingData"
+        :key="(pricing.id as number)"
+      >
         <hgroup>
           <h3>{{ pricing.name }}</h3>
           <p>{{ pricing.price }}</p>
         </hgroup>
         <p>{{ pricing.description }}</p>
         <ul>
-          <li v-for="feature in pricing.features" :key="feature.id">
+          <li
+            v-for="feature in (pricing.features as Array<{ id: number }>)"
+            :key="feature.id"
+          >
             <p>{{ feature }}</p>
           </li>
         </ul>
         <!-- Scroll to top button "Get started" -->
-        <button type="button" @click="scrollToTop">
+        <button
+          type="button"
+          @click="scrollToTop"
+        >
           {{ $t("Get started") }}
         </button>
       </card-element>
     </div>
   </section>
 
-  <section id="features" class="fulscreen-width-container">
+  <section
+    id="features"
+    class="fulscreen-width-container"
+  >
     <h2>{{ $t("Features") }}</h2>
     <table>
       <thead>
@@ -197,24 +214,33 @@ provide("showExpandedFooter", true);
         </tr>
       </thead>
       <tbody>
-        <tr v-for="feature in featureData" :key="feature.id">
+        <tr
+          v-for="feature in featureData"
+          :key="feature.id as number"
+        >
           <td>
             {{ feature.name }}
-            <br />
+            <br>
             <small class="muted">{{ feature.description }}</small>
           </td>
           <td>{{ feature.min_subscription === 0 ? $t("Yes") : "-" }}</td>
-          <td>{{ feature.min_subscription >= 0 ? $t("Yes") : "-" }}</td>
+          <td>{{ (feature.min_subscription as number) >= 0 ? $t("Yes") : "-" }}</td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <section id="faq" class="two-column-grid">
+  <section
+    id="faq"
+    class="two-column-grid"
+  >
     <h2>{{ $t("FAQ") }}</h2>
     <!-- For FAQ we will use a details -->
     <div>
-      <details v-for="faq in faqData" :key="faq.id">
+      <details
+        v-for="faq in faqData"
+        :key="(faq.id as number)"
+      >
         <summary>{{ faq.name }}</summary>
         <p>{{ faq.description }}</p>
       </details>
@@ -222,19 +248,23 @@ provide("showExpandedFooter", true);
   </section>
 
   <!-- Get started section -->
-  <section id="getStarted" class="fulscreen-width-container" data-theme="dark">
+  <section
+    id="getStarted"
+    class="fulscreen-width-container"
+    data-theme="dark"
+  >
     <hgroup>
       <h2>{{ $t("Get started") }}</h2>
       <p>
         {{
           $t(
-            "Permanent QR codes exist as long as we’re around, and we don’t plan on going anywhere anytime soon."
+            "Permanent QR codes exist as long as we’re around, and we don’t plan on going Record<string, string | number | string[]>where Record<string, string | number | string[]>time soon."
           )
         }}
       </p>
     </hgroup>
     <card-element>
-      <create-redirect :autofocus="false"></create-redirect>
+      <create-redirect :autofocus="false" />
     </card-element>
   </section>
 </template>

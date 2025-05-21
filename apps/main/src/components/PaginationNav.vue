@@ -66,12 +66,12 @@ const totalPages = computed(() => {
     : computedTotal;
 });
 
-type Page = {
+interface Page {
   pageNumber: number;
   text: string;
   clickable: boolean;
   selected?: boolean;
-};
+}
 
 const formatNumer = (number: number) => {
   return new Intl.NumberFormat(i18n.global.locale.value).format(number);
@@ -137,25 +137,33 @@ const handleInput = (value: string) => {
   <nav aria-label="Pagination">
     <template v-if="showPrevNext">
       <base-button
-        @click="emit('update:currentPage', currentPage - 1)"
         aria-label="Previous page"
         class="prev"
         :disabled="currentPage <= 1"
+        @click="emit('update:currentPage', currentPage - 1)"
       >
         <span aria-hidden="true">&laquo;</span>
       </base-button>
     </template>
-    <template v-for="page in pages" :key="page.pageNumber">
+    <template
+      v-for="page in pages"
+      :key="page.pageNumber"
+    >
       <base-button
         v-if="page.clickable"
-        @click="emit('update:currentPage', page.pageNumber)"
         :aria-label="`Go to page ${page.pageNumber}`"
         :disabled="page.pageNumber === currentPage"
         class="outline contrast"
+        @click="emit('update:currentPage', page.pageNumber)"
       >
         {{ page.text }}
       </base-button>
-      <button v-else disabled class="outline secondary" type="button">
+      <button
+        v-else
+        disabled
+        class="outline secondary"
+        type="button"
+      >
         {{ page.text }}
       </button>
     </template>
@@ -165,17 +173,17 @@ const handleInput = (value: string) => {
         min="1"
         :max="totalPages"
         :value="currentPage"
-        @input="handleInput(($event.target as HTMLInputElement).value)"
         aria-label="Go to page"
         class="go-to-page"
-      />
+        @input="handleInput(($event.target as HTMLInputElement).value)"
+      >
     </template>
     <template v-if="showPrevNext">
       <base-button
-        @click="emit('update:currentPage', currentPage + 1)"
         aria-label="Next page"
         class="next"
         :disabled="currentPage >= totalPages"
+        @click="emit('update:currentPage', currentPage + 1)"
       >
         <span aria-hidden="true">&raquo;</span>
       </base-button>

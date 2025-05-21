@@ -13,9 +13,15 @@ const handleSuccess = () => {
 <template>
   <h1>{{ $t("Create New Team") }}</h1>
   <div class="two-column-grid">
-    <card-element :titleHeadingLevel="2" :showTitle="false">
-      <create-team @success="handleSuccess"></create-team>
+    <card-element
+      :title-heading-level="2"
+      :show-title="false"
+    >
+      <create-team @success="handleSuccess" />
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

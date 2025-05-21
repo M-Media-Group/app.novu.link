@@ -10,8 +10,8 @@ import {
   useSlots,
   useTemplateRef,
 } from "vue";
-import { assertIsUnifiedError } from "@/services/api/apiServiceErrorHandler";
-import { useForm } from "@/composables/useForm";
+import { assertIsUnifiedError } from "@novulink/api";
+import { useForm } from "@novulink/vue-composables/useForm";
 
 // Prop of submit text
 const props = defineProps({
@@ -19,11 +19,6 @@ const props = defineProps({
   submitText: {
     type: String,
     default: "Submit",
-  },
-  /** The endpoint to submit the form to. */
-  endpoint: {
-    type: String,
-    required: false,
   },
   /** The types of fields that should be cleared if the request fails. By default, these are all inputs of type password. @TODO not yet implemented */
   clearInputTypesOnFailure: {
@@ -66,6 +61,7 @@ const props = defineProps({
   submitFn: {
     type: Function as PropType<() => Promise<T>>,
     required: false,
+    default: null,
   },
 
   /** Whether the form should validate the focused element or not. */
@@ -181,19 +177,19 @@ const hasSubmitSlot = computed(() => {
     @submit.prevent="hasSubmitSlot ? emit('submit') : submit()"
   >
     <component
-      :role="inline ? 'group' : null"
       :is="inline ? 'fieldset' : 'div'"
+      :role="inline ? 'group' : null"
     >
       <!-- @slot This is the default slot for the form. You can use this to add any input or button you want. -->
-      <slot></slot>
+      <slot />
 
       <!-- @slot This is the slot for the submit button. You can use this to add a custom submit button or action. -->
       <slot
         name="submit"
-        :submitText="submitText"
+        :submit-text="submitText"
         :submit="submit"
         :disabled="!formIsValid || disabled || isAnythingLoading"
-        :isLoading="isAnythingLoading"
+        :is-loading="isAnythingLoading"
       >
         <base-button
           v-if="showSubmitButton"
@@ -201,13 +197,13 @@ const hasSubmitSlot = computed(() => {
           :disabled="!formIsValid || disabled || isAnythingLoading"
           :aria-busy="isAnythingLoading"
           :class="// We need to merge both { fit: !inline } and submitButtonClasses
-          [{ fit: inline }, submitButtonClasses]"
+            [{ fit: inline }, submitButtonClasses]"
         >
           {{ $t(submitText) }}
         </base-button>
       </slot>
     </component>
     <!-- @slot This is the slot for after the submit. This is useful for back buttons or other actions. -->
-    <slot name="after-submit"></slot>
+    <slot name="after-submit" />
   </form>
 </template>

@@ -44,7 +44,7 @@ export const Overflow: Story = {
     totalItems: 1000000000,
     currentPage: 500000,
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const buttons = canvas.getAllByRole("button");
 
@@ -61,7 +61,7 @@ export const NegativeTotalItems: Story = {
     totalItems: -1,
     currentPage: 1,
   },
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const buttons = canvas.getAllByRole("button");
 

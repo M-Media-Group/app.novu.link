@@ -12,10 +12,14 @@ const shouldSubmit = searchParams.has("url") && searchParams.has("submit");
   <nav aria-label="breadcrumb">
     <ul>
       <li>
-        <router-link to="/dashboard">{{ $t("Dashboard") }}</router-link>
+        <router-link to="/dashboard">
+          {{ $t("Dashboard") }}
+        </router-link>
       </li>
       <li>
-        <router-link to="/redirects">{{ $t("Magic links") }}</router-link>
+        <router-link to="/redirects">
+          {{ $t("Magic links") }}
+        </router-link>
       </li>
       <li>{{ $t("New magic link") }}</li>
     </ul>
@@ -24,10 +28,13 @@ const shouldSubmit = searchParams.has("url") && searchParams.has("submit");
   <div class="two-column-grid">
     <card-element>
       <create-redirect
-        :defaultEndpointValue="url ?? ''"
-        :autoSubmit="shouldSubmit"
-      ></create-redirect>
+        :default-endpoint-value="url ?? ''"
+        :auto-submit="shouldSubmit"
+      />
     </card-element>
-    <img :src="image" alt="A person holding a link" />
+    <img
+      :src="image"
+      alt="A person holding a link"
+    >
   </div>
 </template>

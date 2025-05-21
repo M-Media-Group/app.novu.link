@@ -5,7 +5,6 @@
     "src/**/*",
     "src/**/*.vue",
     "src/locales/*.json",
-    "../../packages/helpers",
   ],
   "exclude": [
     "src/**/__tests__/*"

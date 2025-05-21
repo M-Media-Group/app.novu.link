@@ -17,8 +17,10 @@ import { gatePlugin } from "@m-media/vue3-gate-keeper";
 
 import gates from "./router/gates";
 import { metaTagPlugin } from "@m-media/vue3-meta-tags";
-import { EventsPlugin } from "./eventBus/events";
+import EventBus, { EventsPlugin } from "./eventBus/events";
 import { VueQueryPlugin } from "@tanstack/vue-query";
+import { configureApiClient } from "@novulink/api";
+import { axiosHttpClient } from "@novulink/api";
 
 const app = createApp(App);
 
@@ -61,6 +63,12 @@ configure({
   tagId: import.meta.env.VITE_GA_MEASUREMENT_ID,
   initMode: import.meta.env.PROD ? "auto" : "manual",
 });
+
+configureApiClient(
+  axiosHttpClient,
+  import.meta.env.VITE_API_URL,
+  EventBus
+)
 
 app.use(VueHotjar, {
   id: Number(import.meta.env.VITE_HOTJAR_MEASUREMENT_ID),

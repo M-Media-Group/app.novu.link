@@ -81,24 +81,24 @@ defineExpose<{ startConfirming: () => void }>({ startConfirming });
 <template>
   <span>
     <span @click.prevent="startConfirming">
-      <slot :isConfirming="isConfirming" />
+      <slot :is-confirming="isConfirming" />
     </span>
 
     <base-modal
       ref="modal"
       :title="title"
-      :showTrigger="false"
-      :showFooter="false"
+      :show-trigger="false"
+      :show-footer="false"
+      :allow-background-click-to-close="false"
       @closed="isConfirming = false"
-      :allowBackgroundClickToClose="false"
     >
       <p v-if="description">
         {{ description }}
       </p>
       <subscribe-redirect
         v-if="modal?.isModalOpen"
-        :redirectId="redirectId"
-        :submitText="submitText"
+        :redirect-id="redirectId"
+        :submit-text="submitText"
         @success="handleConfirmed"
       />
     </base-modal>

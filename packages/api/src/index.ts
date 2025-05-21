@@ -18,3 +18,7 @@ export * from "./repositories/webhook/webhookRepository.js";
 export * from "./repositories/misc/miscRepository.js";
 
 export { assertIsUnifiedError, type UnifiedError } from "./services/apiServiceErrorHandler.js";
+
+export { configureApiClient } from "./services/apiClient.js";
+
+export { axiosHttpClient } from "./services/clients/axios.js";
