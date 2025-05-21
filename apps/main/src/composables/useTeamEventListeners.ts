@@ -13,7 +13,7 @@ export const useTeamEventListeners = () => {
   $bus.$on("confirmed_otp", store.getUserTeams);
   $bus.$on("added_payment_method", store.getUserTeams);
 
-  $bus.$on("updated_team", (id: number) => {
+  $bus.$on("updated_team", () => {
     store.getUserTeams();
   });
 

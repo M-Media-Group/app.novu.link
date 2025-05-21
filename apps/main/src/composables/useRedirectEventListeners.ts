@@ -1,15 +1,13 @@
 // composables/useTeamEventListeners.ts
-import { useTeamStore } from "@/stores/team";
 import { useEventsBus } from "@/eventBus/events";
 import { useRouter } from "vue-router";
 import { type Ref, onMounted, onUnmounted } from "vue";
-import type { Listener } from "type-safe-event-bus";
+import type { EventTypes, Listener } from "type-safe-event-bus";
 
 export const useRedirectEventListeners = (
-  callback: Listener<any>,
+  callback: Listener<EventTypes>,
   localClicks: Ref<number>
 ) => {
-  const teamStore = useTeamStore();
   const $bus = useEventsBus();
   const router = useRouter();
 
