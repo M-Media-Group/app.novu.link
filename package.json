@@ -29,7 +29,7 @@
     "@nx/cypress": "^21.0.4",
     "@nx/eslint": "21.0.4",
     "@nx/storybook": "^21.0.4",
-    "@nx/vite": "^21.0.3",
+    "@nx/vite": "^21.0.4",
     "@nx/web": "21.0.3",
     "@vitest/ui": "^3.0.0",
     "cypress": "^14.2.1",
