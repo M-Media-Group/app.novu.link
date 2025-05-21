@@ -11,6 +11,9 @@
             "path": "./packages/helpers"
         },
         {
+            "path": "./packages/composables"
+        },
+        {
             "path": "./apps/main"
         }
     ]

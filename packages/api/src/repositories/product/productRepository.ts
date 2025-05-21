@@ -1,15 +1,16 @@
 import type { z } from "zod";
-import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
+
 import {
   createOrderRequestSchema,
   getProductRequestSchema,
   getProductResponseSchema,
   getProductsRequestSchema,
-} from "./productSchema";
-import { baseUrl } from "@/services/apiClient";
-import { parseStreamedResponse } from "@/helpers/streamers";
+} from "./productSchema.js";
+import { getBaseUrl } from "./../../services/apiClient.js";
+import { parseStreamedResponse } from "@novulink/helpers/streamers";
 
-import $bus from "@/eventBus/events";
+import { getEventBus } from "./../../services/apiClient.js";
 
 export const getProduct = async (
   data?: z.infer<typeof getProductRequestSchema>
@@ -29,10 +30,12 @@ export const streamProducts = async (
 ) => {
   const parsedData = getProductsRequestSchema.parse(data);
 
-  const url = new URL("/api/v1/products", baseUrl);
+  const url = new URL("/api/v1/products", getBaseUrl());
 
   const params = new URLSearchParams();
-  parsedData.page && params.set("page", parsedData.page.toString());
+  if (parsedData.page) {
+    params.set("page", parsedData.page.toString());
+  }
   params.set("stream", "true");
 
   if (parsedData.categories?.length) {
@@ -66,6 +69,6 @@ export const createOrder = async (
     data,
     createOrderRequestSchema
   );
-  $bus.$emit("created_product_order");
+  getEventBus()?.$emit("created_product_order");
   return response;
 };

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { RuleCheckSchema } from "../rule/ruleSchema";
+import { RuleCheckSchema } from "../rule/ruleSchema.js";
 
 const coercedDate = z.coerce.date();
 

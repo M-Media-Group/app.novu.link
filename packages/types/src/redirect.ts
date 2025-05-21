@@ -73,9 +73,9 @@ export interface RuleData {
 
 export interface Placement {
   id: number;
-  description: any;
+  description: string | null;
   redirect_uuid: string;
-  created_by_user_id: any;
+  created_by_user_id: number | null;
   url: string;
   is_physical: boolean;
   should_scrape: boolean;

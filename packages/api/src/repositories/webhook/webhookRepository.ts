@@ -1,10 +1,12 @@
 import type { z } from "zod";
-import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
 
 import {
   createWebhookRequestSchema,
   getSupportedWebhookEventsResponseSchema,
-} from "./webhookSchema";
+} from "./webhookSchema.js";
+
+import { getEventBus } from "./../../services/apiClient.js";
 
 export const getSupportedWebhookEvents = async () => {
   return await apiServiceCall(
@@ -16,7 +18,6 @@ export const getSupportedWebhookEvents = async () => {
   );
 };
 
-import $bus from "@/eventBus/events";
 
 export const createWebhook = async (
   data: Partial<z.infer<typeof createWebhookRequestSchema>>
@@ -28,7 +29,7 @@ export const createWebhook = async (
     createWebhookRequestSchema
   );
 
-  $bus.$emit("created_webhook");
+  getEventBus()?.$emit("created_webhook");
 
   return response;
 };

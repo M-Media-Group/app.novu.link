@@ -1,13 +1,13 @@
 import type { Badge } from "./badge";
 
-export type selectOptionObject = {
+export interface selectOptionObject {
   id: string | number;
   //   The render is either a string or a function that returns a string
   render: string;
   disabled?: boolean;
-  raw?: any;
+  raw?: unknown;
   badge?: Badge;
-};
+}
 
 // Normalised select is the same as above, except the render which is always a string
 export type normalisedOptionObject = Omit<selectOptionObject, "id"> & {

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { teamSchema } from "../team/teamSchema";
+import { teamSchema } from "../team/teamSchema.js";
 
 const emailSchema = z.string().email("Invalid email format");
 const phoneNumberSchema = z.string().min(5).max(20).startsWith("+", {

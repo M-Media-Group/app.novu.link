@@ -2,8 +2,8 @@ import { z } from "zod";
 import {
   getRedirectsResponseSchema,
   nestedRedirect,
-} from "../redirect/redirectSchema";
-import { teamSchema } from "../team/teamSchema";
+} from "../redirect/redirectSchema.js";
+import { teamSchema } from "../team/teamSchema.js";
 
 export const supportedIntegrationFieldsSchema = z.object({
   id: z.string(),

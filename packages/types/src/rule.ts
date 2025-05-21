@@ -4,7 +4,7 @@ export interface CommonRuleProperties {
   allowedOperators: string[];
   valueType: string;
   seeAlsoLinks?: string[] | null;
-  allowedValues?: any[] | Record<string, string | number> | null;
+  allowedValues?: string[] | Record<string, string | number> | null;
 }
 
 interface BrowserLanguage extends CommonRuleProperties {
@@ -16,7 +16,7 @@ interface Cookie extends CommonRuleProperties {
 }
 
 interface Country extends CommonRuleProperties {
-  value: any;
+  value: string;
 }
 
 interface DayOfWeek extends CommonRuleProperties {
@@ -36,7 +36,7 @@ interface QueryParameter extends CommonRuleProperties {
 }
 
 interface Referer extends CommonRuleProperties {
-  value: any;
+  value: string;
 }
 
 interface ScannedQr extends CommonRuleProperties {
@@ -60,15 +60,15 @@ interface UserAgent extends CommonRuleProperties {
 }
 
 interface DeviceOrientation extends CommonRuleProperties {
-  value: any;
+  value: string;
 }
 
 interface SupportsGeolocation extends CommonRuleProperties {
-  value: any;
+  value: string;
 }
 
 interface UserTime extends CommonRuleProperties {
-  value: any;
+  value: string;
 }
 
 interface IsBot extends CommonRuleProperties {

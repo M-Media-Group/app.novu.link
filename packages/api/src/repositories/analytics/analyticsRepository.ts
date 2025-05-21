@@ -8,9 +8,9 @@ import {
   getRedirectsAnalyticsResponseSchema,
   getSupportedAnalyticsIntegrationsResponseSchema,
   toggleRedirectAnalyticsIntegrationRequestSchema,
-} from "./analyticsSchema";
+} from "./analyticsSchema.js";
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
 
-import { apiServiceCall } from "src/services/apiServiceCall";
 
 export const getAnalyticsIntegrations = async () => {
   return await apiServiceCall(

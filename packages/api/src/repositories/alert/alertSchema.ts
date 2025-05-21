@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createRedirectResponseSchema } from "../redirect/redirectSchema";
+import { createRedirectResponseSchema } from "../redirect/redirectSchema.js";
 
 export const alertLogSchema = z.object({
   id: z.number(),

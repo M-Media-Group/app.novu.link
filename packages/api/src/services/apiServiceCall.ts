@@ -1,36 +1,41 @@
-import apiService from "@/services/apiClient";
 import {
   handleError,
   isUnifiedError,
-} from "@/services/api/apiServiceErrorHandler";
-import type { ZodSchema } from "zod";
+} from "./apiServiceErrorHandler.js";
+import type { ZodTypeAny, input, output } from "zod";
+import { getApiClient } from './apiClient.js';
+import { HttpClient } from "./clients/genericHttpClient.js";
 
 export const apiServiceCall = async <
-  ReqSchema extends ZodSchema<any> | undefined,
-  ResSchema extends ZodSchema<any> | undefined
+  ReqSchema extends ZodTypeAny | undefined,
+  ResSchema extends ZodTypeAny | undefined
 >(
   url: string,
-  method: keyof Omit<typeof apiService, "getCsrfToken">,
-  data?: ReqSchema extends ZodSchema<infer ReqType>
-    ? Partial<ReqType>
-    : undefined,
+  method: keyof Omit<HttpClient, "getCsrfToken">,
+  data?: ReqSchema extends ZodTypeAny ? Partial<input<ReqSchema>> : undefined,
   requestSchema?: ReqSchema,
   responseSchema?: ResSchema,
   clientOptions?: object
-): Promise<ResSchema extends ZodSchema<infer ResType> ? ResType : any> => {
+): Promise<ResSchema extends ZodTypeAny ? output<ResSchema> : unknown> => {
   try {
     const parsedData = requestSchema ? requestSchema.parse(data) : data;
 
-    const response = await apiService[method]<
-      ResSchema extends ZodSchema<infer ResType> ? ResType : any
+    const apiClient = getApiClient();
+
+    const response = await apiClient[method]<
+      ResSchema extends ZodTypeAny ? output<ResSchema> : unknown
     >(url, parsedData, clientOptions);
 
-    return responseSchema ? responseSchema.parse(response) : response;
+    if (!responseSchema) {
+      return response;
+    }
+
+    return responseSchema.parse(response);
   } catch (error) {
     if (isUnifiedError(error)) {
       throw error;
     }
-    handleError(error, "register");
-    throw error; // rethrow to satisfy return type
+    handleError(error, "api-call");
+    throw error;
   }
 };

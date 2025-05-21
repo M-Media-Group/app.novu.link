@@ -1,12 +1,13 @@
 import { z } from "zod";
-import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
+
 
 import {
   createQrDesignRequestSchema,
   getQrDesignLogosResponseSchema,
-} from "./qrdesignSchema";
+} from "./qrdesignSchema.js";
 
-import $bus from "@/eventBus/events";
+import { getEventBus } from "./../../services/apiClient.js";
 
 export const createQrDesign = async (
   data: Partial<z.infer<typeof createQrDesignRequestSchema>>
@@ -18,7 +19,7 @@ export const createQrDesign = async (
     createQrDesignRequestSchema
   );
 
-  $bus.$emit("created_qr_design");
+  getEventBus()?.$emit("created_qr_design");
 
   return response;
 };

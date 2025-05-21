@@ -1,13 +1,16 @@
 import { z } from "zod";
-import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
+
 import {
   createTeamRequestSchema,
   getUserTeamsResponseSchema,
   switchTeamRequestSchema,
   updateTeamRequestSchema,
-} from "./teamSchema";
+} from "./teamSchema.js";
 
-import $bus from "@/eventBus/events";
+
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
+
+import { getEventBus } from "./../../services/apiClient.js";
 
 export const getUserTeams = async () => {
   return await apiServiceCall(
@@ -29,7 +32,7 @@ export const updateTeam = async (
     updateTeamRequestSchema
   );
 
-  $bus.$emit("updated_team", data.id);
+  getEventBus()?.$emit("updated_team", data.id);
   return response;
 };
 
@@ -43,7 +46,7 @@ export const switchTeam = async (
     switchTeamRequestSchema
   );
 
-  $bus.$emit("changed_team", data.team_id);
+  getEventBus()?.$emit("changed_team", data.team_id);
 
   return response;
 };
@@ -58,7 +61,7 @@ export const createTeam = async (
     createTeamRequestSchema
   );
 
-  $bus.$emit("created_team");
+  getEventBus()?.$emit("created_team");
 
   return response;
 };

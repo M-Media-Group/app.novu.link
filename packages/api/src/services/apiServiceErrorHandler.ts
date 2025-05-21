@@ -1,7 +1,7 @@
 import i18n from "@/locales/i18n";
-import { errorHandler, isClientError } from "./clients/axios";
+import { errorHandler, isClientError } from "./clients/axios.js";
 import { z } from "zod";
-import {flattenObjectToDotNotationWithArrayAndStopAtKey} from "@novulink/helpers/hasMethod";
+import { flattenObjectToDotNotationWithArrayAndStopAtKey } from "@novulink/helpers/hasMethod";
 
 /**
  * Represents a unified error structure.
@@ -12,7 +12,7 @@ export interface UnifiedError {
   /** A user-friendly message describing the error. */
   message: string;
   /** Optional details, especially for validation errors (e.g., field-specific messages). */
-  details?: { [field: string]: string[] | string | undefined };
+  details?: Record<string, string[] | string | undefined>;
   /** The HTTP status code, if applicable. */
   status?: number;
   /** The original error object. */
@@ -22,10 +22,10 @@ export interface UnifiedError {
 /**
  * Type guard to check if an error is our UnifiedError type.
  */
-export function isUnifiedError(error: any): error is UnifiedError {
+export function isUnifiedError(error: unknown): error is UnifiedError {
   return (
-    error &&
     typeof error === "object" &&
+    error !== null &&
     "type" in error &&
     "message" in error &&
     "originalError" in error
@@ -48,7 +48,7 @@ export function assertIsUnifiedError(
  */
 export const handleError = (
   error: unknown,
-  operation: string = "API operation"
+  operation = "API operation"
 ): never => {
   let unifiedError: Partial<UnifiedError> = {
     type: "unknown",
@@ -61,10 +61,11 @@ export const handleError = (
     unifiedError.type = "validation";
     unifiedError.status = 422; // Set status to 422 for validation errors
     unifiedError.message = i18n.global.t("errors.validation_error");
-
+    console.log("Formatted error:", error.format());
     unifiedError.details = flattenObjectToDotNotationWithArrayAndStopAtKey(
       error.format()
     );
+    console.log("Details error:", unifiedError.details);
   } else {
     unifiedError.type = "unknown";
     unifiedError.message = i18n.global.t("errors.unknown_error"); // Fallback message
@@ -74,8 +75,7 @@ export const handleError = (
 
   if (isDev) {
     console.error(
-      `Error during ${operation}: Status ${
-        unifiedError.status || "N/A"
+      `Error during ${operation}: Status ${unifiedError.status || "N/A"
       } - Message: ${unifiedError.message}`,
       unifiedError.originalError,
       "Full Error Details:",

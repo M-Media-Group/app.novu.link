@@ -11,11 +11,13 @@ import {
   updateRedirectEndpointRequestSchema,
   updateRedirectEndpointResponseSchema,
   updateRedirectRequestSchema,
-} from "./redirectSchema";
-import { apiServiceCall } from "../../../../apps/main/src/services/api/apiServiceCall";
+} from "./redirectSchema.js";
 
-import $bus from "@/eventBus/events";
-import { baseUrl } from "@/services/apiClient";
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
+
+import { getEventBus } from "./../../services/apiClient.js";
+import { getBaseUrl } from "./../../services/apiClient.js";
+
 
 export const createRedirect = async (
   /**
@@ -30,7 +32,7 @@ export const createRedirect = async (
     createRedirectRequestSchema,
     createRedirectResponseSchema
   );
-  $bus.$emit("created_redirect");
+  getEventBus()?.$emit("created_redirect");
   return response;
 };
 
@@ -65,7 +67,7 @@ export const updateRedirect = async (
     data,
     updateRedirectRequestSchema
   );
-  $bus.$emit("updated_redirect", data.id);
+  getEventBus()?.$emit("updated_redirect", data.id);
   return response;
 };
 
@@ -79,7 +81,7 @@ export const deleteRedirect = async (
     undefined,
     undefined
   );
-  $bus.$emit("deleted_redirect", data.id);
+  getEventBus()?.$emit("deleted_redirect", data.id);
   return response;
 };
 
@@ -93,7 +95,7 @@ export const addRedirectEndpoint = async (
     addRedirectEndpointRequestSchema,
     undefined
   );
-  $bus.$emit("created_endpoint");
+  getEventBus()?.$emit("created_endpoint");
   return response;
 };
 
@@ -107,7 +109,7 @@ export const updateRedirectEndpoint = async (
     updateRedirectEndpointRequestSchema,
     updateRedirectEndpointResponseSchema
   );
-  $bus.$emit("updated_endpoint", data.endpoint_id!);
+  getEventBus()?.$emit("updated_endpoint", data.endpoint_id ?? 0);
   return response;
 };
 
@@ -121,14 +123,14 @@ export const deleteRedirectEndpoint = async (
     undefined,
     undefined
   );
-  $bus.$emit("deleted_endpoint", data.endpoint_id);
+  getEventBus()?.$emit("deleted_endpoint", data.endpoint_id);
   return response;
 };
 
 export const startSubscription = async (
   data: z.infer<typeof startSubscriptionRequestSchema>
 ) => {
-  $bus.$emit("confirmed_willingness_to_start_subscription");
+  getEventBus()?.$emit("confirmed_willingness_to_start_subscription");
 
   const response = await apiServiceCall(
     `/api/v1/redirects/${data.id}/subscription`,
@@ -138,7 +140,7 @@ export const startSubscription = async (
     undefined
   );
 
-  $bus.$emit("started_subscription");
+  getEventBus()?.$emit("started_subscription");
 
   return response;
 };
@@ -153,19 +155,18 @@ export const unsubscribe = async (
     undefined,
     undefined
   );
-  $bus.$emit("unsubscribed");
+  getEventBus()?.$emit("unsubscribed");
   return response;
 };
 
 export const getRedirectUrl = async (redirectId: string) => {
-  return `${baseUrl}/l/${redirectId}`;
+  return `${getBaseUrl()}/l/${redirectId}`;
 };
 
 export const getRedirectQrCodeDataUrl = (
   redirectId: string,
   designId?: string | number
 ) => {
-  return `${getRedirectUrl(redirectId)}?nl_qr${
-    designId ? `&nl_d=${designId}` : ""
-  }`;
+  return `${getRedirectUrl(redirectId)}?nl_qr${designId ? `&nl_d=${designId}` : ""
+    }`;
 };

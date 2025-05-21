@@ -1,7 +1,7 @@
 // src/services/api/index.ts
 
-import { handleError } from "./apiServiceErrorHandler";
-import type { HttpClient } from "./clients/genericHttpClient";
+import { handleError } from "./apiServiceErrorHandler.js";
+import type { HttpClient } from "./clients/genericHttpClient.js";
 
 export function createApiService(client: HttpClient) {
   return {
@@ -14,7 +14,7 @@ export function createApiService(client: HttpClient) {
       }
     },
 
-    async post<T>(url: string, data?: any, config?: object): Promise<T> {
+    async post<T>(url: string, data?: unknown, config?: object): Promise<T> {
       try {
         return await client.post<T>(url, data, config);
       } catch (error) {
@@ -23,7 +23,7 @@ export function createApiService(client: HttpClient) {
       }
     },
 
-    async put<T>(url: string, data?: any, config?: object): Promise<T> {
+    async put<T>(url: string, data?: unknown, config?: object): Promise<T> {
       try {
         return await client.put<T>(url, data, config);
       } catch (error) {

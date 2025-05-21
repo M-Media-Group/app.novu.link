@@ -151,7 +151,7 @@ export const makeRuleSchemaUnion = () => {
 
   // Collect all individual schemas into an array first
   const individualRuleSchemas = entries.map(([ruleKey, ruleSchema]) => {
-    const valueSchema = (ruleSchema as z.ZodObject<any>).shape.value;
+    const valueSchema = (ruleSchema as z.ZodObject<typeof CommonRuleProperties.shape & { value: z.ZodTypeAny }>).shape.value;
     return z.object({
       rule: z.literal(ruleKey as RuleKeyLiteral),
       operator: z.string(),

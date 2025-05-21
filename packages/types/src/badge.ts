@@ -1,7 +1,7 @@
 // A badge can be either a number, string, or true.
 export type Badge = string | true;
 
-export type BadgeObject = {
+export interface BadgeObject {
   value: Badge;
   className?:
     | "secondary"
@@ -11,4 +11,4 @@ export type BadgeObject = {
     | "outline secondary"
     | "outline contrast"
     | "outline notification";
-};
+}

@@ -1,11 +1,10 @@
 import type { z } from "zod";
-import { apiServiceCall } from "./service/apiServiceCall/apiServiceCall";
+import { apiServiceCall } from "./../../services/apiServiceCall.js";
 import {
   createAlertRequestSchema,
   getAlertsResponseSchema,
-} from "./alertSchema";
-
-import $bus from "@/eventBus/events";
+} from "./alertSchema.js";
+import { getEventBus } from "./../../services/apiClient.js";
 
 export const getAlerts = async () => {
   return await apiServiceCall(
@@ -27,7 +26,9 @@ export const createAlert = async (
     createAlertRequestSchema
   );
 
-  $bus.$emit("created_alert");
+
+  getEventBus()?.$emit("created_alert");
+
 
   return response;
 };

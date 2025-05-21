@@ -14,12 +14,15 @@
     },
     "exports": {
         "./urlFormatter": "./src/urlFormatter.ts",
-        "./*": {
-            "import": "./src/*.ts",
-            "exclude": [
-                "./src/__tests__/"
-            ]
-        }
+        "./hasMethod": "./src/hasMethod.ts",
+        "./normaliseOptions": "./src/normaliseOptions.ts",
+        "./debounce": "./src/debounce.ts",
+        "./streamers": "./src/streamers.ts",
+        "./dataLoader": "./src/dataLoader.ts",
+        "./relativeTime": "./src/relativeTime.ts",
+        "./colors": "./src/colors.ts",
+        "./cssVariables": "./src/cssVariables.ts",
+        "./httpCodes": "./src/httpCodes.ts"
     },
     "engines": {
         "node": ">=22.15.0"

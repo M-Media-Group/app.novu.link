@@ -5,17 +5,15 @@ import axios, {
   type AxiosRequestConfig,
   isAxiosError,
 } from "axios";
-import type { UnifiedError } from "../apiServiceErrorHandler";
-import i18n from "@/locales/i18n";
+
 import router from "@/router";
-import type { HttpClient } from "./genericHttpClient";
+import type { HttpClient } from "./genericHttpClient.js";
+import { UnifiedError } from "../apiServiceErrorHandler.js";
+import { getBaseUrl } from "../apiClient.js";
 
-export const baseUrl = import.meta.env.VITE_API_URL;
-
-type LaraveErrorResponse = { message?: string; errors?: any };
+interface LaraveErrorResponse { message?: string; errors?: Record<string, string[]>; }
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: baseUrl, // Uncomment and set if you have a common base URL prefix for all API calls
   withCredentials: true, // Crucial for cookie-based authentication (e.g., Laravel Sanctum)
   withXSRFToken: true, // Crucial for CSRF protection
   xsrfCookieName: "XSRF-TOKEN",
@@ -28,7 +26,11 @@ const apiClient: AxiosInstance = axios.create({
 
 // Intercept requests to add the locale header
 apiClient.interceptors.request.use((config) => {
-  const locale = i18n.global.locale.value; // Get the current locale from i18n
+  const locale = null; // @todo this part
+  const baseUrl = getBaseUrl();
+  if (baseUrl) {
+    config.baseURL = baseUrl; // Set the base URL for the request
+  }
   if (locale) {
     config.headers["Accept-Language"] = locale; // Set the Accept-Language header
   }
@@ -48,7 +50,7 @@ apiClient.interceptors.response.use(
   }
 );
 
-export const isClientError = <T = any>(
+export const isClientError = <T = unknown>(
   error: unknown
 ): error is AxiosError<T> => {
   return !!(isAxiosError(error) && error.response);
@@ -68,7 +70,7 @@ export const errorHandler = <T extends Partial<UnifiedError>>(
       case 422:
         unifiedError.type = "validation";
         unifiedError.message =
-          unifiedError.message ?? i18n.global.t("errors.validation_error");
+          unifiedError.message ?? "errors.validation_error";
         if (data?.errors && typeof data.errors === "object") {
           unifiedError.details = data.errors;
         } else {
@@ -78,27 +80,27 @@ export const errorHandler = <T extends Partial<UnifiedError>>(
 
       case 401:
         unifiedError.type = "network";
-        unifiedError.message = i18n.global.t("errors.unauthorized");
+        unifiedError.message = "errors.unauthorized";
         break;
 
       case 403:
         unifiedError.type = "network";
-        unifiedError.message = i18n.global.t("errors.forbidden");
+        unifiedError.message = "errors.forbidden";
         break;
 
       case 404:
         unifiedError.type = "network";
-        unifiedError.message = i18n.global.t("errors.not_found");
+        unifiedError.message = "errors.not_found";
         break;
 
       case 429:
         unifiedError.type = "network";
-        unifiedError.message = i18n.global.t("errors.too_many_requests");
+        unifiedError.message = "errors.too_many_requests";
         break;
 
       case 500:
         unifiedError.type = "server";
-        unifiedError.message = i18n.global.t("errors.server_error");
+        unifiedError.message = "errors.server_error";
         break;
 
       default:
@@ -107,12 +109,12 @@ export const errorHandler = <T extends Partial<UnifiedError>>(
           // Any other 5xx status code
           unifiedError.type = "server";
           // Use the generic server error message
-          unifiedError.message = i18n.global.t("errors.server_error");
+          unifiedError.message = "errors.server_error";
         } else {
           // Default for other 4xx codes (like 400, 408, etc.) or unhandled codes
           unifiedError.type = "network";
           // Use the generic network error message
-          unifiedError.message = i18n.global.t("errors.network_error");
+          unifiedError.message = "errors.network_error";
         }
         break;
     }
@@ -125,11 +127,11 @@ export const axiosHttpClient: HttpClient = {
     const response = await apiClient.get<T>(url, options);
     return response.data;
   },
-  async post<T>(url: string, data?: any, options?: AxiosRequestConfig) {
+  async post<T>(url: string, data?: unknown, options?: AxiosRequestConfig) {
     const response = await apiClient.post<T>(url, data, options);
     return response.data;
   },
-  async put<T>(url: string, data?: any, options?: AxiosRequestConfig) {
+  async put<T>(url: string, data?: unknown, options?: AxiosRequestConfig) {
     const response = await apiClient.put<T>(url, data, options);
     return response.data;
   },
