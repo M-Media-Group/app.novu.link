@@ -75,4 +75,3 @@ const { normalisedOptions, getLabel, isOptionSelected, updateModelValue } =
     </ul>
   </nav>
 </template>
-@/stories/Composables/useMultiselect
