@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useUserStore } from "@/stores/user";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import CardElement from "@/components/CardElement.vue";
 import type { Dashboard } from "@novulink/types";
 import BaseButton from "@/components/BaseButton.vue";
@@ -8,6 +8,7 @@ import { useI18n } from "vue-i18n";
 import { useEventsBus } from "@/eventBus/events";
 import LineChart from "@/components/charts/LineChart.vue";
 import { getDashboard } from "@novulink/api";
+import BackgroundConfetti from "@/components/BackgroundConfetti.vue";
 
 const data = ref<Dashboard | null>(null);
 
@@ -23,6 +24,8 @@ const getData = async () => {
   data.value = await getDashboard();
   isLoading.value = false;
 };
+
+const confettor = useTemplateRef('confettor');
 
 onMounted(async () => {
   getData();
@@ -146,8 +149,11 @@ const barChartData = computed(() => {
 });
 </script>
 <template>
+  <background-confetti ref="confettor" />
   <hgroup>
-    <h1>{{ $t("Dashboard") }}</h1>
+    <h1 @click="confettor?.initBurst()">
+      {{ $t("Dashboard") }}
+    </h1>
     <p>{{ userStore.user?.name ?? "-" }}</p>
   </hgroup>
 
