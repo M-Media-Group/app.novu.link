@@ -13,7 +13,7 @@ import { useMultiselect } from "@novulink/vue-composables/useMultiselect";
 import type { PossibleRecord, SelectOption } from "@novulink/types";
 import BaseBadge from "./BaseBadge.vue";
 
-import { type PropType, computed, nextTick, onMounted, ref, watch } from "vue";
+import { type PropType, computed, nextTick, onMounted, ref, useTemplateRef, watch } from "vue";
 
 const props = defineProps({
   /** The model value is an array of selected options. This element will always use an array of strings as the values, even if originally they are typed as numbers. This is to stay consistent with native HTML elements "value" behaviour. This may be changed in the future. */
@@ -182,19 +182,10 @@ const {
   getLabel,
   isOptionSelected,
   toggleAllOptions,
-  updateModelValue,
+  setModelValue,
   unselectAllOptions,
+  getSummaryText,
 } = useMultiselect<T>(props, emit);
-
-const setModelValue = (
-  event: Event,
-  existingValue: number | false = false
-) => {
-  const target = event.target as HTMLInputElement;
-  const value = target.value;
-
-  updateModelValue(value, target.checked, existingValue);
-};
 
 const filteredOptions = computed(() => {
   if (!normalisedOptions.value) return [];
@@ -234,7 +225,7 @@ const showSelectAll = computed(() => {
 });
 
 /** Logic to setup the listening of when the user reached teh nottom of the dropdown list */
-const dropdownList = ref<HTMLUListElement | null>(null);
+const dropdownList = useTemplateRef('dropdownList');
 
 const handleReachedEndOfList = () => {
   emit("reachedEndOfList");
@@ -260,7 +251,7 @@ const setupDropdownList = () => {
   });
 };
 
-const searchInput = ref<HTMLInputElement | null>(null);
+const searchInput = useTemplateRef('searchInput');
 
 /** A dunction to handle the opening of the results. If the search is present, we autofocus the search input. Note, there is a `ToggleEvent` type that should work but doesnt pass the TS linting with `TS2304: Cannot find name 'ToggleEvent'.`. */
 const openResults = async (value: {newState: string}) => {
@@ -277,27 +268,6 @@ const openResults = async (value: {newState: string}) => {
 onMounted(() => {
   setupDropdownList();
 });
-
-const getSummaryText = () => {
-  if (props.modelValue.length > 0) {
-    return props.modelValue
-      .map((value) => {
-        const option = normalisedOptions.value.find((option) =>
-          typeof option === "string"
-            ? option === value
-            : option[props.modelKey] === value
-        );
-        return option
-          ? getLabel(option)
-          : value.trim() !== ""
-          ? value
-          : props.placeholder;
-      })
-      .join(", ");
-  }
-
-  return props.placeholder;
-};
 
 const canBeFocusedOn = computed(
   () =>

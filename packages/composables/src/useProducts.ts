@@ -331,6 +331,25 @@ export const useProducts = () => {
     }
   });
 
+  const productOptions = computed(() =>
+    products.value.map(
+      (product: Product) =>
+      ({
+        id: product.id,
+        render: product.name,
+        raw: {
+          ...product,
+          image: product.image,
+          description: product.short_description,
+          price: formatPrice(
+            product.prices?.min.priceWithTax,
+            product.prices.currency
+          ),
+        },
+      })
+    )
+  );
+
   return {
     minProductsToTriggerLoadMore,
     products,
@@ -353,5 +372,6 @@ export const useProducts = () => {
     allAttributes,
     searchTerm,
     handleProductSelect,
+    productOptions,
   };
 };

@@ -13,6 +13,7 @@ export interface RequiredProps<T extends PossibleRecord> {
   modelValue: string[];
   modelKey: keyof NormalisedOptionObject<SelectOptionObject<T>>;
   multiple: boolean;
+  placeholder?: string;
 }
 
 export type RequiredEmits = (
@@ -90,6 +91,38 @@ export function useMultiselect<T extends PossibleRecord>(
     return selectAllOptions();
   };
 
+  const getSummaryText = () => {
+    if (props.modelValue.length > 0) {
+      return props.modelValue
+        .map((value) => {
+          const option = normalisedOptions.value.find((option) =>
+            typeof option === "string"
+              ? option === value
+              : option[props.modelKey] === value
+          );
+          return option
+            ? getLabel(option)
+            : value.trim() !== ""
+            ? value
+            : props.placeholder;
+        })
+        .join(", ");
+    }
+
+    return props.placeholder;
+  };
+
+  const setModelValue = (
+    event: Event,
+    existingValue: number | false = false
+  ) => {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+
+    updateModelValue(value, target.checked, existingValue);
+  };
+
+
   return {
     normalisedOptions,
     selectableOptions,
@@ -99,5 +132,7 @@ export function useMultiselect<T extends PossibleRecord>(
     selectAllOptions,
     unselectAllOptions,
     toggleAllOptions,
+    getSummaryText,
+    setModelValue,
   };
 }

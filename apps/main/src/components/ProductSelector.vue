@@ -2,7 +2,6 @@
 import DropdownSelect from "@/components/DropdownSelect.vue";
 import { type PropType, computed, onMounted, ref } from "vue";
 import type { Product } from "@novulink/types";
-import type { SelectOptionObject } from "@novulink/types";
 import { useProducts } from "@novulink/vue-composables/useProducts";
 
 const props = defineProps({
@@ -37,26 +36,7 @@ const isOpenValueSelector = ref(false);
 
 const searchTerm = ref("");
 
-const { products, loadMoreProducts, isLoading, formatPrice } = useProducts();
-
-const productOptions = computed(() =>
-  products.value.map(
-    (product: Product) =>
-      ({
-        id: product.id,
-        render: product.name,
-        raw: {
-          ...product,
-          image: product.image,
-          description: product.short_description,
-          price: formatPrice(
-            product.prices?.min.priceWithTax,
-            product.prices.currency
-          ),
-        },
-      } as SelectOptionObject)
-  )
-);
+const { products, loadMoreProducts, isLoading, productOptions } = useProducts();
 
 onMounted(async () => {
   loadMoreProducts();
