@@ -34,7 +34,6 @@
         "nx": "21.0.3",
         "pre-commit": "^1.2.2",
         "pre-push": "^0.1.4",
-        "turbo": "latest",
         "vite": "^6.0.0",
         "vitest": "^3.0.0"
     },

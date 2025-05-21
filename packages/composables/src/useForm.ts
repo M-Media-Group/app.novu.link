@@ -153,7 +153,7 @@ const setSuccessOnInputs = (formElement: HTMLFormElement) => {
 
 const setInputErrors = (
   formElement: HTMLFormElement,
-  errors?: Record<string, string | string[] | null | undefined>
+  errors?: Record<string, string | string[] | null | object | undefined>
 ) => {
   // For each key in errors, find the input and call setErrorOnInput with the value
   if (!errors) {
@@ -210,7 +210,7 @@ export const useForm = (formElement: Ref<HTMLFormElement | null>) => {
     formIsValid,
     setErrorOnInput,
     setInputErrors: (
-      errors?: Record<string, string | string[] | null | undefined>
+      errors?: Record<string, string | string[] | null | object | undefined>
     ) => formElement.value ? setInputErrors(formElement.value, errors) : undefined,
     setSuccessOnInputs: () => formElement.value ? setSuccessOnInputs(formElement.value) : undefined,
     setSuccessOnInput,

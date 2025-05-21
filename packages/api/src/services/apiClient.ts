@@ -1,3 +1,4 @@
+import { UnifiedError } from "./apiServiceErrorHandler.js";
 import { HttpClient } from "./clients/genericHttpClient.js";
 import { EventBus } from "type-safe-event-bus";
 
@@ -52,6 +53,7 @@ declare module "type-safe-event-bus" {
         updated_analytics_integration: undefined;
         deleted_analytics_integration: undefined;
         created_product_order: undefined;
+        http_error: Partial<UnifiedError>;
     }
 }
 

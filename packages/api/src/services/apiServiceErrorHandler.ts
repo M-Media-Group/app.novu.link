@@ -1,7 +1,7 @@
-import i18n from "@/locales/i18n";
 import { errorHandler, isClientError } from "./clients/axios.js";
 import { z } from "zod";
 import { flattenObjectToDotNotationWithArrayAndStopAtKey } from "@novulink/helpers/hasMethod";
+import { getEventBus } from "./apiClient.js";
 
 /**
  * Represents a unified error structure.
@@ -12,7 +12,7 @@ export interface UnifiedError {
   /** A user-friendly message describing the error. */
   message: string;
   /** Optional details, especially for validation errors (e.g., field-specific messages). */
-  details?: Record<string, string[] | string | undefined>;
+  details?: Record<string, string[] | string | object | undefined>;
   /** The HTTP status code, if applicable. */
   status?: number;
   /** The original error object. */
@@ -60,7 +60,7 @@ export const handleError = (
   } else if (error instanceof z.ZodError) {
     unifiedError.type = "validation";
     unifiedError.status = 422; // Set status to 422 for validation errors
-    unifiedError.message = i18n.global.t("errors.validation_error");
+    unifiedError.message = "errors.validation_error";
     console.log("Formatted error:", error.format());
     unifiedError.details = flattenObjectToDotNotationWithArrayAndStopAtKey(
       error.format()
@@ -68,8 +68,11 @@ export const handleError = (
     console.log("Details error:", unifiedError.details);
   } else {
     unifiedError.type = "unknown";
-    unifiedError.message = i18n.global.t("errors.unknown_error"); // Fallback message
+    unifiedError.message = "errors.unknown_error"; // Fallback message
   }
+
+  getEventBus()?.$emit("http_error", unifiedError);
+  console.log("Got general error:", unifiedError, "got event bus:", getEventBus());
 
   const isDev = import.meta.env.MODE === "development";
 

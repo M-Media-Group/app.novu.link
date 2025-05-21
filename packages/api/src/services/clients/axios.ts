@@ -6,7 +6,6 @@ import axios, {
   isAxiosError,
 } from "axios";
 
-import router from "@/router";
 import type { HttpClient } from "./genericHttpClient.js";
 import { UnifiedError } from "../apiServiceErrorHandler.js";
 import { getBaseUrl } from "../apiClient.js";
@@ -36,19 +35,6 @@ apiClient.interceptors.request.use((config) => {
   }
   return config;
 });
-
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const gates = router.currentRoute.value.meta?.gates as string[] | undefined;
-    if (error.response?.status === 401 && gates?.includes("auth")) {
-      router.push({ name: "login-otp" });
-    } else if (error.response?.status === 429) {
-      router.push({ name: "429" });
-    }
-    return Promise.reject(error);
-  }
-);
 
 export const isClientError = <T = unknown>(
   error: unknown

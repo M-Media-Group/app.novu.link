@@ -1,6 +1,5 @@
 // @ts-check
 
-import turbo from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
 import spellcheck from "eslint-plugin-spellcheck";
 import noSecrets from "eslint-plugin-no-secrets";
@@ -25,13 +24,11 @@ export default tseslint.config(
   storybook.configs['flat/recommended'],
   {
     plugins: {
-      turbo,
       "unused-imports": unusedImports,
       spellcheck,
       "no-secrets": noSecrets,
     },
     rules: {
-      "turbo/no-undeclared-env-vars": "error",
       camelcase: ["error", {
         properties: "never",
       }],

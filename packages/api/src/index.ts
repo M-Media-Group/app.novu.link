@@ -17,4 +17,4 @@ export * from "./repositories/webhook/webhookRepository.js";
 
 export * from "./repositories/misc/miscRepository.js";
 
-export { assertIsUnifiedError } from "./services/apiServiceErrorHandler.js";
+export { assertIsUnifiedError, type UnifiedError } from "./services/apiServiceErrorHandler.js";
