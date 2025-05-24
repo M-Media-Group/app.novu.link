@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [hasMethod](../README.md) / flattenObjectToDotNotationWithArrayAndStopAtKey
+[@novulink/helpers](../../README.md) / [hasMethod](../README.md) / flattenObjectToDotNotationWithArrayAndStopAtKey
 
 # Function: flattenObjectToDotNotationWithArrayAndStopAtKey()
 
 > **flattenObjectToDotNotationWithArrayAndStopAtKey**\<`T`\>(`obj`, `parentKey`, `result`, `stopKey`): `Record`\<`string`, `FlattenedValue`\>
 
-Defined in: [hasMethod.ts:62](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/hasMethod.ts#L62)
+Defined in: [hasMethod.ts:62](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/hasMethod.ts#L62)
 
 Recursively flattens a nested object into dot notation,
 stopping at a specific key (default "_errors").

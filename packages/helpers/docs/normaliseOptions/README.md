@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / normaliseOptions
+[@novulink/helpers](../README.md) / normaliseOptions
 
 # normaliseOptions
 

@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [confetti](../README.md) / renderConfetti
+[@novulink/helpers](../../README.md) / [confetti](../README.md) / renderConfetti
 
 # Function: renderConfetti()
 
 > **renderConfetti**(`canvas?`): `void`
 
-Defined in: [confetti.ts:140](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/confetti.ts#L140)
+Defined in: [confetti.ts:140](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/confetti.ts#L140)
 
 Renders the confetti animation on a given canvas element.
 

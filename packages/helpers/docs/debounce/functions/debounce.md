@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [debounce](../README.md) / debounce
+[@novulink/helpers](../../README.md) / [debounce](../README.md) / debounce
 
 # Function: debounce()
 
 > **debounce**\<`Args`\>(`fn`, `delay`, `leading`): (...`args`) => `void`
 
-Defined in: [debounce.ts:14](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/debounce.ts#L14)
+Defined in: [debounce.ts:14](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/debounce.ts#L14)
 
 This function debounces a function
 

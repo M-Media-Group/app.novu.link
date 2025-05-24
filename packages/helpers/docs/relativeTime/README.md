@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / relativeTime
+[@novulink/helpers](../README.md) / relativeTime
 
 # relativeTime
 

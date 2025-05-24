@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / colors
+[@novulink/helpers](../README.md) / colors
 
 # colors
 

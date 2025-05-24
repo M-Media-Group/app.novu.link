@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [dataLoader](../README.md) / loadData
+[@novulink/helpers](../../README.md) / [dataLoader](../README.md) / loadData
 
 # Function: loadData()
 
 > **loadData**\<`T`\>(`dataset`, `localeToUse`, `basePath`): `Promise`\<`T`[]\>
 
-Defined in: [dataLoader.ts:8](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/dataLoader.ts#L8)
+Defined in: [dataLoader.ts:8](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/dataLoader.ts#L8)
 
 A helper function to load data from a JSON file.
 
@@ -16,7 +16,7 @@ A helper function to load data from a JSON file.
 
 ### T
 
-`T` = \{[`key`: `string`]: `null` \| `string` \| `number` \| `boolean` \| `object`; `description?`: `string`; `name?`: `string`; \}
+`T` = \{[`key`: `string`]: `undefined` \| `null` \| `string` \| `number` \| `boolean` \| `object`; `description?`: `string`; `name?`: `string`; \}
 
 ## Parameters
 

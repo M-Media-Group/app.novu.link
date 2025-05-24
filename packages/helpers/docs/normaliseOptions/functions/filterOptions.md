@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [normaliseOptions](../README.md) / filterOptions
+[@novulink/helpers](../../README.md) / [normaliseOptions](../README.md) / filterOptions
 
 # Function: filterOptions()
 
 > **filterOptions**\<`T`\>(`options`, `value`, `key`): `NormalisedOptionObject`\<`SelectOptionObject`\<`T`\>\>[]
 
-Defined in: [normaliseOptions.ts:33](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/normaliseOptions.ts#L33)
+Defined in: [normaliseOptions.ts:33](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/normaliseOptions.ts#L33)
 
 Filter options by a given search string and key
 

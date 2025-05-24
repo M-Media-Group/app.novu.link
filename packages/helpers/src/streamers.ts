@@ -9,7 +9,12 @@ export const cleanJSONString = (str: string) => {
   return str;
 };
 
-// Updated utility to handle streamed response, pushing results into the local products array
+/**
+ * Updated utility to handle streamed response, pushing results into the local products array
+ *
+ * @deprecated This function is not well implemented. You should use an external library to parse streamed JSON responses.
+ * @see https://www.npmjs.com/package/@streamparser/json
+ */
 export const parseStreamedResponse = async (
   reader: ReadableStreamDefaultReader<Uint8Array>,
   productsArray: ProductsArray

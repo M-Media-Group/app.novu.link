@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [urlFormatter](../README.md) / formatUrl
+[@novulink/helpers](../../README.md) / [urlFormatter](../README.md) / formatUrl
 
 # Function: formatUrl()
 
 > **formatUrl**(`url`, `protocol`): `string`
 
-Defined in: [urlFormatter.ts:156](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/urlFormatter.ts#L156)
+Defined in: [urlFormatter.ts:156](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/urlFormatter.ts#L156)
 
 Format the string by softly adding a protocol if missing and lowercasing the string
 

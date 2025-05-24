@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / cssVariables
+[@novulink/helpers](../README.md) / cssVariables
 
 # cssVariables
 

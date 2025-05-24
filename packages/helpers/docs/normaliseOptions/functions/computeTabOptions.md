@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [normaliseOptions](../README.md) / computeTabOptions
+[@novulink/helpers](../../README.md) / [normaliseOptions](../README.md) / computeTabOptions
 
 # Function: computeTabOptions()
 
 > **computeTabOptions**\<`T`\>(`data`): `SelectOption`\<`T`\>[]
 
-Defined in: [normaliseOptions.ts:84](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/normaliseOptions.ts#L84)
+Defined in: [normaliseOptions.ts:84](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/normaliseOptions.ts#L84)
 
 Computes the tab options from data
 

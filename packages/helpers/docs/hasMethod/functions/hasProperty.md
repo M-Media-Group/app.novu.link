@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [hasMethod](../README.md) / hasProperty
+[@novulink/helpers](../../README.md) / [hasMethod](../README.md) / hasProperty
 
 # Function: hasProperty()
 
 > **hasProperty**\<`T`, `Obj`\>(`el`, `method`): `el is Obj`
 
-Defined in: [hasMethod.ts:35](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/hasMethod.ts#L35)
+Defined in: [hasMethod.ts:35](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/hasMethod.ts#L35)
 
 Determines if an object has a property of a specific type in a type-safe way.
 

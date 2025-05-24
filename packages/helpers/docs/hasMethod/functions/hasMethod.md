@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [hasMethod](../README.md) / hasMethod
+[@novulink/helpers](../../README.md) / [hasMethod](../README.md) / hasMethod
 
 # Function: hasMethod()
 
 > **hasMethod**\<`T`, `Obj`\>(`el`, `method`): `el is Obj`
 
-Defined in: [hasMethod.ts:22](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/hasMethod.ts#L22)
+Defined in: [hasMethod.ts:22](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/hasMethod.ts#L22)
 
 Determines if an object has a method of a specific type in a type-safe way.
 

@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / httpCodes
+[@novulink/helpers](../README.md) / httpCodes
 
 # httpCodes
 

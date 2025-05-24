@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [colors](../README.md) / hasSufficientContrast
+[@novulink/helpers](../../README.md) / [colors](../README.md) / hasSufficientContrast
 
 # Function: hasSufficientContrast()
 
 > **hasSufficientContrast**(`color1`, `color2`, `threshold`): `boolean`
 
-Defined in: [colors.ts:41](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/colors.ts#L41)
+Defined in: [colors.ts:41](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/colors.ts#L41)
 
 Check if two colors have sufficient contrast.
 

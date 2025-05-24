@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [streamers](../README.md) / cleanJSONString
+[@novulink/helpers](../../README.md) / [streamers](../README.md) / cleanJSONString
 
 # Function: cleanJSONString()
 
 > **cleanJSONString**(`str`): `string`
 
-Defined in: [streamers.ts:5](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/streamers.ts#L5)
+Defined in: [streamers.ts:5](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/streamers.ts#L5)
 
 ## Parameters
 

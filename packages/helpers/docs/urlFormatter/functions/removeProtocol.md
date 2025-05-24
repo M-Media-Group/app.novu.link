@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [urlFormatter](../README.md) / removeProtocol
+[@novulink/helpers](../../README.md) / [urlFormatter](../README.md) / removeProtocol
 
 # Function: removeProtocol()
 
 > **removeProtocol**(`url`): `string`
 
-Defined in: [urlFormatter.ts:17](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/urlFormatter.ts#L17)
+Defined in: [urlFormatter.ts:17](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/urlFormatter.ts#L17)
 
 Removes the protocol from a URL
 

@@ -4,5 +4,5 @@
     "typedoc-plugin-markdown"
   ],
   "out": "./docs",
-  "mergeReadme": false
+  "readme": "none"
 }

@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / urlFormatter
+[@novulink/helpers](../README.md) / urlFormatter
 
 # urlFormatter
 

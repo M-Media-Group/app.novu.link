@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / streamers
+[@novulink/helpers](../README.md) / streamers
 
 # streamers
 

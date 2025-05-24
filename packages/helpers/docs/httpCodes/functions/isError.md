@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [httpCodes](../README.md) / isError
+[@novulink/helpers](../../README.md) / [httpCodes](../README.md) / isError
 
 # Function: isError()
 
 > **isError**(`code`): `boolean`
 
-Defined in: [httpCodes.ts:6](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/httpCodes.ts#L6)
+Defined in: [httpCodes.ts:6](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/httpCodes.ts#L6)
 
 Determine if the status code is an error that should be displayed to the user as an error, commonly with a "Fix now" message.
 

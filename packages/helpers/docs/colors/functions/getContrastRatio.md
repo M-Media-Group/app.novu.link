@@ -2,13 +2,13 @@
 
 ***
 
-[@novulink/helpers](../../modules.md) / [colors](../README.md) / getContrastRatio
+[@novulink/helpers](../../README.md) / [colors](../README.md) / getContrastRatio
 
 # Function: getContrastRatio()
 
 > **getContrastRatio**(`color1`, `color2`): `number`
 
-Defined in: [colors.ts:22](https://github.com/M-Media-Group/app.novu.link/blob/d43aa75d61cafdf214ab3b4b66ffcaae1fde7b4e/packages/helpers/src/colors.ts#L22)
+Defined in: [colors.ts:22](https://github.com/M-Media-Group/app.novu.link/blob/185285297b092339554122b4cf56a2dcd7525fea/packages/helpers/src/colors.ts#L22)
 
 Get the contrast ratio between two hex colors.
 

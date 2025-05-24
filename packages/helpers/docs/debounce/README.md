@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / debounce
+[@novulink/helpers](../README.md) / debounce
 
 # debounce
 

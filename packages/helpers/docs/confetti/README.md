@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / confetti
+[@novulink/helpers](../README.md) / confetti
 
 # confetti
 

@@ -2,7 +2,7 @@
 
 ***
 
-[@novulink/helpers](../modules.md) / hasMethod
+[@novulink/helpers](../README.md) / hasMethod
 
 # hasMethod
 
