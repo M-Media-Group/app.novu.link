@@ -8,9 +8,9 @@ import { loadData } from "@novulink/helpers/dataLoader";
 
 const { locale } = useI18n();
 
-const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const faqData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const pricingData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const featureData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const faqData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const pricingData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
 
 watch(
   locale,

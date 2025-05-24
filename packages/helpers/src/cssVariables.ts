@@ -1,6 +1,12 @@
 import { hsl2rgb } from "./colors.js";
 
-/** Get the value of a CSS variable. Apply some extra logic useful for Stripe, like coverting > 100% to pixels, and converting hsl to rgb. */
+/**
+ * Get the value of a CSS variable. Apply some extra logic useful for Stripe, like coverting > 100% to pixels, and converting hsl to rgb.
+ *
+ * Used primarily to sync app CSS variables with Stripe Elements.
+ *
+ * @param cssVariable - The CSS variable to get the value of, without the `--` prefix.
+*/
 export const getCssVarForStripe = (cssVariable: string): string => {
   const computedValue = getComputedStyle(document.documentElement)
     .getPropertyValue(`--${cssVariable}`)

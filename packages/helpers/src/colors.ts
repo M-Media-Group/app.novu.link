@@ -2,6 +2,8 @@ import type { HexColor } from "@novulink/types";
 
 /**
  * Converts an HSL color value to RGB.
+ *
+ * @returns an array of R, G, and B values, each between 0 and 255.
  */
 export const hsl2rgb = (h: number, s: number, l: number): [number, number, number] => {
   const a = s * Math.min(l, 1 - l);

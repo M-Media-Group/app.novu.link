@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
+        "target": "es2022",
         "module": "NodeNext",
         "strict": true,
         "lib": [
-            "es2021"
+            "es2022"
         ],
-        "moduleResolution": "NodeNext",
+        "moduleResolution": "nodenext",
         "composite": true,
         "declaration": true,
         "declarationMap": true,
@@ -15,6 +15,15 @@
         "noFallthroughCasesInSwitch": true, // Prevent accidental case fall-throughs
         "noImplicitOverride": true, // Forces use of `override` keyword
         // "noPropertyAccessFromIndexSignature": true, // Catches bugs in index signature usage
-        "exactOptionalPropertyTypes": true // More accurate optional prop typing
+        "exactOptionalPropertyTypes": true, // More accurate optional prop typing
+        "emitDeclarationOnly": true,
+        "importHelpers": true,
+        "isolatedModules": true,
+        "noEmitOnError": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "customConditions": [
+            "development"
+        ]
     }
 }

@@ -38,6 +38,8 @@
       ".nx/": true,
       "dist/": true,
       "docs/": true,
+      "coverage/": true,
+      "storybook-static/": true,
     },
     "nxConsole.generateAiAgentRules": true,
   }

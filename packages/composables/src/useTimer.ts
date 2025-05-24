@@ -1,5 +1,11 @@
 import { onMounted, ref } from "vue";
 
+/*
+* Composable for managing a countdown timer.
+*
+* @param timerLength - The initial length of the timer in seconds.
+* @returns An object containing the timer value and a function to start the timer.
+*/
 export const useTimer = (timerLength: number) => {
     const timer = ref(timerLength);
 

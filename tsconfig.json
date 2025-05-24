@@ -1,6 +1,7 @@
 {
     "extends": "./tsconfig.base.json",
     "files": [],
+    "compileOnSave": false,
     "references": [
         {
             "path": "./packages/types"

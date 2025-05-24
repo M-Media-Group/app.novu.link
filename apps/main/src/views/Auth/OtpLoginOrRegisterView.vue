@@ -22,7 +22,7 @@ const convertSecondsToMinutes = (seconds: number) => {
 
 const { locale } = useI18n();
 
-const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const featureData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
 
 watch(
   locale,

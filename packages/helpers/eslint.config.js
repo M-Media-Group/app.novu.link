@@ -1,5 +1,5 @@
 // @ts-check
-import config from "@novulink/eslint-config/base";
+import config from '../../eslint.config.mjs';
 
 import ts from 'typescript-eslint'
 

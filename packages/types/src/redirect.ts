@@ -1,8 +1,8 @@
-import type { ClicksByTimeOfDay } from "./analytics";
-import type { AnalyticsIntegration } from "./analyticsIntegrations";
-import type { QRDesign } from "./qrDesign";
-import type { RuleModel } from "./rule";
-import type { Team } from "./team";
+import type { ClicksByTimeOfDay } from "./analytics.js";
+import type { AnalyticsIntegration } from "./analyticsIntegrations.js";
+import type { QRDesign } from "./qrDesign.js";
+import type { RuleModel } from "./rule.js";
+import type { Team } from "./team.js";
 
 export interface Redirect {
   uuid: string;

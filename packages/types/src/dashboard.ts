@@ -1,4 +1,4 @@
-import type { ClicksByTimeOfDay } from "./analytics";
+import type { ClicksByTimeOfDay } from "./analytics.js";
 
 export interface Dashboard {
   clicks: Clicks;

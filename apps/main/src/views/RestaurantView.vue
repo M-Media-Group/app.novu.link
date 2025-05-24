@@ -10,13 +10,13 @@ import { computeTabOptions } from "@novulink/helpers/normaliseOptions";
 
 const { locale } = useI18n();
 
-const featureData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const testimonialData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const faqData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const goodPointsData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const painPointsData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const pricingData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
-const featuresByGroupData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const featureData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const testimonialData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const faqData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const goodPointsData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const painPointsData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const pricingData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
+const featuresByGroupData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
 
 const openTabs = ref(["1"]);
 

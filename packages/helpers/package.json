@@ -1,8 +1,9 @@
 {
   "name": "@novulink/helpers",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "type": "module",
+  "readme": "README.md",
   "scripts": {
     "build": "tsc --noEmit",
     "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
@@ -10,7 +11,7 @@
     "test:unit:coverage": "vitest  --environment jsdom --root src/ run --coverage",
     "test:unit": "vitest --environment jsdom --root src/",
     "test:unit:update": "vitest --environment jsdom --root src/ --update",
-    "generate:docs": "typedoc --plugin typedoc-plugin-missing-exports"
+    "generate:docs": "typedoc"
   },
   "exports": {
     "./urlFormatter": "./src/urlFormatter.ts",
@@ -36,8 +37,14 @@
     "eslint": "^9.27.0",
     "eslint-plugin-only-warn": "^1.1.0",
     "typedoc": "^0.28.4",
+    "typedoc-plugin-markdown": "^4.6.3",
     "typedoc-plugin-missing-exports": "^4.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
-  }
+  },
+  "files": [
+    "src/",
+    "!src/**/*.test.ts",
+    "!src/__tests__/"
+  ]
 }

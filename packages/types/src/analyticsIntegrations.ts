@@ -1,5 +1,5 @@
-import type { Redirect } from "./redirect";
-import type { Team } from "./team";
+import type { Redirect } from "./redirect.js";
+import type { Team } from "./team.js";
 
 export interface SupportedIntegration {
   name: string;

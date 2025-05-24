@@ -25,29 +25,17 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      handleCsrf(): Chainable<void>;
-      handleAuthenticatedUser(): Chainable<void>;
-      handleUnauthenticatedUser(): Chainable<void>;
-      invalidFor(
-        subject: any,
-        options?: Partial<TypeOptions>
-      ): Chainable<Element>;
+import { TypeOptions } from 'cypress'; // Adjust the import based on where TypeOptions is defined
 
-      //   login(email: string, password: string): Chainable<void>;
-      //   drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>;
-      //   dismiss(
-      //     subject: string,
-      //     options?: Partial<TypeOptions>
-      //   ): Chainable<Element>;
-      //   visit(
-      //     originalFn: CommandOriginalFn,
-      //     url: string,
-      //     options: Partial<VisitOptions>
-      //   ): Chainable<Element>;
-    }
+declare module 'cypress' {
+  interface Chainable {
+    handleCsrf(): Chainable;
+    handleAuthenticatedUser(): Chainable;
+    handleUnauthenticatedUser(): Chainable;
+    invalidFor(
+      subject: unknown,
+      options?: Partial<TypeOptions>
+    ): Chainable; // Adjust return type if needed
   }
 }
 
@@ -151,4 +139,4 @@ Cypress.Commands.add(
       });
   }
 );
-export {};
+export { };

@@ -8,7 +8,7 @@ import { loadData } from "@novulink/helpers/dataLoader";
 
 const { locale } = useI18n();
 
-const testimonialData = ref<Awaited<ReturnType<typeof loadData>> | []>([]);
+const testimonialData = ref<{ name: string; description: string; [key: string]: number | string | object | boolean | null }[] | []>([]);
 
 watch(
   locale,

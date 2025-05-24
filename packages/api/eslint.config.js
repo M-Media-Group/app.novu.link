@@ -1,8 +1,11 @@
 // @ts-check
-import config from "@novulink/eslint-config/base";
 
-import ts from 'typescript-eslint'
+import config from '../../eslint.config.mjs';
 
-export default ts.config(
-    config
-)
+import tseslint from 'typescript-eslint';
+
+/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
+export default [
+    ...tseslint.configs.recommended,
+    ...config,
+];

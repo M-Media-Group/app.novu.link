@@ -1,5 +1,5 @@
-import type { Team } from "./team";
-import type { User } from "./user";
+import type { Team } from "./team.js";
+import type { User } from "./user.js";
 
 export type HexColor = `#${string}`;
 

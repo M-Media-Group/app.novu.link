@@ -1,8 +1,8 @@
-enum Unit {
- minute = "minute",
-   hour = "hour",
+export enum TimeUnit {
+  minute = "minute",
+  hour = "hour",
   day = "day",
- week = "week",
+  week = "week",
 }
 
 /**
@@ -55,25 +55,38 @@ export const relativeTime = (date: Date | string, locale: string | readonly stri
   return rtf.format(months, "month");
 };
 
-export const selectBestUnit = (minutes: number): Unit => {
+/**
+ * Selects the best unit for a given number of minutes. It checks if the number of minutes is divisible by 10080 (weeks), 1440 (days), or 60 (hours) and returns the corresponding unit. If none of these conditions are met, it defaults to minutes.
+ *
+ * @param minutes - The number of minutes to select the best unit for
+ * @returns
+ */
+export const selectBestUnit = (minutes: number): TimeUnit => {
   if (minutes % 10080 === 0) {
-    return Unit.week;
+    return TimeUnit.week;
   } else if (minutes % 1440 === 0) {
-    return Unit.day;
+    return TimeUnit.day;
   } else if (minutes % 60 === 0) {
-    return Unit.hour;
+    return TimeUnit.hour;
   } else {
-    return Unit.minute;
+    return TimeUnit.minute;
   }
 };
 
-export const computeMinutesToUnit = (minutes: number, unit: Unit) => {
+/**
+ * Converts a number of minutes to the corresponding unit based on the provided unit type. It divides the number of minutes by the appropriate factor for hours (60), days (1440), or weeks (10080). If the unit is minutes, it simply returns the original number of minutes.
+ *
+ * @param minutes - The number of minutes to convert
+ * @param unit - The unit to convert the minutes to (hour, day, week, or minute)
+ * @returns
+ */
+export const computeMinutesToUnit = (minutes: number, unit: TimeUnit) => {
   switch (unit) {
-    case Unit.hour:
+    case TimeUnit.hour:
       return minutes / 60;
-    case Unit.day:
+    case TimeUnit.day:
       return minutes / 1440;
-    case Unit.week:
+    case TimeUnit.week:
       return minutes / 10080;
     default:
       return minutes;
@@ -98,16 +111,23 @@ export const formatMinutes = (minutes: number, locale = navigator.languages): st
   }).format(computeMinutesToUnit(minutes, unit));
 };
 
+/**
+ * Converts a value in a given time unit (minutes, hours, days) to minutes.
+ *
+ * @param value - The value to convert
+ * @param timeUnit - The time unit of the value
+ * @returns The value converted to minutes
+ */
 export const formatToMinutes = (
   value: number,
-  timeUnit: "minutes" | "hours" | "days"
+  timeUnit: TimeUnit
 ): number => {
   switch (timeUnit) {
-    case "minutes":
+    case TimeUnit.minute:
       return value;
-    case "hours":
+    case TimeUnit.hour:
       return value * 60;
-    case "days":
+    case TimeUnit.day:
       return value * 60 * 24;
     default:
       return value;

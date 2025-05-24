@@ -80,6 +80,11 @@ class Confetto implements ConfettoType {
 
 let animationFrameId = 0;
 
+/**
+ * Initializes the confetti burst effect on a given canvas element.
+ *
+ * @param canvas - The canvas element to render the confetti on. If not provided, it will not initialize.
+ */
 export const initBurst = (canvas?: HTMLCanvasElement): void => {
     if (!canvas) return;
     // If we don't have an animation frame, start one
@@ -123,6 +128,15 @@ const cleanupOffscreenConfetti = (canvas: HTMLCanvasElement): void => {
     }
 };
 
+/**
+ * Renders the confetti animation on a given canvas element.
+ *
+ * This function will continuously update and draw the confetti until there are no more confetti pieces left.
+ *
+ * You should use `initBurst` to start the confetti effect instead.
+ *
+ * @param canvas
+ */
 export const renderConfetti = (canvas?: HTMLCanvasElement): void => {
     if (!canvas || !(canvas instanceof HTMLCanvasElement)) return;
 

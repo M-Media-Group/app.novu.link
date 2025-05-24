@@ -1,8 +1,7 @@
 // @ts-check
-import config from "@novulink/eslint-config/base";
+import config from '../../eslint.config.mjs';
 import eslintPluginVue from 'eslint-plugin-vue'
 
-import ts from 'typescript-eslint'
 
 import { includeIgnoreFile } from "@eslint/compat";
 import { fileURLToPath } from "node:url";
@@ -13,10 +12,14 @@ import pluginCypress from 'eslint-plugin-cypress/flat'
 
 const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
 
-export default ts.config(
+import tseslint from 'typescript-eslint';
+
+/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
+export default [
     includeIgnoreFile(gitignorePath),
-    config,
-    eslintPluginVue.configs['flat/recommended'],
+    ...tseslint.configs.recommended,
+    ...config,
+    ...eslintPluginVue.configs['flat/recommended'],
     pluginCypress.configs.recommended,
     {
         plugins: {
@@ -46,4 +49,4 @@ export default ts.config(
             ".vue-translation.js",
         ]
     }
-)
+];

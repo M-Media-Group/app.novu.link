@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import BaseForm from "./BaseForm.vue";
 
-import { formatMinutes, formatToMinutes } from "@novulink/helpers/relativeTime";
+import { formatMinutes, formatToMinutes, TimeUnit } from "@novulink/helpers/relativeTime";
 import ConfirmsGate from "@/components/modals/ConfirmsGate.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import { useOptionalRedirectSelector } from "@/composables/useOptionalRedirectSelector";
@@ -25,7 +25,7 @@ const scanType = ref("successful");
 const condition = ref(">");
 const targetNumber = ref(10);
 const timeDuration = ref(60);
-const timeUnit = ref<"minutes" | "hours" | "days">("minutes");
+const timeUnit = ref<TimeUnit>(TimeUnit.minute);
 
 const timeDurationInMinutes = computed(() => {
   return formatToMinutes(timeDuration.value, timeUnit.value);
@@ -140,13 +140,13 @@ const { RedirectSelector, activeRedirectId } =
         aria-describedby="time_window_helper"
         :aria-label="$t('Unit of Time')"
       >
-        <option value="minutes">
+        <option value="minute">
           {{ $t("Minutes") }}
         </option>
-        <option value="hours">
+        <option value="hour">
           {{ $t("Hours") }}
         </option>
-        <option value="days">
+        <option value="day">
           {{ $t("Days") }}
         </option>
       </select>
